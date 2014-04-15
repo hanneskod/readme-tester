@@ -1,0 +1,24 @@
+{
+    "name": "hanneskod/exemplify",
+    "description": "Generate markdown formatted documentation from phpunit test suites",
+    "keywords": ["phpunit", "markdown", "code examples"],
+    "homepage": "https://github.com/hanneskod/exemplify",
+    "type": "library",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "Hannes Forsgård",
+            "email": "hannes.forsgard@fripost.org"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "hanneskod\\exemplify\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "phpunit/phpunit": "3.7.*",
+        "phpdocumentor/reflection-docblock": "2.*"
+    }
+}
