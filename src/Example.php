@@ -19,6 +19,8 @@ use hanneskod\exemplify\Content\CodeBlock;
 use hanneskod\exemplify\Content\Container;
 
 /**
+ * An Example represent a separate exemplify test method.
+ *
  * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
 class Example

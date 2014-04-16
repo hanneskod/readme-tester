@@ -31,9 +31,9 @@ class TestCase extends PHPUnit_Framework_TestCase
     /**
      * Get exemplify examples in test case
      *
-     * @return array
+     * @return array of Example objects
      */
-    public function getexemplifyExamples()
+    public function getExemplifyExamples()
     {
         $examples = array();
         $class = new ReflectionClass($this);
@@ -42,6 +42,7 @@ class TestCase extends PHPUnit_Framework_TestCase
                 $examples[] = new Example($method, $this);
             }
         }
+
         return $examples;
     }
 
@@ -50,9 +51,9 @@ class TestCase extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testexemplifyExamples()
+    public function testExemplifyExamples()
     {
-        foreach ($this->getexemplifyExamples() as $method) {
+        foreach ($this->getExemplifyExamples() as $method) {
             $method->runTest();
         }
     }
@@ -77,7 +78,7 @@ class TestCase extends PHPUnit_Framework_TestCase
             $container->addContent(new TextContent($long));
         };
 
-        foreach ($this->getexemplifyExamples() as $example) {
+        foreach ($this->getExemplifyExamples() as $example) {
             $container->addContent($example->getContainer());
         }
 
