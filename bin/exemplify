@@ -1,9 +1,24 @@
 #!/usr/bin/env php
 <?php
 
-include __DIR__ . "/../vendor/autoload.php";
+$files = array(
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php'
+);
 
-use hanneskod\exemplify\Console\Application;
+$found = false;
 
-$application = new Application();
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        require $file;
+        $found = true;
+        break;
+    }
+}
+
+if (!$found) {
+    die('Autoloader not found.');
+}
+
+$application = new hanneskod\exemplify\Console\Application();
 $application->run();
