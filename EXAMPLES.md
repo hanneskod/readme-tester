@@ -1,4 +1,4 @@
-# Exemplify usage examples
+# Usage
 
 ## Markdown examples
 

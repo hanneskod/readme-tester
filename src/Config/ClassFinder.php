@@ -56,6 +56,12 @@ class ClassFinder
 
     private static function getClassesInFile($filename, array &$classes)
     {
+        // Skip non .php files
+        $parts = pathinfo($filename);
+        if (!isset($parts['extension']) || $parts['extension'] != 'php') {
+            return;
+        }
+
         $oldClasses = get_declared_classes();
         include_once $filename;
         $newClasses = array_values(array_diff(get_declared_classes(), $oldClasses));
