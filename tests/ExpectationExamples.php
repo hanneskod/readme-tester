@@ -6,7 +6,8 @@ namespace hanneskod\exemplify;
  *
  * To enable automated testing of code examples (without cluttering them with
  * phpunit assert statements) we move the assertions to the docbloc comments.
- * Exemplify supports a variety of annotations.
+ * Exemplify supports a variety of annotations. See the
+ * [source file](tests/ExpectationExamples.php) for a concrete example.
  */
 class ExpectationExamples extends TestCase
 {
