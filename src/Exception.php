@@ -12,6 +12,6 @@ namespace hanneskod\exemplify;
 /**
  * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
-interface Exception
+class Exception extends \LogicException
 {
 }

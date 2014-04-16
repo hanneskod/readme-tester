@@ -52,7 +52,7 @@ class Example
      *
      * @param  string $name
      * @return string
-     * @throws LogicException If annotation does not exist
+     * @throws Exception If annotation does not exist
      */
     public function getAnnotation($name)
     {
@@ -61,7 +61,7 @@ class Example
                 return $tag->getContent();
             }
         }
-        throw new LogicException("Annotation <$name> does not exist in <{$this->method->getName()}>.");
+        throw new Exception("Annotation <$name> does not exist in <{$this->method->getName()}>.");
     }
 
     /**

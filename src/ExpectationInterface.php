@@ -25,7 +25,6 @@ interface ExpectationInterface
      * Evaluate that the expected condition is met
      *
      * @return void
-     * @throws UnexpectedValueException If evaluation does not pass
      */
     public function evaluate();
 }
