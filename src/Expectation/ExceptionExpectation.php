@@ -12,19 +12,10 @@ namespace hanneskod\exemplify\Expectation;
 /**
  * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
-class OutputStringExpectation extends BaseExpectation
+class ExceptionExpectation extends BaseExpectation
 {
     public function start()
     {
-        ob_start();
-    }
-
-    public function evaluate($returnValue)
-    {
-        $this->testCase->assertEquals(
-            $this->string,
-            ob_get_clean(),
-            "In example <$this->exampleName>."
-        );
+        $this->testCase->setExpectedException($this->string);
     }
 }

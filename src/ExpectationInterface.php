@@ -24,7 +24,8 @@ interface ExpectationInterface
     /**
      * Evaluate that the expected condition is met
      *
+     * @param  mixed $returnValue Example method return value
      * @return void
      */
-    public function evaluate();
+    public function evaluate($returnValue);
 }

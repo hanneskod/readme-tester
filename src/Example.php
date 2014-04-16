@@ -12,8 +12,6 @@ namespace hanneskod\exemplify;
 use ReflectionMethod;
 use phpDocumentor\Reflection\DocBlock;
 use hanneskod\exemplify\Expectation\VoidExpectation;
-use hanneskod\exemplify\Expectation\OutputStringExpectation;
-use hanneskod\exemplify\Expectation\OutputRegexExpectation;
 use hanneskod\exemplify\Content\VoidContent;
 use hanneskod\exemplify\Content\Header;
 use hanneskod\exemplify\Content\TextContent;
@@ -25,8 +23,23 @@ use hanneskod\exemplify\Content\Container;
  */
 class Example
 {
+    /**
+     * List of supported annotations
+     */
+    private static $annotations = array(
+        'expectOutputString' => 'hanneskod\exemplify\Expectation\OutputStringExpectation',
+        'expectReturnString' => 'hanneskod\exemplify\Expectation\ReturnStringExpectation',
+        'expectOutputRegex' => 'hanneskod\exemplify\Expectation\OutputRegexExpectation',
+        'expectReturnRegex' => 'hanneskod\exemplify\Expectation\ReturnRegexExpectation',
+        'expectedException' => 'hanneskod\exemplify\Expectation\ExceptionExpectation',
+    );
+
     private $method, $testCase;
 
+    /**
+     * @param ReflectionMethod $method   Example test method
+     * @param TestCase         $testCase Parent test case
+     */
     public function __construct(ReflectionMethod $method, TestCase $testCase)
     {
         $this->method = $method;
@@ -43,8 +56,9 @@ class Example
     {
         $expectation = $this->getExpectation();
         $expectation->start();
-        $this->method->invoke($this->testCase);
-        $expectation->evaluate();
+        $expectation->evaluate(
+            $this->method->invoke($this->testCase)
+        );
     }
 
     /**
@@ -82,20 +96,14 @@ class Example
      */
     public function getExpectation()
     {
-        if ($this->hasAnnotation('expectOutputString')) {
-            return new OutputStringExpectation(
-                $this->getAnnotation('expectOutputString'),
-                $this->method->getName(),
-                $this->testCase
-            );
-        }
-
-        if ($this->hasAnnotation('expectOutputRegex')) {
-            return new OutputRegexExpectation(
-                $this->getAnnotation('expectOutputRegex'),
-                $this->method->getName(),
-                $this->testCase
-            );
+        foreach (self::$annotations as $annotation => $class) {
+            if ($this->hasAnnotation($annotation)) {
+                return new $class(
+                    $this->getAnnotation($annotation),
+                    $this->method->getName(),
+                    $this->testCase
+                );
+            }
         }
 
         return new VoidExpectation();

@@ -9,22 +9,28 @@
 
 namespace hanneskod\exemplify\Expectation;
 
+use hanneskod\exemplify\ExpectationInterface;
+use hanneskod\exemplify\TestCase;
+
 /**
  * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
-class OutputStringExpectation extends BaseExpectation
+abstract class BaseExpectation implements ExpectationInterface
 {
+    protected $string, $exampleName, $testCase;
+
+    public function __construct($string, $exampleName, TestCase $testCase)
+    {
+        $this->string = $string;
+        $this->exampleName = $exampleName;
+        $this->testCase = $testCase;
+    }
+
     public function start()
     {
-        ob_start();
     }
 
     public function evaluate($returnValue)
     {
-        $this->testCase->assertEquals(
-            $this->string,
-            ob_get_clean(),
-            "In example <$this->exampleName>."
-        );
     }
 }

@@ -16,7 +16,14 @@ use hanneskod\exemplify\FormatterInterface;
  */
 class MarkdownFormatter implements FormatterInterface
 {
-    private $headerLevel = 0;
+    private $headerLevel, $lineWidth, $codeIndentation;
+
+    public function __construct($topHeaderWeight = 1, $lineWidth = 80, $codeIndentation = '    ')
+    {
+        $this->headerLevel = $topHeaderWeight;
+        $this->lineWidth = $lineWidth;
+        $this->codeIndentation = $codeIndentation;
+    }
 
     public function levelUpHeader()
     {
@@ -37,11 +44,11 @@ class MarkdownFormatter implements FormatterInterface
     {
         $text = str_replace(array("\r\n", "\n", "\r"), ' ', $text);
         $text = preg_replace('/\s+/', ' ', $text);
-        return wordwrap($text) . "\n\n";
+        return wordwrap($text, $this->lineWidth) . "\n\n";
     }
 
     public function formatCodeBlock(array $lines)
     {
-        return (string)new Indentor($lines);
+        return (string)new Indentor($lines, $this->codeIndentation);
     }
 }

@@ -9,32 +9,20 @@
 
 namespace hanneskod\exemplify\Expectation;
 
-use hanneskod\exemplify\ExpectationInterface;
-use hanneskod\exemplify\TestCase;
-
 /**
  * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
-class OutputRegexExpectation implements ExpectationInterface
+class OutputRegexExpectation extends BaseExpectation
 {
-    private $regex, $exampleName, $testCase;
-
-    public function __construct($regex, $exampleName, TestCase $testCase)
-    {
-        $this->regex = $regex;
-        $this->exampleName = $exampleName;
-        $this->testCase = $testCase;
-    }
-
     public function start()
     {
         ob_start();
     }
 
-    public function evaluate()
+    public function evaluate($returnValue)
     {
         $this->testCase->assertRegExp(
-            $this->regex,
+            $this->string,
             ob_get_clean(),
             "In example <$this->exampleName>."
         );

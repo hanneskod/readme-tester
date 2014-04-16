@@ -12,18 +12,13 @@ namespace hanneskod\exemplify\Expectation;
 /**
  * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
-class OutputStringExpectation extends BaseExpectation
+class ReturnRegexExpectation extends BaseExpectation
 {
-    public function start()
-    {
-        ob_start();
-    }
-
     public function evaluate($returnValue)
     {
-        $this->testCase->assertEquals(
+        $this->testCase->assertRegExp(
             $this->string,
-            ob_get_clean(),
+            (string)$returnValue,
             "In example <$this->exampleName>."
         );
     }

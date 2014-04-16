@@ -20,7 +20,7 @@ class VoidExpectation implements ExpectationInterface
     {
     }
 
-    public function evaluate()
+    public function evaluate($returnValue)
     {
     }
 }
