@@ -6,8 +6,6 @@ Generate markdown formatted documentation from phpunit test suites.
 No more erroneous examples in README.md. Let phpunit tell you when your examples
 are out of date, and let exemplify generate markdown when examples are fixed.
 
-Se [EXAMPLES.md](EXAMPLES.md) for a live example.
-
 
 Installation using [composer](http://getcomposer.org/)
 ------------------------------------------------------
@@ -16,9 +14,48 @@ Installation using [composer](http://getcomposer.org/)
     }
 
 
+Usage
+-----
+Se [EXAMPLES.md](EXAMPLES.md) for a live example and usage instructions.
+
+The examples has been generated from [BaseExamples.php](tests/BaseExamples.php)
+and [ExpectationExamples.php](tests/ExpectationExamples.php) in the tests directory
+using the command
+
+    $ vendor/bin/exemplify --headline=Usage > EXAMPLES.md
+
+Exemplify looks for a phpunit configuration file, and if found scans all test
+locations for exemplify examples. If you already use a phpunit configuration file
+no further configuration is neccesary. Just add exemplify examples to your regular
+test directory.
+
+For more information on how to use the console application
+
+    $ vendor/bin/exemplify --help
+
+
+Phpunit and the use of suffixes
+-------------------------------
+Phpunit requires test files to bee suffixed with `Test.php`. If you want to name
+your example files differently change the suffix option in phpunit.xml.
+
+    <phpunit bootstrap="./vendor/autoload.php">
+        <testsuites>
+            <testsuite>
+                <directory suffix=".php">./tests</directory>
+            </testsuite>
+        </testsuites>
+        <filter>
+            <whitelist>
+                <directory suffix=".php">./src</directory>
+            </whitelist>
+        </filter>
+    </phpunit>
+
+
 Run tests using [phpunit](http://phpunit.de/)
 ---------------------------------------------
-To run the tests you must first install dependencies using composer.
+To run the unit tests you must first install dependencies using composer.
 
     $ curl -sS https://getcomposer.org/installer | php
     $ php composer.phar install
