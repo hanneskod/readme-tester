@@ -1,4 +1,4 @@
-# exemplify
+# exemplify [![Build Status](https://travis-ci.org/hanneskod/exemplify.svg)](https://travis-ci.org/hanneskod/exemplify) [![Code Coverage](https://scrutinizer-ci.com/g/hanneskod/exemplify/badges/coverage.png?s=d05285c0d262cea38f82c7ae95cd97af8687a83b)](https://scrutinizer-ci.com/g/hanneskod/exemplify/) [![Dependency Status](https://gemnasium.com/hanneskod/exemplify.svg)](https://gemnasium.com/hanneskod/exemplify)
 
 
 Generate markdown formatted documentation from phpunit test suites.
