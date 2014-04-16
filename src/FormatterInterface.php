@@ -14,13 +14,31 @@ namespace hanneskod\exemplify;
  */
 interface FormatterInterface
 {
+    /**
+     * @return void
+     */
     public function levelUpHeader();
 
+    /**
+     * @return void
+     */
     public function levelDownHeader();
 
+    /**
+     * @param  string $header
+     * @return string
+     */
     public function formatHeader($header);
 
+    /**
+     * @param  string $text
+     * @return string
+     */
     public function formatText($text);
 
+    /**
+     * @param  array  $lines
+     * @return string
+     */
     public function formatCodeBlock(array $lines);
 }

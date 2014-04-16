@@ -36,7 +36,7 @@ class Example
         'expectedException' => 'hanneskod\exemplify\Expectation\ExceptionExpectation',
     );
 
-    private $method, $testCase;
+    private $method, $testCase, $docblock;
 
     /**
      * @param ReflectionMethod $method   Example test method

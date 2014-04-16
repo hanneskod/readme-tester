@@ -93,7 +93,7 @@ class Configuration
 
     /**
      * @param  DOMElement $testSuiteNode
-     * @param  array      $classes       Files found will be appended to array
+     * @param  array      $files         Files found will be appended to array
      * @return void
      */
     private function getTestFilesInNode(DOMElement $testSuiteNode, array &$files)

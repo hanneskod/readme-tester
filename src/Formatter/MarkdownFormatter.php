@@ -44,6 +44,8 @@ class MarkdownFormatter implements FormatterInterface
     {
         $text = str_replace(array("\r\n", "\n", "\r"), ' ', $text);
         $text = preg_replace('/\s+/', ' ', $text);
+        assert('is_string($text)');
+
         return wordwrap($text, $this->lineWidth) . "\n\n";
     }
 
