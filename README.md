@@ -18,11 +18,11 @@ Usage
 -----
 Se [EXAMPLES.md](EXAMPLES.md) for a live example and usage instructions.
 
-The examples has been generated from [BaseExamples.php](tests/BaseExamples.php)
+The examples has been generated from [MarkdownExamples.php](tests/MarkdownExamples.php)
 and [ExpectationExamples.php](tests/ExpectationExamples.php) in the tests directory
 using the command
 
-    $ vendor/bin/exemplify --headline=Usage > EXAMPLES.md
+    $ vendor/bin/exemplify --headline='exemplify usage' > EXAMPLES.md
 
 Exemplify looks for a phpunit configuration file, and if found scans all test
 locations for exemplify examples. If you already use a phpunit configuration file
@@ -34,10 +34,21 @@ For more information on how to use the console application
     $ vendor/bin/exemplify --help
 
 
-Phpunit and the use of suffixes
--------------------------------
-Phpunit requires test files to bee suffixed with `Test.php`. If you want to name
-your example files differently change the suffix option in phpunit.xml.
+Phpunit and test progression
+----------------------------
+For technical reasons each class with exemplify examples are treated by phpunit
+as one single testcase. This means that when phpunit reports test progression each
+exemplify class will count as one test, regardless of the number of examples.
+
+Each example however will count as one assertion (given that you actually
+assert something using one of the expectation annotations).
+
+
+Phpunit configuration and the use of suffixes
+---------------------------------------------
+Phpunit requires test files to bee suffixed with `Test.php` for the test runner
+to find them. If you want to name your example files differently change the
+suffix option in `phpunit.xml`.
 
     <phpunit bootstrap="./vendor/autoload.php">
         <testsuites>

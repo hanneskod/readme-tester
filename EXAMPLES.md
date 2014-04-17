@@ -1,4 +1,4 @@
-# Usage
+# exemplify usage
 
 ## Expectation examples
 
@@ -51,7 +51,7 @@ exception in the example.
 A class level docblock can start with a short description, wich will be
 formatted as a headline, and continue with a long description, wich will be
 formatted as normal text. Regular markdown can be used. Here we create a link to
-the [source file for these examples](tests/BaseExamples.php).
+the [source file for these examples](tests/MarkdownExamples.php).
 
 ### Using the before and after annotations
 

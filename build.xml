@@ -82,6 +82,13 @@
             />
     </target>
 
+    <target name="exemplify" depends="test">
+        <exec
+            command="bin/exemplify --headline='${APP_NAME} usage' > EXAMPLES.md"
+            dir="${APP_ROOT}"
+            />
+    </target>
+
     <target name="createBuildDir">
         <mkdir dir="${BUILD_DIR}"/>
         <mkdir dir="${BUILD_DIR}/phpcs"/>
