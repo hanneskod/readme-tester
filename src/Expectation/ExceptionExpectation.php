@@ -9,6 +9,8 @@
 
 namespace hanneskod\exemplify\Expectation;
 
+use hanneskod\exemplify\Exception;
+
 /**
  * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
@@ -17,5 +19,10 @@ class ExceptionExpectation extends BaseExpectation
     public function start()
     {
         $this->testCase->setExpectedException($this->string);
+    }
+
+    public function evaluate($returnValue)
+    {
+        throw new Exception("Expected exception <$this->string> missing in example <$this->exampleName>");
     }
 }

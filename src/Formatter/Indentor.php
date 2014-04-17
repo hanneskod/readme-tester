@@ -46,7 +46,7 @@ class Indentor
 
     public function getIndentation($line)
     {
-        if (preg_match('/^(\s*)/', $line, $matches)) {
+        if (preg_match('/^(\s+)/', $line, $matches)) {
             return strlen($matches[1]);
         }
         return 0;

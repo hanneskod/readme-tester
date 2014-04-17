@@ -9,7 +9,7 @@ namespace hanneskod\exemplify;
  * as normal text. Regular markdown can be used. Here we create a link
  * to the [source file for these examples](tests/BaseExamples.php).
  */
-class BaseExamples extends TestCase
+class MarkdownExamples extends TestCase
 {
     /**
      * Using the before and after annotations

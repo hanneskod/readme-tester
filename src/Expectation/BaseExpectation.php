@@ -29,8 +29,4 @@ abstract class BaseExpectation implements ExpectationInterface
     public function start()
     {
     }
-
-    public function evaluate($returnValue)
-    {
-    }
 }

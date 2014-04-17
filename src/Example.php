@@ -50,6 +50,16 @@ class Example
     }
 
     /**
+     * Get example name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->method->getName();
+    }
+
+    /**
      * Evaluate example method expectation
      *
      * @return void
@@ -77,7 +87,7 @@ class Example
                 return $tag->getContent();
             }
         }
-        throw new Exception("Annotation <$name> does not exist in <{$this->method->getName()}>.");
+        throw new Exception("Annotation <$name> does not exist in <{$this->getName()}>.");
     }
 
     /**
@@ -102,7 +112,7 @@ class Example
             if ($this->hasAnnotation($annotation)) {
                 return new $class(
                     $this->getAnnotation($annotation),
-                    $this->method->getName(),
+                    $this->getName(),
                     $this->testCase
                 );
             }
