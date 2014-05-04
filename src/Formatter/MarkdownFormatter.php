@@ -18,7 +18,7 @@ class MarkdownFormatter implements FormatterInterface
 {
     private $headerLevel, $lineWidth, $codeIndentation;
 
-    public function __construct($topHeaderWeight = 1, $lineWidth = 80, $codeIndentation = '    ')
+    public function __construct($topHeaderWeight = 1, $lineWidth = 80, $codeIndentation = '')
     {
         $this->headerLevel = $topHeaderWeight;
         $this->lineWidth = $lineWidth;
@@ -51,6 +51,12 @@ class MarkdownFormatter implements FormatterInterface
 
     public function formatCodeBlock(array $lines)
     {
-        return (string)new Indentor($lines, $this->codeIndentation);
+        $block = (string)new Indentor($lines, $this->codeIndentation);
+
+        if (empty($block)) {
+            return "";
+        }
+
+        return "```php\n$block```\n\n";
     }
 }

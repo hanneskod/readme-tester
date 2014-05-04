@@ -14,6 +14,8 @@ namespace hanneskod\exemplify\Formatter;
  */
 class Indentor
 {
+    const SKIP_LINE = 1;
+
     private $str = '';
 
     /**
@@ -29,6 +31,11 @@ class Indentor
             // Remove tabs
             $line = str_replace(array("\t"), $indent, $line);
 
+            if (preg_match('/^\s*$/', $line)) {
+                $line = self::SKIP_LINE;
+                continue;
+            }
+
             // Calc the current indentation in spaces
             $lineIndentation = $this->getIndentation($line);
             if ($lineIndentation < $currentIndentation) {
@@ -40,7 +47,11 @@ class Indentor
 
         // Pass two: fix indentation
         foreach ($lines as &$line) {
-            $this->str .= $indent . preg_replace("/^$currentIndentation/", '', $line);
+            if ($line == self::SKIP_LINE) {
+                $this->str .= "\n";
+            } else {
+                $this->str .= $indent . preg_replace("/^$currentIndentation/", '', $line);
+            }
         }
     }
 
@@ -54,6 +65,6 @@ class Indentor
 
     public function __tostring()
     {
-        return $this->str . "\n";
+        return $this->str;
     }
 }

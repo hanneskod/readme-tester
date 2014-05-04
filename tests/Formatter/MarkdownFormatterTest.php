@@ -30,14 +30,19 @@ class MarkdownFormatterTest extends \PHPUnit_Framework_TestCase
 
         $lines = array(
             "    one\n",
+            "",
+            "    ",
             "    two\n"
         );
-        $this->assertEquals("**one\n**two\n\n", $formatter->formatCodeBlock($lines));
+        $this->assertEquals("```php\n**one\n\n\n**two\n```\n\n", $formatter->formatCodeBlock($lines));
 
         $lines = array(
             "    one\n",
             "two\n",
         );
-        $this->assertEquals("**    one\n**two\n\n", $formatter->formatCodeBlock($lines));
+        $this->assertEquals("```php\n**    one\n**two\n```\n\n", $formatter->formatCodeBlock($lines));
+
+        $lines = array();
+        $this->assertEquals("", $formatter->formatCodeBlock($lines));
     }
 }

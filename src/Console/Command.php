@@ -59,7 +59,7 @@ class Command extends \Symfony\Component\Console\Command\Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'String used for indenting code blocks',
-                '    '
+                ''
             )
             ->addOption(
                 'config',
