@@ -1,73 +1,56 @@
-# exemplify [![Build Status](https://travis-ci.org/hanneskod/exemplify.svg)](https://travis-ci.org/hanneskod/exemplify) [![Code Coverage](https://scrutinizer-ci.com/g/hanneskod/exemplify/badges/coverage.png?s=d05285c0d262cea38f82c7ae95cd97af8687a83b)](https://scrutinizer-ci.com/g/hanneskod/exemplify/) [![Dependency Status](https://gemnasium.com/hanneskod/exemplify.svg)](https://gemnasium.com/hanneskod/exemplify)
+Exemplify
+=========
 
+[![Packagist Version](https://img.shields.io/packagist/v/hanneskod/exemplify.svg?style=flat-square)](https://packagist.org/packages/hanneskod/exemplify)
+[![Build Status](https://img.shields.io/travis/hanneskod/exemplify/master.svg?style=flat-square)](https://travis-ci.org/hanneskod/exemplify)
+[![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/exemplify.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/exemplify)
+[![Dependency Status](https://img.shields.io/gemnasium/hanneskod/exemplify.svg?style=flat-square)](https://gemnasium.com/hanneskod/exemplify)
 
-Generate markdown formatted documentation from phpunit test suites.
+Validate code examples in readme files
 
-No more erroneous examples in README.md. Let phpunit tell you when your examples
-are out of date, and let exemplify generate markdown when examples are fixed.
+Why?
+----
+No more erroneous examples in `README.md`, let phpunit tell you when your examples
+are out of date!
 
-
-Installation using [composer](http://getcomposer.org/)
-------------------------------------------------------
-    "require-dev": {
-        "hanneskod/exemplify": "dev-master@dev",
-    }
-
+Installation
+------------
+```shell
+composer require --dev hanneskod/exemplify
+```
 
 Usage
 -----
-Se [EXAMPLES.md](EXAMPLES.md) for a live example and usage instructions.
+<!-- @expectOutput output -->
+<!-- @ignore -->
+```php
+echo "foobar";
+```
+<!-- @expectOutput output -->
+```php
+echo "foobar";
+```
 
-The examples has been generated from [MarkdownExamples.php](tests/MarkdownExamples.php)
-and [ExpectationExamples.php](tests/ExpectationExamples.php) in the tests directory
-using the command
+### Phpunit integration
 
-    $ vendor/bin/exemplify --headline='exemplify usage' > EXAMPLES.md
+If you are using PHPUnit's XML configuration approach, you can include the following
+to integrate testing `README.md` with phpunit.
 
-Exemplify looks for a phpunit configuration file, and if found scans all test
-locations for exemplify examples. If you already use a phpunit configuration file
-no further configuration is neccesary. Just add exemplify examples to your regular
-test directory.
+```xml
+<listeners>
+    <listener class="\hanneskod\readmetester\Phpunit\TestListener">
+        <arguments>
+            <string>README.md</string>
+        </arguments>
+    </listener>
+</listeners>
+```
 
-For more information on how to use the console application
+Make sure Composer's autoloader is present in the bootstrap file or you will need
+to also define a "file" attribute pointing to the file of the `TestListener` class.
 
-    $ vendor/bin/exemplify --help
+Credits
+-------
+Exemplify is covered under the [WTFPL](http://www.wtfpl.net/)
 
-
-Phpunit and test progression
-----------------------------
-For technical reasons each class with exemplify examples are treated by phpunit
-as one single testcase. This means that when phpunit reports test progression each
-exemplify class will count as one test, regardless of the number of examples.
-
-Each example however will count as one assertion (given that you actually
-assert something using one of the expectation annotations).
-
-
-Phpunit configuration and the use of suffixes
----------------------------------------------
-Phpunit requires test files to bee suffixed with `Test.php` for the test runner
-to find them. If you want to name your example files differently change the
-suffix option in `phpunit.xml`.
-
-    <phpunit bootstrap="./vendor/autoload.php">
-        <testsuites>
-            <testsuite>
-                <directory suffix=".php">./tests</directory>
-            </testsuite>
-        </testsuites>
-        <filter>
-            <whitelist>
-                <directory suffix=".php">./src</directory>
-            </whitelist>
-        </filter>
-    </phpunit>
-
-
-Run tests using [phpunit](http://phpunit.de/)
----------------------------------------------
-To run the unit tests you must first install dependencies using composer.
-
-    $ curl -sS https://getcomposer.org/installer | php
-    $ php composer.phar install
-    $ phpunit
+@author Hannes Forsgård (hannes.forsgard@fripost.org)

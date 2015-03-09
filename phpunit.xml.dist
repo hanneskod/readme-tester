@@ -1,7 +1,7 @@
 <phpunit bootstrap="./vendor/autoload.php">
     <testsuites>
         <testsuite>
-            <directory suffix=".php">./tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -9,4 +9,11 @@
             <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
+    <listeners>
+        <listener class="\hanneskod\readmetester\Phpunit\TestListener">
+            <arguments>
+                <string>README.md</string>
+            </arguments>
+        </listener>
+    </listeners>
 </phpunit>
