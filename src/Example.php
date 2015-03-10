@@ -65,7 +65,8 @@ class Example
     public function execute()
     {
         try {
-            $result = (new CodeBlock($this->code))->execute();
+            $codeBlock = new CodeBlock($this->code);
+            $result = $codeBlock->execute();
             foreach ($this->expectations as $expectation) {
                 $expectation->validate($result);
             }

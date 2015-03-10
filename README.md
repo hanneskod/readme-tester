@@ -10,8 +10,13 @@ Validate code examples in readme files
 
 Why?
 ----
-No more erroneous examples in `README.md`, let phpunit tell you when your examples
-are out of date!
+Did you update your library, but forgot to update code examples in `README.md`? Are
+your users complaining on syntax errors in your examples? Do you find it too cumbersome
+to manually test all examples? Then readme-tester is for you!
+
+Readme-tester lets you automate the process of validating code examples in readme
+files. Integrate with your phpunit test suite and you will never have to worry about
+failing examples again.
 
 Installation
 ------------
@@ -21,15 +26,61 @@ composer require --dev hanneskod/readme-tester
 
 Usage
 -----
-<!-- @expectOutput output -->
-<!-- @ignore -->
+When readme-testar validates a readme file all php colorized code blocks are executed.
+In markdown this means using a fenced block with the `php` language identifier: `\`\`\`php`.
+
 ```php
-echo "foobar";
+// This code is validated
 ```
-<!-- @expectOutput output -->
+
+To ignore an example when testing annotate it with an `@ignore` tag inside an html
+comment just before the code block.
+
+`<!-- @ignore -->`
 <!-- @ignore -->
 ```php
-echo "foobar";
+// This code is skipped, the syntax error is ignored.
+echo foobar";
+```
+
+Add assertions to code blocks using one of the expectation annotations. Multiple
+expectations can be specified for each example.
+
+
+`<!-- @expectOutput /regular expression/ -->`
+<!-- @expectOutput /regular expression/ -->
+```php
+echo "This output is matched using a regular expression";
+```
+
+`<!-- @expectException Exception -->`
+<!-- @expectException Exception -->
+```php
+throw new Exception();
+```
+
+`<!-- @expectReturnType integer -->`
+<!-- @expectReturnType integer -->
+```php
+return 1;
+```
+
+`<!-- @expectReturnType integer -->`
+<!-- @expectReturnType integer -->
+```php
+return 1;
+```
+
+`<!-- @expectReturn /foo/ -->`
+<!-- @expectReturn /foo/ -->
+```php
+return 'foo';
+```
+
+`<!-- @expectNothing -->`
+<!-- @expectNothing -->
+```php
+// nothing is expected here..
 ```
 
 ### Phpunit integration
@@ -52,6 +103,12 @@ class ReadmeTest extends \hanneskod\readmetester\ReadmeTestCase
 ```shell
 vendor/bin/readme-tester test README.md
 ```
+
+### Supported formats
+
+Currently only markdown is supported. Open an issue or submit a pull request to
+add your format of choice. See the [markdown](/src/Format/Markdown.php) implementation
+to get started.
 
 Credits
 -------
