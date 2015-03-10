@@ -1,73 +1,115 @@
-# exemplify [![Build Status](https://travis-ci.org/hanneskod/exemplify.svg)](https://travis-ci.org/hanneskod/exemplify) [![Code Coverage](https://scrutinizer-ci.com/g/hanneskod/exemplify/badges/coverage.png?s=d05285c0d262cea38f82c7ae95cd97af8687a83b)](https://scrutinizer-ci.com/g/hanneskod/exemplify/) [![Dependency Status](https://gemnasium.com/hanneskod/exemplify.svg)](https://gemnasium.com/hanneskod/exemplify)
+Readme-Tester
+=============
 
+[![Packagist Version](https://img.shields.io/packagist/v/hanneskod/readme-tester.svg?style=flat-square)](https://packagist.org/packages/hanneskod/readme-tester)
+[![Build Status](https://img.shields.io/travis/hanneskod/readme-tester/master.svg?style=flat-square)](https://travis-ci.org/hanneskod/readme-tester)
+[![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/readme-tester.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/readme-tester)
+[![Dependency Status](https://img.shields.io/gemnasium/hanneskod/readme-tester.svg?style=flat-square)](https://gemnasium.com/hanneskod/readme-tester)
 
-Generate markdown formatted documentation from phpunit test suites.
+Validate code examples in readme files.
 
-No more erroneous examples in README.md. Let phpunit tell you when your examples
-are out of date, and let exemplify generate markdown when examples are fixed.
+Why?
+----
+Did you update your library, but forgot to update code examples in README? Are
+your users complaining on syntax errors in your examples? Do you find it too cumbersome
+to manually test all examples? Then readme-tester is for you!
 
+Readme-tester lets you automate the process of validating code examples in readme
+files. Integrate with your phpunit test suite and you will never have to worry about
+failing examples again.
 
-Installation using [composer](http://getcomposer.org/)
-------------------------------------------------------
-    "require-dev": {
-        "hanneskod/exemplify": "dev-master@dev",
-    }
-
+Installation
+------------
+```shell
+composer require --dev hanneskod/readme-tester
+```
 
 Usage
 -----
-Se [EXAMPLES.md](EXAMPLES.md) for a live example and usage instructions.
+When readme-testar validates a readme file all php colorized code blocks are executed.
+In markdown this means using a fenced block with the `php` language identifier. View
+the raw contents of [this file](/README.md) for an example.
 
-The examples has been generated from [MarkdownExamples.php](tests/MarkdownExamples.php)
-and [ExpectationExamples.php](tests/ExpectationExamples.php) in the tests directory
-using the command
+```php
+// This code is validated
+```
 
-    $ vendor/bin/exemplify --headline='exemplify usage' > EXAMPLES.md
+### Ignoring examples
 
-Exemplify looks for a phpunit configuration file, and if found scans all test
-locations for exemplify examples. If you already use a phpunit configuration file
-no further configuration is neccesary. Just add exemplify examples to your regular
-test directory.
+To ignore an example when testing annotate it with an `@ignore` tag inside an html
+comment just before the code block.
 
-For more information on how to use the console application
+<!-- @ignore -->
+```php
+// This code is skipped, the syntax error is ignored.
+echo foobar";
+```
 
-    $ vendor/bin/exemplify --help
+### Adding expectations
 
+Add assertions to code blocks using one of the expectation annotations. Multiple
+expectations can be specified for each example.
 
-Phpunit and test progression
-----------------------------
-For technical reasons each class with exemplify examples are treated by phpunit
-as one single testcase. This means that when phpunit reports test progression each
-exemplify class will count as one test, regardless of the number of examples.
+<!-- @expectOutput /regular expression/ -->
+```php
+// Example is preceded by <!-- @expectOutput /regular expression/ -->
+echo "This output is matched using a regular expression";
+```
 
-Each example however will count as one assertion (given that you actually
-assert something using one of the expectation annotations).
+<!-- @expectException Exception -->
+```php
+// Example is preceded by <!-- @expectException Exception -->
+throw new Exception();
+```
 
+<!-- @expectReturnType integer -->
+```php
+// Example is preceded by <!-- @expectReturnType integer -->
+// Type descriptor used by gettype() or a class name can be used
+return 1;
+```
 
-Phpunit configuration and the use of suffixes
----------------------------------------------
-Phpunit requires test files to bee suffixed with `Test.php` for the test runner
-to find them. If you want to name your example files differently change the
-suffix option in `phpunit.xml`.
+<!-- @expectReturn /foo/ -->
+```php
+// Example is preceded by <!-- @expectReturn /foo/ -->
+return 'foo';
+```
 
-    <phpunit bootstrap="./vendor/autoload.php">
-        <testsuites>
-            <testsuite>
-                <directory suffix=".php">./tests</directory>
-            </testsuite>
-        </testsuites>
-        <filter>
-            <whitelist>
-                <directory suffix=".php">./src</directory>
-            </whitelist>
-        </filter>
-    </phpunit>
+<!-- @expectNothing -->
+```php
+// Example is preceded by <!-- @expectNothing -->
+// nothing is expected here..
+```
 
+Phpunit integration
+-------------------
+Subclass `ReadmeTestCase` to add example validation to your phpunit test suite.
 
-Run tests using [phpunit](http://phpunit.de/)
----------------------------------------------
-To run the unit tests you must first install dependencies using composer.
+<!-- @ignore -->
+```php
+class ReadmeTest extends \hanneskod\readmetester\ReadmeTestCase
+{
+    public function testReadmeExamples()
+    {
+        $this->assertReadme('README.md');
+    }
+}
+```
 
-    $ curl -sS https://getcomposer.org/installer | php
-    $ php composer.phar install
-    $ phpunit
+Using the command line tool
+---------------------------
+```shell
+vendor/bin/readme-tester test README.md
+```
+
+Supported formats
+-----------------
+Currently only markdown is supported. Open an issue or submit a pull request to
+add your format of choice. See the [markdown](/src/Format/Markdown.php) implementation
+to get started.
+
+Credits
+-------
+Readme-Tester is covered under the [WTFPL](http://www.wtfpl.net/)
+
+@author Hannes Forsgård (hannes.forsgard@fripost.org)

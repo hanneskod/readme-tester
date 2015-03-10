@@ -1,14 +1,31 @@
 <?php
-namespace hanneskod\exemplify\Expectation;
+
+namespace hanneskod\readmetester\Expectation;
+
+use hanneskod\readmetester\Result;
+use Exception;
 
 class ExceptionExpectationTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException hanneskod\exemplify\Exception
-     */
-    public function testEvaluate()
+    public function testNoException()
     {
-        $expectation = new ExceptionExpectation('foo', 'bar', $this->getMock('hanneskod\exemplify\TestCase'));
-        $expectation->evaluate('');
+        $this->setExpectedException('UnexpectedValueException');
+        $expectation = new ExceptionExpectation('foo');
+        $expectation->validate(new Result('', '', null));
+    }
+
+    public function testWrongException()
+    {
+        $this->setExpectedException('UnexpectedValueException');
+        $expectation = new ExceptionExpectation('foo');
+        $expectation->validate(new Result('', '', new Exception));
+    }
+
+    public function testValidException()
+    {
+        $expectation = new ExceptionExpectation('Exception');
+        $this->assertNull(
+            $expectation->validate(new Result('', '', new Exception))
+        );
     }
 }

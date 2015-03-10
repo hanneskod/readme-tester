@@ -1,28 +1,50 @@
 <?php
-/**
- * This program is free software. It comes without any warranty, to
- * the extent permitted by applicable law. You can redistribute it
- * and/or modify it under the terms of the Do What The Fuck You Want
- * To Public License, Version 2, as published by Sam Hocevar. See
- * http://www.wtfpl.net/ for more details.
- */
 
-namespace hanneskod\exemplify\Expectation;
+namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\exemplify\Exception;
+use hanneskod\readmetester\Expectation;
+use hanneskod\readmetester\Result;
+use UnexpectedValueException;
 
 /**
- * @author Hannes Forsgård <hannes.forsgard@fripost.org>
+ * Validate that the correct exception is thrown
  */
-class ExceptionExpectation extends BaseExpectation
+class ExceptionExpectation implements Expectation
 {
-    public function start()
+    /**
+     * @var string Name of expected exception class
+     */
+    private $exceptionClass;
+
+    /**
+     * Load name of expected exception class
+     *
+     * @param string $exceptionClass
+     */
+    public function __construct($exceptionClass)
     {
-        $this->testCase->setExpectedException($this->string);
+        $this->exceptionClass = $exceptionClass;
     }
 
-    public function evaluate($returnValue)
+    /**
+     * Validate that the correct exception is thrown
+     *
+     * @param  Result $result
+     * @return null
+     * @throws UnexpectedValueException If exception is not thrown
+     */
+    public function validate(Result $result)
     {
-        throw new Exception("Expected exception <$this->string> missing in example <$this->exampleName>");
+        $exception = $result->getException();
+
+        if (is_null($exception)) {
+            throw new UnexpectedValueException("Failed asserting that exception {$this->exceptionClass} is thrown");
+        }
+
+        if (!$exception instanceof $this->exceptionClass) {
+            throw new UnexpectedValueException(
+                "Failed asserting that exception {$this->exceptionClass} is thrown, found: " . get_class($exception)
+            );
+        }
     }
 }
