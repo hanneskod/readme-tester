@@ -4,10 +4,17 @@ namespace hanneskod\readmetester;
 
 class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    private $expectationFactory;
+
+    public function setup()
+    {
+        $this->expectationFactory = new ExpectationFactory;
+    }
+
     public function testCreateNothing()
     {
         $this->assertNull(
-            (new ExpectationFactory)->createExpectation('foo', 'bar')
+            $this->expectationFactory->createExpectation('foo', 'bar')
         );
     }
 
@@ -15,7 +22,7 @@ class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'hanneskod\readmetester\Expectation\ExceptionExpectation',
-            (new ExpectationFactory)->createExpectation('expectException', 'data')
+            $this->expectationFactory->createExpectation('expectException', 'data')
         );
     }
 
@@ -23,7 +30,7 @@ class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'hanneskod\readmetester\Expectation\OutputExpectation',
-            (new ExpectationFactory)->createExpectation('expectOutput', 'data')
+            $this->expectationFactory->createExpectation('expectOutput', 'data')
         );
     }
 
@@ -31,7 +38,7 @@ class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'hanneskod\readmetester\Expectation\ReturnTypeExpectation',
-            (new ExpectationFactory)->createExpectation('expectReturnType', 'data')
+            $this->expectationFactory->createExpectation('expectReturnType', 'data')
         );
     }
 
@@ -39,7 +46,7 @@ class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'hanneskod\readmetester\Expectation\ReturnExpectation',
-            (new ExpectationFactory)->createExpectation('expectReturn', 'data')
+            $this->expectationFactory->createExpectation('expectReturn', 'data')
         );
     }
 
@@ -47,7 +54,7 @@ class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'hanneskod\readmetester\Expectation\EmptyExpectation',
-            (new ExpectationFactory)->createExpectation('expectNothing', 'data')
+            $this->expectationFactory->createExpectation('expectNothing', 'data')
         );
     }
 }

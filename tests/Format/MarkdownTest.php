@@ -4,23 +4,30 @@ namespace hanneskod\readmetester\Format;
 
 class MarkdownTest extends \PHPUnit_Framework_TestCase
 {
+    private $markdown;
+
+    public function setUp()
+    {
+        $this->markdown = new Markdown;
+    }
+
     public function testIsExampleStart()
     {
         $this->assertTrue(
-            (new Markdown)->isExampleStart('```php ')
+            $this->markdown->isExampleStart('```php ')
         );
         $this->assertFalse(
-            (new Markdown)->isExampleStart('```bash')
+            $this->markdown->isExampleStart('```bash')
         );
     }
 
     public function testIsExampleEnd()
     {
         $this->assertTrue(
-            (new Markdown)->isExampleEnd('``` ')
+            $this->markdown->isExampleEnd('``` ')
         );
         $this->assertFalse(
-            (new Markdown)->isExampleEnd('')
+            $this->markdown->isExampleEnd('')
         );
     }
 }

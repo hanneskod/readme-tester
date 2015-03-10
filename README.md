@@ -1,10 +1,10 @@
-Exemplify
-=========
+Readme-Tester
+=============
 
-[![Packagist Version](https://img.shields.io/packagist/v/hanneskod/exemplify.svg?style=flat-square)](https://packagist.org/packages/hanneskod/exemplify)
-[![Build Status](https://img.shields.io/travis/hanneskod/exemplify/master.svg?style=flat-square)](https://travis-ci.org/hanneskod/exemplify)
-[![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/exemplify.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/exemplify)
-[![Dependency Status](https://img.shields.io/gemnasium/hanneskod/exemplify.svg?style=flat-square)](https://gemnasium.com/hanneskod/exemplify)
+[![Packagist Version](https://img.shields.io/packagist/v/hanneskod/readme-tester.svg?style=flat-square)](https://packagist.org/packages/hanneskod/readme-tester)
+[![Build Status](https://img.shields.io/travis/hanneskod/readme-tester/master.svg?style=flat-square)](https://travis-ci.org/hanneskod/readme-tester)
+[![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/readme-tester.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/readme-tester)
+[![Dependency Status](https://img.shields.io/gemnasium/hanneskod/readme-tester.svg?style=flat-square)](https://gemnasium.com/hanneskod/readme-tester)
 
 Validate code examples in readme files
 
@@ -16,7 +16,7 @@ are out of date!
 Installation
 ------------
 ```shell
-composer require --dev hanneskod/exemplify
+composer require --dev hanneskod/readme-tester
 ```
 
 Usage
@@ -27,30 +27,34 @@ Usage
 echo "foobar";
 ```
 <!-- @expectOutput output -->
+<!-- @ignore -->
 ```php
 echo "foobar";
 ```
 
 ### Phpunit integration
 
-If you are using PHPUnit's XML configuration approach, you can include the following
-to integrate testing `README.md` with phpunit.
+Subclass `ReadmeTestCase` to add example validation to your phpunit test suite.
 
-```xml
-<listeners>
-    <listener class="\hanneskod\readmetester\Phpunit\TestListener">
-        <arguments>
-            <string>README.md</string>
-        </arguments>
-    </listener>
-</listeners>
+<!-- @ignore -->
+```php
+class ReadmeTest extends \hanneskod\readmetester\ReadmeTestCase
+{
+    public function testReadmeExamples()
+    {
+        $this->assertReadme('README.md');
+    }
+}
 ```
 
-Make sure Composer's autoloader is present in the bootstrap file or you will need
-to also define a "file" attribute pointing to the file of the `TestListener` class.
+### Using the command line tool
+
+```shell
+vendor/bin/readme-tester test README.md
+```
 
 Credits
 -------
-Exemplify is covered under the [WTFPL](http://www.wtfpl.net/)
+Readme-Tester is covered under the [WTFPL](http://www.wtfpl.net/)
 
 @author Hannes Forsgård (hannes.forsgard@fripost.org)

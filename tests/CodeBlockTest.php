@@ -6,33 +6,37 @@ class CodeBlockTest extends \PHPUnit_Framework_TestCase
 {
     public function testOutput()
     {
+        $codeBlock = new CodeBlock('echo "foo"; return "bar";');
         $this->assertSame(
             'foo',
-            (new CodeBlock('echo "foo"; return "bar";'))->execute()->getOutput()
+            $codeBlock->execute()->getOutput()
         );
     }
 
     public function testReturnValue()
     {
+        $codeBlock = new CodeBlock('echo "foo"; return 1234;');
         $this->assertSame(
             1234,
-            (new CodeBlock('echo "foo"; return 1234;'))->execute()->getReturnValue()
+            $codeBlock->execute()->getReturnValue()
         );
     }
 
     public function testException()
     {
+        $codeBlock = new CodeBlock('throw new Exception;');
         $this->assertInstanceOf(
             'Exception',
-            (new CodeBlock('throw new Exception;'))->execute()->getException()
+            $codeBlock->execute()->getException()
         );
     }
 
     public function testVoid()
     {
+        $codeBlock = new CodeBlock('$a = 1 + 2;');
         $this->assertInstanceOf(
             'hanneskod\readmetester\Result',
-            (new CodeBlock('$a = 1 + 2;'))->execute()
+            $codeBlock->execute()
         );
     }
 }

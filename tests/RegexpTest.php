@@ -16,25 +16,28 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider regexpProvider
      */
-    public function testMatch($regexp, $subject)
+    public function testMatch($regexpStr, $subject)
     {
+        $regexp = new Regexp($regexpStr);
         $this->assertTrue(
-            (new Regexp($regexp))->isMatch($subject)
+            $regexp->isMatch($subject)
         );
     }
 
     public function testNoMatch()
     {
+        $regexp = new Regexp('foo');
         $this->assertFalse(
-            (new Regexp('foo'))->isMatch('bar')
+            $regexp->isMatch('bar')
         );
     }
 
     public function testToString()
     {
+        $regexp = new Regexp('foo');
         $this->assertSame(
             '/^foo$/',
-            (string)new Regexp('foo')
+            (string)$regexp
         );
     }
 }

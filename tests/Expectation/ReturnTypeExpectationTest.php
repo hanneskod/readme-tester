@@ -9,13 +9,15 @@ class ReturnTypeExpectationTest extends \PHPUnit_Framework_TestCase
     public function testGettypeNoMatch()
     {
         $this->setExpectedException('UnexpectedValueException');
-        (new ReturnTypeExpectation('integer'))->validate(new Result('string', ''));
+        $expectation = new ReturnTypeExpectation('integer');
+        $expectation->validate(new Result('string', ''));
     }
 
     public function testClassNoMatch()
     {
         $this->setExpectedException('UnexpectedValueException');
-        (new ReturnTypeExpectation('Exception'))->validate(new Result('string', ''));
+        $expectation = new ReturnTypeExpectation('integer');
+        $expectation->validate(new Result('string', ''));
     }
 
     public function typeProvider()
@@ -36,8 +38,9 @@ class ReturnTypeExpectationTest extends \PHPUnit_Framework_TestCase
      */
     public function testInteger($expected, $value)
     {
+        $expectation = new ReturnTypeExpectation($expected);
         $this->assertNull(
-            (new ReturnTypeExpectation($expected))->validate(new Result($value, ''))
+            $expectation->validate(new Result($value, ''))
         );
     }
 }

@@ -10,13 +10,15 @@ class OutputExpectationTest extends \PHPUnit_Framework_TestCase
     public function testNoMatch()
     {
         $this->setExpectedException('UnexpectedValueException');
-        (new OutputExpectation(new Regexp('/foo/')))->validate(new Result('', 'bar'));
+        $expectation = new OutputExpectation(new Regexp('/foo/'));
+        $expectation->validate(new Result('', 'bar'));
     }
 
     public function testMatch()
     {
+        $expectation = new OutputExpectation(new Regexp('/foo/'));
         $this->assertNull(
-            (new OutputExpectation(new Regexp('/foo/')))->validate(new Result('', 'foo'))
+            $expectation->validate(new Result('', 'foo'))
         );
     }
 }

@@ -8,8 +8,9 @@ class EmptyExpectationTest extends \PHPUnit_Framework_TestCase
 {
     public function testMatch()
     {
+        $expectation = new EmptyExpectation;
         $this->assertNull(
-            (new EmptyExpectation)->validate(new Result('', ''))
+            $expectation->validate(new Result('', ''))
         );
     }
 }

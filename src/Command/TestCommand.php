@@ -29,11 +29,16 @@ class TestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $tester = new ReadmeTester;
+        $exitStatus = 0;
+
         foreach ($input->getArgument('filename') as $filename) {
             $output->writeln("Testing examples in <comment>$filename</comment>");
             foreach ($tester->test(new FileInfo($filename)) as $line) {
                 $output->writeln(" <error>$line</error>");
+                $exitStatus = 1;
             }
         }
+
+        return $exitStatus;
     }
 }
