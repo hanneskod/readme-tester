@@ -6,11 +6,11 @@ Readme-Tester
 [![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/readme-tester.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/readme-tester)
 [![Dependency Status](https://img.shields.io/gemnasium/hanneskod/readme-tester.svg?style=flat-square)](https://gemnasium.com/hanneskod/readme-tester)
 
-Validate code examples in readme files
+Validate code examples in readme files.
 
 Why?
 ----
-Did you update your library, but forgot to update code examples in `README.md`? Are
+Did you update your library, but forgot to update code examples in README? Are
 your users complaining on syntax errors in your examples? Do you find it too cumbersome
 to manually test all examples? Then readme-tester is for you!
 
@@ -27,64 +27,62 @@ composer require --dev hanneskod/readme-tester
 Usage
 -----
 When readme-testar validates a readme file all php colorized code blocks are executed.
-In markdown this means using a fenced block with the `php` language identifier: `\`\`\`php`.
+In markdown this means using a fenced block with the `php` language identifier. View
+the raw contents of [this file](/README.md) for an example.
 
 ```php
 // This code is validated
 ```
 
+### Ignoring examples
+
 To ignore an example when testing annotate it with an `@ignore` tag inside an html
 comment just before the code block.
 
-`<!-- @ignore -->`
 <!-- @ignore -->
 ```php
 // This code is skipped, the syntax error is ignored.
 echo foobar";
 ```
 
+### Adding expectations
+
 Add assertions to code blocks using one of the expectation annotations. Multiple
 expectations can be specified for each example.
 
-
-`<!-- @expectOutput /regular expression/ -->`
 <!-- @expectOutput /regular expression/ -->
 ```php
+// Example is preceded by <!-- @expectOutput /regular expression/ -->
 echo "This output is matched using a regular expression";
 ```
 
-`<!-- @expectException Exception -->`
 <!-- @expectException Exception -->
 ```php
+// Example is preceded by <!-- @expectException Exception -->
 throw new Exception();
 ```
 
-`<!-- @expectReturnType integer -->`
 <!-- @expectReturnType integer -->
 ```php
+// Example is preceded by <!-- @expectReturnType integer -->
+// Type descriptor used by gettype() or a class name can be used
 return 1;
 ```
 
-`<!-- @expectReturnType integer -->`
-<!-- @expectReturnType integer -->
-```php
-return 1;
-```
-
-`<!-- @expectReturn /foo/ -->`
 <!-- @expectReturn /foo/ -->
 ```php
+// Example is preceded by <!-- @expectReturn /foo/ -->
 return 'foo';
 ```
 
-`<!-- @expectNothing -->`
 <!-- @expectNothing -->
 ```php
+// Example is preceded by <!-- @expectNothing -->
 // nothing is expected here..
 ```
 
-### Phpunit integration
-
+Phpunit integration
+-------------------
 Subclass `ReadmeTestCase` to add example validation to your phpunit test suite.
 
 <!-- @ignore -->
@@ -98,14 +96,14 @@ class ReadmeTest extends \hanneskod\readmetester\ReadmeTestCase
 }
 ```
 
-### Using the command line tool
-
+Using the command line tool
+---------------------------
 ```shell
 vendor/bin/readme-tester test README.md
 ```
 
-### Supported formats
-
+Supported formats
+-----------------
 Currently only markdown is supported. Open an issue or submit a pull request to
 add your format of choice. See the [markdown](/src/Format/Markdown.php) implementation
 to get started.
