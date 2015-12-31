@@ -2,13 +2,12 @@
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Expectation;
 use hanneskod\readmetester\Result;
 
 /**
  * Expect nothing
  */
-class EmptyExpectation implements Expectation
+class NullExpectation implements ExpectationInterface
 {
     /**
      * Expect nothing

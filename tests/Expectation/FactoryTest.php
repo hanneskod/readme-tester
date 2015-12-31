@@ -1,14 +1,14 @@
 <?php
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Expectation;
 
-class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \PHPUnit_Framework_TestCase
 {
     private $expectationFactory;
 
     public function setup()
     {
-        $this->expectationFactory = new ExpectationFactory;
+        $this->expectationFactory = new Factory;
     }
 
     public function testCreateNothing()
@@ -53,7 +53,7 @@ class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateEmptyExpectation()
     {
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\EmptyExpectation',
+            'hanneskod\readmetester\Expectation\NullExpectation',
             $this->expectationFactory->createExpectation('expectNothing', 'data')
         );
     }

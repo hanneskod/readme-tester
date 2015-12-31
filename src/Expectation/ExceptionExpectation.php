@@ -2,14 +2,13 @@
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Expectation;
 use hanneskod\readmetester\Result;
 use UnexpectedValueException;
 
 /**
  * Validate that the correct exception is thrown
  */
-class ExceptionExpectation implements Expectation
+class ExceptionExpectation implements ExpectationInterface
 {
     /**
      * @var string Name of expected exception class

@@ -2,14 +2,13 @@
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Expectation;
 use hanneskod\readmetester\Result;
 use UnexpectedValueException;
 
 /**
  * Validate the type of the raturn value
  */
-class ReturnTypeExpectation implements Expectation
+class ReturnTypeExpectation implements ExpectationInterface
 {
     /**
      * @var callable Validation strategy

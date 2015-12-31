@@ -1,22 +1,21 @@
 <?php
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Format;
 
-use hanneskod\readmetester\Format\Markdown;
 use RuntimeException;
 
 /**
  * Create Readme file format based on extension
  */
-class FormatFactory
+class Factory
 {
     /**
-     * Create Readme file format based on extension
+     * Guess file format based on extension
      *
      * @see https://github.com/github/markup
      *
      * @param  \SplFileObject $file
-     * @return Format
+     * @return FormatInterface
      * @throws RuntimeException If file extension is not supported
      */
     public function createFormat(\SplFileObject $file)

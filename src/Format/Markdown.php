@@ -2,12 +2,10 @@
 
 namespace hanneskod\readmetester\Format;
 
-use hanneskod\readmetester\Format;
-
 /**
  * Identify markdown formatted php code blocks
  */
-class Markdown implements Format
+class Markdown implements FormatInterface
 {
     public function isExampleStart($line)
     {

@@ -20,7 +20,7 @@ class Example
     private $code = '';
 
     /**
-     * @var Expectation[] List of expectations
+     * @var Expectation\ExpectationInterface[] List of expectations
      */
     private $expectations = array();
 
@@ -42,16 +42,16 @@ class Example
      */
     public function addLine($line)
     {
-        $this->code .= $line . PHP_EOL;
+        $this->code .= $line;
     }
 
     /**
      * Add expectation to example
      *
-     * @param  Expectation $expectation
+     * @param  Expectation\ExpectationInterface $expectation
      * @return null
      */
-    public function addExpectation(Expectation $expectation)
+    public function addExpectation(Expectation\ExpectationInterface $expectation)
     {
         $this->expectations[] = $expectation;
     }

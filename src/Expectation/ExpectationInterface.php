@@ -1,11 +1,13 @@
 <?php
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Expectation;
+
+use hanneskod\readmetester\Result;
 
 /**
  * Validate the result of an executed code block
  */
-interface Expectation
+interface ExpectationInterface
 {
     /**
      * Validate result object

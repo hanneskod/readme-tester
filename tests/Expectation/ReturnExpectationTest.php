@@ -3,7 +3,6 @@
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
-use hanneskod\readmetester\Regexp;
 
 class ReturnExpectationTest extends \PHPUnit_Framework_TestCase
 {

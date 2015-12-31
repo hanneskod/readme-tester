@@ -13,25 +13,25 @@ class ExampleFactory
     const ANNOTATION_REGEXP = '/^<!-{2,3}\s+@([a-z]+)(.*)-->\s*/i';
 
     /**
-     * @var FormatFactory Helper to identify file format
+     * @var Format\Factory Helper to identify file format
      */
     private $formatFactory;
 
     /**
-     * @var ExpectationFactory Helper to create expectations
+     * @var Expectation\Factory Helper to create expectations
      */
     private $expectationFactory;
 
     /**
      * Inject helpers
      *
-     * @param FormatFactory|null $formatFactory
-     * @param ExpectationFactory|null $expectationFactory
+     * @param Format\Factory $formatFactory
+     * @param Expectation\Factory $expectationFactory
      */
-    public function __construct(FormatFactory $formatFactory = null, ExpectationFactory $expectationFactory = null)
+    public function __construct(Format\Factory $formatFactory = null, Expectation\Factory $expectationFactory = null)
     {
-        $this->formatFactory = $formatFactory ?: new FormatFactory;
-        $this->expectationFactory = $expectationFactory ?: new ExpectationFactory;
+        $this->formatFactory = $formatFactory ?: new Format\Factory;
+        $this->expectationFactory = $expectationFactory ?: new Expectation\Factory;
     }
 
     /**

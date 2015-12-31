@@ -2,15 +2,13 @@
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Expectation;
 use hanneskod\readmetester\Result;
-use hanneskod\readmetester\Regexp;
 use UnexpectedValueException;
 
 /**
  * Validate that correct output is produced
  */
-class OutputExpectation implements Expectation
+class OutputExpectation implements ExpectationInterface
 {
     /**
      * @var Regexp Expression matching output

@@ -1,11 +1,11 @@
 <?php
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Format;
 
 /**
- * Readme file format
+ * Interface for identifying readme file formats
  */
-interface Format
+interface FormatInterface
 {
     /**
      * Check if line is the start of an example block

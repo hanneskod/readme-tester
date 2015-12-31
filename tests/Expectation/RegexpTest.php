@@ -1,6 +1,6 @@
 <?php
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Expectation;
 
 class RegexpTest extends \PHPUnit_Framework_TestCase
 {
