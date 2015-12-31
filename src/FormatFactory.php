@@ -15,11 +15,11 @@ class FormatFactory
      *
      * @see https://github.com/github/markup
      *
-     * @param  FileInfo $file
+     * @param  \SplFileObject $file
      * @return Format
      * @throws RuntimeException If file extension is not supported
      */
-    public function createFormat(FileInfo $file)
+    public function createFormat(\SplFileObject $file)
     {
         switch (strtolower($file->getExtension())) {
             case 'markdown':

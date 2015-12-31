@@ -37,10 +37,10 @@ class ExampleFactory
     /**
      * Extract examples from file
      *
-     * @param  FileInfo $file
+     * @param  \SplFileObject $file
      * @return Example[]
      */
-    public function createExamples(FileInfo $file)
+    public function createExamples(\SplFileObject $file)
     {
         $exampleId = 1;
         $examples = array();
@@ -49,7 +49,7 @@ class ExampleFactory
         $ignoreNext = false;
         $format = $this->formatFactory->createFormat($file);
 
-        foreach (preg_split("/\r\n|\n|\r/", $file->getContents()) as $line) {
+        foreach ($file as $line) {
             if ($inCodeBlock) {
                 if ($format->isExampleEnd($line)) {
                     $examples[$exampleId++] = $current;

@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use hanneskod\readmetester\ReadmeTester;
-use hanneskod\readmetester\FileInfo;
 
 /**
  * CLI command to run test
@@ -33,7 +32,7 @@ class TestCommand extends Command
 
         foreach ($input->getArgument('filename') as $filename) {
             $output->writeln("Testing examples in <comment>$filename</comment>");
-            foreach ($tester->test(new FileInfo($filename)) as $line) {
+            foreach ($tester->test(new \SplFileObject($filename)) as $line) {
                 $output->writeln(" <error>$line</error>");
                 $exitStatus = 1;
             }

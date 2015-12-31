@@ -27,10 +27,10 @@ class ReadmeTester
     /**
      * Test examples in file
      *
-     * @param  FileInfo $file
+     * @param  \SplFileObject $file
      * @return string[] List of error messages
      */
-    public function test(FileInfo $file)
+    public function test(\SplFileObject $file)
     {
         $errors = array();
 
