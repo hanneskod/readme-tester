@@ -1,6 +1,9 @@
 <?php
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\PHPUnit;
+
+use hanneskod\readmetester\ReadmeTester;
+use hanneskod\readmetester\FileInfo;
 
 class ReadmeTestCase extends \PHPUnit_Framework_TestCase
 {
