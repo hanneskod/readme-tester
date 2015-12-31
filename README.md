@@ -21,7 +21,7 @@ failing examples again.
 Installation
 ------------
 ```shell
-composer require --dev hanneskod/readme-tester
+composer require --dev hanneskod/readme-tester:dev-master
 ```
 
 Usage
@@ -81,13 +81,13 @@ return 'foo';
 // nothing is expected here..
 ```
 
-Phpunit integration
+t integration
 -------------------
 Subclass `ReadmeTestCase` to add example validation to your phpunit test suite.
 
 <!-- @ignore -->
 ```php
-class ReadmeTest extends \hanneskod\readmetester\ReadmeTestCase
+class ReadmeTest extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
 {
     public function testReadmeExamples()
     {
