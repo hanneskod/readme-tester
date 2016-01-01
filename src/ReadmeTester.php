@@ -17,7 +17,7 @@ class ReadmeTester
     /**
      * Inject helpers
      *
-     * @param ExampleFactory|null $exampleFactory
+     * @param ExampleFactory $exampleFactory
      */
     public function __construct(ExampleFactory $exampleFactory = null)
     {
@@ -27,14 +27,15 @@ class ReadmeTester
     /**
      * Test examples in file
      *
-     * @param  \SplFileObject $file
+     * @param  \SplFileObject         $file   File to extract examples from
+     * @param  Format\FormatInterface $format Format used to identify examples
      * @return string[] List of error messages
      */
-    public function test(\SplFileObject $file)
+    public function test(\SplFileObject $file, Format\FormatInterface $format)
     {
         $errors = array();
 
-        foreach ($this->exampleFactory->createExamples($file) as $example) {
+        foreach ($this->exampleFactory->createExamples($file, $format) as $example) {
             try {
                 $example->execute();
             } catch (RuntimeException $e) {

@@ -8,6 +8,13 @@ namespace hanneskod\readmetester\Format;
 interface FormatInterface
 {
     /**
+     * Get name of this format
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
      * Check if line is the start of an example block
      *
      * @param  string $line

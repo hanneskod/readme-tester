@@ -7,6 +7,11 @@ namespace hanneskod\readmetester\Format;
  */
 class Markdown implements FormatInterface
 {
+    public function getName()
+    {
+        return "Markdown";
+    }
+
     public function isExampleStart($line)
     {
         return !!preg_match('/^```php\s*$/i', $line);

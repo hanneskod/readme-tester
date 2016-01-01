@@ -13,11 +13,6 @@ class ExampleFactory
     const ANNOTATION_REGEXP = '/^<!-{2,3}\s+@([a-z]+)(.*)-->\s*/i';
 
     /**
-     * @var Format\Factory Helper to identify file format
-     */
-    private $formatFactory;
-
-    /**
      * @var Expectation\Factory Helper to create expectations
      */
     private $expectationFactory;
@@ -25,29 +20,27 @@ class ExampleFactory
     /**
      * Inject helpers
      *
-     * @param Format\Factory $formatFactory
      * @param Expectation\Factory $expectationFactory
      */
-    public function __construct(Format\Factory $formatFactory = null, Expectation\Factory $expectationFactory = null)
+    public function __construct(Expectation\Factory $expectationFactory = null)
     {
-        $this->formatFactory = $formatFactory ?: new Format\Factory;
         $this->expectationFactory = $expectationFactory ?: new Expectation\Factory;
     }
 
     /**
      * Extract examples from file
      *
-     * @param  \SplFileObject $file
+     * @param  \SplFileObject         $file   File to extract examples from
+     * @param  Format\FormatInterface $format Format used to identify examples
      * @return Example[]
      */
-    public function createExamples(\SplFileObject $file)
+    public function createExamples(\SplFileObject $file, Format\FormatInterface $format)
     {
         $exampleId = 1;
         $examples = array();
         $current = new Example($exampleId);
         $inCodeBlock = false;
         $ignoreNext = false;
-        $format = $this->formatFactory->createFormat($file);
 
         foreach ($file as $line) {
             if ($inCodeBlock) {
