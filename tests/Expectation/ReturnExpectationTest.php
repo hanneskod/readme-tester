@@ -17,7 +17,7 @@ class ReturnExpectationTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('UnexpectedValueException');
         $expectation = new ReturnExpectation(new Regexp(''));
-        $expectation->validate(new Result([], ''));
+        $expectation->validate(new Result(array(), ''));
     }
 
     public function matchesProvider()
