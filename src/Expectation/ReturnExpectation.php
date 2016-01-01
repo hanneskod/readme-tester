@@ -34,10 +34,25 @@ class ReturnExpectation implements ExpectationInterface
      */
     public function validate(Result $result)
     {
-        if (!$this->regexp->isMatch($result->getReturnValue())) {
+        $return = $this->makeString($result->getReturnValue());
+
+        if (!$this->regexp->isMatch($return)) {
             throw new UnexpectedValueException(
-                "Failed asserting that return value '{$result->getReturnValue()}' matches {$this->regexp}"
+                "Failed asserting that return value matches {$this->regexp}"
             );
         }
+    }
+
+    private function makeString($value)
+    {
+        if (is_scalar($value)) {
+            return (string)$value;
+        } elseif (is_null($value)) {
+            return '';
+        } elseif (is_object($value) && method_exists($value, '__toString' )) {
+            return (string)$value;
+        }
+
+        throw new UnexpectedValueException("Unable to convert return value into string");
     }
 }
