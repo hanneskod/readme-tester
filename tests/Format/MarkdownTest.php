@@ -11,6 +11,14 @@ class MarkdownTest extends \PHPUnit_Framework_TestCase
         $this->markdown = new Markdown;
     }
 
+    public function testName()
+    {
+        $this->assertSame(
+            'Markdown',
+            $this->markdown->getName()
+        );
+    }
+
     public function testIsExampleStart()
     {
         $this->assertTrue(

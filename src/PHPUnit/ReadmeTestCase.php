@@ -6,19 +6,25 @@ use hanneskod\readmetester;
 
 class ReadmeTestCase extends \PHPUnit_Framework_TestCase
 {
-    public function assertReadme($filename)
+    protected function getFormatFactory()
     {
-        /*
-            TODO TestCommand is more versitile. Here it should be possible to
-                : set the format using in identifyer instead of the factory
-         */
+        return new readmetester\Format\FormatFactory;
+    }
 
-        $tester = new readmetester\ReadmeTester;
+    public function assertReadme($filename, $formatIdentifier = '')
+    {
         $this->addToAssertionCount(1);
-        $result = $this->getTestResultObject();
 
         $file = new \SplFileObject($filename);
-        $format = (new readmetester\Format\Factory)->createFormat($file);
+
+        if (!$formatIdentifier) {
+            $formatIdentifier = $file->getExtension();
+        }
+
+        $format = $this->getFormatFactory()->createFormat($formatIdentifier);
+
+        $tester = new readmetester\ReadmeTester;
+        $result = $this->getTestResultObject();
 
         foreach ($tester->test($file, $format) as $line) {
             $result->addFailure($this, new \PHPUnit_Framework_AssertionFailedError($line), 0.0);

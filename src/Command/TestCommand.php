@@ -26,10 +26,10 @@ class TestCommand extends Command
                 ['README.md']
             )
             ->addOption(
-               'markdown',
-               null,
-               InputOption::VALUE_NONE,
-               'Assume markdown format'
+               'format',
+               'f',
+               InputOption::VALUE_REQUIRED,
+               'Force input file format'
             )
         ;
     }
@@ -64,9 +64,14 @@ class TestCommand extends Command
      */
     private function createFormat(InputInterface $input, SplFileObject $file)
     {
-        if ($input->getOption('markdown')) {
-            return new readmetester\Format\Markdown;
+        $formatIdentifier = $input->getOption('format');
+
+        if (!$formatIdentifier) {
+            $formatIdentifier = $file->getExtension();
         }
-        return (new readmetester\Format\Factory)->createFormat($file);
+
+        $formatFactory = new readmetester\Format\FormatFactory;
+
+        return $formatFactory->createFormat($formatIdentifier);
     }
 }
