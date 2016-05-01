@@ -3,7 +3,6 @@
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
-use UnexpectedValueException;
 
 /**
  * Validate that correct output is produced
@@ -27,17 +26,15 @@ class OutputExpectation implements ExpectationInterface
 
     /**
      * Validate that correct output is produced
-     *
-     * @param  Result $result
-     * @return null
-     * @throws UnexpectedValueException If output does not match regular expression
      */
     public function validate(Result $result)
     {
         if (!$this->regexp->isMatch($result->getOutput())) {
-            throw new UnexpectedValueException(
+            return new ReturnObj\Failure(
                 "Failed asserting that output '{$result->getOutput()}' matches {$this->regexp}"
             );
         }
+
+        return new ReturnObj\Success("Asserted that output '{$result->getOutput()}' matches {$this->regexp}");
     }
 }

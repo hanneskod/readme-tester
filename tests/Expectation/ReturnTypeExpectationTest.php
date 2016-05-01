@@ -8,16 +8,20 @@ class ReturnTypeExpectationTest extends \PHPUnit_Framework_TestCase
 {
     public function testGettypeNoMatch()
     {
-        $this->setExpectedException('UnexpectedValueException');
         $expectation = new ReturnTypeExpectation('integer');
-        $expectation->validate(new Result('string', ''));
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            $expectation->validate(new Result('string', ''))
+        );
     }
 
     public function testClassNoMatch()
     {
-        $this->setExpectedException('UnexpectedValueException');
         $expectation = new ReturnTypeExpectation('integer');
-        $expectation->validate(new Result('string', ''));
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            $expectation->validate(new Result('string', ''))
+        );
     }
 
     public function typeProvider()
@@ -39,7 +43,8 @@ class ReturnTypeExpectationTest extends \PHPUnit_Framework_TestCase
     public function testInteger($expected, $value)
     {
         $expectation = new ReturnTypeExpectation($expected);
-        $this->assertNull(
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Success',
             $expectation->validate(new Result($value, ''))
         );
     }

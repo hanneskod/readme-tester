@@ -2,8 +2,6 @@
 
 namespace hanneskod\readmetester;
 
-use UnexpectedValueException;
-
 /**
  * Wrapper around a block of code and it's expectations
  */
@@ -35,6 +33,16 @@ class Example
     }
 
     /**
+     * Get name of example
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * Add line to example code
      *
      * @param  string $line
@@ -43,6 +51,16 @@ class Example
     public function addLine($line)
     {
         $this->code .= $line;
+    }
+
+    /**
+     * Get example code block
+     *
+     * @return CodeBlock
+     */
+    public function getCodeBlock()
+    {
+        return new CodeBlock($this->code);
     }
 
     /**
@@ -57,21 +75,12 @@ class Example
     }
 
     /**
-     * Execute example code and validate result
+     * Get registered expectations
      *
-     * @return null
-     * @throws UnexpectedValueException If example is not valid
+     * @return Expectation\ExpectationInterface[]
      */
-    public function execute()
+    public function getExpectations()
     {
-        try {
-            $codeBlock = new CodeBlock($this->code);
-            $result = $codeBlock->execute();
-            foreach ($this->expectations as $expectation) {
-                $expectation->validate($result);
-            }
-        } catch (UnexpectedValueException $e) {
-            throw new UnexpectedValueException("Example {$this->name}: {$e->getMessage()}");
-        }
+        return $this->expectations;
     }
 }

@@ -11,11 +11,9 @@ class NullExpectation implements ExpectationInterface
 {
     /**
      * Expect nothing
-     *
-     * @param  Result $result
-     * @return null
      */
     public function validate(Result $result)
     {
+        return new ReturnObj\Success('Asserted nothing');
     }
 }

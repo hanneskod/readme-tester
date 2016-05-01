@@ -8,15 +8,18 @@ class OutputExpectationTest extends \PHPUnit_Framework_TestCase
 {
     public function testNoMatch()
     {
-        $this->setExpectedException('UnexpectedValueException');
         $expectation = new OutputExpectation(new Regexp('/foo/'));
-        $expectation->validate(new Result('', 'bar'));
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            $expectation->validate(new Result('', 'bar'))
+        );
     }
 
     public function testMatch()
     {
         $expectation = new OutputExpectation(new Regexp('/foo/'));
-        $this->assertNull(
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Success',
             $expectation->validate(new Result('', 'foo'))
         );
     }

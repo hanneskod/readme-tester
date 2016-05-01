@@ -3,7 +3,6 @@
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
-use UnexpectedValueException;
 
 /**
  * Validate that correct data is returned
@@ -27,20 +26,18 @@ class ReturnExpectation implements ExpectationInterface
 
     /**
      * Validate that correct value is returned
-     *
-     * @param  Result $result
-     * @return null
-     * @throws UnexpectedValueException If return value does not match regular expression
      */
     public function validate(Result $result)
     {
         $return = $this->makeString($result->getReturnValue());
 
         if (!$this->regexp->isMatch($return)) {
-            throw new UnexpectedValueException(
+            return new ReturnObj\Failure(
                 "Failed asserting that return value matches {$this->regexp}"
             );
         }
+
+        return new ReturnObj\Success("Asserted that return value matches {$this->regexp}");
     }
 
     private function makeString($value)
@@ -53,6 +50,6 @@ class ReturnExpectation implements ExpectationInterface
             return (string)$value;
         }
 
-        throw new UnexpectedValueException("Unable to convert return value into string");
+        throw new \UnexpectedValueException("Unable to convert return value into string");
     }
 }

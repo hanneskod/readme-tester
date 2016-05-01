@@ -81,6 +81,12 @@ return 'foo';
 // nothing is expected here..
 ```
 
+Using the command line tool
+---------------------------
+```shell
+vendor/bin/readme-tester test README.md
+```
+
 PHPUnit integration
 -------------------
 Subclass `ReadmeTestCase` and use `assertReadme()` to run readme snippets
@@ -98,6 +104,8 @@ class ReadmeIntegration extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
 }
 ```
 
+`phpunit.xml`:
+
 ```xml
 <phpunit bootstrap="./vendor/autoload.php">
     <testsuites>
@@ -108,18 +116,27 @@ class ReadmeIntegration extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
             <file>./tests/ReadmeIntegration.php</file>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
 </phpunit>
 ```
 
-Using the command line tool
----------------------------
-```shell
-vendor/bin/readme-tester test README.md
+### Integrating with global installations
+
+If readme-tester is expected to be installed globally we dont't want testing to
+break when readme-tester is not present. Use the `AssertReadme` class instead
+of subclassing `ReadmeTestCase`:
+
+```php
+class GlobalReadmeIntegration extends \PHPUnit_Framework_TestCase
+{
+    public function testReadmeIntegrationTests()
+    {
+        if (!class_exists('hanneskod\readmetester\PHPUnit\AssertReadme')) {
+            $this->markTestSkipped('Readme-tester is not available.');
+        }
+
+        (new \hanneskod\readmetester\PHPUnit\AssertReadme($this))->assertReadme('README.md');
+    }
+}
 ```
 
 Supported formats

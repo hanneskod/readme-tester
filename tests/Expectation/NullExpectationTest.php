@@ -9,7 +9,8 @@ class NullExpectationTest extends \PHPUnit_Framework_TestCase
     public function testMatch()
     {
         $expectation = new NullExpectation;
-        $this->assertNull(
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Success',
             $expectation->validate(new Result('', ''))
         );
     }

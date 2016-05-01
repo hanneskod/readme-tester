@@ -13,8 +13,7 @@ interface ExpectationInterface
      * Validate result object
      *
      * @param  Result $result
-     * @return null
-     * @throws \UnexpectedValueException If result is not valid
+     * @return ReturnObj\ReturnObj
      */
     public function validate(Result $result);
 }

@@ -46,8 +46,12 @@ class TestCommand extends Command
             $format = $this->createFormat($input, $file);
             $output->writeln("Using format <comment>{$format->getName()}</comment>");
 
-            foreach ($tester->test($file, $format) as $line) {
-                $output->writeln(" <error>$line</error>");
+            foreach ($tester->test($file, $format) as $example => $returnObj) {
+                if ($returnObj->isSuccess()) {
+                    $output->writeln(" <info>Example $example: {$returnObj->getMessage()} </info>");
+                    continue;
+                }
+                $output->writeln(" <error>Example $example: {$returnObj->getMessage()} </error>");
                 $exitStatus = 1;
             }
         }

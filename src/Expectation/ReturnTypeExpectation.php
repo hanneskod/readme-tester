@@ -3,7 +3,6 @@
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
-use UnexpectedValueException;
 
 /**
  * Validate the type of the raturn value
@@ -45,18 +44,19 @@ class ReturnTypeExpectation implements ExpectationInterface
 
     /**
      * Validate the type of the raturn value
-     *
-     * @param  Result $result
-     * @return null
-     * @throws UnexpectedValueException If return value does not match expected type
      */
     public function validate(Result $result)
     {
         $strategy = $this->strategy;
+
         if (!$strategy($result)) {
-            throw new UnexpectedValueException(
+            return new ReturnObj\Failure(
                 "Failed asserting return type, found: " . gettype($result->getReturnValue())
             );
         }
+
+        return new ReturnObj\Success(
+            "Asserted return type " . gettype($result->getReturnValue())
+        );
     }
 }

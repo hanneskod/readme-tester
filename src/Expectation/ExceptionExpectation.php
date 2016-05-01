@@ -3,7 +3,6 @@
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
-use UnexpectedValueException;
 
 /**
  * Validate that the correct exception is thrown
@@ -27,23 +26,21 @@ class ExceptionExpectation implements ExpectationInterface
 
     /**
      * Validate that the correct exception is thrown
-     *
-     * @param  Result $result
-     * @return null
-     * @throws UnexpectedValueException If exception is not thrown
      */
     public function validate(Result $result)
     {
         $exception = $result->getException();
 
         if (is_null($exception)) {
-            throw new UnexpectedValueException("Failed asserting that exception {$this->exceptionClass} is thrown");
+            return new ReturnObj\Failure("Failed asserting that exception {$this->exceptionClass} was thrown");
         }
 
         if (!$exception instanceof $this->exceptionClass) {
-            throw new UnexpectedValueException(
-                "Failed asserting that exception {$this->exceptionClass} is thrown, found: " . get_class($exception)
+            return new ReturnObj\Failure(
+                "Failed asserting that exception {$this->exceptionClass} was thrown, found: " . get_class($exception)
             );
         }
+
+        return new ReturnObj\Success("Asserted that exception {$this->exceptionClass} was thrown");
     }
 }

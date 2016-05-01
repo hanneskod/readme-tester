@@ -8,9 +8,11 @@ class ReturnExpectationTest extends \PHPUnit_Framework_TestCase
 {
     public function testNoMatch()
     {
-        $this->setExpectedException('UnexpectedValueException');
         $expectation = new ReturnExpectation(new Regexp('/foo/'));
-        $expectation->validate(new Result('bar', ''));
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            $expectation->validate(new Result('bar', ''))
+        );
     }
 
     public function testMatchOfNonString()
@@ -39,7 +41,8 @@ class ReturnExpectationTest extends \PHPUnit_Framework_TestCase
     public function testMatch($regexp, $returnVal)
     {
         $expectation = new ReturnExpectation(new Regexp($regexp));
-        $this->assertNull(
+        $this->assertInstanceOf(
+            'hanneskod\readmetester\Expectation\ReturnObj\Success',
             $expectation->validate(new Result($returnVal, ''))
         );
     }
