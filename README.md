@@ -81,19 +81,39 @@ return 'foo';
 // nothing is expected here..
 ```
 
-t integration
+PHPUnit integration
 -------------------
-Subclass `ReadmeTestCase` to add example validation to your phpunit test suite.
+Subclass `ReadmeTestCase` and use `assertReadme()` to run readme snippets
+through phpunit. To add a different testsuite for readme testing remove the
+`Test` suffix from the class name and define a testsuite in `phpunit.xml`.
+A standard setup may look like the following:
 
-<!-- @ignore -->
 ```php
-class ReadmeTest extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
+class ReadmeIntegration extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
 {
-    public function testReadmeExamples()
+    public function testReadmeIntegrationTests()
     {
         $this->assertReadme('README.md');
     }
 }
+```
+
+```xml
+<phpunit bootstrap="./vendor/autoload.php">
+    <testsuites>
+        <testsuite name="default">
+            <directory>./tests</directory>
+        </testsuite>
+        <testsuite name="readme">
+            <file>./tests/ReadmeIntegration.php</file>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
 ```
 
 Using the command line tool
