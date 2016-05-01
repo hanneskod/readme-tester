@@ -6,11 +6,11 @@ class RegexpTest extends \PHPUnit_Framework_TestCase
 {
     public function regexpProvider()
     {
-        return array(
-            array('/test/', 'a test'),
-            array('#delimiter#', 'a different delimiter'),
-            array('foobar', 'foobar')
-        );
+        return [
+            ['/test/', 'a test'],
+            ['#delimiter#', 'a different delimiter'],
+            ['foobar', 'foobar']
+        ];
     }
 
     /**

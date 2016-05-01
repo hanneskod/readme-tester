@@ -19,20 +19,20 @@ class ReturnExpectationTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('UnexpectedValueException');
         $expectation = new ReturnExpectation(new Regexp(''));
-        $expectation->validate(new Result(array(), ''));
+        $expectation->validate(new Result([], ''));
     }
 
     public function matchesProvider()
     {
-        return array(
-            array('/foo/', 'foo'),
-            array('1', '1'),
-            array('1', 1),
-            array('1', true),
-            array('/1\.5/', 1.5),
-            array('//', null),
-            array('/Exception/', new \Exception),
-        );
+        return [
+            ['/foo/', 'foo'],
+            ['1', '1'],
+            ['1', 1],
+            ['1', true],
+            ['/1\.5/', 1.5],
+            ['//', null],
+            ['/Exception/', new \Exception],
+        ];
     }
 
     /**

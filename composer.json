@@ -20,7 +20,7 @@
         "bin/readme-tester"
     ],
     "require": {
-        "php": ">=5.3",
+        "php": ">=5.5",
         "symfony/console": ">=2.4, <4.0"
     },
     "require-dev": {

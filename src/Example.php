@@ -20,7 +20,7 @@ class Example
     /**
      * @var Expectation\ExpectationInterface[] List of expectations
      */
-    private $expectations = array();
+    private $expectations = [];
 
     /**
      * Set name of example

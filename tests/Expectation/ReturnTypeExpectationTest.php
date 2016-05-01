@@ -26,15 +26,15 @@ class ReturnTypeExpectationTest extends \PHPUnit_Framework_TestCase
 
     public function typeProvider()
     {
-        return array(
-            array('BOOLEAN', true),
-            array('integer', 123),
-            array('double', 1.1),
-            array('string', '123'),
-            array('array', array()),
-            array('null', null),
-            array('Exception', new \Exception),
-        );
+        return [
+            ['BOOLEAN', true],
+            ['integer', 123],
+            ['double', 1.1],
+            ['string', '123'],
+            ['array', []],
+            ['null', null],
+            ['Exception', new \Exception],
+        ];
     }
 
     /**

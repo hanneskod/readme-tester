@@ -37,7 +37,7 @@ class ExampleFactory
     public function createExamples(\SplFileObject $file, Format\FormatInterface $format)
     {
         $exampleId = 1;
-        $examples = array();
+        $examples = [];
         $current = new Example($exampleId);
         $inCodeBlock = false;
         $ignoreNext = false;
