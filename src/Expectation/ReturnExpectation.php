@@ -46,7 +46,7 @@ class ReturnExpectation implements ExpectationInterface
             return (string)$value;
         } elseif (is_null($value)) {
             return '';
-        } elseif (is_object($value) && method_exists($value, '__toString' )) {
+        } elseif (is_object($value) && method_exists($value, '__toString')) {
             return (string)$value;
         }
 

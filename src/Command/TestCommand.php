@@ -21,15 +21,15 @@ class TestCommand extends Command
             ->setDescription('Test examples in readme files')
             ->addArgument(
                 'filename',
-                InputArgument::OPTIONAL|InputArgument::IS_ARRAY,
+                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
                 'Name of file to test',
                 ['README.md']
             )
             ->addOption(
-               'format',
-               'f',
-               InputOption::VALUE_REQUIRED,
-               'Force input file format'
+                'format',
+                'f',
+                InputOption::VALUE_REQUIRED,
+                'Force input file format'
             )
         ;
     }

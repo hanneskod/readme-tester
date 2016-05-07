@@ -37,7 +37,7 @@ class ExceptionExpectation implements ExpectationInterface
 
         if (!$exception instanceof $this->exceptionClass) {
             return new ReturnObj\Failure(
-                "Failed asserting that exception {$this->exceptionClass} was thrown, found: " . get_class($exception)
+                "Failed asserting that exception {$this->exceptionClass} was thrown, found: ".get_class($exception)
             );
         }
 
