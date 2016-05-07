@@ -2,10 +2,7 @@
 
 namespace hanneskod\readmetester\PHPUnit;
 
-/**
- * @covers hanneskod\readmetester\PHPUnit\ReadmeTestCase
- */
-class ReadmeTest extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
+class ReadmeIntegration extends ReadmeTestCase
 {
     public function testReadmeExamples()
     {

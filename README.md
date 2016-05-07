@@ -90,8 +90,8 @@ vendor/bin/readme-tester test README.md
 PHPUnit integration
 -------------------
 Subclass `ReadmeTestCase` and use `assertReadme()` to run readme snippets
-through phpunit. To add a different testsuite for readme testing remove the
-`Test` suffix from the class name and define a testsuite in `phpunit.xml`.
+through phpunit. Add a different testsuite for readme testing by removing the
+`Test` suffix from your test class and define a testsuite in `phpunit.xml`.
 A standard setup may look like the following:
 
 ```php
