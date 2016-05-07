@@ -30,12 +30,12 @@ class ReturnTypeExpectation implements ExpectationInterface
             case 'object':
             case 'resource':
             case 'null':
-                $this->strategy = function (Result $result) use ($type) {
+                $this->strategy = function(Result $result) use ($type) {
                     return 0 == strcasecmp(gettype($result->getReturnValue()), $type);
                 };
                 break;
             default:
-                $this->strategy = function (Result $result) use ($type) {
+                $this->strategy = function(Result $result) use ($type) {
                     return $result->getReturnValue() instanceof $type;
                 };
                 break;
@@ -51,12 +51,12 @@ class ReturnTypeExpectation implements ExpectationInterface
 
         if (!$strategy($result)) {
             return new ReturnObj\Failure(
-                "Failed asserting return type, found: " . gettype($result->getReturnValue())
+                "Failed asserting return type, found: ".gettype($result->getReturnValue())
             );
         }
 
         return new ReturnObj\Success(
-            "Asserted return type " . gettype($result->getReturnValue())
+            "Asserted return type ".gettype($result->getReturnValue())
         );
     }
 }
