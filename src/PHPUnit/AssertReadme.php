@@ -3,7 +3,6 @@
 namespace hanneskod\readmetester\PHPUnit;
 
 use hanneskod\readmetester\ReadmeTester;
-use hanneskod\readmetester\Format\FormatFactory;
 
 class AssertReadme
 {
@@ -17,34 +16,17 @@ class AssertReadme
      */
     private $tester;
 
-    /**
-     * @var FormatFactory
-     */
-    private $formatFactory;
-
-    public function __construct(
-        \PHPUnit_Framework_TestCase $testCase,
-        ReadmeTester $tester = null,
-        FormatFactory $formatFactory = null
-    ) {
+    public function __construct(\PHPUnit_Framework_TestCase $testCase, ReadmeTester $tester = null)
+    {
         $this->testCase = $testCase;
         $this->tester = $tester ?: new ReadmeTester;
-        $this->formatFactory = $formatFactory ?: new FormatFactory;
     }
 
-    /**
-     * Validate code examples in $file
-     *
-     * @param  \SplFileObject $file
-     * @param  string         $formatIdentifier
-     * @return void
-     */
-    public function assertFile(\SplFileObject $file, $formatIdentifier = '')
+    public function assertReadme($filename)
     {
-        $format = $this->formatFactory->createFormat($formatIdentifier ?: $file->getExtension());
         $result = $this->testCase->getTestResultObject();
 
-        foreach ($this->tester->test($file, $format) as $example => $returnObj) {
+        foreach ($this->tester->test(file_get_contents($filename)) as $example => $returnObj) {
             $this->testCase->addToAssertionCount(1);
             if ($returnObj->isFailure()) {
                 $result->addFailure(
@@ -54,10 +36,5 @@ class AssertReadme
                 );
             }
         }
-    }
-
-    public function assertReadme($filename, $formatIdentifier = '')
-    {
-        return $this->assertFile(new \SplFileObject($filename), $formatIdentifier);
     }
 }

@@ -4,7 +4,7 @@ namespace hanneskod\readmetester;
 
 class CodeBlockTest extends \PHPUnit_Framework_TestCase
 {
-    public function testOutput()
+    function testOutput()
     {
         $codeBlock = new CodeBlock('echo "foo"; return "bar";');
         $this->assertSame(
@@ -13,7 +13,7 @@ class CodeBlockTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testReturnValue()
+    function testReturnValue()
     {
         $codeBlock = new CodeBlock('echo "foo"; return 1234;');
         $this->assertSame(
@@ -22,7 +22,7 @@ class CodeBlockTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testException()
+    function testException()
     {
         $codeBlock = new CodeBlock('throw new Exception;');
         $this->assertInstanceOf(
@@ -31,11 +31,11 @@ class CodeBlockTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testVoid()
+    function testVoid()
     {
         $codeBlock = new CodeBlock('$a = 1 + 2;');
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Result',
+            Result::CLASS,
             $codeBlock->execute()
         );
     }

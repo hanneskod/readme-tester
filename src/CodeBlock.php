@@ -2,8 +2,6 @@
 
 namespace hanneskod\readmetester;
 
-use Exception;
-
 /**
  * Wrapps an executable block of code
  */
@@ -38,7 +36,7 @@ class CodeBlock
 
         try {
             $returnValue = eval($this->code);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $exception = $e;
         }
 

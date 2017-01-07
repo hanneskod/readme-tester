@@ -11,12 +11,12 @@ Validate code examples in readme files.
 Why?
 ----
 Did you update your library, but forgot to update code examples in README? Are
-your users complaining on syntax errors in your examples? Do you find it too cumbersome
-to manually test all examples? Then readme-tester is for you!
+your users complaining on syntax errors in your examples? Do you find it too
+cumbersome to manually test all examples? Then readme-tester is for you!
 
-Readme-tester lets you automate the process of validating code examples in readme
-files. Integrate with your phpunit test suite and you will never have to worry about
-failing examples again.
+Readme-tester lets you automate the process of validating code examples in
+readme files. Integrate with your phpunit test suite and you will never have to
+worry about failing examples again.
 
 Installation
 ------------
@@ -26,18 +26,56 @@ composer require --dev hanneskod/readme-tester:dev-master
 
 Usage
 -----
-When readme-testar validates a readme file all php colorized code blocks are executed.
-In markdown this means using a fenced block with the `php` language identifier. View
-the raw contents of [this file](/README.md) for an example.
+When readme-tester validates a readme file all php colorized code blocks are
+executed. In markdown this means using a fenced block with the `php` language
+identifier. View the raw contents of [this file](/README.md) for an example.
 
 ```php
 // This code is validated
 ```
 
+### Using annotations in your README
+
+To specify how examples should be tested readme-tester uses annotations hidden
+inside HTML comments. In this way testing related instructions are hidden when
+rendered on github or similar.
+
+A block of annotations can look like this
+
+```
+<!-- @example "an example" -->
+<!-- @expectOutput /foobar/ -->
+```
+
+Or like this
+
+```
+<!--
+    @example "an example"
+    @expectOutput /foobar/
+-->
+```
+
+Readme-tester will only recongnize annotations directly before the code block
+example. Meaning that there must be no content between the annotations and the
+code, not even empty lines. If in doubt view the contents of
+[this file](/README.md).
+
+#### Annotation arguments
+
+Annotation tags are prefixed with `@` and are followed by a list of arguments
+separated by spaces. If an argument includes spaces it must be enclosed in
+double quotes (`"`).
+
+### Naming examples
+
+Examples may be named using the `@example` annotation. Naming is optional but
+gives better error reporting and simplifies referencing.
+
 ### Ignoring examples
 
-To ignore an example when testing annotate it with an `@ignore` tag inside an html
-comment just before the code block.
+Examples may be ignored using the `@ignore` annotation. Ignored examples are
+not validated in any way.
 
 <!-- @ignore -->
 ```php
@@ -47,20 +85,37 @@ echo foobar";
 
 ### Adding expectations
 
-Add assertions to code blocks using one of the expectation annotations. Multiple
-expectations can be specified for each example.
+Add assertions to code blocks using one of the expectation annotations.
+Multiple expectations can be specified for an example.
 
-<!-- @expectOutput /regular expression/ -->
+#### Expecting output
+
+Assert the output of an example using a regular expression.
+
+<!-- @expectOutput "/regular expression/" -->
 ```php
-// Example is preceded by <!-- @expectOutput /regular expression/ -->
+// Example is preceded by <!-- @expectOutput "/regular expression/" -->
 echo "This output is matched using a regular expression";
 ```
+
+If the annotation argument of `@expectOutput` is not a valid regular expression
+it will be transformed into one, `abc` is transformed into `/^abc$/`.
+
+<!-- @expectOutput abc -->
+```php
+// Example is preceded by <!-- @expectOutput abc -->
+echo "abc";
+```
+
+#### Expecting exceptions
 
 <!-- @expectException Exception -->
 ```php
 // Example is preceded by <!-- @expectException Exception -->
 throw new Exception();
 ```
+
+#### Expecting return values
 
 <!-- @expectReturnType integer -->
 ```php
@@ -74,6 +129,7 @@ return 1;
 // Example is preceded by <!-- @expectReturn /foo/ -->
 return 'foo';
 ```
+#### Expecting nothing
 
 <!-- @expectNothing -->
 ```php
@@ -138,15 +194,3 @@ class GlobalReadmeIntegration extends \PHPUnit_Framework_TestCase
     }
 }
 ```
-
-Supported formats
------------------
-Currently only markdown is supported. Open an issue or submit a pull request to
-add your format of choice. See the [markdown](/src/Format/Markdown.php) implementation
-to get started.
-
-Credits
--------
-Readme-Tester is covered under the [WTFPL](http://www.wtfpl.net/)
-
-@author Hannes Forsgård (hannes.forsgard@fripost.org)

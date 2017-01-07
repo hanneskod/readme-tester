@@ -2,95 +2,99 @@
 
 namespace hanneskod\readmetester;
 
+use hanneskod\readmetester\Expectation\ExpectationFactory;
+
 /**
- * Extract examples from text file
+ * Create examples from definitions created by Parser
  */
 class ExampleFactory
 {
     /**
-     * Regular expression to catch expection annotations
-     */
-    const ANNOTATION_REGEXP = '/^<!-{2,3}\s+@([a-z]+)(.*)-->\s*/i';
-
-    /**
-     * @var Expectation\Factory Helper to create expectations
+     * @var ExpectationFactory
      */
     private $expectationFactory;
 
-    /**
-     * Inject helpers
-     *
-     * @param Expectation\Factory $expectationFactory
-     */
-    public function __construct(Expectation\Factory $expectationFactory = null)
+    public function __construct(ExpectationFactory $expectationFactory = null)
     {
-        $this->expectationFactory = $expectationFactory ?: new Expectation\Factory;
+        $this->expectationFactory = $expectationFactory ?: new ExpectationFactory;
     }
 
     /**
-     * Extract examples from file
+     * Create examples from definitions
      *
-     * @param  \SplFileObject         $file   File to extract examples from
-     * @param  Format\FormatInterface $format Format used to identify examples
+     * @param  array $defenitions Example definitions as created by Parser
      * @return Example[]
      */
-    public function createExamples(\SplFileObject $file, Format\FormatInterface $format)
+    public function createExamples(array $defenitions)
     {
-        $exampleId = 1;
         $examples = [];
-        $current = new Example($exampleId);
-        $inCodeBlock = false;
-        $ignoreNext = false;
 
-        foreach ($file as $line) {
-            if ($inCodeBlock) {
-                if ($format->isExampleEnd($line)) {
-                    $examples[$exampleId++] = $current;
-                    $current = new Example($exampleId);
-                    $inCodeBlock = false;
-                    continue;
-                }
-                $current->addLine($line);
-            } elseif ($format->isExampleStart($line)) {
-                $inCodeBlock = true;
-                if ($ignoreNext) {
-                    $current = new Example(++$exampleId);
-                    $ignoreNext = false;
-                    $inCodeBlock = false;
-                }
-            } elseif ($this->isIgnoreAnnotation($line)) {
-                $ignoreNext = true;
-            } elseif ($expectation = $this->readExpectation($line)) {
-                $current->addExpectation($expectation);
+        foreach ($defenitions as $index => $def) {
+            if ($this->shouldIgnoreExample($def['annotations'])) {
+                continue;
             }
+
+            $name = $this->readName($def['annotations']) ?: (string)$index + 1;
+
+            if (isset($examples[$name])) {
+                throw new \RuntimeException("Example '$name' already exists in definition " . ($index + 1));
+            }
+
+            $examples[$name] = new Example(
+                $name,
+                new CodeBlock($def['code']),
+                $this->createExpectations($def['annotations'])
+            );
         }
 
         return $examples;
     }
 
     /**
-     * Check if line is a ignore anntotation
+     * Read name from example annotation
      *
-     * @param  string $line
-     * @return boolean
+     * @return string
      */
-    private function isIgnoreAnnotation($line)
+    private function readName(array $annotations)
     {
-        if (preg_match(self::ANNOTATION_REGEXP, $line, $matches)) {
-            return 'ignore' == strtolower($matches[1]);
+        foreach ($annotations as list($name, $args)) {
+            if (strcasecmp($name, 'example') == 0) {
+                return isset($args[0]) ? $args[0] : '';
+            }
         }
+
+        return '';
     }
 
     /**
-     * Parse expectation from line
+     * Check if this example is marked as ignored
      *
-     * @param  string $line
-     * @return Expectation|null
+     * @return boolean
      */
-    private function readExpectation($line)
+    private function shouldIgnoreExample(array $annotations)
     {
-        if (preg_match(self::ANNOTATION_REGEXP, $line, $matches)) {
-            return $this->expectationFactory->createExpectation($matches[1], trim($matches[2]));
+        foreach ($annotations as list($name, $args)) {
+            if (strcasecmp($name, 'ignore') == 0) {
+                return true;
+            }
         }
+
+        return false;
+    }
+
+    /**
+     * Create expectation from definition data
+     *
+     * @return Expectation\ExpectationInterface[]
+     */
+    private function createExpectations(array $annotations)
+    {
+        $expectations = [];
+
+        foreach ($annotations as list($name, $args)) {
+            $expectations[] = $this->expectationFactory->createExpectation($name, $args);
+        }
+
+        return array_filter($expectations);
     }
 }

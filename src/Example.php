@@ -2,6 +2,8 @@
 
 namespace hanneskod\readmetester;
 
+use hanneskod\readmetester\Expectation\ExpectationInterface;
+
 /**
  * Wrapper around a block of code and it's expectations
  */
@@ -13,23 +15,23 @@ class Example
     private $name;
 
     /**
-     * @var string Example code
+     * @var CodeBlock Example code
      */
-    private $code = '';
+    private $code;
 
     /**
-     * @var Expectation\ExpectationInterface[] List of expectations
+     * @var ExpectationInterface[] List of expectations
      */
-    private $expectations = [];
+    private $expectations;
 
     /**
-     * Set name of example
-     *
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct($name, CodeBlock $code, array $expectations)
     {
         $this->name = $name;
+        $this->code = $code;
+        $this->expectations = $expectations;
     }
 
     /**
@@ -43,41 +45,19 @@ class Example
     }
 
     /**
-     * Add line to example code
-     *
-     * @param  string $line
-     * @return null
-     */
-    public function addLine($line)
-    {
-        $this->code .= $line;
-    }
-
-    /**
      * Get example code block
      *
      * @return CodeBlock
      */
-    public function getCodeBlock()
+    public function getCode()
     {
-        return new CodeBlock($this->code);
-    }
-
-    /**
-     * Add expectation to example
-     *
-     * @param  Expectation\ExpectationInterface $expectation
-     * @return null
-     */
-    public function addExpectation(Expectation\ExpectationInterface $expectation)
-    {
-        $this->expectations[] = $expectation;
+        return $this->code;
     }
 
     /**
      * Get registered expectations
      *
-     * @return Expectation\ExpectationInterface[]
+     * @return ExpectationInterface[]
      */
     public function getExpectations()
     {

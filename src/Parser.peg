@@ -1,0 +1,66 @@
+//<?php
+
+namespace hanneskod\readmetester;
+
+grammar Parser
+{
+    start FILE = examples:(EXAMPLE / VOID_LINE)* .* {
+        return array_values(array_filter($examples));
+    };
+
+    VOID_LINE = (!EOL .)* EOL {
+        return '';
+    };
+
+    EXAMPLE = annotations:ANNOTATIONS? code:CODE {
+        return ['annotations' => (array)$annotations, 'code' => $code];
+    };
+
+    ANNOTATIONS = groups:ANNOTATION_GROUP+ {
+        return call_user_func_array('array_merge', $groups);
+    };
+
+    ANNOTATION_GROUP = ANNOTATION_GROUP_START annotations:ANNOTATION+ ANNOTATIONS_GROUP_END {
+        return $annotations;
+    };
+
+    ANNOTATION_GROUP_START = _ '<!--' '-'? EOL?;
+
+    ANNOTATIONS_GROUP_END = _ '-->' EOL?;
+
+    ANNOTATION = _ '@' name:STRING args:STRING* EOL? {
+        return [$name, $args];
+    };
+
+    STRING = _ string:(RAW_STRING / QUOTED_STRING / EMPTY_STRING) _ {
+        return $string;
+    };
+
+    EMPTY_STRING = '""' {
+        return '';
+    };
+
+    QUOTED_STRING = '"' string:(ESCAPED_QUOTE / ' ' / RAW_STRING)* '"' {
+        return implode($string);
+    };
+
+    ESCAPED_QUOTE = '\"' {
+        return '"';
+    };
+
+    RAW_STRING = $((!(' ' / "\r" / "\n" / "\t" / '-->' / '"') .)+);
+
+    CODE = CODE_START code:$((!CODE_END .)*) CODE_END {
+        return $code;
+    };
+
+    CODE_START = '```php'i EOL;
+
+    CODE_END = '```' (EOL / EOF);
+
+    EOL "END_OF_LINE" = _ "\r"? "\n";
+
+    EOF "END_OF_FILE" = !.;
+
+    _ = (" " / "\t")*;
+}

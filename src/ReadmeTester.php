@@ -8,31 +8,31 @@ namespace hanneskod\readmetester;
 class ReadmeTester
 {
     /**
-     * @var ExampleFactory Helper to extract examples
+     * @var Parser Helper to extract example definitions
+     */
+    private $parser;
+
+    /**
+     * @var ExampleFactory Helper to create example objects
      */
     private $exampleFactory;
 
-    /**
-     * Inject helpers
-     *
-     * @param ExampleFactory $exampleFactory
-     */
-    public function __construct(ExampleFactory $exampleFactory = null)
+    public function __construct(Parser $parser = null, ExampleFactory $exampleFactory = null)
     {
+        $this->parser = $parser ?: new Parser;
         $this->exampleFactory = $exampleFactory ?: new ExampleFactory;
     }
 
     /**
      * Test examples in file
      *
-     * @param  \SplFileObject         $file   File to extract examples from
-     * @param  Format\FormatInterface $format Format used to identify examples
+     * @param  string $contents File contents to test examples in
      * @return \Traversable
      */
-    public function test(\SplFileObject $file, Format\FormatInterface $format)
+    public function test($contents)
     {
-        foreach ($this->exampleFactory->createExamples($file, $format) as $example) {
-            $result = $example->getCodeBlock()->execute();
+        foreach ($this->exampleFactory->createExamples($this->parser->parse($contents)) as $example) {
+            $result = $example->getCode()->execute();
             foreach ($example->getExpectations() as $expectation) {
                 yield $example->getName() => $expectation->validate($result);
             }
