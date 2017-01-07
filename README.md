@@ -137,6 +137,47 @@ return 'foo';
 // nothing is expected here..
 ```
 
+### Linking examples together
+
+An example may extend a previous example using the `@extends` annotation. This
+will copy the code of the extended example into extending, wrapped in output
+buffering so that output may be asserted in the different examples.
+
+<!--
+    @example parent
+    @expectOutput A
+-->
+```php
+/*
+Example is preceded by
+<!--
+    @example parent
+    @expectOutput A
+-->
+*/
+$data = ['parent' => 'A', 'child' => 'B'];
+echo $data['parent'];
+```
+
+Now we can extend the named example `parent`.
+
+<!--
+    @example child
+    @extends parent
+    @expectOutput B
+-->
+```php
+/*
+Example is preceded by
+<!--
+    @example child
+    @extends parent
+    @expectOutput B
+-->
+*/
+echo $data['child'];
+```
+
 Using the command line tool
 ---------------------------
 ```shell

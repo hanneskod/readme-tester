@@ -32,7 +32,7 @@ class ReadmeTester
     public function test($contents)
     {
         foreach ($this->exampleFactory->createExamples($this->parser->parse($contents)) as $example) {
-            $result = $example->getCode()->execute();
+            $result = $example->getCodeBlock()->execute();
             foreach ($example->getExpectations() as $expectation) {
                 yield $example->getName() => $expectation->validate($result);
             }

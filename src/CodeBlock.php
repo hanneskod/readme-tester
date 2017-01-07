@@ -13,13 +13,21 @@ class CodeBlock
     private $code;
 
     /**
-     * Load code
-     *
      * @param string $code
      */
     public function __construct($code)
     {
         $this->code = $code;
+    }
+
+    /**
+     * Grab contained code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**

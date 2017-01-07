@@ -49,7 +49,7 @@ class Example
      *
      * @return CodeBlock
      */
-    public function getCode()
+    public function getCodeBlock()
     {
         return $this->code;
     }

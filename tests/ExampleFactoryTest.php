@@ -24,7 +24,7 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->assertEquals(
+        $this->assertSame(
             '1',
             $this->newFactory()->createExamples($defs)['1']->getName()
         );
@@ -41,7 +41,7 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->assertEquals(
+        $this->assertSame(
             'foobar',
             $this->newFactory()->createExamples($defs)['foobar']->getName()
         );
@@ -58,7 +58,7 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->assertEquals(
+        $this->assertSame(
             '1',
             $this->newFactory()->createExamples($defs)['1']->getName()
         );
@@ -98,21 +98,6 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEmpty(
             $this->newFactory()->createExamples($defs)
-        );
-    }
-
-    function testCreateSimpleCodeBlock()
-    {
-        $defs = [
-            [
-                'annotations' => [],
-                'code' => "some lines\nof\ncode"
-            ]
-        ];
-
-        $this->assertEquals(
-            new CodeBlock("some lines\nof\ncode"),
-            $this->newFactory()->createExamples($defs)['1']->getCode()
         );
     }
 
@@ -159,6 +144,58 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             [$expectation],
             $exampleFactory->createExamples($defs)['1']->getExpectations()
+        );
+    }
+
+    function testCreateSimpleCodeBlock()
+    {
+        $defs = [
+            [
+                'annotations' => [],
+                'code' => "some lines\nof\ncode"
+            ]
+        ];
+
+        $this->assertSame(
+            "some lines\nof\ncode",
+            $this->newFactory()->createExamples($defs)['1']->getCodeBlock()->getCode()
+        );
+    }
+
+    function testExceptionIfExtendedExampleDoesNotExist()
+    {
+        $defs = [
+            [
+                'annotations' => [
+                    ['extends', ['does-not-exist']]
+                ],
+                'code' => ""
+            ]
+        ];
+
+        $this->setExpectedException('RuntimeException');
+        $this->newFactory()->createExamples($defs);
+    }
+
+    function testExtendExample()
+    {
+        $defs = [
+            [
+                'annotations' => [['example', ['parent']]],
+                'code' => "echo 'parent';\n"
+            ],
+            [
+                'annotations' => [
+                    ['example', ['child']],
+                    ['extends', ['parent']]
+                ],
+                'code' => "echo 'child';\n"
+            ]
+        ];
+
+        $this->assertSame(
+            "ob_start();\necho 'parent';\nob_end_clean();\necho 'child';\n",
+            $this->newFactory()->createExamples($defs)['child']->getCodeBlock()->getCode()
         );
     }
 }

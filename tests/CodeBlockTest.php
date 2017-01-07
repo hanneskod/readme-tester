@@ -4,6 +4,14 @@ namespace hanneskod\readmetester;
 
 class CodeBlockTest extends \PHPUnit_Framework_TestCase
 {
+    function testGetCode()
+    {
+        $this->assertSame(
+            'foobar',
+            (new CodeBlock('foobar'))->getCode()
+        );
+    }
+
     function testOutput()
     {
         $codeBlock = new CodeBlock('echo "foo"; return "bar";');

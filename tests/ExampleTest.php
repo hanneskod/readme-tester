@@ -12,12 +12,12 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    function testGetCode()
+    function testGetCodeBlock()
     {
         $code = $this->prophesize(CodeBlock::CLASS)->reveal();
         $this->assertSame(
             $code,
-            (new Example('', $code, []))->getCode()
+            (new Example('', $code, []))->getCodeBlock()
         );
     }
 
