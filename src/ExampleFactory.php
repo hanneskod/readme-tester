@@ -40,10 +40,16 @@ class ExampleFactory
                 throw new \RuntimeException("Example '$name' already exists in definition " . ($index + 1));
             }
 
+            $expectations = $this->createExpectations($def['annotations']);
+
+            if (!$expectations) {
+                $expectations[] = $this->expectationFactory->createExpectation('expectnothing', []);
+            }
+
             $examples[$name] = new Example(
                 $name,
                 new CodeBlock($def['code']),
-                $this->createExpectations($def['annotations'])
+                $expectations
             );
         }
 

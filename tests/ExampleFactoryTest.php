@@ -139,4 +139,26 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
             $exampleFactory->createExamples($defs)['1']->getExpectations()
         );
     }
+
+    function testAddEmptyExpectationToExamplesWithNoExpectations()
+    {
+        $defs = [
+            [
+                'annotations' => [],
+                'code' => ''
+            ]
+        ];
+
+        $expectation = $this->prophesize(ExpectationInterface::CLASS)->reveal();
+
+        $expectationFactory = $this->prophesize(ExpectationFactory::CLASS);
+        $expectationFactory->createExpectation('expectnothing', [])->willReturn($expectation);
+
+        $exampleFactory = new ExampleFactory($expectationFactory->reveal());
+
+        $this->assertEquals(
+            [$expectation],
+            $exampleFactory->createExamples($defs)['1']->getExpectations()
+        );
+    }
 }
