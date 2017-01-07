@@ -34,16 +34,16 @@ class ExampleFactory
                 continue;
             }
 
-            $name = $this->readName($def['annotations']) ?: (string)($index + 1);
+            $name = $this->readAnnotation('example', $def['annotations']) ?: (string)($index + 1);
 
             if (isset($examples[$name])) {
-                throw new \RuntimeException("Example '$name' already exists in definition " . ($index + 1));
+                throw new \RuntimeException("Example '$name' already exists in definition ".($index + 1));
             }
 
-            if ($extends = $this->shouldExtendExample($def['annotations'])) {
+            if ($extends = $this->readAnnotation('extends', $def['annotations'])) {
                 if (!isset($examples[$extends])) {
                     throw new \RuntimeException(
-                        "Example '$extends' does not exist and can not be extended in definition " . ($index + 1)
+                        "Example '$extends' does not exist and can not be extended in definition ".($index + 1)
                     );
                 }
 
@@ -58,7 +58,7 @@ class ExampleFactory
 
             $expectations = $this->createExpectations($def['annotations']);
 
-            if (!$expectations) {
+            if (empty($expectations)) {
                 $expectations[] = $this->expectationFactory->createExpectation('expectnothing', []);
             }
 
@@ -73,14 +73,14 @@ class ExampleFactory
     }
 
     /**
-     * Read name from example annotation
+     * Read the first argument from annotation $needle
      *
      * @return string
      */
-    private function readName(array $annotations)
+    private function readAnnotation($needle, array $annotations)
     {
         foreach ($annotations as list($name, $args)) {
-            if (strcasecmp($name, 'example') == 0) {
+            if (strcasecmp($name, $needle) == 0) {
                 return isset($args[0]) ? $args[0] : '';
             }
         }
@@ -102,22 +102,6 @@ class ExampleFactory
         }
 
         return false;
-    }
-
-    /**
-     * Get name of example this example should extend
-     *
-     * @return string
-     */
-    private function shouldExtendExample(array $annotations)
-    {
-        foreach ($annotations as list($name, $args)) {
-            if (strcasecmp($name, 'extends') == 0) {
-                return isset($args[0]) ? $args[0] : '';
-            }
-        }
-
-        return '';
     }
 
     /**

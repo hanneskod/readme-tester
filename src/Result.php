@@ -22,7 +22,7 @@ class Result
     /**
      * @var Exception Exception thrown by executed code
      */
-    private $exeption;
+    private $exception;
 
     /**
      * Construct result object
