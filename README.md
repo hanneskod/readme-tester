@@ -24,7 +24,7 @@ Table of contents
   * [Writing examples](#writing-examples)
     * [Annotations](#annotations)
     * [Naming examples](#naming-examples)
-    * [Ignoring examples](iIgnoring-examples)
+    * [Ignoring examples](#ignoring-examples)
     * [Expectations](#expectations)
     * [Linking examples together](#linking-examples-together)
   * [The command line tool](#the-command-line-tool)
@@ -47,11 +47,9 @@ When readme-tester validates a markdown file all php colorized code blocks are
 executed. In markdown this means using a fenced block with the `php` language
 identifier.
 
-```
-\`\`\`php
-// This code is validated
-\`\`\`
-```
+    ```php
+    // This code is validated
+    ```
 
 ### Annotations
 
