@@ -35,7 +35,7 @@ Installation
 Install using composer
 
 ```shell
-composer require --dev hanneskod/readme-tester
+composer require --dev hanneskod/readme-tester:^1.0@beta
 ```
 
 > NOTE! Readme-tester works just as good as a development dependency of your
