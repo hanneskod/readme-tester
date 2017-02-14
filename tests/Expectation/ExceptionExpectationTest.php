@@ -4,7 +4,7 @@ namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
 
-class ExceptionExpectationTest extends \PHPUnit_Framework_TestCase
+class ExceptionExpectationTest extends \PHPUnit\Framework\TestCase
 {
     public function testNoException()
     {

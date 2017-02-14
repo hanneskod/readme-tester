@@ -2,7 +2,7 @@
 
 namespace hanneskod\readmetester;
 
-class CodeBlockTest extends \PHPUnit_Framework_TestCase
+class CodeBlockTest extends \PHPUnit\Framework\TestCase
 {
     function testGetCode()
     {

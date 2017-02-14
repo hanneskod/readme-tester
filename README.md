@@ -212,34 +212,17 @@ vendor/bin/readme-tester help test
 
 PHPUnit integration
 -------------------
-Subclass `ReadmeTestCase` and use `assertReadme()` to run readme snippets
-through phpunit. For an extra bonus ddd a different testsuite for example
-testing by removing the `Test` suffix from your test class and define a
-testsuite in `phpunit.xml`. A standard setup may look like the following:
+If you are using PHPUnit >= 6 you may subclass `ReadmeTestCase` and use
+`assertReadme()` to test readme snippets through phpunit.
 
 ```php
-class ReadmeIntegration extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
+class ReadmeTest extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
 {
     public function testReadmeIntegrationTests()
     {
         $this->assertReadme('README.md');
     }
 }
-```
-
-And in `phpunit.xml`:
-
-```xml
-<phpunit bootstrap="./vendor/autoload.php">
-    <testsuites>
-        <testsuite name="unit">
-            <directory>./tests</directory>
-        </testsuite>
-        <testsuite name="examples">
-            <file>./tests/ReadmeIntegration.php</file>
-        </testsuite>
-    </testsuites>
-</phpunit>
 ```
 
 ### Integrating with global installations
@@ -249,7 +232,7 @@ to break when readme-tester is not present. Use the `AssertReadme` class instead
 of subclassing `ReadmeTestCase`.
 
 ```php
-class GlobalReadmeIntegration extends \PHPUnit_Framework_TestCase
+class GlobalReadmeIntegration extends \PHPUnit\Framework\TestCase
 {
     public function testReadmeIntegrationTests()
     {

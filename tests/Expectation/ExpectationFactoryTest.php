@@ -5,7 +5,7 @@ namespace hanneskod\readmetester\Expectation;
 /**
  * @covers \hanneskod\readmetester\Expectation\ExpectationFactory
  */
-class ExpectationFactoryTest extends \PHPUnit_Framework_TestCase
+class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
 {
     function testCreateNothing()
     {

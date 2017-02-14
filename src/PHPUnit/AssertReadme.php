@@ -3,11 +3,13 @@
 namespace hanneskod\readmetester\PHPUnit;
 
 use hanneskod\readmetester\ReadmeTester;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\AssertionFailedError;
 
 class AssertReadme
 {
     /**
-     * @var \PHPUnit_Framework_TestCase
+     * @var TestCase
      */
     private $testCase;
 
@@ -16,7 +18,7 @@ class AssertReadme
      */
     private $tester;
 
-    public function __construct(\PHPUnit_Framework_TestCase $testCase, ReadmeTester $tester = null)
+    public function __construct(TestCase $testCase, ReadmeTester $tester = null)
     {
         $this->testCase = $testCase;
         $this->tester = $tester ?: new ReadmeTester;
@@ -31,7 +33,7 @@ class AssertReadme
             if ($returnObj->isFailure()) {
                 $result->addFailure(
                     $this->testCase,
-                    new \PHPUnit_Framework_AssertionFailedError("Example $example: {$returnObj->getMessage()}"),
+                    new AssertionFailedError("Example $example: {$returnObj->getMessage()}"),
                     0.0
                 );
             }

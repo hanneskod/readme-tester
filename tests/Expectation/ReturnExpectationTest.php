@@ -4,7 +4,7 @@ namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
 
-class ReturnExpectationTest extends \PHPUnit_Framework_TestCase
+class ReturnExpectationTest extends \PHPUnit\Framework\TestCase
 {
     public function testNoMatch()
     {
@@ -17,7 +17,7 @@ class ReturnExpectationTest extends \PHPUnit_Framework_TestCase
 
     public function testMatchOfNonString()
     {
-        $this->setExpectedException('UnexpectedValueException');
+        $this->expectException('UnexpectedValueException');
         $expectation = new ReturnExpectation(new Regexp(''));
         $expectation->validate(new Result([], ''));
     }

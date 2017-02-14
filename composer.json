@@ -20,12 +20,12 @@
         "bin/readme-tester"
     ],
     "require": {
-        "php": ">=5.5",
+        "php": ">=7.0",
         "symfony/console": ">=2.4, <4.0"
     },
     "require-dev": {
         "scato/phpeg": "^1.0",
-        "phpunit/phpunit": ">=4.0, <7.0"
+        "phpunit/phpunit": "^6.0"
     },
     "suggest": {
         "phpunit/phpunit": "Integrate readme and unit testing"

@@ -8,7 +8,7 @@ use hanneskod\readmetester\Expectation\ExpectationInterface;
 /**
  * @covers \hanneskod\readmetester\ExampleFactory
  */
-class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
+class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 {
     function newFactory()
     {
@@ -81,7 +81,7 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
         $this->newFactory()->createExamples($defs);
     }
 
@@ -173,7 +173,7 @@ class ExampleFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
         $this->newFactory()->createExamples($defs);
     }
 

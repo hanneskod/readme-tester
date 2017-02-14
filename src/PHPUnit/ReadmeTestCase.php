@@ -2,7 +2,7 @@
 
 namespace hanneskod\readmetester\PHPUnit;
 
-class ReadmeTestCase extends \PHPUnit_Framework_TestCase
+class ReadmeTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var AssertReadme

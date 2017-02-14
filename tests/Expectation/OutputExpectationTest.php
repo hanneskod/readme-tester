@@ -4,7 +4,7 @@ namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
 
-class OutputExpectationTest extends \PHPUnit_Framework_TestCase
+class OutputExpectationTest extends \PHPUnit\Framework\TestCase
 {
     public function testNoMatch()
     {
