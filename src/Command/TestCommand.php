@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use hanneskod\readmetester\ReadmeTester;
+use hanneskod\readmetester\SourceFileIterator;
 
 /**
  * CLI command to run test
@@ -21,7 +22,7 @@ class TestCommand extends Command
             ->addArgument(
                 'filename',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-                'Name of file to test',
+                'One or more files or directories to test',
                 ['README.md']
             )
             ->addOption(
@@ -46,20 +47,18 @@ class TestCommand extends Command
         $tester = new ReadmeTester;
         $exitStatus = 0;
 
-        foreach ($input->getArgument('filename') as $filename) {
-            if (!is_file($filename) || !is_readable($filename)) {
-                throw new \Exception("Not able to read $filename");
-            }
+        foreach ($input->getArgument('filename') as $source) {
+            foreach (new SourceFileIterator($source) as $filename => $contents) {
+                $output->writeln("Testing examples in <comment>$filename</comment>");
 
-            $output->writeln("Testing examples in <comment>$filename</comment>");
-
-            foreach ($tester->test(file_get_contents($filename)) as $example => $returnObj) {
-                if ($returnObj->isSuccess()) {
-                    $output->writeln(" <info>Example $example: {$returnObj->getMessage()}</info>");
-                    continue;
+                foreach ($tester->test($contents) as $example => $returnObj) {
+                    if ($returnObj->isSuccess()) {
+                        $output->writeln(" <info>Example $example: {$returnObj->getMessage()}</info>");
+                        continue;
+                    }
+                    $output->writeln(" <error>Example $example: {$returnObj->getMessage()}</error>");
+                    $exitStatus = 1;
                 }
-                $output->writeln(" <error>Example $example: {$returnObj->getMessage()}</error>");
-                $exitStatus = 1;
             }
         }
 

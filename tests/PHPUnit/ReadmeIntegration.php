@@ -4,8 +4,8 @@ namespace hanneskod\readmetester\PHPUnit;
 
 class ReadmeIntegration extends ReadmeTestCase
 {
-    public function testReadmeExamples()
+    public function testExamples()
     {
-        $this->assertReadme(__DIR__ . '/../../README.md');
+        $this->assertReadme(__DIR__ . '/../../');
     }
 }

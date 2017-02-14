@@ -14,7 +14,7 @@ class ReadmeTestCase extends \PHPUnit\Framework\TestCase
         $this->asserter = $asserter ?: new AssertReadme($this);
     }
 
-    public function assertReadme($filename)
+    public function assertReadme(string $filename)
     {
         return $this->asserter->assertReadme($filename);
     }
