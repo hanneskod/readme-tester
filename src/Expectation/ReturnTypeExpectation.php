@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
@@ -16,10 +18,8 @@ class ReturnTypeExpectation implements ExpectationInterface
 
     /**
      * Set expected return type
-     *
-     * @param string $type
      */
-    public function __construct($type)
+    public function __construct(string $type)
     {
         switch (strtolower($type)) {
             case 'boolean':
@@ -43,9 +43,9 @@ class ReturnTypeExpectation implements ExpectationInterface
     }
 
     /**
-     * Validate the type of the raturn value
+     * Validate the type of the return value
      */
-    public function validate(Result $result)
+    public function validate(Result $result): ReturnObj\ReturnObj
     {
         $strategy = $this->strategy;
 

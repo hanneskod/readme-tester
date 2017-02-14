@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
@@ -16,10 +18,8 @@ class ExceptionExpectation implements ExpectationInterface
 
     /**
      * Load name of expected exception class
-     *
-     * @param string $exceptionClass
      */
-    public function __construct($exceptionClass)
+    public function __construct(string $exceptionClass)
     {
         $this->exceptionClass = $exceptionClass;
     }
@@ -27,7 +27,7 @@ class ExceptionExpectation implements ExpectationInterface
     /**
      * Validate that the correct exception is thrown
      */
-    public function validate(Result $result)
+    public function validate(Result $result): ReturnObj\ReturnObj
     {
         $exception = $result->getException();
 

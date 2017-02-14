@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\PHPUnit;
 
 class ReadmeTestCase extends \PHPUnit\Framework\TestCase
@@ -16,6 +18,6 @@ class ReadmeTestCase extends \PHPUnit\Framework\TestCase
 
     public function assertReadme(string $filename)
     {
-        return $this->asserter->assertReadme($filename);
+        $this->asserter->assertReadme($filename);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester;
 
 class ExampleTest extends \PHPUnit\Framework\TestCase

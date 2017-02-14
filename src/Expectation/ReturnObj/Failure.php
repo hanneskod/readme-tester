@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation\ReturnObj;
 
 /**
@@ -7,7 +9,7 @@ namespace hanneskod\readmetester\Expectation\ReturnObj;
  */
 class Failure extends ReturnObj
 {
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return false;
     }

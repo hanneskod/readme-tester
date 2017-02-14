@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation;
 
 /**
@@ -12,39 +14,31 @@ class Regexp
      */
     private $regexp;
 
-    public function __construct($regexp)
+    public function __construct(string $regexp)
     {
         $this->regexp = $this->isRegexp($regexp) ? $regexp : $this->makeRegexp($regexp);
     }
 
     /**
      * Get expression as string
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->regexp;
     }
 
     /**
      * Check if this expression matches subject
-     *
-     * @param  string $subject
-     * @return bool
      */
-    public function isMatch($subject)
+    public function isMatch(string $subject): bool
     {
         return !!preg_match($this->regexp, $subject);
     }
 
     /**
      * Check if string is a regular expression
-     *
-     * @param  string $input
-     * @return bool
      */
-    private function isRegexp($input)
+    private function isRegexp(string $input): bool
     {
         set_error_handler(function() {});
         $result = preg_match($input, '');
@@ -54,11 +48,8 @@ class Regexp
 
     /**
      * Create regular expression from string
-     *
-     * @param  string $input
-     * @return string
      */
-    private function makeRegexp($input)
+    private function makeRegexp(string $input): string
     {
         return sprintf(
             '/^%s$/',

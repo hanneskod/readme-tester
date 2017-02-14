@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Expectation\ExpectationInterface;
@@ -27,7 +29,7 @@ class Example
     /**
      * @param string $name
      */
-    public function __construct($name, CodeBlock $code, array $expectations)
+    public function __construct(string $name, CodeBlock $code, array $expectations)
     {
         $this->name = $name;
         $this->code = $code;
@@ -36,20 +38,16 @@ class Example
 
     /**
      * Get name of example
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * Get example code block
-     *
-     * @return CodeBlock
      */
-    public function getCodeBlock()
+    public function getCodeBlock(): CodeBlock
     {
         return $this->code;
     }
@@ -59,7 +57,7 @@ class Example
      *
      * @return ExpectationInterface[]
      */
-    public function getExpectations()
+    public function getExpectations(): array
     {
         return $this->expectations;
     }

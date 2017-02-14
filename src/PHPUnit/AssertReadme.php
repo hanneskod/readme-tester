@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\PHPUnit;
 
 use hanneskod\readmetester\ReadmeTester;
@@ -29,13 +31,13 @@ class AssertReadme
     {
         $testResult = $this->testCase->getTestResultObject();
 
-        foreach (new SourceFileIterator($source) as $filename => $contents) {
-            foreach ($this->tester->test($contents) as $example => $returnObj) {
+        foreach (new SourceFileIterator($source) as $fileName => $contents) {
+            foreach ($this->tester->test($contents) as $exampleName => $returnObj) {
                 $this->testCase->addToAssertionCount(1);
                 if ($returnObj->isFailure()) {
                     $testResult->addFailure(
                         $this->testCase,
-                        new AssertionFailedError("Example $example in $filename: {$returnObj->getMessage()}"),
+                        new AssertionFailedError("Example $exampleName in $fileName: {$returnObj->getMessage()}"),
                         0.0
                     );
                 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation\ReturnObj;
 
 /**
@@ -13,39 +15,31 @@ abstract class ReturnObj
     private $message;
 
     /**
-     * Set message
-     *
-     * @param string $message
+     * Set returned message
      */
-    public function __construct($message)
+    public function __construct(string $message)
     {
         $this->message = $message;
     }
 
     /**
      * Get returned message
-     *
-     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
     /**
      * Check if expectation validation was a failure
-     *
-     * @return boolean
      */
-    public function isFailure()
+    public function isFailure(): bool
     {
         return !$this->isSuccess();
     }
 
     /**
      * Check if expectation validation was a success
-     *
-     * @return boolean
      */
-    abstract public function isSuccess();
+    abstract public function isSuccess(): bool;
 }

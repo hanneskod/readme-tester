@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester;
 
 /**
@@ -26,10 +28,9 @@ class ReadmeTester
     /**
      * Test examples in file
      *
-     * @param  string $contents File contents to test examples in
-     * @return \Traversable
+     * @param string $contents File contents to test examples in
      */
-    public function test($contents)
+    public function test(string $contents): \Traversable
     {
         foreach ($this->exampleFactory->createExamples($this->parser->parse($contents)) as $example) {
             $result = $example->getCodeBlock()->execute();

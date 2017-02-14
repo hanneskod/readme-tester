@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
@@ -16,8 +18,6 @@ class OutputExpectation implements ExpectationInterface
 
     /**
      * Set regular expression matching output
-     *
-     * @param Regexp $regexp
      */
     public function __construct(Regexp $regexp)
     {
@@ -27,7 +27,7 @@ class OutputExpectation implements ExpectationInterface
     /**
      * Validate that correct output is produced
      */
-    public function validate(Result $result)
+    public function validate(Result $result): ReturnObj\ReturnObj
     {
         if (!$this->regexp->isMatch($result->getOutput())) {
             return new ReturnObj\Failure(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Expectation\ExpectationFactory;
@@ -25,7 +27,7 @@ class ExampleFactory
      * @param  array $defenitions Example definitions as created by Parser
      * @return Example[]
      */
-    public function createExamples(array $defenitions)
+    public function createExamples(array $defenitions): array
     {
         $examples = [];
 
@@ -74,10 +76,8 @@ class ExampleFactory
 
     /**
      * Read the first argument from annotation $needle
-     *
-     * @return string
      */
-    private function readAnnotation($needle, array $annotations)
+    private function readAnnotation(string $needle, array $annotations): string
     {
         foreach ($annotations as list($name, $args)) {
             if (strcasecmp($name, $needle) == 0) {
@@ -90,10 +90,8 @@ class ExampleFactory
 
     /**
      * Check if this example is marked as ignored
-     *
-     * @return boolean
      */
-    private function shouldIgnoreExample(array $annotations)
+    private function shouldIgnoreExample(array $annotations): bool
     {
         foreach ($annotations as list($name, $args)) {
             if (strcasecmp($name, 'ignore') == 0) {
@@ -109,7 +107,7 @@ class ExampleFactory
      *
      * @return Expectation\ExpectationInterface[]
      */
-    private function createExpectations(array $annotations)
+    private function createExpectations(array $annotations): array
     {
         $expectations = [];
 

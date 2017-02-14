@@ -11,9 +11,6 @@ interface ExpectationInterface
 {
     /**
      * Validate result object
-     *
-     * @param  Result $result
-     * @return ReturnObj\ReturnObj
      */
-    public function validate(Result $result);
+    public function validate(Result $result): ReturnObj\ReturnObj;
 }

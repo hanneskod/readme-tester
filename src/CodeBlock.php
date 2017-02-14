@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester;
 
 /**
@@ -12,20 +14,15 @@ class CodeBlock
      */
     private $code;
 
-    /**
-     * @param string $code
-     */
-    public function __construct($code)
+    public function __construct(string $code)
     {
         $this->code = $code;
     }
 
     /**
      * Grab contained code
-     *
-     * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -35,7 +32,7 @@ class CodeBlock
      *
      * @return Result The result of the executed code
      */
-    public function execute()
+    public function execute(): Result
     {
         $returnValue = '';
         $exception = null;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester;
 
 use Exception;
@@ -31,7 +33,7 @@ class Result
      * @param string         $output      Output made by executed code
      * @param Exception|null $exception   Exception thrown by executed code
      */
-    public function __construct($returnValue, $output, Exception $exception = null)
+    public function __construct($returnValue, string $output, Exception $exception = null)
     {
         $this->returnValue = $returnValue;
         $this->output = $output;
@@ -50,10 +52,8 @@ class Result
 
     /**
      * Get output made by executed code
-     *
-     * @return string
      */
-    public function getOutput()
+    public function getOutput(): string
     {
         return $this->output;
     }

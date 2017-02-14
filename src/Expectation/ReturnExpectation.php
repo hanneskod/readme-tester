@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Result;
@@ -16,8 +18,6 @@ class ReturnExpectation implements ExpectationInterface
 
     /**
      * Set regular expression matching return value
-     *
-     * @param Regexp $regexp
      */
     public function __construct(Regexp $regexp)
     {
@@ -27,7 +27,7 @@ class ReturnExpectation implements ExpectationInterface
     /**
      * Validate that correct value is returned
      */
-    public function validate(Result $result)
+    public function validate(Result $result): ReturnObj\ReturnObj
     {
         $return = $this->makeString($result->getReturnValue());
 
@@ -40,7 +40,7 @@ class ReturnExpectation implements ExpectationInterface
         return new ReturnObj\Success("Asserted that return value matches {$this->regexp}");
     }
 
-    private function makeString($value)
+    private function makeString($value): string
     {
         if (is_scalar($value)) {
             return (string)$value;

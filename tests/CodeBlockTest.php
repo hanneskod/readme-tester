@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester;
 
 class CodeBlockTest extends \PHPUnit\Framework\TestCase

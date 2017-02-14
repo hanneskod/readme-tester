@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace hanneskod\readmetester\Expectation;
 
 /**
@@ -10,11 +12,11 @@ class ExpectationFactory
     /**
      * Create expectations from annotation data
      *
-     * @param  string $name Name of expectation
+     * @param  string $name Name of expectation to create
      * @param  array  $args Expectation data
      * @return ExpectationInterface|null Null if no expectation could be created
      */
-    public function createExpectation($name, array $args)
+    public function createExpectation(string $name, array $args)
     {
         if (empty($args)) {
             $args[] = '';
