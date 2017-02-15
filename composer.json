@@ -25,9 +25,7 @@
     },
     "require-dev": {
         "scato/phpeg": "^1.0",
-        "phpunit/phpunit": "^6.0"
-    },
-    "suggest": {
-        "phpunit/phpunit": "Integrate readme and unit testing"
+        "phpunit/phpunit": "^6.0",
+        "behat/behat": "^3.2"
     }
 }

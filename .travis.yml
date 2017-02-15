@@ -2,12 +2,18 @@ sudo: false
 
 language: php
 
-php:
-  - 7.1
-  - 7.0
+matrix:
+    include:
+        - php: 7.1
+        - php: 7.0
+        - php: nightly
+    allow_failures:
+        - php: nightly
+    fast_finish: true
 
 install:
-  - composer install
+    - composer install
 
 script:
-  - vendor/bin/phpunit
+    - vendor/bin/phpunit --verbose
+    - vendor/bin/behat --verbose
