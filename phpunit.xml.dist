@@ -1,9 +1,6 @@
 <phpunit bootstrap="./vendor/autoload.php">
-    <testsuite name="default">
+    <testsuite>
         <directory>./tests</directory>
-    </testsuite>
-    <testsuite name="readme">
-        <file>./tests/PHPUnit/ReadmeIntegration.php</file>
     </testsuite>
     <filter>
         <whitelist>

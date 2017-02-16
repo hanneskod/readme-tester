@@ -22,13 +22,15 @@ class SourceFileIterator implements \IteratorAggregate
     public function getIterator(): \Traversable
     {
         if (is_file($this->filename)) {
-            yield basename($this->filename) => $this->readFile($this->filename);
+            yield $this->filename => $this->readFile($this->filename);
             return;
         }
 
-        foreach (new \DirectoryIterator($this->filename) as $fileInfo) {
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->filename)) as $fileInfo) {
+            $basePath = realpath($this->filename);
             if (in_array(strtolower($fileInfo->getExtension()), ['md', 'mdown', 'markdown'])) {
-                yield $fileInfo->getFilename() => $this->readFile($fileInfo->getRealPath());
+                $displayPath = rtrim($this->filename, '/') . str_replace($basePath, '', $fileInfo->getRealPath());
+                yield $displayPath => $this->readFile($fileInfo->getRealPath());
             }
         }
     }

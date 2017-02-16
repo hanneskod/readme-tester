@@ -15,9 +15,10 @@ class SourceFileIteratorTest extends \PHPUnit\Framework\TestCase
 
     function testSourceContentReturned()
     {
+        $fname = self::PROJECT_ROOT . '/README.md';
         $this->assertSame(
-            file_get_contents(self::PROJECT_ROOT . '/README.md'),
-            iterator_to_array(new SourceFileIterator(self::PROJECT_ROOT . '/README.md'))['README.md']
+            file_get_contents($fname),
+            iterator_to_array(new SourceFileIterator($fname))[$fname]
         );
     }
 
@@ -29,6 +30,6 @@ class SourceFileIteratorTest extends \PHPUnit\Framework\TestCase
 
     function testDirectory()
     {
-        $this->assertCount(1, iterator_to_array(new SourceFileIterator(self::PROJECT_ROOT)));
+        $this->assertGreaterThan(0, iterator_to_array(new SourceFileIterator(self::PROJECT_ROOT)));
     }
 }
