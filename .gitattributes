@@ -13,4 +13,5 @@
 /README.md export-ignore
 /TODO.md export-ignore
 /build_parser.php export-ignore
+/run_tests.sh export-ignore
 /src/Parser.peg export-ignore
