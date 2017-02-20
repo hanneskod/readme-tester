@@ -200,4 +200,23 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             $this->newFactory()->createExamples($defs)['child']->getCodeBlock()->getCode()
         );
     }
+
+    function testExampleContext()
+    {
+        $defs = [
+            [
+                'annotations' => [['exampleContext', []]],
+                'code' => "echo 'context';\n"
+            ],
+            [
+                'annotations' => [],
+                'code' => "echo 'example';\n"
+            ]
+        ];
+
+        $this->assertSame(
+            "ob_start();\necho 'context';\nob_end_clean();\necho 'example';\n",
+            $this->newFactory()->createExamples($defs)['2']->getCodeBlock()->getCode()
+        );
+    }
 }

@@ -28,6 +28,7 @@ Table of contents
     * [Expectations](#expectations)
     * [Linking examples together](#linking-examples-together)
     * [Hidden examples](#hidden-examples)
+    * [Creating a default example context](#creating-a-default-example-context)
   * [The command line tool](#the-command-line-tool)
   * [PHPUnit integration](#phpunit-integration)
 
@@ -235,6 +236,29 @@ Example is preceded by
 -->
 */
 echo $var;
+```
+
+### Creating a default example context
+
+If you want every example in a readme to extend from a base context you can use
+the `exampleContext` annotation as in the following example.
+
+<!-- @exampleContext -->
+```php
+/*
+Example is preceded by
+<!-- @exampleContext -->
+*/
+$context = 'setup...';
+```
+
+<!-- @expectOutput /setup/ -->
+```php
+/*
+Example is preceded by
+<!-- @expectOutput /setup/ -->
+*/
+echo $context;
 ```
 
 The command line tool

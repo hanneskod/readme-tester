@@ -30,9 +30,10 @@ class ExampleFactory
     public function createExamples(array $defenitions): array
     {
         $examples = [];
+        $context = null;
 
         foreach ($defenitions as $index => $def) {
-            if ($this->shouldIgnoreExample($def['annotations'])) {
+            if ($this->isAnnotatedWith('ignore', $def['annotations'])) {
                 continue;
             }
 
@@ -42,6 +43,12 @@ class ExampleFactory
                 throw new \RuntimeException("Example '$name' already exists in definition ".($index + 1));
             }
 
+            $codeBlock = new CodeBlock($def['code']);
+
+            if ($context) {
+                $codeBlock->prepend($context);
+            }
+
             if ($extends = $this->readAnnotation('extends', $def['annotations'])) {
                 if (!isset($examples[$extends])) {
                     throw new \RuntimeException(
@@ -49,13 +56,7 @@ class ExampleFactory
                     );
                 }
 
-                $def['code'] = sprintf(
-                    "%s\n%s%s\n%s",
-                    'ob_start();',
-                    $examples[$extends]->getCodeBlock()->getCode(),
-                    'ob_end_clean();',
-                    $def['code']
-                );
+                $codeBlock->prepend($examples[$extends]->getCodeBlock());
             }
 
             $expectations = $this->createExpectations($def['annotations']);
@@ -64,11 +65,11 @@ class ExampleFactory
                 $expectations[] = $this->expectationFactory->createExpectation('expectnothing', []);
             }
 
-            $examples[$name] = new Example(
-                $name,
-                new CodeBlock($def['code']),
-                $expectations
-            );
+            $examples[$name] = new Example($name, $codeBlock, $expectations);
+
+            if ($this->isAnnotatedWith('exampleContext', $def['annotations'])) {
+                $context = $examples[$name]->getCodeBlock();
+            }
         }
 
         return $examples;
@@ -91,10 +92,10 @@ class ExampleFactory
     /**
      * Check if this example is marked as ignored
      */
-    private function shouldIgnoreExample(array $annotations): bool
+    private function isAnnotatedWith(string $annotationName, array $annotations): bool
     {
         foreach ($annotations as list($name, $args)) {
-            if (strcasecmp($name, 'ignore') == 0) {
+            if (strcasecmp($name, $annotationName) == 0) {
                 return true;
             }
         }

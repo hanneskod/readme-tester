@@ -20,6 +20,20 @@ class CodeBlock
     }
 
     /**
+     * Prepend this code block with the contents of $codeBlock
+     */
+    public function prepend(CodeBlock $codeBlock)
+    {
+        $this->code = sprintf(
+            "%s\n%s%s\n%s",
+            'ob_start();',
+            $codeBlock->getCode(),
+            'ob_end_clean();',
+            $this->code
+        );
+    }
+
+    /**
      * Grab contained code
      */
     public function getCode(): string

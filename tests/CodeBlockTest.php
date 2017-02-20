@@ -49,4 +49,15 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
             $codeBlock->execute()
         );
     }
+
+    function testPrepend()
+    {
+        $codeBlock = new CodeBlock('bar');
+        $codeBlock->prepend(new CodeBlock('foo'));
+
+        $this->assertSame(
+            "ob_start();\nfooob_end_clean();\nbar",
+            $codeBlock->getCode()
+        );
+    }
 }
