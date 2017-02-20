@@ -27,6 +27,7 @@ Table of contents
     * [Ignoring examples](#ignoring-examples)
     * [Expectations](#expectations)
     * [Linking examples together](#linking-examples-together)
+    * [Hidden examples](#hidden-examples)
   * [The command line tool](#the-command-line-tool)
   * [PHPUnit integration](#phpunit-integration)
 
@@ -194,6 +195,46 @@ Example is preceded by
 -->
 */
 echo $data['child'];
+```
+
+### Hidden examples
+
+Sometimes you may need to set up an environment to create a context for your
+examples to run in. This can be done using hidden examples. Hidden examples are
+defined inside a html comment. Consider the following example:
+
+
+    <!--
+    @example my-hidden-example
+
+    ```php
+    // Som setup...
+    $var = 'foobar';
+    ```
+    -->
+
+<!--
+@example my-hidden-example
+
+```php
+// Som setup...
+$var = 'foobar';
+```
+-->
+
+<!--
+    @extends my-hidden-example
+    @expectOutput "foobar"
+-->
+```php
+/*
+Example is preceded by
+<!--
+    @extends my-hidden-example
+    @expectOutput "foobar"
+-->
+*/
+echo $var;
 ```
 
 The command line tool

@@ -12,7 +12,15 @@ grammar Parser
         return '';
     };
 
-    EXAMPLE = annotations:ANNOTATIONS? code:CODE {
+    EMPTY_LINE = _ EOL;
+
+    EXAMPLE = VISIBLE_EXAMPLE / HIDDEN_EXAMPLE;
+
+    VISIBLE_EXAMPLE = annotations:ANNOTATIONS? code:CODE {
+        return ['annotations' => (array)$annotations, 'code' => $code];
+    };
+
+    HIDDEN_EXAMPLE = HTML_COMMENT_START EMPTY_LINE* annotations:ANNOTATION* EMPTY_LINE* code:CODE EMPTY_LINE* HTML_COMMENT_END {
         return ['annotations' => (array)$annotations, 'code' => $code];
     };
 
@@ -20,13 +28,13 @@ grammar Parser
         return call_user_func_array('array_merge', $groups);
     };
 
-    ANNOTATION_GROUP = ANNOTATION_GROUP_START annotations:ANNOTATION+ ANNOTATIONS_GROUP_END {
+    ANNOTATION_GROUP = HTML_COMMENT_START annotations:ANNOTATION+ HTML_COMMENT_END {
         return $annotations;
     };
 
-    ANNOTATION_GROUP_START = _ '<!--' '-'? EOL?;
+    HTML_COMMENT_START = _ '<!--' '-'? EOL?;
 
-    ANNOTATIONS_GROUP_END = _ '-->' EOL?;
+    HTML_COMMENT_END = _ '-->' EOL?;
 
     ANNOTATION = _ '@' name:STRING args:STRING* EOL? {
         return [$name, $args];

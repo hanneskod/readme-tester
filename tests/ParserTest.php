@@ -374,4 +374,94 @@ README
             )
         );
     }
+
+    function testHiddenCodeBlock()
+    {
+        $this->assertEquals(
+            [
+                [
+                    'annotations' => [],
+                    'code' => "// code\n"
+                ]
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+```php
+// code
+```
+-->
+README
+            )
+        );
+    }
+
+    function testHiddenCodeBlockWithAnnotation()
+    {
+        $this->assertEquals(
+            [
+                [
+                    'annotations' => [['foo', ['bar']]],
+                    'code' => "// code\n"
+                ]
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+@foo bar
+```php
+// code
+```
+-->
+README
+            )
+        );
+    }
+
+    function testHiddenCodeBlockWithMultipleAnnotations()
+    {
+        $this->assertEquals(
+            [
+                [
+                    'annotations' => [
+                        ['foo', ['bar']],
+                        ['bar', ['foo']]
+                    ],
+                    'code' => "// code\n"
+                ]
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+@foo bar
+@bar foo
+```php
+// code
+```
+-->
+README
+            )
+        );
+    }
+
+    function testHiddenCodeBlockWithNewlinesInsideComment()
+    {
+        $this->assertEquals(
+            [
+                [
+                    'annotations' => [['foo', ['bar']]],
+                    'code' => "// code\n"
+                ]
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+
+@foo bar
+
+```php
+// code
+```
+
+-->
+README
+            )
+        );
+    }
 }
