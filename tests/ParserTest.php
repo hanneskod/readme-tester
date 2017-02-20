@@ -18,10 +18,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [],
-                    'code' => "// code goes here\n"
-                ]
+                new Definition([], new CodeBlock("// code goes here\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```php
@@ -36,10 +33,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [],
-                    'code' => "\$a = new Class();\necho \$a->out();\n"
-                ]
+                new Definition([], new CodeBlock("\$a = new Class();\necho \$a->out();\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```php
@@ -55,10 +49,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [],
-                    'code' => "// code goes here\n"
-                ]
+                new Definition([], new CodeBlock("// code goes here\n"))
             ],
             (new Parser)->parse(<<<'README'
 Some none example text..
@@ -77,14 +68,8 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [],
-                    'code' => "// code goes here\n"
-                ],
-                [
-                    'annotations' => [],
-                    'code' => "// second example\n"
-                ]
+                new Definition([], new CodeBlock("// code goes here\n")),
+                new Definition([], new CodeBlock("// second example\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```php
@@ -105,10 +90,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [],
-                    'code' => "// code goes here\n"
-                ]
+                new Definition([], new CodeBlock("// code goes here\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```PHP
@@ -123,10 +105,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!-- @foo bar -->
@@ -141,13 +120,13 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [
+                new Definition(
+                    [
                         ['foo', ['bar']],
                         ['bar', ['foo']]
                     ],
-                    'code' => ""
-                ]
+                    new CodeBlock('')
+                )
             ],
             (new Parser)->parse(<<<'README'
 <!-- @foo bar -->
@@ -163,13 +142,13 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [
+                new Definition(
+                    [
                         ['foo', ['bar']],
                         ['bar', ['foo']]
                     ],
-                    'code' => ""
-                ]
+                    new CodeBlock('')
+                )
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -187,13 +166,13 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [
+                new Definition(
+                    [
                         ['foo', ['bar']],
                         ['bar', ['foo']]
                     ],
-                    'code' => ""
-                ]
+                    new CodeBlock('')
+                )
             ],
             (new Parser)->parse(" \t<!-- \t\n@foo bar\n@bar foo --> \t\n```php\n```")
         );
@@ -203,10 +182,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar', 'baz']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar', 'baz']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -223,10 +199,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar', 'baz']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar', 'baz']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -243,10 +216,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar', '']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar', '']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -263,10 +233,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar baz']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar baz']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -283,10 +250,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar', '"']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar', '"']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -303,10 +267,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', []]],
-                    'code' => ""
-                ]
+                new Definition([['foo', []]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -323,10 +284,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--@foo bar-->
@@ -341,10 +299,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar']]],
-                    'code' => ""
-                ]
+                new Definition([['foo', ['bar']]], new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!--- @foo bar -->
@@ -359,10 +314,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [],
-                    'code' => "// code\n"
-                ]
+                new Definition([], new CodeBlock("// code\n"))
             ],
             (new Parser)->parse(<<<'README'
 <!-- @foo bar -->
@@ -379,10 +331,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [],
-                    'code' => "// code\n"
-                ]
+                new Definition([], new CodeBlock("// code\n"))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -399,10 +348,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar']]],
-                    'code' => "// code\n"
-                ]
+                new Definition([['foo', ['bar']]], new CodeBlock("// code\n"))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -420,13 +366,13 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [
+                new Definition(
+                    [
                         ['foo', ['bar']],
                         ['bar', ['foo']]
                     ],
-                    'code' => "// code\n"
-                ]
+                    new CodeBlock("// code\n")
+                )
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -445,10 +391,7 @@ README
     {
         $this->assertEquals(
             [
-                [
-                    'annotations' => [['foo', ['bar']]],
-                    'code' => "// code\n"
-                ]
+                new Definition([['foo', ['bar']]], new CodeBlock("// code\n"))
             ],
             (new Parser)->parse(<<<'README'
 <!--

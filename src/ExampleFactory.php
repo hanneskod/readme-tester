@@ -24,7 +24,7 @@ class ExampleFactory
     /**
      * Create examples from definitions
      *
-     * @param  array $defenitions Example definitions as created by Parser
+     * @param  Definition[] $defenitions Example definitions as created by Parser
      * @return Example[]
      */
     public function createExamples(array $defenitions): array
@@ -33,42 +33,40 @@ class ExampleFactory
         $context = null;
 
         foreach ($defenitions as $index => $def) {
-            if ($this->isAnnotatedWith('ignore', $def['annotations'])) {
+            if ($def->isAnnotatedWith('ignore')) {
                 continue;
             }
 
-            $name = $this->readAnnotation('example', $def['annotations']) ?: (string)($index + 1);
+            $name = $def->readAnnotation('example') ?: (string)($index + 1);
 
             if (isset($examples[$name])) {
                 throw new \RuntimeException("Example '$name' already exists in definition ".($index + 1));
             }
 
-            $codeBlock = new CodeBlock($def['code']);
-
             if ($context) {
-                $codeBlock->prepend($context);
+                $def->getCodeBlock()->prepend($context);
             }
 
-            if ($extends = $this->readAnnotation('extends', $def['annotations'])) {
+            if ($extends = $def->readAnnotation('extends')) {
                 if (!isset($examples[$extends])) {
                     throw new \RuntimeException(
                         "Example '$extends' does not exist and can not be extended in definition ".($index + 1)
                     );
                 }
 
-                $codeBlock->prepend($examples[$extends]->getCodeBlock());
+                $def->getCodeBlock()->prepend($examples[$extends]->getCodeBlock());
             }
 
-            $expectations = $this->createExpectations($def['annotations']);
+            $expectations = $this->createExpectations($def);
 
             if (empty($expectations)) {
                 $expectations[] = $this->expectationFactory->createExpectation('expectnothing', []);
             }
 
-            $examples[$name] = new Example($name, $codeBlock, $expectations);
+            $examples[$name] = new Example($name, $def->getCodeBlock(), $expectations);
 
-            if ($this->isAnnotatedWith('exampleContext', $def['annotations'])) {
-                $context = $examples[$name]->getCodeBlock();
+            if ($def->isAnnotatedWith('exampleContext')) {
+                $context = $def->getCodeBlock();
             }
         }
 
@@ -76,43 +74,15 @@ class ExampleFactory
     }
 
     /**
-     * Read the first argument from annotation $needle
-     */
-    private function readAnnotation(string $needle, array $annotations): string
-    {
-        foreach ($annotations as list($name, $args)) {
-            if (strcasecmp($name, $needle) == 0) {
-                return isset($args[0]) ? $args[0] : '';
-            }
-        }
-
-        return '';
-    }
-
-    /**
-     * Check if this example is marked as ignored
-     */
-    private function isAnnotatedWith(string $annotationName, array $annotations): bool
-    {
-        foreach ($annotations as list($name, $args)) {
-            if (strcasecmp($name, $annotationName) == 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Create expectation from definition data
      *
      * @return Expectation\ExpectationInterface[]
      */
-    private function createExpectations(array $annotations): array
+    private function createExpectations(Definition $def): array
     {
         $expectations = [];
 
-        foreach ($annotations as list($name, $args)) {
+        foreach ($def->getAnnotations() as list($name, $args)) {
             $expectations[] = $this->expectationFactory->createExpectation($name, $args);
         }
 
