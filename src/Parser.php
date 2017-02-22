@@ -358,7 +358,7 @@ class Parser
 
         if ($_success) {
             $this->value = call_user_func(function () use (&$annotations, &$code) {
-                return new Definition((array)$annotations, $code);
+                return new Definition($code, ...(array)$annotations);
             });
         }
 
@@ -531,7 +531,7 @@ class Parser
 
         if ($_success) {
             $this->value = call_user_func(function () use (&$annotations, &$code) {
-                return new Definition((array)$annotations, $code);
+                return new Definition($code, ...(array)$annotations);
             });
         }
 
@@ -952,7 +952,7 @@ class Parser
 
         if ($_success) {
             $this->value = call_user_func(function () use (&$name, &$args) {
-                return [$name, $args];
+                return new Annotation($name, ...$args);
             });
         }
 

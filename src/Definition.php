@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 /**
- * The data defining an example
+ * Wrapper around the code and annotations defining an example
  */
 class Definition
 {
     /**
-     * @var array The set of annotations
+     * @var Annotation[] The set of annotations
      */
     private $annotations;
 
@@ -19,10 +19,10 @@ class Definition
      */
     private $code;
 
-    public function __construct(array $annotations, CodeBlock $code)
+    public function __construct(CodeBlock $code, Annotation ...$annotations)
     {
-        $this->annotations = $annotations;
         $this->code = $code;
+        $this->annotations = $annotations;
     }
 
     public function getCodeBlock(): CodeBlock
@@ -30,36 +30,39 @@ class Definition
         return $this->code;
     }
 
+    /**
+     * @return Annotation[]
+     */
     public function getAnnotations(): array
     {
         return $this->annotations;
     }
 
     /**
-     * Check if annotation $needle exists
+     * Get annotation matching $name
      */
-    public function isAnnotatedWith(string $needle): bool
+    public function getAnnotation(string $name): Annotation
     {
-        foreach ($this->getAnnotations() as list($name, $args)) {
-            if (strcasecmp($name, $needle) == 0) {
+        foreach ($this->getAnnotations() as $annotation) {
+            if ($annotation->isNamed($name)) {
+                return $annotation;
+            }
+        }
+
+        throw new \LogicException("Annotation $name does not exist");
+    }
+
+    /**
+     * Check if annotation $name exists
+     */
+    public function isAnnotatedWith(string $name): bool
+    {
+        foreach ($this->getAnnotations() as $annotation) {
+            if ($annotation->isNamed($name)) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Read the first argument from annotation $needle
-     */
-    public function readAnnotation(string $needle): string
-    {
-        foreach ($this->getAnnotations() as list($name, $args)) {
-            if (strcasecmp($name, $needle) == 0) {
-                return isset($args[0]) ? $args[0] : '';
-            }
-        }
-
-        return '';
     }
 }

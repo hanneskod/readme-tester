@@ -4,35 +4,36 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
+use hanneskod\readmetester\Annotation;
+
 /**
  * Create expectations from annotation data
  */
 class ExpectationFactory
 {
     /**
-     * Create expectations from annotation data
-     *
-     * @param  string $name Name of expectation to create
-     * @param  array  $args Expectation data
      * @return ExpectationInterface|null Null if no expectation could be created
      */
-    public function createExpectation(string $name, array $args)
+    public function createExpectation(Annotation $annotation)
     {
-        if (empty($args)) {
-            $args[] = '';
+        if ($annotation->isNamed('expectException')) {
+            return new ExceptionExpectation($annotation->getArgument());
         }
 
-        switch (strtolower($name)) {
-            case 'expectexception':
-                return new ExceptionExpectation($args[0]);
-            case 'expectoutput':
-                return new OutputExpectation(new Regexp($args[0]));
-            case 'expectreturntype':
-                return new ReturnTypeExpectation($args[0]);
-            case 'expectreturn':
-                return new ReturnExpectation(new Regexp($args[0]));
-            case 'expectnothing':
-                return new NullExpectation;
+        if ($annotation->isNamed('expectOutput')) {
+            return new OutputExpectation(new Regexp($annotation->getArgument()));
+        }
+
+        if ($annotation->isNamed('expectReturnType')) {
+            return new ReturnTypeExpectation($annotation->getArgument());
+        }
+
+        if ($annotation->isNamed('expectReturn')) {
+            return new ReturnExpectation(new Regexp($annotation->getArgument()));
+        }
+
+        if ($annotation->isNamed('expectNothing')) {
+            return new NullExpectation;
         }
     }
 }

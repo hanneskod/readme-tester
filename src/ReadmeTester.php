@@ -22,7 +22,7 @@ class ReadmeTester
     public function __construct(Parser $parser = null, ExampleFactory $exampleFactory = null)
     {
         $this->parser = $parser ?: new Parser;
-        $this->exampleFactory = $exampleFactory ?: new ExampleFactory;
+        $this->exampleFactory = $exampleFactory ?: new ExampleFactory(new Expectation\ExpectationFactory);
     }
 
     /**

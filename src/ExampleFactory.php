@@ -16,9 +16,9 @@ class ExampleFactory
      */
     private $expectationFactory;
 
-    public function __construct(ExpectationFactory $expectationFactory = null)
+    public function __construct(ExpectationFactory $expectationFactory)
     {
-        $this->expectationFactory = $expectationFactory ?: new ExpectationFactory;
+        $this->expectationFactory = $expectationFactory;
     }
 
     /**
@@ -37,7 +37,11 @@ class ExampleFactory
                 continue;
             }
 
-            $name = $def->readAnnotation('example') ?: (string)($index + 1);
+            $name = (string)($index + 1);
+
+            if ($def->isAnnotatedWith('example')) {
+                $name = $def->getAnnotation('example')->getArgument();
+            }
 
             if (isset($examples[$name])) {
                 throw new \RuntimeException("Example '$name' already exists in definition ".($index + 1));
@@ -47,7 +51,8 @@ class ExampleFactory
                 $def->getCodeBlock()->prepend($context);
             }
 
-            if ($extends = $def->readAnnotation('extends')) {
+            if ($def->isAnnotatedWith('extends')) {
+                $extends = $def->getAnnotation('extends')->getArgument();
                 if (!isset($examples[$extends])) {
                     throw new \RuntimeException(
                         "Example '$extends' does not exist and can not be extended in definition ".($index + 1)
@@ -60,7 +65,7 @@ class ExampleFactory
             $expectations = $this->createExpectations($def);
 
             if (empty($expectations)) {
-                $expectations[] = $this->expectationFactory->createExpectation('expectnothing', []);
+                $expectations[] = $this->expectationFactory->createExpectation(new Annotation('expectNothing'));
             }
 
             $examples[$name] = new Example($name, $def->getCodeBlock(), $expectations);
@@ -73,6 +78,7 @@ class ExampleFactory
         return $examples;
     }
 
+
     /**
      * Create expectation from definition data
      *
@@ -82,8 +88,8 @@ class ExampleFactory
     {
         $expectations = [];
 
-        foreach ($def->getAnnotations() as list($name, $args)) {
-            $expectations[] = $this->expectationFactory->createExpectation($name, $args);
+        foreach ($def->getAnnotations() as $annotation) {
+            $expectations[] = $this->expectationFactory->createExpectation($annotation);
         }
 
         return array_filter($expectations);

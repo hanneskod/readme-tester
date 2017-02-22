@@ -10,42 +10,52 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertSame(
             $code = $this->prophesize(CodeBlock::CLASS)->reveal(),
-            (new Definition([], $code))->getCodeBlock()
+            (new Definition($code))->getCodeBlock()
         );
     }
 
     function testGetAnnotations()
     {
+        $annotationA = $this->createMock(Annotation::CLASS);
+        $annotationB = $this->createMock(Annotation::CLASS);
         $this->assertSame(
-            $annotations = ['foobar'],
-            (new Definition($annotations, $this->createMock(CodeBlock::CLASS)))->getAnnotations()
+            [$annotationA, $annotationB],
+            (new Definition($this->createMock(CodeBlock::CLASS), $annotationA, $annotationB))->getAnnotations()
         );
     }
 
     function testIsAnnotatedWith()
     {
-        $def = new Definition([['foo', []]], $this->createMock(CodeBlock::CLASS));
+        $annotation = $this->prophesize(Annotation::CLASS);
+        $annotation->isNamed('foo')->willReturn(true);
+        $annotation->isNamed('bar')->willReturn(false);
+
+        $def = new Definition($this->createMock(CodeBlock::CLASS), $annotation->reveal());
+
         $this->assertTrue($def->isAnnotatedWith('foo'));
         $this->assertFalse($def->isAnnotatedWith('bar'));
     }
 
-    function testReadAnnotation()
+    function testGetAnnotation()
     {
-        $def = new Definition([['foo', []], ['bar', ['baz']]], $this->createMock(CodeBlock::CLASS));
+        $annotationProphecy = $this->prophesize(Annotation::CLASS);
+        $annotationProphecy->isNamed('foo')->willReturn(true);
+        $annotation = $annotationProphecy->reveal();
+
+        $def = new Definition($this->createMock(CodeBlock::CLASS), $annotation);
 
         $this->assertSame(
-            '',
-            $def->readAnnotation('foo')
+            $annotation,
+            $def->getAnnotation('foo')
         );
+    }
 
-        $this->assertSame(
-            'baz',
-            $def->readAnnotation('bar')
-        );
+    function testExceptionWhenAnnotationDoesNotExist()
+    {
+        $annotation = $this->prophesize(Annotation::CLASS);
+        $annotation->isNamed('foo')->willReturn(false);
 
-        $this->assertSame(
-            '',
-            $def->readAnnotation('does-not-exist')
-        );
+        $this->expectException('LogicException');
+        (new Definition($this->createMock(CodeBlock::CLASS), $annotation->reveal()))->getAnnotation('foo');
     }
 }

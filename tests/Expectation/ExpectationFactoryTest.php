@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
+use hanneskod\readmetester\Annotation;
+
 /**
  * @covers \hanneskod\readmetester\Expectation\ExpectationFactory
  */
@@ -12,7 +14,7 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
     function testCreateNothing()
     {
         $this->assertNull(
-            (new ExpectationFactory)->createExpectation('foo', [])
+            (new ExpectationFactory)->createExpectation(new Annotation('foo'))
         );
     }
 
@@ -20,7 +22,7 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             new ExceptionExpectation('arg'),
-            (new ExpectationFactory)->createExpectation('expectException', ['arg'])
+            (new ExpectationFactory)->createExpectation(new Annotation('expectException', 'arg'))
         );
     }
 
@@ -28,7 +30,7 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             new OutputExpectation(new Regexp('arg')),
-            (new ExpectationFactory)->createExpectation('expectOutput', ['arg'])
+            (new ExpectationFactory)->createExpectation(new Annotation('expectOutput', 'arg'))
         );
     }
 
@@ -36,7 +38,7 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             new ReturnTypeExpectation('arg'),
-            (new ExpectationFactory)->createExpectation('expectReturnType', ['arg'])
+            (new ExpectationFactory)->createExpectation(new Annotation('expectReturnType', 'arg'))
         );
     }
 
@@ -44,7 +46,7 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             new ReturnExpectation(new Regexp('arg')),
-            (new ExpectationFactory)->createExpectation('expectReturn', ['arg'])
+            (new ExpectationFactory)->createExpectation(new Annotation('expectReturn', 'arg'))
         );
     }
 
@@ -52,23 +54,7 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             new NullExpectation,
-            (new ExpectationFactory)->createExpectation('expectNothing', [])
-        );
-    }
-
-    function testCaseInsensitivity()
-    {
-        $this->assertEquals(
-            new NullExpectation,
-            (new ExpectationFactory)->createExpectation('EXPECTNothing', [])
-        );
-    }
-
-    function testDefaultArgument()
-    {
-        $this->assertEquals(
-            new ExceptionExpectation(''),
-            (new ExpectationFactory)->createExpectation('expectException', [])
+            (new ExpectationFactory)->createExpectation(new Annotation('expectNothing'))
         );
     }
 }

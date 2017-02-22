@@ -18,7 +18,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             [
-                new Definition([], new CodeBlock("// code goes here\n"))
+                new Definition(new CodeBlock("// code goes here\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```php
@@ -33,7 +33,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([], new CodeBlock("\$a = new Class();\necho \$a->out();\n"))
+                new Definition(new CodeBlock("\$a = new Class();\necho \$a->out();\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```php
@@ -49,7 +49,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([], new CodeBlock("// code goes here\n"))
+                new Definition(new CodeBlock("// code goes here\n"))
             ],
             (new Parser)->parse(<<<'README'
 Some none example text..
@@ -68,8 +68,8 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([], new CodeBlock("// code goes here\n")),
-                new Definition([], new CodeBlock("// second example\n"))
+                new Definition(new CodeBlock("// code goes here\n")),
+                new Definition(new CodeBlock("// second example\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```php
@@ -90,7 +90,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([], new CodeBlock("// code goes here\n"))
+                new Definition(new CodeBlock("// code goes here\n"))
             ],
             (new Parser)->parse(<<<'README'
 ```PHP
@@ -105,7 +105,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar'))
             ],
             (new Parser)->parse(<<<'README'
 <!-- @foo bar -->
@@ -121,11 +121,7 @@ README
         $this->assertEquals(
             [
                 new Definition(
-                    [
-                        ['foo', ['bar']],
-                        ['bar', ['foo']]
-                    ],
-                    new CodeBlock('')
+                    new CodeBlock(''), new Annotation('foo', 'bar'), new Annotation('bar', 'foo')
                 )
             ],
             (new Parser)->parse(<<<'README'
@@ -143,11 +139,7 @@ README
         $this->assertEquals(
             [
                 new Definition(
-                    [
-                        ['foo', ['bar']],
-                        ['bar', ['foo']]
-                    ],
-                    new CodeBlock('')
+                    new CodeBlock(''), new Annotation('foo', 'bar'), new Annotation('bar', 'foo')
                 )
             ],
             (new Parser)->parse(<<<'README'
@@ -167,11 +159,7 @@ README
         $this->assertEquals(
             [
                 new Definition(
-                    [
-                        ['foo', ['bar']],
-                        ['bar', ['foo']]
-                    ],
-                    new CodeBlock('')
+                    new CodeBlock(''), new Annotation('foo', 'bar'), new Annotation('bar', 'foo')
                 )
             ],
             (new Parser)->parse(" \t<!-- \t\n@foo bar\n@bar foo --> \t\n```php\n```")
@@ -182,7 +170,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar', 'baz']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', 'baz'))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -199,7 +187,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar', 'baz']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', 'baz'))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -216,7 +204,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar', '']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', ''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -233,7 +221,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar baz']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar baz'))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -250,7 +238,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar', '"']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', '"'))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -267,7 +255,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', []]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo'))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -284,7 +272,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar'))
             ],
             (new Parser)->parse(<<<'README'
 <!--@foo bar-->
@@ -299,7 +287,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar']]], new CodeBlock(''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar'))
             ],
             (new Parser)->parse(<<<'README'
 <!--- @foo bar -->
@@ -314,7 +302,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([], new CodeBlock("// code\n"))
+                new Definition(new CodeBlock("// code\n"))
             ],
             (new Parser)->parse(<<<'README'
 <!-- @foo bar -->
@@ -331,7 +319,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([], new CodeBlock("// code\n"))
+                new Definition(new CodeBlock("// code\n"))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -348,7 +336,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar']]], new CodeBlock("// code\n"))
+                new Definition(new CodeBlock("// code\n"), new Annotation('foo', 'bar'))
             ],
             (new Parser)->parse(<<<'README'
 <!--
@@ -367,11 +355,7 @@ README
         $this->assertEquals(
             [
                 new Definition(
-                    [
-                        ['foo', ['bar']],
-                        ['bar', ['foo']]
-                    ],
-                    new CodeBlock("// code\n")
+                    new CodeBlock("// code\n"), new Annotation('foo', 'bar'), new Annotation('bar', 'foo')
                 )
             ],
             (new Parser)->parse(<<<'README'
@@ -391,7 +375,7 @@ README
     {
         $this->assertEquals(
             [
-                new Definition([['foo', ['bar']]], new CodeBlock("// code\n"))
+                new Definition(new CodeBlock("// code\n"), new Annotation('foo', 'bar'))
             ],
             (new Parser)->parse(<<<'README'
 <!--

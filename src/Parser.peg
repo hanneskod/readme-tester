@@ -17,11 +17,11 @@ grammar Parser
     EXAMPLE = VISIBLE_EXAMPLE / HIDDEN_EXAMPLE;
 
     VISIBLE_EXAMPLE = annotations:ANNOTATIONS? code:CODE {
-        return new Definition((array)$annotations, $code);
+        return new Definition($code, ...(array)$annotations);
     };
 
     HIDDEN_EXAMPLE = HTML_COMMENT_START EMPTY_LINE* annotations:ANNOTATION* EMPTY_LINE* code:CODE EMPTY_LINE* HTML_COMMENT_END {
-        return new Definition((array)$annotations, $code);
+        return new Definition($code, ...(array)$annotations);
     };
 
     ANNOTATIONS = groups:ANNOTATION_GROUP+ {
@@ -37,7 +37,7 @@ grammar Parser
     HTML_COMMENT_END = _ '-->' EOL?;
 
     ANNOTATION = _ '@' name:STRING args:STRING* EOL? {
-        return [$name, $args];
+        return new Annotation($name, ...$args);
     };
 
     STRING = _ string:(RAW_STRING / QUOTED_STRING / EMPTY_STRING) _ {

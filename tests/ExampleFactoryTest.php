@@ -20,7 +20,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testIndexAsDefaultName()
     {
         $defs = [
-            new Definition([], new CodeBlock(''))
+            new Definition(new CodeBlock(''))
         ];
 
         $this->assertSame(
@@ -32,7 +32,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testNameFromAnnotation()
     {
         $defs = [
-            new Definition([['example', ['foobar']]], new CodeBlock(''))
+            new Definition(new CodeBlock(''), new Annotation('example', 'foobar'))
         ];
 
         $this->assertSame(
@@ -41,23 +41,11 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    function testDefaultNameWhenAnnotationHasNoArgument()
-    {
-        $defs = [
-            new Definition([['example', []]], new CodeBlock(''))
-        ];
-
-        $this->assertSame(
-            '1',
-            $this->newFactory()->createExamples($defs)['1']->getName()
-        );
-    }
-
     function testExceptionWhenNameIsNotUnique()
     {
         $defs = [
-            new Definition([['example', ['name']]], new CodeBlock('')),
-            new Definition([['example', ['name']]], new CodeBlock(''))
+            new Definition(new CodeBlock(''), new Annotation('example', 'name')),
+            new Definition(new CodeBlock(''), new Annotation('example', 'name'))
         ];
 
         $this->expectException('RuntimeException');
@@ -67,7 +55,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testIgnoreExample()
     {
         $defs = [
-            new Definition([['ignore', []]], new CodeBlock(''))
+            new Definition(new CodeBlock(''), new Annotation('ignore'))
         ];
 
         $this->assertEmpty(
@@ -78,13 +66,13 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testCreateExpectationsFromAnnotations()
     {
         $defs = [
-            new Definition([['expectation', ['foo', 'bar']]], new CodeBlock(''))
+            new Definition(new CodeBlock(''), new Annotation('expectation', 'foo', 'bar'))
         ];
 
         $expectation = $this->prophesize(ExpectationInterface::CLASS)->reveal();
 
         $expectationFactory = $this->prophesize(ExpectationFactory::CLASS);
-        $expectationFactory->createExpectation('expectation', ['foo', 'bar'])->willReturn($expectation);
+        $expectationFactory->createExpectation(new Annotation('expectation', 'foo', 'bar'))->willReturn($expectation);
 
         $exampleFactory = new ExampleFactory($expectationFactory->reveal());
 
@@ -97,13 +85,13 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testAddEmptyExpectationToExamplesWithNoExpectations()
     {
         $defs = [
-            new Definition([], new CodeBlock(''))
+            new Definition(new CodeBlock(''))
         ];
 
         $expectation = $this->prophesize(ExpectationInterface::CLASS)->reveal();
 
         $expectationFactory = $this->prophesize(ExpectationFactory::CLASS);
-        $expectationFactory->createExpectation('expectnothing', [])->willReturn($expectation);
+        $expectationFactory->createExpectation(new Annotation('expectNothing'))->willReturn($expectation);
 
         $exampleFactory = new ExampleFactory($expectationFactory->reveal());
 
@@ -116,7 +104,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testCreateSimpleCodeBlock()
     {
         $defs = [
-            new Definition([], new CodeBlock("some lines\nof\ncode"))
+            new Definition(new CodeBlock("some lines\nof\ncode"))
         ];
 
         $this->assertSame(
@@ -128,7 +116,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testExceptionIfExtendedExampleDoesNotExist()
     {
         $defs = [
-            new Definition([['extends', ['does-not-exist']]], new CodeBlock(''))
+            new Definition(new CodeBlock(''), new Annotation('extends', 'does-not-exist'))
         ];
 
         $this->expectException('RuntimeException');
@@ -138,13 +126,11 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testExtendExample()
     {
         $defs = [
-            new Definition([['example', ['parent']]], new CodeBlock("echo 'parent';\n")),
+            new Definition(new CodeBlock("echo 'parent';\n"), new Annotation('example', 'parent')),
             new Definition(
-                [
-                    ['example', ['child']],
-                    ['extends', ['parent']]
-                ],
-                new CodeBlock("echo 'child';\n")
+                new CodeBlock("echo 'child';\n"),
+                new Annotation('example', 'child'),
+                new Annotation('extends', 'parent')
             )
         ];
 
@@ -157,8 +143,8 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     function testExampleContext()
     {
         $defs = [
-            new Definition([['exampleContext', []]], new CodeBlock("echo 'context';\n")),
-            new Definition([], new CodeBlock("echo 'example';\n"))
+            new Definition(new CodeBlock("echo 'context';\n"), new Annotation('exampleContext')),
+            new Definition(new CodeBlock("echo 'example';\n"))
         ];
 
         $this->assertSame(
