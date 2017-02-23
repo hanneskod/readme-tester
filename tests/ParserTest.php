@@ -298,17 +298,76 @@ README
         );
     }
 
+    function testEmptyLineBetweenAnnotationsAndExample()
+    {
+        $this->assertEquals(
+            [
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar'))
+            ],
+            (new Parser)->parse(<<<'README'
+<!-- @foo bar -->
+
+```php
+```
+README
+            )
+        );
+    }
+
     function testAnnotationsIgnoredWhenNotNextToExample()
     {
         $this->assertEquals(
             [
-                new Definition(new CodeBlock("// code\n"))
+                new Definition(new CodeBlock(''))
             ],
             (new Parser)->parse(<<<'README'
 <!-- @foo bar -->
 Content between annotation and code ignores annotation...
 ```php
-// code
+```
+README
+            )
+        );
+    }
+
+    function testEmptyLinesInAnnotationBlock()
+    {
+        $this->assertEquals(
+            [
+                new Definition(
+                    new CodeBlock(''),
+                    new Annotation('foo', 'bar'),
+                    new Annotation('bar', 'foo')
+                )
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+
+@foo bar
+
+@bar foo
+
+-->
+```php
+```
+README
+            )
+        );
+    }
+
+    function testFreeTextInAnnotationBlock()
+    {
+        $this->assertEquals(
+            [
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar'))
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+Ignored text describing this example...
+
+@foo bar
+-->
+```php
 ```
 README
             )

@@ -77,8 +77,7 @@ Or like this
 
 Readme-tester will only recongnize annotations directly before the code block
 example, meaning that there must be no content between the annotations and the
-code, not even empty lines. If in doubt view the contents of
-[this file](/README.md).
+code.
 
 #### Annotation arguments
 
