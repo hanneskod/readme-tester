@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
+use hanneskod\readmetester\Parser\CodeBlock;
+
 class ExampleTest extends \PHPUnit\Framework\TestCase
 {
     function testGetName()

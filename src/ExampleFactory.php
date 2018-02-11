@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Expectation\ExpectationFactory;
+use hanneskod\readmetester\Parser\Annotation;
+use hanneskod\readmetester\Parser\Definition;
 
 /**
  * Create Examples objects from Definitions

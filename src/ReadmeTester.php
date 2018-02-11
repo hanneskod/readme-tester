@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
+use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\EvalRunner;
 

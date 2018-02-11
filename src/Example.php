@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Expectation\ExpectationInterface;
+use hanneskod\readmetester\Parser\CodeBlock;
 
 /**
  * Wrapper around a block of code and it's expectations

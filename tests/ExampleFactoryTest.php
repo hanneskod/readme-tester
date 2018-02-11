@@ -6,6 +6,9 @@ namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
+use hanneskod\readmetester\Parser\Annotation;
+use hanneskod\readmetester\Parser\Definition;
+use hanneskod\readmetester\Parser\CodeBlock;
 
 /**
  * @covers \hanneskod\readmetester\ExampleFactory

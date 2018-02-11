@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\CodeBlock;
+use hanneskod\readmetester\Parser\CodeBlock;
 
 class EvalRunnerTest extends \PHPUnit\Framework\TestCase
 {

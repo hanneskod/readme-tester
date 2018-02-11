@@ -1,6 +1,6 @@
 <?php
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Parser;
 
 class Parser
 {

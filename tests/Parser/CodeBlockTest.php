@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Parser;
 
 class CodeBlockTest extends \PHPUnit\Framework\TestCase
 {

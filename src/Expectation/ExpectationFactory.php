@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Annotation;
+use hanneskod\readmetester\Parser\Annotation;
 
 /**
  * Create expectations from annotation data
