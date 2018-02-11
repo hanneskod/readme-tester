@@ -1,10 +1,10 @@
 {
     "name": "hanneskod/readme-tester",
     "description": "Validate code examples in readme files",
-    "keywords": ["code examples", "phpunit", "testing"],
+    "keywords": ["code examples", "readme", "testing", "phpunit"],
     "homepage": "https://github.com/hanneskod/readme-tester",
     "type": "library",
-    "license": "WTFPL",
+    "license": "Unlicense",
     "authors": [
         {
             "name": "Hannes Forsgård",
@@ -21,11 +21,9 @@
     ],
     "require": {
         "php": ">=7.1",
-        "symfony/console": ">=2.4, <4.0"
+        "symfony/console": ">=2.4, <5"
     },
     "require-dev": {
-        "scato/phpeg": "^1.0",
-        "phpunit/phpunit": "^6.0",
-        "behat/behat": "^3.2"
+        "scato/phpeg": "^1.0"
     }
 }
