@@ -11,10 +11,7 @@ use hanneskod\readmetester\Annotation;
  */
 class ExpectationFactory
 {
-    /**
-     * @return ExpectationInterface|null Null if no expectation could be created
-     */
-    public function createExpectation(Annotation $annotation)
+    public function createExpectation(Annotation $annotation): ?ExpectationInterface
     {
         if ($annotation->isNamed('expectException')) {
             return new ExceptionExpectation($annotation->getArgument());
@@ -35,5 +32,7 @@ class ExpectationFactory
         if ($annotation->isNamed('expectNothing')) {
             return new NullExpectation;
         }
+
+        return null;
     }
 }

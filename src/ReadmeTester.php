@@ -41,8 +41,9 @@ class ReadmeTester
      */
     public function test(string $contents): \Traversable
     {
-        foreach ($this->exampleFactory->createExamples($this->parser->parse($contents)) as $example) {
+        foreach ($this->exampleFactory->createExamples(...$this->parser->parse($contents)) as $example) {
             $result = $this->runner->run($example->getCodeBlock());
+
             foreach ($example->getExpectations() as $expectation) {
                 yield $example->getName() => $expectation->validate($result);
             }

@@ -14,7 +14,7 @@ Feature: Example context
     -->
 
     <!--
-        @extends context
+        @include context
         @expectOutput /regular/
     -->
     ```php

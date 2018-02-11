@@ -63,7 +63,7 @@ Feature: Basic syntax
     Then 2 tests are executed
     And 0 failures are found
 
-  Scenario: I extend a code block
+  Scenario: I include a code block
     Given a markdown file:
     """
     <!--
@@ -73,7 +73,7 @@ Feature: Basic syntax
     $str = 'parent';
     ```
     <!--
-        @extends parent
+        @include parent
         @expectOutput /parent/
     -->
     ```php
@@ -84,7 +84,31 @@ Feature: Basic syntax
     Then 2 tests are executed
     And 0 failures are found
 
-  Scenario: I extend a code block with a complex name
+  Scenario: I include multiple code blocks
+    Given a markdown file:
+    """
+    <!-- @example A -->
+    ```php
+    $A = 'A';
+    ```
+    <!-- @example B -->
+    ```php
+    $B = 'B';
+    ```
+    <!--
+        @include A
+        @include B
+        @expectOutput /AB/
+    -->
+    ```php
+    echo $A, $B;
+    ```
+    """
+    When I run readme tester
+    Then 3 tests are executed
+    And 0 failures are found
+
+  Scenario: I include a code block with a complex name
     Given a markdown file:
     """
     <!--
@@ -94,7 +118,7 @@ Feature: Basic syntax
     $str = 'foo bar';
     ```
     <!--
-        @extends "foo bar"
+        @include "foo bar"
         @expectOutput "/foo bar/"
     -->
     ```php

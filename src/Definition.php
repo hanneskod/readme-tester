@@ -5,17 +5,17 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 /**
- * Wrapper around the code and annotations defining an example
+ * Value object containing code and annotations defining an example
  */
 class Definition
 {
     /**
-     * @var Annotation[] The set of annotations
+     * @var Annotation[]
      */
     private $annotations;
 
     /**
-     * @var CodeBlock Example code
+     * @var CodeBlock
      */
     private $code;
 
@@ -36,33 +36,5 @@ class Definition
     public function getAnnotations(): array
     {
         return $this->annotations;
-    }
-
-    /**
-     * Get annotation matching $name
-     */
-    public function getAnnotation(string $name): Annotation
-    {
-        foreach ($this->getAnnotations() as $annotation) {
-            if ($annotation->isNamed($name)) {
-                return $annotation;
-            }
-        }
-
-        throw new \LogicException("Annotation $name does not exist");
-    }
-
-    /**
-     * Check if annotation $name exists
-     */
-    public function isAnnotatedWith(string $name): bool
-    {
-        foreach ($this->getAnnotations() as $annotation) {
-            if ($annotation->isNamed($name)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

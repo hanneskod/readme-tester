@@ -46,7 +46,7 @@ Feature: Filter argument
     ```
     <!--
         @example bar
-        @extends foo
+        @include foo
         @expectOutput foo
     -->
     ```php

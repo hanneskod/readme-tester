@@ -158,8 +158,8 @@ return 'foo';
 
 ### Linking examples together
 
-An example may extend a previous example using the `@extends` annotation. This
-will copy the code of the extended example into the extending and wrapp it in
+An example may include a previous example using the `@include` annotation. This
+will copy the code of the includeed example into the current and wrapp it in
 output buffering so that output may be asserted in each of the examples.
 
 <!--
@@ -178,11 +178,11 @@ $data = ['parent' => 'A', 'child' => 'B'];
 echo $data['parent'];
 ```
 
-Now we can extend the named example `parent`.
+Now we can include the named example `parent`.
 
 <!--
     @example child
-    @extends parent
+    @include parent
     @expectOutput B
 -->
 ```php
@@ -190,7 +190,7 @@ Now we can extend the named example `parent`.
 Example is preceded by
 <!--
     @example child
-    @extends parent
+    @include parent
     @expectOutput B
 -->
 */
@@ -223,14 +223,14 @@ $var = 'foobar';
 -->
 
 <!--
-    @extends my-hidden-example
+    @include my-hidden-example
     @expectOutput "foobar"
 -->
 ```php
 /*
 Example is preceded by
 <!--
-    @extends my-hidden-example
+    @include my-hidden-example
     @expectOutput "foobar"
 -->
 */
@@ -239,7 +239,7 @@ echo $var;
 
 ### Creating a default example context
 
-If you want every example in a readme to extend from a base context you can use
+If you want every example in a readme to include a base context you can use
 the `exampleContext` annotation as in the following example.
 
 <!-- @exampleContext -->
