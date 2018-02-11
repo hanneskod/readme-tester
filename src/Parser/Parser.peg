@@ -46,7 +46,7 @@ grammar Parser
         return '"';
     };
 
-    RAW_STRING = $((!(' ' / "\r" / "\n" / "\t" / '-->' / '"') .)+);
+    RAW_STRING = $((!(' ' / "\r" / "\n" / "\t" / COMMENT_END / COMMENT_END_COLD_FUSION / '"') .)+);
 
     CODE = CODE_START code:$((!CODE_END .)*) CODE_END {
         return new CodeBlock($code);
@@ -64,7 +64,11 @@ grammar Parser
 
     HTML_COMMENT_START = _ '<!--' '-'? EOL?;
 
-    HTML_COMMENT_END = _ '-->' EOL?;
+    HTML_COMMENT_END = _ (COMMENT_END / COMMENT_END_COLD_FUSION) EOL?;
+
+    COMMENT_END "-->" = '-->';
+
+    COMMENT_END_COLD_FUSION "--->" = '--->';
 
     EOL "END_OF_LINE" = _ "\r"? "\n";
 

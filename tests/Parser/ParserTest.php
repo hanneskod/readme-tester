@@ -290,7 +290,7 @@ README
                 new Definition(new CodeBlock(''), new Annotation('foo', 'bar'))
             ],
             (new Parser)->parse(<<<'README'
-<!--- @foo bar -->
+<!--- @foo bar --->
 ```php
 ```
 README

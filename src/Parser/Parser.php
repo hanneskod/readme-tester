@@ -1086,15 +1086,13 @@ class Parser
         if (!$_success && !$this->cut) {
             $this->position = $_position55;
 
-            if (substr($this->string, $this->position, strlen('-->')) === '-->') {
-                $_success = true;
-                $this->value = substr($this->string, $this->position, strlen('-->'));
-                $this->position += strlen('-->');
-            } else {
-                $_success = false;
+            $_success = $this->parseCOMMENT_END();
+        }
 
-                $this->report($this->position, '\'-->\'');
-            }
+        if (!$_success && !$this->cut) {
+            $this->position = $_position55;
+
+            $_success = $this->parseCOMMENT_END_COLD_FUSION();
         }
 
         if (!$_success && !$this->cut) {
@@ -1214,15 +1212,13 @@ class Parser
                 if (!$_success && !$this->cut) {
                     $this->position = $_position55;
 
-                    if (substr($this->string, $this->position, strlen('-->')) === '-->') {
-                        $_success = true;
-                        $this->value = substr($this->string, $this->position, strlen('-->'));
-                        $this->position += strlen('-->');
-                    } else {
-                        $_success = false;
+                    $_success = $this->parseCOMMENT_END();
+                }
 
-                        $this->report($this->position, '\'-->\'');
-                    }
+                if (!$_success && !$this->cut) {
+                    $this->position = $_position55;
+
+                    $_success = $this->parseCOMMENT_END_COLD_FUSION();
                 }
 
                 if (!$_success && !$this->cut) {
@@ -1847,46 +1843,50 @@ class Parser
             return $_success;
         }
 
-        $_value94 = array();
+        $_value96 = array();
 
         $_success = $this->parse_();
 
         if ($_success) {
-            $_value94[] = $this->value;
-
-            if (substr($this->string, $this->position, strlen('-->')) === '-->') {
-                $_success = true;
-                $this->value = substr($this->string, $this->position, strlen('-->'));
-                $this->position += strlen('-->');
-            } else {
-                $_success = false;
-
-                $this->report($this->position, '\'-->\'');
-            }
-        }
-
-        if ($_success) {
-            $_value94[] = $this->value;
+            $_value96[] = $this->value;
 
             $_position92 = $this->position;
             $_cut93 = $this->cut;
 
             $this->cut = false;
-            $_success = $this->parseEOL();
+            $_success = $this->parseCOMMENT_END();
 
             if (!$_success && !$this->cut) {
-                $_success = true;
                 $this->position = $_position92;
-                $this->value = null;
+
+                $_success = $this->parseCOMMENT_END_COLD_FUSION();
             }
 
             $this->cut = $_cut93;
         }
 
         if ($_success) {
-            $_value94[] = $this->value;
+            $_value96[] = $this->value;
 
-            $this->value = $_value94;
+            $_position94 = $this->position;
+            $_cut95 = $this->cut;
+
+            $this->cut = false;
+            $_success = $this->parseEOL();
+
+            if (!$_success && !$this->cut) {
+                $_success = true;
+                $this->position = $_position94;
+                $this->value = null;
+            }
+
+            $this->cut = $_cut95;
+        }
+
+        if ($_success) {
+            $_value96[] = $this->value;
+
+            $this->value = $_value96;
         }
 
         $this->cache['HTML_COMMENT_END'][$_position] = array(
@@ -1897,6 +1897,76 @@ class Parser
 
         if (!$_success) {
             $this->report($_position, 'HTML_COMMENT_END');
+        }
+
+        return $_success;
+    }
+
+    protected function parseCOMMENT_END()
+    {
+        $_position = $this->position;
+
+        if (isset($this->cache['COMMENT_END'][$_position])) {
+            $_success = $this->cache['COMMENT_END'][$_position]['success'];
+            $this->position = $this->cache['COMMENT_END'][$_position]['position'];
+            $this->value = $this->cache['COMMENT_END'][$_position]['value'];
+
+            return $_success;
+        }
+
+        if (substr($this->string, $this->position, strlen('-->')) === '-->') {
+            $_success = true;
+            $this->value = substr($this->string, $this->position, strlen('-->'));
+            $this->position += strlen('-->');
+        } else {
+            $_success = false;
+
+            $this->report($this->position, '\'-->\'');
+        }
+
+        $this->cache['COMMENT_END'][$_position] = array(
+            'success' => $_success,
+            'position' => $this->position,
+            'value' => $this->value
+        );
+
+        if (!$_success) {
+            $this->report($_position, "-->");
+        }
+
+        return $_success;
+    }
+
+    protected function parseCOMMENT_END_COLD_FUSION()
+    {
+        $_position = $this->position;
+
+        if (isset($this->cache['COMMENT_END_COLD_FUSION'][$_position])) {
+            $_success = $this->cache['COMMENT_END_COLD_FUSION'][$_position]['success'];
+            $this->position = $this->cache['COMMENT_END_COLD_FUSION'][$_position]['position'];
+            $this->value = $this->cache['COMMENT_END_COLD_FUSION'][$_position]['value'];
+
+            return $_success;
+        }
+
+        if (substr($this->string, $this->position, strlen('--->')) === '--->') {
+            $_success = true;
+            $this->value = substr($this->string, $this->position, strlen('--->'));
+            $this->position += strlen('--->');
+        } else {
+            $_success = false;
+
+            $this->report($this->position, '\'--->\'');
+        }
+
+        $this->cache['COMMENT_END_COLD_FUSION'][$_position] = array(
+            'success' => $_success,
+            'position' => $this->position,
+            'value' => $this->value
+        );
+
+        if (!$_success) {
+            $this->report($_position, "--->");
         }
 
         return $_success;
@@ -1914,15 +1984,15 @@ class Parser
             return $_success;
         }
 
-        $_value97 = array();
+        $_value99 = array();
 
         $_success = $this->parse_();
 
         if ($_success) {
-            $_value97[] = $this->value;
+            $_value99[] = $this->value;
 
-            $_position95 = $this->position;
-            $_cut96 = $this->cut;
+            $_position97 = $this->position;
+            $_cut98 = $this->cut;
 
             $this->cut = false;
             if (substr($this->string, $this->position, strlen("\r")) === "\r") {
@@ -1937,15 +2007,15 @@ class Parser
 
             if (!$_success && !$this->cut) {
                 $_success = true;
-                $this->position = $_position95;
+                $this->position = $_position97;
                 $this->value = null;
             }
 
-            $this->cut = $_cut96;
+            $this->cut = $_cut98;
         }
 
         if ($_success) {
-            $_value97[] = $this->value;
+            $_value99[] = $this->value;
 
             if (substr($this->string, $this->position, strlen("\n")) === "\n") {
                 $_success = true;
@@ -1959,9 +2029,9 @@ class Parser
         }
 
         if ($_success) {
-            $_value97[] = $this->value;
+            $_value99[] = $this->value;
 
-            $this->value = $_value97;
+            $this->value = $_value99;
         }
 
         $this->cache['EOL'][$_position] = array(
@@ -1989,8 +2059,8 @@ class Parser
             return $_success;
         }
 
-        $_position98 = $this->position;
-        $_cut99 = $this->cut;
+        $_position100 = $this->position;
+        $_cut101 = $this->cut;
 
         $this->cut = false;
         if ($this->position < strlen($this->string)) {
@@ -2008,8 +2078,8 @@ class Parser
             $_success = false;
         }
 
-        $this->position = $_position98;
-        $this->cut = $_cut99;
+        $this->position = $_position100;
+        $this->cut = $_cut101;
 
         $this->cache['EOF'][$_position] = array(
             'success' => $_success,
@@ -2036,15 +2106,15 @@ class Parser
             return $_success;
         }
 
-        $_value103 = array();
-        $_cut104 = $this->cut;
+        $_value105 = array();
+        $_cut106 = $this->cut;
 
         while (true) {
-            $_position102 = $this->position;
+            $_position104 = $this->position;
 
             $this->cut = false;
-            $_position100 = $this->position;
-            $_cut101 = $this->cut;
+            $_position102 = $this->position;
+            $_cut103 = $this->cut;
 
             $this->cut = false;
             if (substr($this->string, $this->position, strlen(" ")) === " ") {
@@ -2058,7 +2128,7 @@ class Parser
             }
 
             if (!$_success && !$this->cut) {
-                $this->position = $_position100;
+                $this->position = $_position102;
 
                 if (substr($this->string, $this->position, strlen("\t")) === "\t") {
                     $_success = true;
@@ -2071,22 +2141,22 @@ class Parser
                 }
             }
 
-            $this->cut = $_cut101;
+            $this->cut = $_cut103;
 
             if (!$_success) {
                 break;
             }
 
-            $_value103[] = $this->value;
+            $_value105[] = $this->value;
         }
 
         if (!$this->cut) {
             $_success = true;
-            $this->position = $_position102;
-            $this->value = $_value103;
+            $this->position = $_position104;
+            $this->value = $_value105;
         }
 
-        $this->cut = $_cut104;
+        $this->cut = $_cut106;
 
         $this->cache['_'][$_position] = array(
             'success' => $_success,
