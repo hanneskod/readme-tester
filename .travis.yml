@@ -8,7 +8,7 @@ php:
 
 install:
   - composer install --no-dev
-  - composer global behat/behat:^3.3
+  - composer global require behat/behat:^3.3
   - export PATH=$PATH:$HOME/.composer/vendor/bin/
 
 script:
