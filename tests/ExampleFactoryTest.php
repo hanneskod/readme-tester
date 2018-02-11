@@ -103,13 +103,9 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testCreateSimpleCodeBlock()
     {
-        $defs = [
-            new Definition(new CodeBlock("some lines\nof\ncode"))
-        ];
-
         $this->assertSame(
-            "some lines\nof\ncode",
-            $this->newFactory()->createExamples($defs)['1']->getCodeBlock()->getCode()
+            $codeBlock = $this->prophesize(CodeBlock::CLASS)->reveal(),
+            $this->newFactory()->createExamples([new Definition($codeBlock)])['1']->getCodeBlock()
         );
     }
 
@@ -125,31 +121,35 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testExtendExample()
     {
+        $parentCode = $this->prophesize(CodeBlock::CLASS)->reveal();
+        $childCode = $this->prophesize(CodeBlock::CLASS);
+
+        $childCode->prepend($parentCode)->shouldBeCalled();
+
         $defs = [
-            new Definition(new CodeBlock("echo 'parent';\n"), new Annotation('example', 'parent')),
+            new Definition($parentCode, new Annotation('example', 'parent')),
             new Definition(
-                new CodeBlock("echo 'child';\n"),
+                $childCode->reveal(),
                 new Annotation('example', 'child'),
                 new Annotation('extends', 'parent')
             )
         ];
 
-        $this->assertSame(
-            "ob_start();\necho 'parent';\nob_end_clean();\necho 'child';\n",
-            $this->newFactory()->createExamples($defs)['child']->getCodeBlock()->getCode()
-        );
+        $this->newFactory()->createExamples($defs);
     }
 
     function testExampleContext()
     {
+        $contextCode = $this->prophesize(CodeBlock::CLASS)->reveal();
+        $exampleCode = $this->prophesize(CodeBlock::CLASS);
+
+        $exampleCode->prepend($contextCode)->shouldBeCalled();
+
         $defs = [
-            new Definition(new CodeBlock("echo 'context';\n"), new Annotation('exampleContext')),
-            new Definition(new CodeBlock("echo 'example';\n"))
+            new Definition($contextCode, new Annotation('exampleContext')),
+            new Definition($exampleCode->reveal())
         ];
 
-        $this->assertSame(
-            "ob_start();\necho 'context';\nob_end_clean();\necho 'example';\n",
-            $this->newFactory()->createExamples($defs)['2']->getCodeBlock()->getCode()
-        );
+        $this->newFactory()->createExamples($defs);
     }
 }

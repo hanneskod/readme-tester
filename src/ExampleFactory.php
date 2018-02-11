@@ -38,6 +38,7 @@ class ExampleFactory
             }
 
             $name = (string)($index + 1);
+            $code = $def->getCodeBlock();
 
             if ($def->isAnnotatedWith('example')) {
                 $name = $def->getAnnotation('example')->getArgument();
@@ -48,7 +49,7 @@ class ExampleFactory
             }
 
             if ($context) {
-                $def->getCodeBlock()->prepend($context);
+                $code = $code->prepend($context);
             }
 
             if ($def->isAnnotatedWith('extends')) {
@@ -59,7 +60,7 @@ class ExampleFactory
                     );
                 }
 
-                $def->getCodeBlock()->prepend($examples[$extends]->getCodeBlock());
+                $code = $code->prepend($examples[$extends]->getCodeBlock());
             }
 
             $expectations = $this->createExpectations($def);
@@ -68,10 +69,10 @@ class ExampleFactory
                 $expectations[] = $this->expectationFactory->createExpectation(new Annotation('expectNothing'));
             }
 
-            $examples[$name] = new Example($name, $def->getCodeBlock(), $expectations);
+            $examples[$name] = new Example($name, $code, $expectations);
 
             if ($def->isAnnotatedWith('exampleContext')) {
-                $context = $def->getCodeBlock();
+                $context = $code;
             }
         }
 

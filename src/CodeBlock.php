@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 /**
- * Wrapps an executable block of code
+ * Immutable value object representing a block of code
  */
 class CodeBlock
 {
     /**
-     * @var string The contained code
+     * @var string
      */
     private $code;
 
@@ -20,31 +20,28 @@ class CodeBlock
     }
 
     /**
-     * Prepend this code block with the contents of $codeBlock
+     * Create a new object with the contents of $codeBlock prepended to this block
      */
-    public function prepend(CodeBlock $codeBlock)
+    public function prepend(CodeBlock $codeBlock): CodeBlock
     {
-        $this->code = sprintf(
-            "%s\n%s%s\n%s",
-            'ob_start();',
-            $codeBlock->getCode(),
-            'ob_end_clean();',
-            $this->code
+        return new CodeBlock(
+            sprintf(
+                "%s\n%s%s\n%s",
+                'ob_start();',
+                $codeBlock,
+                'ob_end_clean();',
+                $this
+            )
         );
     }
 
-    /**
-     * Grab contained code
-     */
-    public function getCode(): string
+    public function __tostring(): string
     {
         return $this->code;
     }
 
     /**
      * Execute code block
-     *
-     * @return Result The result of the executed code
      */
     public function execute(): Result
     {

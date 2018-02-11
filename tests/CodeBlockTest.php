@@ -6,11 +6,19 @@ namespace hanneskod\readmetester;
 
 class CodeBlockTest extends \PHPUnit\Framework\TestCase
 {
-    function testGetCode()
+    function testToString()
     {
         $this->assertSame(
             'foobar',
-            (new CodeBlock('foobar'))->getCode()
+            (string)new CodeBlock('foobar')
+        );
+    }
+
+    function testPrepend()
+    {
+        $this->assertSame(
+            "ob_start();\n[FOO]ob_end_clean();\n[BAR]",
+            (string)(new CodeBlock('[BAR]'))->prepend(new CodeBlock('[FOO]'))
         );
     }
 
@@ -47,17 +55,6 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(
             Result::CLASS,
             $codeBlock->execute()
-        );
-    }
-
-    function testPrepend()
-    {
-        $codeBlock = new CodeBlock('bar');
-        $codeBlock->prepend(new CodeBlock('foo'));
-
-        $this->assertSame(
-            "ob_start();\nfooob_end_clean();\nbar",
-            $codeBlock->getCode()
         );
     }
 }
