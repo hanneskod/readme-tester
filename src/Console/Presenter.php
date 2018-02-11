@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester\Command;
+namespace hanneskod\readmetester\Console;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use hanneskod\readmetester\Expectation\ReturnObj\ReturnObj;

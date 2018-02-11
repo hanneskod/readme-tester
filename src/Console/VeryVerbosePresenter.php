@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester\Command;
+namespace hanneskod\readmetester\Console;
 
 /**
  * Presenter for very verbose output

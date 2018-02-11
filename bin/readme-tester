@@ -1,10 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+namespace hanneskod\readmetester\Console;
+
 (@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
 
 use Symfony\Component\Console\Application;
-use hanneskod\readmetester\Command\TestCommand;
 
 $app = new Application('Reamde-Tester', 'dev');
 $app->add(new TestCommand);
