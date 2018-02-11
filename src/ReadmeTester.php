@@ -28,8 +28,11 @@ class ReadmeTester
      */
     private $runner;
 
-    public function __construct(Parser $parser = null, ExampleFactory $exampleFactory = null, RunnerInterface $runner = null)
-    {
+    public function __construct(
+        Parser $parser = null,
+        ExampleFactory $exampleFactory = null,
+        RunnerInterface $runner = null
+    ) {
         $this->parser = $parser ?: new Parser;
         $this->exampleFactory = $exampleFactory ?: new ExampleFactory(new Expectation\ExpectationFactory);
         $this->runner = $runner ?: new EvalRunner;

@@ -20,7 +20,7 @@ class Result
     private $output;
 
     /**
-     * @var \Exception Exception thrown by executed code
+     * @var ?\Exception Exception thrown by executed code
      */
     private $exception;
 

@@ -30,12 +30,12 @@ class ReturnTypeExpectation implements ExpectationInterface
             case 'object':
             case 'resource':
             case 'null':
-                $this->strategy = function(Result $result) use ($type) {
+                $this->strategy = function (Result $result) use ($type) {
                     return 0 == strcasecmp(gettype($result->getReturnValue()), $type);
                 };
                 break;
             default:
-                $this->strategy = function(Result $result) use ($type) {
+                $this->strategy = function (Result $result) use ($type) {
                     return $result->getReturnValue() instanceof $type;
                 };
                 break;

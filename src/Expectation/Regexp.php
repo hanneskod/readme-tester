@@ -40,7 +40,8 @@ class Regexp
      */
     private function isRegexp(string $input): bool
     {
-        set_error_handler(function() {});
+        set_error_handler(function () {
+        });
         $result = preg_match($input, '');
         restore_error_handler();
         return $result !== false;
