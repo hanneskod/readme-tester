@@ -19,6 +19,11 @@ class CodeBlock
         $this->code = $code;
     }
 
+    public function __tostring(): string
+    {
+        return $this->code;
+    }
+
     /**
      * Create a new object with the contents of $codeBlock prepended to this block
      */
@@ -33,29 +38,5 @@ class CodeBlock
                 $this
             )
         );
-    }
-
-    public function __tostring(): string
-    {
-        return $this->code;
-    }
-
-    /**
-     * Execute code block
-     */
-    public function execute(): Result
-    {
-        $returnValue = '';
-        $exception = null;
-
-        ob_start();
-
-        try {
-            $returnValue = eval($this->code);
-        } catch (\Exception $e) {
-            $exception = $e;
-        }
-
-        return new Result($returnValue, ob_get_clean(), $exception);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Result;
+use hanneskod\readmetester\Runner\Result;
 
 /**
  * Validate the result of an executed code block

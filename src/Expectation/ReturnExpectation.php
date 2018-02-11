@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Result;
+use hanneskod\readmetester\Runner\Result;
 
 /**
  * Validate that correct data is returned

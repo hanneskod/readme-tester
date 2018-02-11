@@ -2,9 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
-
-use Exception;
+namespace hanneskod\readmetester\Runner;
 
 /**
  * Container for the result of an executed code block
@@ -22,18 +20,18 @@ class Result
     private $output;
 
     /**
-     * @var Exception Exception thrown by executed code
+     * @var \Exception Exception thrown by executed code
      */
     private $exception;
 
     /**
      * Construct result object
      *
-     * @param mixed          $returnValue Data return by executed code
-     * @param string         $output      Output made by executed code
-     * @param Exception|null $exception   Exception thrown by executed code
+     * @param mixed           $returnValue Data return by executed code
+     * @param string          $output      Output made by executed code
+     * @param \Exception|null $exception   Exception thrown by executed code
      */
-    public function __construct($returnValue, string $output, Exception $exception = null)
+    public function __construct($returnValue, string $output, \Exception $exception = null)
     {
         $this->returnValue = $returnValue;
         $this->output = $output;
@@ -61,7 +59,7 @@ class Result
     /**
      * Get exception thrown by executed code
      *
-     * @return Exception|null
+     * @return \Exception|null
      */
     public function getException()
     {
