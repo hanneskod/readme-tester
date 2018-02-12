@@ -6,11 +6,11 @@ namespace hanneskod\readmetester\Expectation;
 
 class FailureTest extends \PHPUnit\Framework\TestCase
 {
-    public function testDescription()
+    public function testToString()
     {
         $this->assertSame(
             'foobar',
-            (new Failure('foobar'))->getDescription()
+            (string)new Failure('foobar')
         );
     }
 

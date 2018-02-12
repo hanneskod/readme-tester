@@ -90,12 +90,12 @@ class Presenter
         $this->assertionCount++;
 
         if ($status->isSuccess()) {
-            $this->success($exampleName, $status->getDescription());
+            $this->success($exampleName, (string)$status);
             return;
         }
 
         $this->failureCount++;
-        $this->failure($exampleName, $status->getDescription());
+        $this->failure($exampleName, (string)$status);
     }
 
     /**

@@ -37,7 +37,7 @@ class AssertReadme
                 if (!$status->isSuccess()) {
                     $testResult->addFailure(
                         $this->testCase,
-                        new AssertionFailedError("Example $exampleName in $fileName: {$status->getDescription()}"),
+                        new AssertionFailedError("Example $exampleName in $fileName: $status"),
                         0.0
                     );
                 }

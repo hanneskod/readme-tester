@@ -22,7 +22,7 @@ abstract class Status
     /**
      * Get a description of the represented status
      */
-    public function getDescription(): string
+    public function __tostring(): string
     {
         return $this->desc;
     }
