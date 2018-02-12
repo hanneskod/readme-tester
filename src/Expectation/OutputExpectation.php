@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Runner\Result;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 /**
  * Validate that correct output is produced
@@ -24,17 +24,26 @@ class OutputExpectation implements ExpectationInterface
         $this->regexp = $regexp;
     }
 
-    /**
-     * Validate that correct output is produced
-     */
-    public function validate(Result $result): Status
+    public function __tostring(): string
     {
-        if (!$this->regexp->isMatch($result->getOutput())) {
+        return "expecting output to match regexp {$this->regexp}";
+    }
+
+    public function handles(OutcomeInterface $outcome): bool
+    {
+        return $outcome->getType() == OutcomeInterface::TYPE_OUTPUT;
+    }
+
+    public function handle(OutcomeInterface $outcome): Status
+    {
+        $output = $outcome->getPayload()['output'] ?? '';
+
+        if (!$this->regexp->isMatch($output)) {
             return new Failure(
-                "Failed asserting that output '{$result->getOutput()}' matches {$this->regexp}"
+                "Failed asserting that output '$output' matches {$this->regexp}"
             );
         }
 
-        return new Success("Asserted that output '{$result->getOutput()}' matches {$this->regexp}");
+        return new Success("Asserted that output '$output' matches {$this->regexp}");
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Runner\Result;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 /**
  * Validate that the correct exception is thrown
@@ -16,28 +16,28 @@ class ExceptionExpectation implements ExpectationInterface
      */
     private $exceptionClass;
 
-    /**
-     * Load name of expected exception class
-     */
     public function __construct(string $exceptionClass)
     {
         $this->exceptionClass = $exceptionClass;
     }
 
-    /**
-     * Validate that the correct exception is thrown
-     */
-    public function validate(Result $result): Status
+    public function __tostring(): string
     {
-        $exception = $result->getException();
+        return "expecting an exception of class {$this->exceptionClass} to be thrown";
+    }
 
-        if (is_null($exception)) {
-            return new Failure("Failed asserting that exception {$this->exceptionClass} was thrown");
-        }
+    public function handles(OutcomeInterface $outcome): bool
+    {
+        return $outcome->getType() == OutcomeInterface::TYPE_EXCEPTION;
+    }
 
-        if (!$exception instanceof $this->exceptionClass) {
+    public function handle(OutcomeInterface $outcome): Status
+    {
+        $thrownClass = $outcome->getPayload()['class'] ?? '';
+
+        if ($thrownClass != $this->exceptionClass) {
             return new Failure(
-                "Failed asserting that exception {$this->exceptionClass} was thrown, found: ".get_class($exception)
+                "Failed asserting that exception {$this->exceptionClass} was thrown, found: $thrownClass"
             );
         }
 

@@ -4,25 +4,39 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Runner\Result;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 class OutputExpectationTest extends \PHPUnit\Framework\TestCase
 {
+    public function testToString()
+    {
+        $this->assertInternalType('string', (string)new OutputExpectation(new Regexp('')));
+    }
+
+    public function testHandles()
+    {
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->getType()->willReturn(OutcomeInterface::TYPE_OUTPUT);
+        $this->assertTrue((new OutputExpectation(new Regexp('')))->handles($outcome->reveal()));
+    }
+
     public function testNoMatch()
     {
-        $expectation = new OutputExpectation(new Regexp('/foo/'));
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->getPayload()->willReturn(['output' => 'bar']);
         $this->assertInstanceOf(
             Failure::CLASS,
-            $expectation->validate(new Result('', 'bar'))
+            (new OutputExpectation(new Regexp('/foo/')))->handle($outcome->reveal())
         );
     }
 
     public function testMatch()
     {
-        $expectation = new OutputExpectation(new Regexp('/foo/'));
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->getPayload()->willReturn(['output' => 'foo']);
         $this->assertInstanceOf(
             Success::CLASS,
-            $expectation->validate(new Result('', 'foo'))
+            (new OutputExpectation(new Regexp('/foo/')))->handle($outcome->reveal())
         );
     }
 }

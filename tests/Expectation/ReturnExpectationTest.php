@@ -4,48 +4,39 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Runner\Result;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 class ReturnExpectationTest extends \PHPUnit\Framework\TestCase
 {
+    public function testToString()
+    {
+        $this->assertInternalType('string', (string)new ReturnExpectation(new Regexp('')));
+    }
+
+    public function testHandles()
+    {
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->getType()->willReturn(OutcomeInterface::TYPE_RETURN);
+        $this->assertTrue((new ReturnExpectation(new Regexp('')))->handles($outcome->reveal()));
+    }
+
     public function testNoMatch()
     {
-        $expectation = new ReturnExpectation(new Regexp('/foo/'));
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->getPayload()->willReturn(['value' => 'bar']);
         $this->assertInstanceOf(
             Failure::CLASS,
-            $expectation->validate(new Result('bar', ''))
+            (new ReturnExpectation(new Regexp('/foo/')))->handle($outcome->reveal())
         );
     }
 
-    public function testMatchOfNonString()
+    public function testMatch()
     {
-        $this->expectException('UnexpectedValueException');
-        $expectation = new ReturnExpectation(new Regexp(''));
-        $expectation->validate(new Result([], ''));
-    }
-
-    public function matchesProvider()
-    {
-        return [
-            ['/foo/', 'foo'],
-            ['1', '1'],
-            ['1', 1],
-            ['1', true],
-            ['/1\.5/', 1.5],
-            ['//', null],
-            ['/Exception/', new \Exception],
-        ];
-    }
-
-    /**
-     * @dataProvider matchesProvider
-     */
-    public function testMatch($regexp, $returnVal)
-    {
-        $expectation = new ReturnExpectation(new Regexp($regexp));
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->getPayload()->willReturn(['value' => 'foo']);
         $this->assertInstanceOf(
             Success::CLASS,
-            $expectation->validate(new Result($returnVal, ''))
+            (new ReturnExpectation(new Regexp('/foo/')))->handle($outcome->reveal())
         );
     }
 }

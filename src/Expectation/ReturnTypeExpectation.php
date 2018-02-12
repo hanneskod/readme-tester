@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Runner\Result;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 /**
  * Validate the type of the raturn value
@@ -12,51 +12,34 @@ use hanneskod\readmetester\Runner\Result;
 class ReturnTypeExpectation implements ExpectationInterface
 {
     /**
-     * @var callable Validation strategy
+     * @var string
      */
-    private $strategy;
+    private $type;
 
-    /**
-     * Set expected return type
-     */
     public function __construct(string $type)
     {
-        switch (strtolower($type)) {
-            case 'boolean':
-            case 'integer':
-            case 'double':
-            case 'string':
-            case 'array':
-            case 'object':
-            case 'resource':
-            case 'null':
-                $this->strategy = function (Result $result) use ($type) {
-                    return 0 == strcasecmp(gettype($result->getReturnValue()), $type);
-                };
-                break;
-            default:
-                $this->strategy = function (Result $result) use ($type) {
-                    return $result->getReturnValue() instanceof $type;
-                };
-                break;
-        }
+        $this->type = $type;
     }
 
-    /**
-     * Validate the type of the return value
-     */
-    public function validate(Result $result): Status
+    public function __tostring(): string
     {
-        $strategy = $this->strategy;
+        return "expecting return value to be of type {$this->type}";
+    }
 
-        if (!$strategy($result)) {
-            return new Failure(
-                "Failed asserting return type, found: ".gettype($result->getReturnValue())
-            );
+    public function handles(OutcomeInterface $outcome): bool
+    {
+        return $outcome->getType() == OutcomeInterface::TYPE_RETURN;
+    }
+
+    public function handle(OutcomeInterface $outcome): Status
+    {
+        $returnType = $outcome->getPayload()['type'] ?? '';
+        $returnClass = $outcome->getPayload()['class'] ?? '';
+
+        if (0 == strcasecmp($this->type, $returnType) || 0 == strcasecmp($this->type, $returnClass)) {
+            return new Success("Asserted return type $this->type");
         }
 
-        return new Success(
-            "Asserted return type ".gettype($result->getReturnValue())
-        );
+        return new Failure("Failed asserting return type '{$this->type}', found: $returnType");
     }
 }

@@ -11,5 +11,8 @@ use hanneskod\readmetester\Parser\CodeBlock;
  */
 interface RunnerInterface
 {
-    public function run(CodeBlock $codeBlock): Result;
+    /**
+     * @return OutcomeInterface[]
+     */
+    public function run(CodeBlock $codeBlock): array;
 }

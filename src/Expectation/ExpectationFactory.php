@@ -29,10 +29,6 @@ class ExpectationFactory
             return new ReturnExpectation(new Regexp($annotation->getArgument()));
         }
 
-        if ($annotation->isNamed('expectNothing')) {
-            return new NullExpectation;
-        }
-
         return null;
     }
 }

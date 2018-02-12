@@ -78,10 +78,6 @@ class ExampleFactory
                 throw new \RuntimeException("Unknown annotation @{$annotation->getName()}");
             }
 
-            if (empty($expectations)) {
-                $expectations[] = $this->expectationFactory->createExpectation(new Annotation('expectNothing'));
-            }
-
             if (isset($examples[$name])) {
                 throw new \RuntimeException("Example '$name' already exists in definition ".($index + 1));
             }

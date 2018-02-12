@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Runner\Result;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 /**
  * Validate that correct data is returned
@@ -24,32 +24,26 @@ class ReturnExpectation implements ExpectationInterface
         $this->regexp = $regexp;
     }
 
-    /**
-     * Validate that correct value is returned
-     */
-    public function validate(Result $result): Status
+    public function __tostring(): string
     {
-        $return = $this->makeString($result->getReturnValue());
+        return "expecting return value to match regexp {$this->regexp}";
+    }
 
-        if (!$this->regexp->isMatch($return)) {
+    public function handles(OutcomeInterface $outcome): bool
+    {
+        return $outcome->getType() == OutcomeInterface::TYPE_RETURN;
+    }
+
+    public function handle(OutcomeInterface $outcome): Status
+    {
+        $returnValue = $outcome->getPayload()['value'] ?? '';
+
+        if (!$this->regexp->isMatch($returnValue)) {
             return new Failure(
-                "Failed asserting that return value matches {$this->regexp}"
+                "Failed asserting that return value '$returnValue' matches {$this->regexp}"
             );
         }
 
-        return new Success("Asserted that return value matches {$this->regexp}");
-    }
-
-    private function makeString($value): string
-    {
-        if (is_scalar($value)) {
-            return (string)$value;
-        } elseif (is_null($value)) {
-            return '';
-        } elseif (is_object($value) && method_exists($value, '__toString')) {
-            return (string)$value;
-        }
-
-        throw new \UnexpectedValueException("Unable to convert return value into string");
+        return new Success("Asserted that return value '$returnValue' matches {$this->regexp}");
     }
 }

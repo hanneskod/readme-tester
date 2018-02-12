@@ -10,6 +10,8 @@ use hanneskod\readmetester\Runner\EvalRunner;
 
 /**
  * Test examples in readme file
+ *
+ * TODO rename Tester
  */
 class ReadmeTester
 {
@@ -33,6 +35,7 @@ class ReadmeTester
         ExampleFactory $exampleFactory = null,
         RunnerInterface $runner = null
     ) {
+        // TODO remove default values. Create using a TesterFactory instead...
         $this->parser = $parser ?: new Parser;
         $this->exampleFactory = $exampleFactory ?: new ExampleFactory(new Expectation\ExpectationFactory);
         $this->runner = $runner ?: new EvalRunner;
@@ -45,11 +48,14 @@ class ReadmeTester
      */
     public function test(string $contents): \Traversable
     {
-        foreach ($this->exampleFactory->createExamples(...$this->parser->parse($contents)) as $example) {
-            $result = $this->runner->run($example->getCodeBlock());
+        // TODO inject Evaluator...
+        $evaluator = new Evaluator;
 
-            foreach ($example->getExpectations() as $expectation) {
-                yield $example->getName() => $expectation->validate($result);
+        foreach ($this->exampleFactory->createExamples(...$this->parser->parse($contents)) as $example) {
+            $outcomes = $this->runner->run($example->getCodeBlock());
+
+            foreach ($evaluator->evaluate($example->getExpectations(), $outcomes) as $status) {
+                yield $example->getName() => $status;
             }
         }
     }

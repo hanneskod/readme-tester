@@ -6,13 +6,19 @@ Feature: Filter argument
   Scenario: I filter an example
     Given a markdown file:
     """
-    <!-- @example foo -->
+    <!--
+        @example foo
+        @expectOutput foo
+    -->
     ```php
-    // This is example foo
+    echo 'foo';
     ```
-    <!-- @example bar -->
+    <!--
+        @example bar
+        @expectOutput bar
+    -->
     ```php
-    // This is example bar
+    echo 'bar';
     ```
     """
     And the command line argument '--filter=bar'
@@ -22,15 +28,18 @@ Feature: Filter argument
   Scenario: I filter multiple examples
     Given a markdown file:
     """
+    <!-- @expectOutput 1 -->
     ```php
-    // This is example 1
+    echo '1';
     ```
+    <!-- @expectOutput 2 -->
     ```php
-    // This is example 2
+    echo '2';
     ```
     <!-- @example foo -->
+    <!-- @expectOutput foo -->
     ```php
-    // This is example foo
+    echo 'foo';
     ```
     """
     And the command line argument '--filter=/[0-9]+/'

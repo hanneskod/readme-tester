@@ -49,12 +49,4 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
             (new ExpectationFactory)->createExpectation(new Annotation('expectReturn', 'arg'))
         );
     }
-
-    function testCreateEmptyExpectation()
-    {
-        $this->assertEquals(
-            new NullExpectation,
-            (new ExpectationFactory)->createExpectation(new Annotation('expectNothing'))
-        );
-    }
 }

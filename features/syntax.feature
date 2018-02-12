@@ -21,8 +21,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
-    And 0 failures are found
+    Then 0 failures are found
 
   Scenario: I ignore a PHP code block
     Given a markdown file:
@@ -66,9 +65,7 @@ Feature: Basic syntax
   Scenario: I include a code block
     Given a markdown file:
     """
-    <!--
-        @example parent
-    -->
+    <!-- @example parent -->
     ```php
     $str = 'parent';
     ```
@@ -81,7 +78,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 2 tests are executed
+    Then 1 tests are executed
     And 0 failures are found
 
   Scenario: I include multiple code blocks
@@ -105,15 +102,13 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 3 tests are executed
+    Then 1 tests are executed
     And 0 failures are found
 
   Scenario: I include a code block with a complex name
     Given a markdown file:
     """
-    <!--
-        @example "foo bar"
-    -->
+    <!-- @example "foo bar" -->
     ```php
     $str = 'foo bar';
     ```
@@ -126,5 +121,5 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 2 tests are executed
+    Then 1 tests are executed
     And 0 failures are found

@@ -22,7 +22,7 @@ Feature: Example context
     ```
     """
     When I run readme tester
-    Then 2 tests are executed
+    Then 1 tests are executed
     And 0 failures are found
 
   Scenario: I create a default context
@@ -47,5 +47,5 @@ Feature: Example context
     ```
     """
     When I run readme tester
-    Then 3 tests are executed
+    Then 2 tests are executed
     And 0 failures are found

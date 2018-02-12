@@ -148,13 +148,6 @@ return 1;
 // Example is preceded by <!-- @expectReturn /foo/ -->
 return 'foo';
 ```
-#### Expecting nothing
-
-<!-- @expectNothing -->
-```php
-// Example is preceded by <!-- @expectNothing -->
-// nothing is expected here..
-```
 
 ### Linking examples together
 
@@ -279,6 +272,7 @@ PHPUnit integration
 If you are using PHPUnit >= 6 you may subclass `ReadmeTestCase` and use
 `assertReadme()` to test readme snippets through phpunit.
 
+<!-- @ignore -->
 ```php
 class ReadmeTest extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
 {
@@ -295,6 +289,7 @@ If readme-tester is expected to be installed *globally* we dont't want phpunit
 to break when readme-tester is not present. Use the `AssertReadme` class instead
 of subclassing `ReadmeTestCase`.
 
+<!-- @ignore -->
 ```php
 class GlobalReadmeIntegration extends \PHPUnit\Framework\TestCase
 {

@@ -77,22 +77,6 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals([$expectation], $examples['1']->getExpectations());
     }
 
-    function testAddEmptyExpectationToExamplesWithNoExpectations()
-    {
-        $expectation = $this->prophesize(ExpectationInterface::CLASS)->reveal();
-
-        $expectationFactory = $this->prophesize(ExpectationFactory::CLASS);
-        $expectationFactory->createExpectation(new Annotation('expectNothing'))->willReturn($expectation);
-
-        $factory = new ExampleFactory($expectationFactory->reveal());
-
-        $examples = $factory->createExamples(
-            new Definition(new CodeBlock(''))
-        );
-
-        $this->assertEquals([$expectation], $examples['1']->getExpectations());
-    }
-
     function testCreateSimpleCodeBlock()
     {
         $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());

@@ -8,35 +8,42 @@ use hanneskod\readmetester\Parser\CodeBlock;
 
 class EvalRunnerTest extends \PHPUnit\Framework\TestCase
 {
-    function testReturningResult()
+    function testNoOutcome()
     {
-        $this->assertInstanceOf(
-            Result::CLASS,
+        $this->assertEmpty(
             (new EvalRunner)->run(new CodeBlock('$a = 1 + 2;'))
         );
     }
 
     function testOutput()
     {
-        $this->assertSame(
-            'foo',
-            (new EvalRunner)->run(new CodeBlock('echo "foo";'))->getOutput()
+        $this->assertEquals(
+            new OutputOutcome('foo'),
+            (new EvalRunner)->run(new CodeBlock('echo "foo";'))[0]
         );
     }
 
-    function testReturnValue()
+    function testReturnScalar()
     {
-        $this->assertSame(
-            1234,
-            (new EvalRunner)->run(new CodeBlock('return 1234;'))->getReturnValue()
+        $this->assertEquals(
+            new ReturnOutcome('1234', 'integer', ''),
+            (new EvalRunner)->run(new CodeBlock('return 1234;'))[0]
+        );
+    }
+
+    function testReturnObject()
+    {
+        $this->assertEquals(
+            new ReturnOutcome('', 'object', 'A'),
+            (new EvalRunner)->run(new CodeBlock('class A {} return new A;'))[0]
         );
     }
 
     function testException()
     {
-        $this->assertInstanceOf(
-            \Exception::CLASS,
-            (new EvalRunner)->run(new CodeBlock('throw new Exception;'))->getException()
+        $this->assertEquals(
+            new ExceptionOutcome('Exception', 'msg', 10),
+            (new EvalRunner)->run(new CodeBlock('throw new Exception("msg", 10);'))[0]
         );
     }
 }

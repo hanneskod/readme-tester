@@ -2,7 +2,7 @@
 
 namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Runner\Result;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 /**
  * Validate the result of an executed code block
@@ -10,7 +10,17 @@ use hanneskod\readmetester\Runner\Result;
 interface ExpectationInterface
 {
     /**
-     * Validate result object
+     * Cast expectation to a descriptive string
      */
-    public function validate(Result $result): Status;
+    public function __tostring(): string;
+
+    /**
+     * Check if this expectation handles an outcome
+     */
+    public function handles(OutcomeInterface $outcome): bool;
+
+    /**
+     * Handle outcome
+     */
+    public function handle(OutcomeInterface $outcome): Status;
 }

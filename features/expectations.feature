@@ -132,3 +132,27 @@ Feature: Example expectations
     Then 1 tests are executed
     And 0 failures are found
     And the exit code is 0
+
+ Scenario: I fail as an exception is not expected
+    Given a markdown file:
+    """
+    ```php
+    throw new Exception;
+    ```
+    """
+    When I run readme tester
+    Then 1 tests are executed
+    And 1 failures are found
+    And the exit code is 1
+
+ Scenario: I fail as output is not expected
+    Given a markdown file:
+    """
+    ```php
+    echo "foobar";
+    ```
+    """
+    When I run readme tester
+    Then 1 tests are executed
+    And 1 failures are found
+    And the exit code is 1

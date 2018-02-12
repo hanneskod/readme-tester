@@ -11,19 +11,37 @@ use hanneskod\readmetester\Parser\CodeBlock;
  */
 class EvalRunner implements RunnerInterface
 {
-    public function run(CodeBlock $codeBlock): Result
+    /**
+     * @return OutcomeInterface[]
+     */
+    public function run(CodeBlock $codeBlock): array
     {
-        $returnValue = '';
-        $exception = null;
+        $outcomes = [];
 
         ob_start();
 
         try {
             $returnValue = eval($codeBlock);
+
+            if ($returnValue) {
+                $outcomes[] = new ReturnOutcome(
+                    is_scalar($returnValue) ? @(string)$returnValue : '',
+                    gettype($returnValue),
+                    is_object($returnValue) ? get_class($returnValue) : ''
+                );
+            }
         } catch (\Exception $e) {
-            $exception = $e;
+            $outcomes[] = new ExceptionOutcome(
+                get_class($e),
+                $e->getMessage(),
+                $e->getCode()
+            );
         }
 
-        return new Result($returnValue, ob_get_clean(), $exception);
+        if ($output = ob_get_clean()) {
+            $outcomes[] = new OutputOutcome($output);
+        }
+
+        return $outcomes;
     }
 }
