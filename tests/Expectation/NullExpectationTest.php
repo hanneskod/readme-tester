@@ -12,7 +12,7 @@ class NullExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new NullExpectation;
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Success',
+            Success::CLASS,
             $expectation->validate(new Result('', ''))
         );
     }

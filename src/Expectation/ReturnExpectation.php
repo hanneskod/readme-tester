@@ -27,17 +27,17 @@ class ReturnExpectation implements ExpectationInterface
     /**
      * Validate that correct value is returned
      */
-    public function validate(Result $result): ReturnObj\ReturnObj
+    public function validate(Result $result): Status
     {
         $return = $this->makeString($result->getReturnValue());
 
         if (!$this->regexp->isMatch($return)) {
-            return new ReturnObj\Failure(
+            return new Failure(
                 "Failed asserting that return value matches {$this->regexp}"
             );
         }
 
-        return new ReturnObj\Success("Asserted that return value matches {$this->regexp}");
+        return new Success("Asserted that return value matches {$this->regexp}");
     }
 
     private function makeString($value): string

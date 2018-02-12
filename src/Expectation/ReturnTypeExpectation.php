@@ -45,17 +45,17 @@ class ReturnTypeExpectation implements ExpectationInterface
     /**
      * Validate the type of the return value
      */
-    public function validate(Result $result): ReturnObj\ReturnObj
+    public function validate(Result $result): Status
     {
         $strategy = $this->strategy;
 
         if (!$strategy($result)) {
-            return new ReturnObj\Failure(
+            return new Failure(
                 "Failed asserting return type, found: ".gettype($result->getReturnValue())
             );
         }
 
-        return new ReturnObj\Success(
+        return new Success(
             "Asserted return type ".gettype($result->getReturnValue())
         );
     }

@@ -12,7 +12,7 @@ class ExceptionExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ExceptionExpectation('foo');
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            Failure::CLASS,
             $expectation->validate(new Result('', '', null))
         );
     }
@@ -21,7 +21,7 @@ class ExceptionExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ExceptionExpectation('foo');
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            Failure::CLASS,
             $expectation->validate(new Result('', '', new \Exception))
         );
     }
@@ -30,7 +30,7 @@ class ExceptionExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ExceptionExpectation('Exception');
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Success',
+            Success::CLASS,
             $expectation->validate(new Result('', '', new \Exception))
         );
     }

@@ -74,12 +74,12 @@ class TestCommand extends Command
             foreach (new SourceFileIterator($source) as $filename => $contents) {
                 $presenter->beginFile($filename);
 
-                foreach ($tester->test($contents) as $exampleName => $returnObj) {
+                foreach ($tester->test($contents) as $exampleName => $status) {
                     if ($filter && !$filter->isMatch($exampleName)) {
                         continue;
                     }
 
-                    $presenter->beginAssertion($exampleName, $returnObj);
+                    $presenter->beginAssertion($exampleName, $status);
                 }
             }
         }

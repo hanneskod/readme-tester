@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Console;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use hanneskod\readmetester\Expectation\ReturnObj\ReturnObj;
+use hanneskod\readmetester\Expectation\Status;
 
 /**
  * Presenter for normal (non-verbose) output
@@ -85,17 +85,17 @@ class Presenter
     /**
      * Called when an assertion is tested
      */
-    public function beginAssertion(string $exampleName, ReturnObj $returnObj)
+    public function beginAssertion(string $exampleName, Status $status)
     {
         $this->assertionCount++;
 
-        if ($returnObj->isSuccess()) {
-            $this->success($exampleName, $returnObj->getMessage());
+        if ($status->isSuccess()) {
+            $this->success($exampleName, $status->getDescription());
             return;
         }
 
         $this->failureCount++;
-        $this->failure($exampleName, $returnObj->getMessage());
+        $this->failure($exampleName, $status->getDescription());
     }
 
     /**

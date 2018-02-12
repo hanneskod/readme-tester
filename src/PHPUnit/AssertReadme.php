@@ -32,12 +32,12 @@ class AssertReadme
         $testResult = $this->testCase->getTestResultObject();
 
         foreach (new SourceFileIterator($source) as $fileName => $contents) {
-            foreach ($this->tester->test($contents) as $exampleName => $returnObj) {
+            foreach ($this->tester->test($contents) as $exampleName => $status) {
                 $this->testCase->addToAssertionCount(1);
-                if ($returnObj->isFailure()) {
+                if (!$status->isSuccess()) {
                     $testResult->addFailure(
                         $this->testCase,
-                        new AssertionFailedError("Example $exampleName in $fileName: {$returnObj->getMessage()}"),
+                        new AssertionFailedError("Example $exampleName in $fileName: {$status->getDescription()}"),
                         0.0
                     );
                 }

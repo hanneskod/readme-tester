@@ -12,7 +12,7 @@ class ReturnExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ReturnExpectation(new Regexp('/foo/'));
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            Failure::CLASS,
             $expectation->validate(new Result('bar', ''))
         );
     }
@@ -44,7 +44,7 @@ class ReturnExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ReturnExpectation(new Regexp($regexp));
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Success',
+            Success::CLASS,
             $expectation->validate(new Result($returnVal, ''))
         );
     }

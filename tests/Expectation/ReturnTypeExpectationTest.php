@@ -12,7 +12,7 @@ class ReturnTypeExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ReturnTypeExpectation('integer');
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            Failure::CLASS,
             $expectation->validate(new Result('string', ''))
         );
     }
@@ -21,7 +21,7 @@ class ReturnTypeExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ReturnTypeExpectation('integer');
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            Failure::CLASS,
             $expectation->validate(new Result('string', ''))
         );
     }
@@ -46,7 +46,7 @@ class ReturnTypeExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new ReturnTypeExpectation($expected);
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Success',
+            Success::CLASS,
             $expectation->validate(new Result($value, ''))
         );
     }

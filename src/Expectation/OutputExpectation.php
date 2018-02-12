@@ -27,14 +27,14 @@ class OutputExpectation implements ExpectationInterface
     /**
      * Validate that correct output is produced
      */
-    public function validate(Result $result): ReturnObj\ReturnObj
+    public function validate(Result $result): Status
     {
         if (!$this->regexp->isMatch($result->getOutput())) {
-            return new ReturnObj\Failure(
+            return new Failure(
                 "Failed asserting that output '{$result->getOutput()}' matches {$this->regexp}"
             );
         }
 
-        return new ReturnObj\Success("Asserted that output '{$result->getOutput()}' matches {$this->regexp}");
+        return new Success("Asserted that output '{$result->getOutput()}' matches {$this->regexp}");
     }
 }

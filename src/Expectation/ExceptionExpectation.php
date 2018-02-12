@@ -27,20 +27,20 @@ class ExceptionExpectation implements ExpectationInterface
     /**
      * Validate that the correct exception is thrown
      */
-    public function validate(Result $result): ReturnObj\ReturnObj
+    public function validate(Result $result): Status
     {
         $exception = $result->getException();
 
         if (is_null($exception)) {
-            return new ReturnObj\Failure("Failed asserting that exception {$this->exceptionClass} was thrown");
+            return new Failure("Failed asserting that exception {$this->exceptionClass} was thrown");
         }
 
         if (!$exception instanceof $this->exceptionClass) {
-            return new ReturnObj\Failure(
+            return new Failure(
                 "Failed asserting that exception {$this->exceptionClass} was thrown, found: ".get_class($exception)
             );
         }
 
-        return new ReturnObj\Success("Asserted that exception {$this->exceptionClass} was thrown");
+        return new Success("Asserted that exception {$this->exceptionClass} was thrown");
     }
 }

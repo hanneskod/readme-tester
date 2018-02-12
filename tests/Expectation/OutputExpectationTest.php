@@ -12,7 +12,7 @@ class OutputExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new OutputExpectation(new Regexp('/foo/'));
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Failure',
+            Failure::CLASS,
             $expectation->validate(new Result('', 'bar'))
         );
     }
@@ -21,7 +21,7 @@ class OutputExpectationTest extends \PHPUnit\Framework\TestCase
     {
         $expectation = new OutputExpectation(new Regexp('/foo/'));
         $this->assertInstanceOf(
-            'hanneskod\readmetester\Expectation\ReturnObj\Success',
+            Success::CLASS,
             $expectation->validate(new Result('', 'foo'))
         );
     }
