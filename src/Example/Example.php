@@ -2,33 +2,35 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Parser\CodeBlock;
 
 /**
- * Wrapper around a block of code and it's expectations
+ * Default example
  */
 class Example
 {
     /**
-     * @var string Name of this example
+     * @var string
      */
     private $name;
 
     /**
-     * @var CodeBlock Example code
+     * @var CodeBlock
      */
     private $code;
 
     /**
-     * @var ExpectationInterface[] List of expectations
+     * @var ExpectationInterface[]
      */
     private $expectations;
 
     /**
-     * @param string $name
+     * @param string                 $name         Name of this example
+     * @param CodeBlock              $code         Example code
+     * @param ExpectationInterface[] $expectations List of expectations
      */
     public function __construct(string $name, CodeBlock $code, array $expectations)
     {
@@ -37,25 +39,22 @@ class Example
         $this->expectations = $expectations;
     }
 
-    /**
-     * Get name of example
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Get example code block
-     */
+    public function shouldBeEvaluated(): bool
+    {
+        return true;
+    }
+
     public function getCodeBlock(): CodeBlock
     {
         return $this->code;
     }
 
     /**
-     * Get registered expectations
-     *
      * @return ExpectationInterface[]
      */
     public function getExpectations(): array

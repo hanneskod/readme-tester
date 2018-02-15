@@ -235,6 +235,7 @@ echo $var;
 If you want every example in a readme to include a base context you can use
 the `exampleContext` annotation as in the following example.
 
+<!-- @example context -->
 <!-- @exampleContext -->
 ```php
 /*

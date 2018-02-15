@@ -2,17 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Expectation\ExpectationInterface;
-use hanneskod\readmetester\Expectation\Status;
-use hanneskod\readmetester\Expectation\Failure;
 use hanneskod\readmetester\Runner\OutcomeInterface;
 
 /**
  * Evaluate expectations against a set of outcomes
  */
-class Evaluator
+class ExpectationEvaluator
 {
     /**
      * Evaluate expectations against a set of outcomes

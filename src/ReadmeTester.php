@@ -4,14 +4,15 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
+use hanneskod\readmetester\Example\ExampleFactory;
+use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Expectation\Status;
 use hanneskod\readmetester\Parser\Parser;
-use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\EvalRunner;
+use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 
 /**
  * Test examples in readme file
- *
- * TODO rename Tester
  */
 class ReadmeTester
 {
@@ -25,20 +26,10 @@ class ReadmeTester
      */
     private $exampleFactory;
 
-    /**
-     * @var RunnerInterface
-     */
-    private $runner;
-
-    public function __construct(
-        Parser $parser = null,
-        ExampleFactory $exampleFactory = null,
-        RunnerInterface $runner = null
-    ) {
-        // TODO remove default values. Create using a TesterFactory instead...
+    public function __construct(Parser $parser = null, ExampleFactory $exampleFactory = null)
+    {
         $this->parser = $parser ?: new Parser;
         $this->exampleFactory = $exampleFactory ?: new ExampleFactory(new Expectation\ExpectationFactory);
-        $this->runner = $runner ?: new EvalRunner;
     }
 
     /**
@@ -46,17 +37,41 @@ class ReadmeTester
      *
      * @param string $contents File contents to test examples in
      */
-    public function test(string $contents): \Traversable
+    public function test(string $contents): iterable
     {
-        // TODO inject Evaluator...
-        $evaluator = new Evaluator;
+        $tester = new ExampleTester(
+            new EvalRunner,
+            new ExpectationEvaluator
+        );
+
+        $listener = new class implements ListenerInterface {
+            private $example;
+
+            public $statuses = [];
+
+            function onExample(Example $example): void
+            {
+                $this->example = $example;
+            }
+
+            function onIgnoredExample(Example $example): void
+            {
+            }
+
+            function onExpectation(Status $status): void
+            {
+                $this->statuses[] = [$this->example->getName(), $status];
+            }
+        };
+
+        $tester->registerListener($listener);
 
         foreach ($this->exampleFactory->createExamples(...$this->parser->parse($contents)) as $example) {
-            $outcomes = $this->runner->run($example->getCodeBlock());
-
-            foreach ($evaluator->evaluate($example->getExpectations(), $outcomes) as $status) {
-                yield $example->getName() => $status;
-            }
+            $tester->testExample($example);
         }
+
+        foreach ($listener->statuses as $vals) {
+            yield $vals[0] => $vals[1];
+        };
     }
 }

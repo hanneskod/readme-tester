@@ -28,10 +28,12 @@ Feature: Filter argument
   Scenario: I filter multiple examples
     Given a markdown file:
     """
+    <!-- @example 1 -->
     <!-- @expectOutput 1 -->
     ```php
     echo '1';
     ```
+    <!-- @example 2 -->
     <!-- @expectOutput 2 -->
     ```php
     echo '2';

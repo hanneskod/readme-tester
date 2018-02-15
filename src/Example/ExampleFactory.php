@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Parser\Annotation;
@@ -18,9 +18,15 @@ class ExampleFactory
      */
     private $expectationFactory;
 
-    public function __construct(ExpectationFactory $expectationFactory)
+    /**
+     * @var FilterInterface
+     */
+    private $filter;
+
+    public function __construct(ExpectationFactory $expectationFactory, FilterInterface $filter = null)
     {
         $this->expectationFactory = $expectationFactory;
+        $this->filter = $filter ?: new NullFilter;
     }
 
     /**
@@ -34,9 +40,10 @@ class ExampleFactory
         $context = null;
 
         foreach ($defs as $index => $def) {
-            $name = (string)($index + 1);
+            $name = '';
             $code = $def->getCodeBlock();
             $expectations = [];
+            $ignoreExample = false;
 
             if ($context) {
                 $code = $code->prepend($context);
@@ -44,7 +51,8 @@ class ExampleFactory
 
             foreach ($def->getAnnotations() as $annotation) {
                 if ($annotation->isNamed('ignore')) {
-                    continue 2;
+                    $ignoreExample = true;
+                    continue;
                 }
 
                 if ($annotation->isNamed('example')) {
@@ -82,7 +90,17 @@ class ExampleFactory
                 throw new \RuntimeException("Example '$name' already exists in definition ".($index + 1));
             }
 
-            $examples[$name] = new Example($name, $code, $expectations);
+            if (!$this->filter->isValid($name)) {
+                $ignoreExample = true;
+            }
+
+            if (!$name) {
+                $name = (string)($index + 1);
+            }
+
+            $examples[$name] = $ignoreExample
+                ? new IgnoredExample($name, $code, $expectations)
+                : new Example($name, $code, $expectations);
         }
 
         return $examples;

@@ -2,14 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Expectation;
 
-use hanneskod\readmetester\Expectation\ExpectationInterface;
-use hanneskod\readmetester\Expectation\Failure;
-use hanneskod\readmetester\Expectation\Success;
 use hanneskod\readmetester\Runner\OutcomeInterface;
 
-class EvaluatorTest extends \PHPUnit\Framework\TestCase
+class ExpectationEvaluatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testThatUnhandledOutcomeCasesFailure()
     {
@@ -17,7 +14,7 @@ class EvaluatorTest extends \PHPUnit\Framework\TestCase
         $outcome->__tostring()->willReturn('');
         $this->assertInstanceOf(
             Failure::CLASS,
-            (new Evaluator)->evaluate([], [$outcome->reveal()])[0]
+            (new ExpectationEvaluator)->evaluate([], [$outcome->reveal()])[0]
         );
     }
 
@@ -27,7 +24,7 @@ class EvaluatorTest extends \PHPUnit\Framework\TestCase
         $expectation->__tostring()->willReturn('');
         $this->assertInstanceOf(
             Failure::CLASS,
-            (new Evaluator)->evaluate([$expectation->reveal()], [])[0]
+            (new ExpectationEvaluator)->evaluate([$expectation->reveal()], [])[0]
         );
     }
 
@@ -45,7 +42,7 @@ class EvaluatorTest extends \PHPUnit\Framework\TestCase
         $exptB->handles($outcome)->willReturn(true);
         $exptB->handle($outcome)->willReturn(new Success(''));
 
-        $statuses = (new Evaluator)->evaluate([$exptA->reveal(), $exptB->reveal()], [$outcome->reveal()]);
+        $statuses = (new ExpectationEvaluator)->evaluate([$exptA->reveal(), $exptB->reveal()], [$outcome->reveal()]);
 
         $this->assertInstanceOf(Failure::CLASS, $statuses[0]);
         $this->assertInstanceOf(Success::CLASS, $statuses[1]);

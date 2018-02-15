@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
@@ -53,11 +53,11 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
 
-        $this->assertEmpty(
-            $factory->createExamples(
-                new Definition(new CodeBlock(''), new Annotation('ignore'))
-            )
+        $examples = $factory->createExamples(
+            new Definition(new CodeBlock(''), new Annotation('ignore'), new Annotation('example', 'name'))
         );
+
+        $this->assertFalse($examples['name']->shouldBeEvaluated());
     }
 
     function testCreateExpectationsFromAnnotations()

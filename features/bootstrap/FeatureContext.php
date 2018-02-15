@@ -83,22 +83,18 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iRunReadmeTester()
     {
-        $command = realpath('bin/readme-tester') . " test {$this->sourceDir} " . implode(' ', $this->args);
+        $command = realpath('bin/readme-tester') . " test {$this->sourceDir} --format=json " . implode(' ', $this->args);
 
         $cwd = getcwd();
         chdir($this->sourceDir);
-        $lastLine = exec($command, $output, $this->returnValue);
+        exec($command, $output, $this->returnValue);
         chdir($cwd);
 
-        $success = preg_match('/^(\d+) files? tested, (\d+) assertions?, (\d+) failures?.$/', $lastLine, $matches);
+        $data = json_decode(implode($output), true);
 
-        if (!$success) {
-            throw new \Exception("Last line of output did not contain test report: ($lastLine)");
-        }
-
-        $this->fileCount = (int)$matches[1];
-        $this->assertionCount = (int)$matches[2];
-        $this->failureCount = (int)$matches[3];
+        $this->fileCount = $data['counts']['files'];
+        $this->assertionCount = $data['counts']['assertions'];
+        $this->failureCount = $data['counts']['failures'];
     }
 
     /**

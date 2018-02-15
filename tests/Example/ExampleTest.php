@@ -2,8 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
+namespace hanneskod\readmetester\Example;
 
+use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Parser\CodeBlock;
 
 class ExampleTest extends \PHPUnit\Framework\TestCase
@@ -13,6 +14,13 @@ class ExampleTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(
             'foobar',
             (new Example('foobar', $this->prophesize(CodeBlock::CLASS)->reveal(), []))->getName()
+        );
+    }
+
+    function testShouldBeEaluated()
+    {
+        $this->assertTrue(
+            (new Example('', $this->prophesize(CodeBlock::CLASS)->reveal(), []))->shouldBeEvaluated()
         );
     }
 
@@ -27,7 +35,7 @@ class ExampleTest extends \PHPUnit\Framework\TestCase
 
     function testGetExpectations()
     {
-        $expectations = [$this->prophesize(Expectation\ExpectationInterface::CLASS)->reveal()];
+        $expectations = [$this->prophesize(ExpectationInterface::CLASS)->reveal()];
         $this->assertSame(
             $expectations,
             (new Example('', $this->prophesize(CodeBlock::CLASS)->reveal(), $expectations))->getExpectations()
