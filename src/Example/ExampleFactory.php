@@ -13,6 +13,11 @@ use hanneskod\readmetester\Parser\Definition;
  */
 class ExampleFactory
 {
+    const ANNOTATION_IGNORE = 'ignore';
+    const ANNOTATION_EXAMPLE = 'example';
+    const ANNOTATION_INCLUDE = 'include';
+    const ANNOTATION_CONTEXT = 'exampleContext';
+
     /**
      * @var ExpectationFactory
      */
@@ -23,10 +28,19 @@ class ExampleFactory
      */
     private $filter;
 
-    public function __construct(ExpectationFactory $expectationFactory, FilterInterface $filter = null)
-    {
+    /**
+     * @var bool
+     */
+    private $ignoreUnknownAnnotations;
+
+    public function __construct(
+        ExpectationFactory $expectationFactory,
+        FilterInterface $filter,
+        bool $ignoreUnknownAnnotations = false
+    ) {
         $this->expectationFactory = $expectationFactory;
-        $this->filter = $filter ?: new NullFilter;
+        $this->filter = $filter;
+        $this->ignoreUnknownAnnotations = $ignoreUnknownAnnotations;
     }
 
     /**
@@ -50,22 +64,22 @@ class ExampleFactory
             }
 
             foreach ($def->getAnnotations() as $annotation) {
-                if ($annotation->isNamed('ignore')) {
+                if ($annotation->isNamed(self::ANNOTATION_IGNORE)) {
                     $ignoreExample = true;
                     continue;
                 }
 
-                if ($annotation->isNamed('example')) {
+                if ($annotation->isNamed(self::ANNOTATION_EXAMPLE)) {
                     $name = $annotation->getArgument();
                     continue;
                 }
 
-                if ($annotation->isNamed('include')) {
+                if ($annotation->isNamed(self::ANNOTATION_INCLUDE)) {
                     $toInclude = $annotation->getArgument();
 
                     if (!isset($examples[$toInclude])) {
                         throw new \RuntimeException(
-                            "Example '$toInclude' does not exist and can not be included in definition ".($index + 1)
+                            "Example '$toInclude' does not exist and can not be included in definition $name"
                         );
                     }
 
@@ -78,16 +92,18 @@ class ExampleFactory
                     continue;
                 }
 
-                if ($annotation->isNamed('exampleContext')) {
+                if ($annotation->isNamed(self::ANNOTATION_CONTEXT)) {
                     $context = $code;
                     continue;
                 }
 
-                throw new \RuntimeException("Unknown annotation @{$annotation->getName()}");
+                if (!$this->ignoreUnknownAnnotations) {
+                    throw new \RuntimeException("Unknown annotation @{$annotation->getName()}");
+                }
             }
 
             if (isset($examples[$name])) {
-                throw new \RuntimeException("Example '$name' already exists in definition ".($index + 1));
+                throw new \RuntimeException("Example '$name' already exists in definition " . ($index + 1));
             }
 
             if (!$this->filter->isValid($name)) {

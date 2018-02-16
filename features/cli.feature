@@ -14,3 +14,15 @@ Feature: CLI features
     """
     When I run readme tester
     Then 2 files are found
+
+  Scenario: I ignore unknown annotations
+    Given a markdown file:
+    """
+    <!-- @thisAnnotationDoesNotExist -->
+    ```php
+    // example
+    ```
+    """
+    And the command line argument '--ignore-unknown-annotations'
+    When I run readme tester
+    Then 1 examples are evaluated

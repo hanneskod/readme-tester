@@ -17,7 +17,10 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 {
     function testIndexAsDefaultName()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''))
@@ -28,7 +31,10 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testNameFromAnnotation()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''), new Annotation('example', 'foobar'))
@@ -39,7 +45,10 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testExceptionWhenNameIsNotUnique()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $this->expectException(\RuntimeException::CLASS);
 
@@ -51,7 +60,10 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testIgnoreExample()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''), new Annotation('ignore'), new Annotation('example', 'name'))
@@ -68,7 +80,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
         $expectationFactory = $this->prophesize(ExpectationFactory::CLASS);
         $expectationFactory->createExpectation($expectationAnnotation)->willReturn($expectation);
 
-        $factory = new ExampleFactory($expectationFactory->reveal());
+        $factory = new ExampleFactory($expectationFactory->reveal(), new NullFilter);
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''), $expectationAnnotation)
@@ -79,7 +91,11 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testCreateSimpleCodeBlock()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
+
         $codeBlock = $this->prophesize(CodeBlock::CLASS)->reveal();
 
         $examples = $factory->createExamples(
@@ -91,7 +107,10 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testExceptionIfIncludedExampleDoesNotExist()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $this->expectException(\RuntimeException::CLASS);
 
@@ -102,7 +121,10 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testIncludeExample()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $parentCode = $this->prophesize(CodeBlock::CLASS)->reveal();
         $childCode = $this->prophesize(CodeBlock::CLASS);
@@ -121,7 +143,10 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testExampleContext()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $contextCode = $this->prophesize(CodeBlock::CLASS)->reveal();
         $exampleCode = $this->prophesize(CodeBlock::CLASS);
@@ -136,12 +161,31 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
     function testExceptionOnUnknownAnnotation()
     {
-        $factory = new ExampleFactory($this->prophesize(ExpectationFactory::CLASS)->reveal());
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter
+        );
 
         $this->expectException(\RuntimeException::CLASS);
 
         $factory->createExamples(
             new Definition(new CodeBlock(''), new Annotation('annotation-name-does-not-exist'))
+        );
+    }
+
+    function testIgnoreUnknownAnnotation()
+    {
+        $factory = new ExampleFactory(
+            $this->prophesize(ExpectationFactory::CLASS)->reveal(),
+            new NullFilter,
+            true
+        );
+
+        $this->assertCount(
+            1,
+            $factory->createExamples(
+                new Definition(new CodeBlock(''), new Annotation('annotation-name-does-not-exist'))
+            )
         );
     }
 }

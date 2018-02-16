@@ -6,3 +6,4 @@
 * `--filter` now only works on named examples
 * Added the `--named-only` option
 * Added the `--format` option and the json format
+* Added the `--ignore-unknown-annotations` option

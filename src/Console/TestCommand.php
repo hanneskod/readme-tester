@@ -54,6 +54,12 @@ class TestCommand extends Command
                 'Test only named examples'
             )
             ->addOption(
+                'ignore-unknown-annotations',
+                null,
+                InputOption::VALUE_NONE,
+                'Ignore example annotations that are not known to readme-tester'
+            )
+            ->addOption(
                 'bootstrap',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -74,7 +80,10 @@ class TestCommand extends Command
             ? new RegexpFilter($input->getOption('filter'))
             : ($input->getOption('named-only') ? new UnnamedFilter : new NullFilter);
 
-        $engine = (new EngineFactory)->createEngine($filter);
+        $engine = (new EngineFactory)->createEngine(
+            $filter,
+            $input->getOption('ignore-unknown-annotations')
+        );
 
         $exitStatus = new ExitStatusListener;
         $engine->registerListener($exitStatus);
