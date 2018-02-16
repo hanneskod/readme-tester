@@ -23,9 +23,10 @@ Feature: Filter argument
     """
     And the command line argument '--filter=bar'
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 examples are evaluated
+    And 1 examples are ignored
 
-  Scenario: I filter multiple examples
+  Scenario: I filter using a regexp
     Given a markdown file:
     """
     <!-- @example 1 -->
@@ -46,7 +47,8 @@ Feature: Filter argument
     """
     And the command line argument '--filter=/[0-9]+/'
     When I run readme tester
-    Then 2 tests are executed
+    Then 2 examples are evaluated
+    And 1 examples are ignored
 
   Scenario: I filter an inherited example
     Given a markdown file:
@@ -66,5 +68,22 @@ Feature: Filter argument
     """
     And the command line argument '--filter=bar'
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 examples are evaluated
+    And 1 examples are ignored
     And 0 failures are found
+
+  Scenario: I filter named only
+    Given a markdown file:
+    """
+    ```php
+    // this-example-has-no-name
+    ```
+    <!-- @example foo -->
+    ```php
+    // this-examples-has-a-name
+    ```
+    """
+    And the command line argument '--named-only'
+    When I run readme tester
+    Then 1 examples are evaluated
+    And 1 examples are ignored

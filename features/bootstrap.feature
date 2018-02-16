@@ -24,5 +24,5 @@ Feature: Bootstrap argument
     """
     And the command line argument '--bootstrap=Foo.php'
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found

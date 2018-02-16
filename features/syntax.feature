@@ -11,7 +11,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 0 tests are executed
+    Then 0 expectations are found
 
   Scenario: I parse a file with a PHP code block
     Given a markdown file:
@@ -32,7 +32,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 0 tests are executed
+    Then 0 expectations are found
 
   Scenario: I use multiple annotation lines
     Given a markdown file:
@@ -44,7 +44,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 2 tests are executed
+    Then 2 expectations are found
     And 0 failures are found
 
   Scenario: I use an annotation block
@@ -59,7 +59,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 2 tests are executed
+    Then 2 expectations are found
     And 0 failures are found
 
   Scenario: I include a code block
@@ -78,7 +78,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
 
   Scenario: I include multiple code blocks
@@ -102,7 +102,7 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
 
   Scenario: I include a code block with a complex name
@@ -121,5 +121,5 @@ Feature: Basic syntax
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found

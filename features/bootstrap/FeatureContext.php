@@ -22,24 +22,14 @@ class FeatureContext implements Context, SnippetAcceptingContext
     private $args = [];
 
     /**
-     * @var integer The number of processed files
-     */
-    private $fileCount = 0;
-
-    /**
-     * @var integer The number of assertions
-     */
-    private $assertionCount = 0;
-
-    /**
-     * @var integer The number of failed assertions
-     */
-    private $failureCount = 0;
-
-    /**
      * @var integer Return value of the last readme-tester execution
      */
     private $returnValue = 0;
+
+    /**
+     * @var array Parsed json formatted output from the last readme-tester execution
+     */
+    private $output;
 
     public function __construct()
     {
@@ -84,26 +74,50 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iRunReadmeTester()
     {
         $command = realpath('bin/readme-tester') . " test {$this->sourceDir} --format=json " . implode(' ', $this->args);
-
         $cwd = getcwd();
         chdir($this->sourceDir);
         exec($command, $output, $this->returnValue);
+        $this->output = json_decode(implode($output), true);
         chdir($cwd);
-
-        $data = json_decode(implode($output), true);
-
-        $this->fileCount = $data['counts']['files'];
-        $this->assertionCount = $data['counts']['assertions'];
-        $this->failureCount = $data['counts']['failures'];
     }
 
     /**
-     * @Then :number tests are executed
+     * @Then :number files are found
      */
-    public function testsAreExecuted(int $number)
+    public function filesAreFound(int $number)
     {
-        if ($this->assertionCount != $number) {
-            throw new \Exception("{$this->assertionCount} assertions tested, expected $number");
+        if ($this->output['counts']['files'] != $number) {
+            throw new \Exception("{$this->output['counts']['files']} files found, expected $number");
+        }
+    }
+
+    /**
+     * @Then :number examples are evaluated
+     */
+    public function examplesAreEvaluated(int $number)
+    {
+        if ($this->output['counts']['examples'] != $number) {
+            throw new \Exception("{$this->output['counts']['examples']} examples evaluated, expected $number");
+        }
+    }
+
+    /**
+     * @Then :number examples are ignored
+     */
+    public function examplesAreInored(int $number)
+    {
+        if ($this->output['counts']['ignored'] != $number) {
+            throw new \Exception("{$this->output['counts']['ignored']} examples ignored, expected $number");
+        }
+    }
+
+    /**
+     * @Then :number expectations are found
+     */
+    public function expectationsAreFound(int $number)
+    {
+        if ($this->output['counts']['assertions'] != $number) {
+            throw new \Exception("{$this->output['counts']['assertions']} assertions found, expected $number");
         }
     }
 
@@ -112,8 +126,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function failuresAreFound($number)
     {
-        if ($this->failureCount != $number) {
-            throw new \Exception("{$this->failureCount} failures found, expected $number");
+        if ($this->output['counts']['failures'] != $number) {
+            throw new \Exception("{$this->output['counts']['failures']} failures found, expected $number");
         }
     }
 

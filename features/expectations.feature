@@ -12,22 +12,22 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
     And the exit code is 0
 
  Scenario: I fail expecting output using a regular expresion
-   Given a markdown file:
-   """
-   <!-- @expectOutput /regular/ -->
-   ```php
-   echo 'The regepxp does not match this..';
-   ```
-   """
-   When I run readme tester
-   Then 1 tests are executed
-   And 1 failures are found
-   And the exit code is 1
+    Given a markdown file:
+    """
+    <!-- @expectOutput /regular/ -->
+    ```php
+    echo 'The regepxp does not match this..';
+    ```
+    """
+    When I run readme tester
+    Then 1 expectations are found
+    And 1 failures are found
+    And the exit code is 1
 
  Scenario: I expect output using a string
     Given a markdown file:
@@ -38,7 +38,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
     And the exit code is 0
 
@@ -51,7 +51,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 1 failures are found
     And the exit code is 1
 
@@ -64,7 +64,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
     And the exit code is 0
 
@@ -77,7 +77,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 1 failures are found
     And the exit code is 1
 
@@ -90,7 +90,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
     And the exit code is 0
 
@@ -103,7 +103,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
     And the exit code is 0
 
@@ -116,7 +116,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
     And the exit code is 0
 
@@ -129,7 +129,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 0 failures are found
     And the exit code is 0
 
@@ -141,7 +141,7 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 1 failures are found
     And the exit code is 1
 
@@ -153,6 +153,6 @@ Feature: Example expectations
     ```
     """
     When I run readme tester
-    Then 1 tests are executed
+    Then 1 expectations are found
     And 1 failures are found
     And the exit code is 1
