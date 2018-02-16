@@ -4,44 +4,28 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\PHPUnit;
 
-use hanneskod\readmetester\ReadmeTester;
+use hanneskod\readmetester\Engine;
+use hanneskod\readmetester\EngineFactory;
 use hanneskod\readmetester\SourceFileIterator;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\AssertionFailedError;
 
 class AssertReadme
 {
     /**
-     * @var TestCase
+     * @var Engine
      */
-    private $testCase;
+    private $engine;
 
-    /**
-     * @var ReadmeTester
-     */
-    private $tester;
-
-    public function __construct(TestCase $testCase, ReadmeTester $tester = null)
+    public function __construct(TestCase $testCase, Engine $engine = null)
     {
-        $this->testCase = $testCase;
-        $this->tester = $tester ?: new ReadmeTester;
+        $this->engine = $engine ?: (new EngineFactory)->createEngine();
+        $this->engine->registerListener(new PhpunitListener($testCase));
     }
 
     public function assertReadme(string $source)
     {
-        $testResult = $this->testCase->getTestResultObject();
-
         foreach (new SourceFileIterator($source) as $fileName => $contents) {
-            foreach ($this->tester->test($contents) as $exampleName => $status) {
-                $this->testCase->addToAssertionCount(1);
-                if (!$status->isSuccess()) {
-                    $testResult->addFailure(
-                        $this->testCase,
-                        new AssertionFailedError("Example $exampleName in $fileName: $status"),
-                        0.0
-                    );
-                }
-            }
+            $this->engine->testFile($contents);
         }
     }
 }
