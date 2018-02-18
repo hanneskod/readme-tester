@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
-class EngineFactoryTest extends \PHPUnit\Framework\TestCase
+class EngineBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreateEngine()
+    public function testBuildEngine()
     {
         $this->assertInstanceOf(
             Engine::CLASS,
-            (new EngineFactory)->createEngine()
+            (new EngineBuilder)->buildEngine()
         );
     }
 }

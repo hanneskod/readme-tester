@@ -9,11 +9,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use hanneskod\readmetester\EngineFactory;
+use hanneskod\readmetester\EngineBuilder;
 use hanneskod\readmetester\SourceFileIterator;
 use hanneskod\readmetester\Example\RegexpFilter;
 use hanneskod\readmetester\Example\UnnamedFilter;
-use hanneskod\readmetester\Example\NullFilter;
 use hanneskod\readmetester\Runner\IsolationRunner;
 
 /**
@@ -83,20 +82,23 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $filter = $input->getOption('filter')
-            ? new RegexpFilter($input->getOption('filter'))
-            : ($input->getOption('named-only') ? new UnnamedFilter : new NullFilter);
+        $engineBuilder = new EngineBuilder;
 
-        $engineFactory = new EngineFactory;
-
-        if ($input->getOption('isolation')) {
-            $engineFactory->setRunner(new IsolationRunner);
+        if ($filter = $input->getOption('filter')) {
+            $engineBuilder->setFilter(new RegexpFilter($filter));
+        } elseif ($input->getOption('named-only')) {
+            $engineBuilder->setFilter(new UnnamedFilter);
         }
 
-        $engine = $engineFactory->createEngine(
-            $filter,
-            $input->getOption('ignore-unknown-annotations')
-        );
+        if ($input->getOption('isolation')) {
+            $engineBuilder->setRunner(new IsolationRunner);
+        }
+
+        if ($input->getOption('ignore-unknown-annotations')) {
+            $engineBuilder->setIgnoreUnknownAnnotations();
+        }
+
+        $engine = $engineBuilder->buildEngine();
 
         $exitStatus = new ExitStatusListener;
         $engine->registerListener($exitStatus);

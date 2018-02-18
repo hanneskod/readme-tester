@@ -13,24 +13,48 @@ use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\EvalRunner;
 
-// TODO rewrite as a builder...
-class EngineFactory
+class EngineBuilder
 {
+    /**
+     * @var FilterInterface
+     */
+    private $filter;
+
+    /**
+     * @var RunnerInterface
+     */
     private $runner;
 
-    public function setRunner(RunnerInterface $runner)
+    /**
+     * @var bool
+     */
+    private $ignoreUnknownAnnotations = false;
+
+    public function setIgnoreUnknownAnnotations($flag = true)
     {
-        $this->runner = $runner;
+        $this->ignoreUnknownAnnotations = $flag;
     }
 
-    public function createEngine(FilterInterface $filter = null, bool $ignoreUnknownAnnotations = false): Engine
+    public function setFilter(FilterInterface $filter): self
+    {
+        $this->filter = $filter;
+        return $this;
+    }
+
+    public function setRunner(RunnerInterface $runner): self
+    {
+        $this->runner = $runner;
+        return $this;
+    }
+
+    public function buildEngine(): Engine
     {
         return new Engine(
             new Parser,
             new ExampleFactory(
                 new ExpectationFactory,
-                $filter ?: new NullFilter,
-                $ignoreUnknownAnnotations
+                $this->filter ?: new NullFilter,
+                $this->ignoreUnknownAnnotations
             ),
             new ExampleTester(
                 $this->runner ?: new EvalRunner,
