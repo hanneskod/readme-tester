@@ -52,11 +52,19 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testError()
+    public function testTriggerError()
     {
         $this->assertInstanceOf(
             ErrorOutcome::CLASS,
             $this->createRunner()->run(new CodeBlock('trigger_error("ERROR");'))[0]
+        );
+    }
+
+    public function testFatalError()
+    {
+        $this->assertInstanceOf(
+            ErrorOutcome::CLASS,
+            $this->createRunner()->run(new CodeBlock('this_function_does_not_exist();'))[0]
         );
     }
 }

@@ -21,7 +21,18 @@ class EvalRunner implements RunnerInterface
         ob_start();
 
         try {
-            $returnValue = eval($codeBlock);
+            $returnValue = null;
+
+            try {
+                $lastErrorBefore = error_get_last();
+                $returnValue = @eval($codeBlock);
+                $lastErrorAfter = error_get_last();
+                if ($lastErrorBefore != $lastErrorAfter) {
+                    $outcomes[] = new ErrorOutcome("{$lastErrorAfter['type']}: {$lastErrorAfter['message']}");
+                }
+            } catch (\Error $e) {
+                $outcomes[] = new ErrorOutcome((string)$e);
+            }
 
             if ($returnValue) {
                 $outcomes[] = new ReturnOutcome(

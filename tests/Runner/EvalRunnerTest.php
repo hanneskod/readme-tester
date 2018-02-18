@@ -10,9 +10,4 @@ class EvalRunnerTest extends AbstractRunnerTest
     {
         return new EvalRunner;
     }
-
-    public function testError()
-    {
-        $this->markTestIncomplete('Error handling is not implemented in EvalRunner');
-    }
 }
