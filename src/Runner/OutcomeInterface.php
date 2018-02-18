@@ -25,6 +25,11 @@ interface OutcomeInterface
     const TYPE_EXCEPTION = 'TYPE_EXCEPTION';
 
     /**
+     * Error type identifier
+     */
+    const TYPE_ERROR = 'TYPE_ERROR';
+
+    /**
      * Convert outcome to string
      */
     public function __tostring(): string;

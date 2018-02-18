@@ -16,12 +16,19 @@
             "hanneskod\\readmetester\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "hanneskod\\readmetester\\": "tests/"
+        }
+    },
     "bin": [
         "bin/readme-tester"
     ],
     "require": {
         "php": ">=7.1",
-        "symfony/console": ">=2.4, <5"
+        "symfony/console": ">=2.4, <5",
+        "symfony/process": "^4",
+        "hkod/frontmatter": "^1.1"
     },
     "require-dev": {
         "scato/phpeg": "^1.0"

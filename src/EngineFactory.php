@@ -10,10 +10,19 @@ use hanneskod\readmetester\Example\NullFilter;
 use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
+use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\EvalRunner;
 
+// TODO rewrite as a builder...
 class EngineFactory
 {
+    private $runner;
+
+    public function setRunner(RunnerInterface $runner)
+    {
+        $this->runner = $runner;
+    }
+
     public function createEngine(FilterInterface $filter = null, bool $ignoreUnknownAnnotations = false): Engine
     {
         return new Engine(
@@ -24,7 +33,7 @@ class EngineFactory
                 $ignoreUnknownAnnotations
             ),
             new ExampleTester(
-                new EvalRunner,
+                $this->runner ?: new EvalRunner,
                 new ExpectationEvaluator
             )
         );

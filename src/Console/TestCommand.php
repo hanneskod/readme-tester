@@ -14,6 +14,7 @@ use hanneskod\readmetester\SourceFileIterator;
 use hanneskod\readmetester\Example\RegexpFilter;
 use hanneskod\readmetester\Example\UnnamedFilter;
 use hanneskod\readmetester\Example\NullFilter;
+use hanneskod\readmetester\Runner\IsolationRunner;
 
 /**
  * CLI command to run test
@@ -60,6 +61,12 @@ class TestCommand extends Command
                 'Ignore example annotations that are not known to readme-tester'
             )
             ->addOption(
+                'isolation',
+                null,
+                InputOption::VALUE_NONE,
+                'Run tests in isolation'
+            )
+            ->addOption(
                 'bootstrap',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -80,7 +87,13 @@ class TestCommand extends Command
             ? new RegexpFilter($input->getOption('filter'))
             : ($input->getOption('named-only') ? new UnnamedFilter : new NullFilter);
 
-        $engine = (new EngineFactory)->createEngine(
+        $engineFactory = new EngineFactory;
+
+        if ($input->getOption('isolation')) {
+            $engineFactory->setRunner(new IsolationRunner);
+        }
+
+        $engine = $engineFactory->createEngine(
             $filter,
             $input->getOption('ignore-unknown-annotations')
         );
