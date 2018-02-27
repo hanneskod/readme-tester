@@ -66,7 +66,7 @@ class ExampleFactory
                 }
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_EXAMPLE)) {
-                    $name = $annotation->getArgument();
+                    $name = $annotation->getArgument() ?: (string)($index + 1);
                     continue;
                 }
 

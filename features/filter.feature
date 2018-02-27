@@ -72,15 +72,31 @@ Feature: Filter argument
     And 1 examples are ignored
     And 0 failures are found
 
-  Scenario: I filter named only
+  Scenario: I filter flaged only
     Given a markdown file:
     """
     ```php
-    // this-example-has-no-name
+    // this-example-has-no-annotation
     ```
     <!-- @example foo -->
     ```php
-    // this-examples-has-a-name
+    // this-examples-has-an-annotation
+    ```
+    """
+    And the command line argument '--named-only'
+    When I run readme tester
+    Then 1 examples are evaluated
+    And 1 examples are ignored
+
+  Scenario: I filter flaged only using unnamed example
+    Given a markdown file:
+    """
+    ```php
+    // this-example-has-no-annotation
+    ```
+    <!-- @example -->
+    ```php
+    // this-examples-has-an-annotation
     ```
     """
     And the command line argument '--named-only'
