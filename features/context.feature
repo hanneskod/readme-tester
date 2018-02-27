@@ -6,13 +6,10 @@ Feature: Example context
   Scenario: I create a context
     Given a markdown file:
     """
-    <!--
-    @exampleContext
-
+    <!-- @exampleContext -->
     ```php
     $context = 'This output is matched using a regular expression';
     ```
-    -->
 
     <!-- @expectOutput /regular/ -->
     ```php
@@ -62,6 +59,28 @@ Feature: Example context
     <!-- @expectOutput /regular/ -->
     ```php
     echo $context;
+    ```
+    """
+    When I run readme tester
+    Then 1 expectations are found
+    And 0 failures are found
+
+  Scenario: I create multiple contexts
+    Given a markdown file:
+    """
+    <!-- @exampleContext -->
+    ```php
+    $a = 'A';
+    ```
+
+    <!-- @exampleContext -->
+    ```php
+    $b = 'B';
+    ```
+
+    <!-- @expectOutput /^AB$/ -->
+    ```php
+    echo $a, $b;
     ```
     """
     When I run readme tester
