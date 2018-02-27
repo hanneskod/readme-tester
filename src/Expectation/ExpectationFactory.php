@@ -15,11 +15,11 @@ class ExpectationFactory
     public function createExpectation(Annotation $annotation): ?ExpectationInterface
     {
         if ($annotation->isNamed(Annotations::ANNOTATION_EXPECT_OUTPUT)) {
-            return new OutputExpectation(new Regexp($annotation->getArgument()));
+            return new OutputExpectation(new Regexp($annotation->getArgument() ?: '//'));
         }
 
         if ($annotation->isNamed(Annotations::ANNOTATION_EXPECT_ERROR)) {
-            return new ErrorExpectation(new Regexp($annotation->getArgument()));
+            return new ErrorExpectation(new Regexp($annotation->getArgument() ?: '//'));
         }
 
         if ($annotation->isNamed('expectException')) {

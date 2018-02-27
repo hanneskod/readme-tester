@@ -47,9 +47,11 @@ class AnnotationTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    function testExceptionWhenArgumentDoesNotExist()
+    function testEmptyStringWhenArgumentDoesNotExist()
     {
-        $this->expectException('LogicException');
-        (new Annotation(''))->getArgument(1);
+        $this->assertSame(
+            '',
+            (new Annotation(''))->getArgument(1)
+        );
     }
 }

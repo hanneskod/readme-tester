@@ -54,10 +54,6 @@ class Annotation
      */
     public function getArgument(int $index = 0): string
     {
-        if (!isset($this->arguments[$index])) {
-            throw new \LogicException("Annotation @{$this->getName()} missing argument $index");
-        }
-
-        return $this->arguments[$index];
+        return $this->arguments[$index] ?? '';
     }
 }

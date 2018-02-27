@@ -55,10 +55,36 @@ Feature: Example expectations
     And 1 failures are found
     And the exit code is 1
 
+ Scenario: I expect output with no argument
+    Given a markdown file:
+    """
+    <!-- @expectOutput -->
+    ```php
+    echo 'abc';
+    ```
+    """
+    When I run readme tester
+    Then 1 expectations are found
+    And 0 failures are found
+    And the exit code is 0
+
   Scenario: I expect an error
     Given a markdown file:
     """
     <!-- @expectError /this_function_does_not_exist/ -->
+    ```php
+    this_function_does_not_exist();
+    ```
+    """
+    When I run readme tester
+    Then 1 expectations are found
+    And 0 failures are found
+    And the exit code is 0
+
+  Scenario: I expect an error with no argument
+    Given a markdown file:
+    """
+    <!-- @expectError -->
     ```php
     this_function_does_not_exist();
     ```
