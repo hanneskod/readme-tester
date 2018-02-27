@@ -82,8 +82,8 @@ code.
 #### Annotation arguments
 
 Annotation tags are prefixed with `@` and are followed by a list of arguments
-separated by spaces. If an argument includes spaces it must be enclosed in
-double quotes (`"`).
+separated by spaces. If an argument includes spaces it can be enclosed in
+double (`"`) or single quotes (`'`).
 
 ### Naming examples
 

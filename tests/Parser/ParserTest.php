@@ -187,11 +187,11 @@ README
     {
         $this->assertEquals(
             [
-                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', 'baz'))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', "baz 'baz'"))
             ],
             (new Parser)->parse(<<<'README'
 <!--
-    @foo bar "baz"
+    @foo bar "baz 'baz'"
 -->
 ```php
 ```
@@ -200,15 +200,15 @@ README
         );
     }
 
-    function testEmptyAnnotationArgument()
+    function testEmptyAnnotationArguments()
     {
         $this->assertEquals(
             [
-                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', ''))
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', '', ''))
             ],
             (new Parser)->parse(<<<'README'
 <!--
-    @foo bar ""
+    @foo bar "" ''
 -->
 ```php
 ```
@@ -243,6 +243,40 @@ README
             (new Parser)->parse(<<<'README'
 <!--
     @foo bar "\""
+-->
+```php
+```
+README
+            )
+        );
+    }
+
+    function testSingleQuotedAnnotationArgument()
+    {
+        $this->assertEquals(
+            [
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', '"baz baz"'))
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+    @foo bar '"baz baz"'
+-->
+```php
+```
+README
+            )
+        );
+    }
+
+    function testEscapedSingleQuoteInAnnotationArgument()
+    {
+        $this->assertEquals(
+            [
+                new Definition(new CodeBlock(''), new Annotation('foo', 'bar', "'"))
+            ],
+            (new Parser)->parse(<<<'README'
+<!--
+    @foo bar '\''
 -->
 ```php
 ```

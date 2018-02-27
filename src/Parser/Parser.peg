@@ -30,23 +30,39 @@ grammar Parser
         return new Annotation($name, ...$args);
     };
 
-    STRING = _ string:(RAW_STRING / QUOTED_STRING / EMPTY_STRING) _ {
+    STRING = _ string:(RAW_STRING / DOUBLE_QUOTED_STRING / SINGLE_QUOTED_STRING / EMPTY_STRING) _ {
         return $string;
     };
 
-    EMPTY_STRING = '""' {
+    EMPTY_STRING = '""' / "''" {
         return '';
     };
 
-    QUOTED_STRING = '"' string:(ESCAPED_QUOTE / ' ' / RAW_STRING)* '"' {
+    DOUBLE_QUOTED_STRING = DOUBLE_QUOTE string:(ESCAPED_DOUBLE_QUOTE / SINGLE_QUOTE / ' ' / RAW_STRING)* DOUBLE_QUOTE {
         return implode($string);
     };
 
-    ESCAPED_QUOTE = '\"' {
+    DOUBLE_QUOTE = '"' {
         return '"';
     };
 
-    RAW_STRING = $((!(' ' / "\r" / "\n" / "\t" / COMMENT_END / COMMENT_END_COLD_FUSION / '"') .)+);
+    ESCAPED_DOUBLE_QUOTE = '\"' {
+        return '"';
+    };
+
+    SINGLE_QUOTED_STRING = SINGLE_QUOTE string:(ESCAPED_SINGLE_QUOTE / DOUBLE_QUOTE / ' ' / RAW_STRING)* SINGLE_QUOTE {
+        return implode($string);
+    };
+
+    SINGLE_QUOTE =  "'" {
+        return "'";
+    };
+
+    ESCAPED_SINGLE_QUOTE = "\'" {
+        return "'";
+    };
+
+    RAW_STRING = $((!(' ' / "\r" / "\n" / "\t" / COMMENT_END / COMMENT_END_COLD_FUSION / DOUBLE_QUOTE / SINGLE_QUOTE) .)+);
 
     CODE = CODE_START code:$((!CODE_END .)*) CODE_END {
         return new CodeBlock($code);

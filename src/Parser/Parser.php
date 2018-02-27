@@ -757,7 +757,13 @@ class Parser
             if (!$_success && !$this->cut) {
                 $this->position = $_position46;
 
-                $_success = $this->parseQUOTED_STRING();
+                $_success = $this->parseDOUBLE_QUOTED_STRING();
+            }
+
+            if (!$_success && !$this->cut) {
+                $this->position = $_position46;
+
+                $_success = $this->parseSINGLE_QUOTED_STRING();
             }
 
             if (!$_success && !$this->cut) {
@@ -816,6 +822,10 @@ class Parser
             return $_success;
         }
 
+        $_position49 = $this->position;
+        $_cut50 = $this->cut;
+
+        $this->cut = false;
         if (substr($this->string, $this->position, strlen('""')) === '""') {
             $_success = true;
             $this->value = substr($this->string, $this->position, strlen('""'));
@@ -826,11 +836,27 @@ class Parser
             $this->report($this->position, '\'""\'');
         }
 
-        if ($_success) {
-            $this->value = call_user_func(function () {
-                return '';
-            });
+        if (!$_success && !$this->cut) {
+            $this->position = $_position49;
+
+            if (substr($this->string, $this->position, strlen("''")) === "''") {
+                $_success = true;
+                $this->value = substr($this->string, $this->position, strlen("''"));
+                $this->position += strlen("''");
+            } else {
+                $_success = false;
+
+                $this->report($this->position, '"\'\'"');
+            }
+
+            if ($_success) {
+                $this->value = call_user_func(function () {
+                    return '';
+                });
+            }
         }
+
+        $this->cut = $_cut50;
 
         $this->cache['EMPTY_STRING'][$_position] = array(
             'success' => $_success,
@@ -845,48 +871,46 @@ class Parser
         return $_success;
     }
 
-    protected function parseQUOTED_STRING()
+    protected function parseDOUBLE_QUOTED_STRING()
     {
         $_position = $this->position;
 
-        if (isset($this->cache['QUOTED_STRING'][$_position])) {
-            $_success = $this->cache['QUOTED_STRING'][$_position]['success'];
-            $this->position = $this->cache['QUOTED_STRING'][$_position]['position'];
-            $this->value = $this->cache['QUOTED_STRING'][$_position]['value'];
+        if (isset($this->cache['DOUBLE_QUOTED_STRING'][$_position])) {
+            $_success = $this->cache['DOUBLE_QUOTED_STRING'][$_position]['success'];
+            $this->position = $this->cache['DOUBLE_QUOTED_STRING'][$_position]['position'];
+            $this->value = $this->cache['DOUBLE_QUOTED_STRING'][$_position]['value'];
 
             return $_success;
         }
 
-        $_value54 = array();
+        $_value56 = array();
 
-        if (substr($this->string, $this->position, strlen('"')) === '"') {
-            $_success = true;
-            $this->value = substr($this->string, $this->position, strlen('"'));
-            $this->position += strlen('"');
-        } else {
-            $_success = false;
-
-            $this->report($this->position, '\'"\'');
-        }
+        $_success = $this->parseDOUBLE_QUOTE();
 
         if ($_success) {
-            $_value54[] = $this->value;
+            $_value56[] = $this->value;
 
-            $_value52 = array();
-            $_cut53 = $this->cut;
+            $_value54 = array();
+            $_cut55 = $this->cut;
 
             while (true) {
+                $_position53 = $this->position;
+
+                $this->cut = false;
                 $_position51 = $this->position;
+                $_cut52 = $this->cut;
 
                 $this->cut = false;
-                $_position49 = $this->position;
-                $_cut50 = $this->cut;
-
-                $this->cut = false;
-                $_success = $this->parseESCAPED_QUOTE();
+                $_success = $this->parseESCAPED_DOUBLE_QUOTE();
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position49;
+                    $this->position = $_position51;
+
+                    $_success = $this->parseSINGLE_QUOTE();
+                }
+
+                if (!$_success && !$this->cut) {
+                    $this->position = $_position51;
 
                     if (substr($this->string, $this->position, strlen(' ')) === ' ') {
                         $_success = true;
@@ -900,27 +924,27 @@ class Parser
                 }
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position49;
+                    $this->position = $_position51;
 
                     $_success = $this->parseRAW_STRING();
                 }
 
-                $this->cut = $_cut50;
+                $this->cut = $_cut52;
 
                 if (!$_success) {
                     break;
                 }
 
-                $_value52[] = $this->value;
+                $_value54[] = $this->value;
             }
 
             if (!$this->cut) {
                 $_success = true;
-                $this->position = $_position51;
-                $this->value = $_value52;
+                $this->position = $_position53;
+                $this->value = $_value54;
             }
 
-            $this->cut = $_cut53;
+            $this->cut = $_cut55;
 
             if ($_success) {
                 $string = $this->value;
@@ -928,23 +952,15 @@ class Parser
         }
 
         if ($_success) {
-            $_value54[] = $this->value;
+            $_value56[] = $this->value;
 
-            if (substr($this->string, $this->position, strlen('"')) === '"') {
-                $_success = true;
-                $this->value = substr($this->string, $this->position, strlen('"'));
-                $this->position += strlen('"');
-            } else {
-                $_success = false;
-
-                $this->report($this->position, '\'"\'');
-            }
+            $_success = $this->parseDOUBLE_QUOTE();
         }
 
         if ($_success) {
-            $_value54[] = $this->value;
+            $_value56[] = $this->value;
 
-            $this->value = $_value54;
+            $this->value = $_value56;
         }
 
         if ($_success) {
@@ -953,27 +969,68 @@ class Parser
             });
         }
 
-        $this->cache['QUOTED_STRING'][$_position] = array(
+        $this->cache['DOUBLE_QUOTED_STRING'][$_position] = array(
             'success' => $_success,
             'position' => $this->position,
             'value' => $this->value
         );
 
         if (!$_success) {
-            $this->report($_position, 'QUOTED_STRING');
+            $this->report($_position, 'DOUBLE_QUOTED_STRING');
         }
 
         return $_success;
     }
 
-    protected function parseESCAPED_QUOTE()
+    protected function parseDOUBLE_QUOTE()
     {
         $_position = $this->position;
 
-        if (isset($this->cache['ESCAPED_QUOTE'][$_position])) {
-            $_success = $this->cache['ESCAPED_QUOTE'][$_position]['success'];
-            $this->position = $this->cache['ESCAPED_QUOTE'][$_position]['position'];
-            $this->value = $this->cache['ESCAPED_QUOTE'][$_position]['value'];
+        if (isset($this->cache['DOUBLE_QUOTE'][$_position])) {
+            $_success = $this->cache['DOUBLE_QUOTE'][$_position]['success'];
+            $this->position = $this->cache['DOUBLE_QUOTE'][$_position]['position'];
+            $this->value = $this->cache['DOUBLE_QUOTE'][$_position]['value'];
+
+            return $_success;
+        }
+
+        if (substr($this->string, $this->position, strlen('"')) === '"') {
+            $_success = true;
+            $this->value = substr($this->string, $this->position, strlen('"'));
+            $this->position += strlen('"');
+        } else {
+            $_success = false;
+
+            $this->report($this->position, '\'"\'');
+        }
+
+        if ($_success) {
+            $this->value = call_user_func(function () {
+                return '"';
+            });
+        }
+
+        $this->cache['DOUBLE_QUOTE'][$_position] = array(
+            'success' => $_success,
+            'position' => $this->position,
+            'value' => $this->value
+        );
+
+        if (!$_success) {
+            $this->report($_position, 'DOUBLE_QUOTE');
+        }
+
+        return $_success;
+    }
+
+    protected function parseESCAPED_DOUBLE_QUOTE()
+    {
+        $_position = $this->position;
+
+        if (isset($this->cache['ESCAPED_DOUBLE_QUOTE'][$_position])) {
+            $_success = $this->cache['ESCAPED_DOUBLE_QUOTE'][$_position]['success'];
+            $this->position = $this->cache['ESCAPED_DOUBLE_QUOTE'][$_position]['position'];
+            $this->value = $this->cache['ESCAPED_DOUBLE_QUOTE'][$_position]['value'];
 
             return $_success;
         }
@@ -994,14 +1051,207 @@ class Parser
             });
         }
 
-        $this->cache['ESCAPED_QUOTE'][$_position] = array(
+        $this->cache['ESCAPED_DOUBLE_QUOTE'][$_position] = array(
             'success' => $_success,
             'position' => $this->position,
             'value' => $this->value
         );
 
         if (!$_success) {
-            $this->report($_position, 'ESCAPED_QUOTE');
+            $this->report($_position, 'ESCAPED_DOUBLE_QUOTE');
+        }
+
+        return $_success;
+    }
+
+    protected function parseSINGLE_QUOTED_STRING()
+    {
+        $_position = $this->position;
+
+        if (isset($this->cache['SINGLE_QUOTED_STRING'][$_position])) {
+            $_success = $this->cache['SINGLE_QUOTED_STRING'][$_position]['success'];
+            $this->position = $this->cache['SINGLE_QUOTED_STRING'][$_position]['position'];
+            $this->value = $this->cache['SINGLE_QUOTED_STRING'][$_position]['value'];
+
+            return $_success;
+        }
+
+        $_value62 = array();
+
+        $_success = $this->parseSINGLE_QUOTE();
+
+        if ($_success) {
+            $_value62[] = $this->value;
+
+            $_value60 = array();
+            $_cut61 = $this->cut;
+
+            while (true) {
+                $_position59 = $this->position;
+
+                $this->cut = false;
+                $_position57 = $this->position;
+                $_cut58 = $this->cut;
+
+                $this->cut = false;
+                $_success = $this->parseESCAPED_SINGLE_QUOTE();
+
+                if (!$_success && !$this->cut) {
+                    $this->position = $_position57;
+
+                    $_success = $this->parseDOUBLE_QUOTE();
+                }
+
+                if (!$_success && !$this->cut) {
+                    $this->position = $_position57;
+
+                    if (substr($this->string, $this->position, strlen(' ')) === ' ') {
+                        $_success = true;
+                        $this->value = substr($this->string, $this->position, strlen(' '));
+                        $this->position += strlen(' ');
+                    } else {
+                        $_success = false;
+
+                        $this->report($this->position, '\' \'');
+                    }
+                }
+
+                if (!$_success && !$this->cut) {
+                    $this->position = $_position57;
+
+                    $_success = $this->parseRAW_STRING();
+                }
+
+                $this->cut = $_cut58;
+
+                if (!$_success) {
+                    break;
+                }
+
+                $_value60[] = $this->value;
+            }
+
+            if (!$this->cut) {
+                $_success = true;
+                $this->position = $_position59;
+                $this->value = $_value60;
+            }
+
+            $this->cut = $_cut61;
+
+            if ($_success) {
+                $string = $this->value;
+            }
+        }
+
+        if ($_success) {
+            $_value62[] = $this->value;
+
+            $_success = $this->parseSINGLE_QUOTE();
+        }
+
+        if ($_success) {
+            $_value62[] = $this->value;
+
+            $this->value = $_value62;
+        }
+
+        if ($_success) {
+            $this->value = call_user_func(function () use (&$string) {
+                return implode($string);
+            });
+        }
+
+        $this->cache['SINGLE_QUOTED_STRING'][$_position] = array(
+            'success' => $_success,
+            'position' => $this->position,
+            'value' => $this->value
+        );
+
+        if (!$_success) {
+            $this->report($_position, 'SINGLE_QUOTED_STRING');
+        }
+
+        return $_success;
+    }
+
+    protected function parseSINGLE_QUOTE()
+    {
+        $_position = $this->position;
+
+        if (isset($this->cache['SINGLE_QUOTE'][$_position])) {
+            $_success = $this->cache['SINGLE_QUOTE'][$_position]['success'];
+            $this->position = $this->cache['SINGLE_QUOTE'][$_position]['position'];
+            $this->value = $this->cache['SINGLE_QUOTE'][$_position]['value'];
+
+            return $_success;
+        }
+
+        if (substr($this->string, $this->position, strlen("'")) === "'") {
+            $_success = true;
+            $this->value = substr($this->string, $this->position, strlen("'"));
+            $this->position += strlen("'");
+        } else {
+            $_success = false;
+
+            $this->report($this->position, '"\'"');
+        }
+
+        if ($_success) {
+            $this->value = call_user_func(function () {
+                return "'";
+            });
+        }
+
+        $this->cache['SINGLE_QUOTE'][$_position] = array(
+            'success' => $_success,
+            'position' => $this->position,
+            'value' => $this->value
+        );
+
+        if (!$_success) {
+            $this->report($_position, 'SINGLE_QUOTE');
+        }
+
+        return $_success;
+    }
+
+    protected function parseESCAPED_SINGLE_QUOTE()
+    {
+        $_position = $this->position;
+
+        if (isset($this->cache['ESCAPED_SINGLE_QUOTE'][$_position])) {
+            $_success = $this->cache['ESCAPED_SINGLE_QUOTE'][$_position]['success'];
+            $this->position = $this->cache['ESCAPED_SINGLE_QUOTE'][$_position]['position'];
+            $this->value = $this->cache['ESCAPED_SINGLE_QUOTE'][$_position]['value'];
+
+            return $_success;
+        }
+
+        if (substr($this->string, $this->position, strlen("\'")) === "\'") {
+            $_success = true;
+            $this->value = substr($this->string, $this->position, strlen("\'"));
+            $this->position += strlen("\'");
+        } else {
+            $_success = false;
+
+            $this->report($this->position, '"\\\'"');
+        }
+
+        if ($_success) {
+            $this->value = call_user_func(function () {
+                return "'";
+            });
+        }
+
+        $this->cache['ESCAPED_SINGLE_QUOTE'][$_position] = array(
+            'success' => $_success,
+            'position' => $this->position,
+            'value' => $this->value
+        );
+
+        if (!$_success) {
+            $this->report($_position, 'ESCAPED_SINGLE_QUOTE');
         }
 
         return $_success;
@@ -1019,16 +1269,16 @@ class Parser
             return $_success;
         }
 
-        $_position63 = $this->position;
+        $_position71 = $this->position;
 
-        $_value59 = array();
+        $_value67 = array();
 
-        $_position57 = $this->position;
-        $_cut58 = $this->cut;
+        $_position65 = $this->position;
+        $_cut66 = $this->cut;
 
         $this->cut = false;
-        $_position55 = $this->position;
-        $_cut56 = $this->cut;
+        $_position63 = $this->position;
+        $_cut64 = $this->cut;
 
         $this->cut = false;
         if (substr($this->string, $this->position, strlen(' ')) === ' ') {
@@ -1042,7 +1292,7 @@ class Parser
         }
 
         if (!$_success && !$this->cut) {
-            $this->position = $_position55;
+            $this->position = $_position63;
 
             if (substr($this->string, $this->position, strlen("\r")) === "\r") {
                 $_success = true;
@@ -1056,7 +1306,7 @@ class Parser
         }
 
         if (!$_success && !$this->cut) {
-            $this->position = $_position55;
+            $this->position = $_position63;
 
             if (substr($this->string, $this->position, strlen("\n")) === "\n") {
                 $_success = true;
@@ -1070,7 +1320,7 @@ class Parser
         }
 
         if (!$_success && !$this->cut) {
-            $this->position = $_position55;
+            $this->position = $_position63;
 
             if (substr($this->string, $this->position, strlen("\t")) === "\t") {
                 $_success = true;
@@ -1084,32 +1334,30 @@ class Parser
         }
 
         if (!$_success && !$this->cut) {
-            $this->position = $_position55;
+            $this->position = $_position63;
 
             $_success = $this->parseCOMMENT_END();
         }
 
         if (!$_success && !$this->cut) {
-            $this->position = $_position55;
+            $this->position = $_position63;
 
             $_success = $this->parseCOMMENT_END_COLD_FUSION();
         }
 
         if (!$_success && !$this->cut) {
-            $this->position = $_position55;
+            $this->position = $_position63;
 
-            if (substr($this->string, $this->position, strlen('"')) === '"') {
-                $_success = true;
-                $this->value = substr($this->string, $this->position, strlen('"'));
-                $this->position += strlen('"');
-            } else {
-                $_success = false;
-
-                $this->report($this->position, '\'"\'');
-            }
+            $_success = $this->parseDOUBLE_QUOTE();
         }
 
-        $this->cut = $_cut56;
+        if (!$_success && !$this->cut) {
+            $this->position = $_position63;
+
+            $_success = $this->parseSINGLE_QUOTE();
+        }
+
+        $this->cut = $_cut64;
 
         if (!$_success) {
             $_success = true;
@@ -1118,11 +1366,11 @@ class Parser
             $_success = false;
         }
 
-        $this->position = $_position57;
-        $this->cut = $_cut58;
+        $this->position = $_position65;
+        $this->cut = $_cut66;
 
         if ($_success) {
-            $_value59[] = $this->value;
+            $_value67[] = $this->value;
 
             if ($this->position < strlen($this->string)) {
                 $_success = true;
@@ -1134,27 +1382,27 @@ class Parser
         }
 
         if ($_success) {
-            $_value59[] = $this->value;
+            $_value67[] = $this->value;
 
-            $this->value = $_value59;
+            $this->value = $_value67;
         }
 
         if ($_success) {
-            $_value61 = array($this->value);
-            $_cut62 = $this->cut;
+            $_value69 = array($this->value);
+            $_cut70 = $this->cut;
 
             while (true) {
-                $_position60 = $this->position;
+                $_position68 = $this->position;
 
                 $this->cut = false;
-                $_value59 = array();
+                $_value67 = array();
 
-                $_position57 = $this->position;
-                $_cut58 = $this->cut;
+                $_position65 = $this->position;
+                $_cut66 = $this->cut;
 
                 $this->cut = false;
-                $_position55 = $this->position;
-                $_cut56 = $this->cut;
+                $_position63 = $this->position;
+                $_cut64 = $this->cut;
 
                 $this->cut = false;
                 if (substr($this->string, $this->position, strlen(' ')) === ' ') {
@@ -1168,7 +1416,7 @@ class Parser
                 }
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position55;
+                    $this->position = $_position63;
 
                     if (substr($this->string, $this->position, strlen("\r")) === "\r") {
                         $_success = true;
@@ -1182,7 +1430,7 @@ class Parser
                 }
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position55;
+                    $this->position = $_position63;
 
                     if (substr($this->string, $this->position, strlen("\n")) === "\n") {
                         $_success = true;
@@ -1196,7 +1444,7 @@ class Parser
                 }
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position55;
+                    $this->position = $_position63;
 
                     if (substr($this->string, $this->position, strlen("\t")) === "\t") {
                         $_success = true;
@@ -1210,32 +1458,30 @@ class Parser
                 }
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position55;
+                    $this->position = $_position63;
 
                     $_success = $this->parseCOMMENT_END();
                 }
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position55;
+                    $this->position = $_position63;
 
                     $_success = $this->parseCOMMENT_END_COLD_FUSION();
                 }
 
                 if (!$_success && !$this->cut) {
-                    $this->position = $_position55;
+                    $this->position = $_position63;
 
-                    if (substr($this->string, $this->position, strlen('"')) === '"') {
-                        $_success = true;
-                        $this->value = substr($this->string, $this->position, strlen('"'));
-                        $this->position += strlen('"');
-                    } else {
-                        $_success = false;
-
-                        $this->report($this->position, '\'"\'');
-                    }
+                    $_success = $this->parseDOUBLE_QUOTE();
                 }
 
-                $this->cut = $_cut56;
+                if (!$_success && !$this->cut) {
+                    $this->position = $_position63;
+
+                    $_success = $this->parseSINGLE_QUOTE();
+                }
+
+                $this->cut = $_cut64;
 
                 if (!$_success) {
                     $_success = true;
@@ -1244,11 +1490,11 @@ class Parser
                     $_success = false;
                 }
 
-                $this->position = $_position57;
-                $this->cut = $_cut58;
+                $this->position = $_position65;
+                $this->cut = $_cut66;
 
                 if ($_success) {
-                    $_value59[] = $this->value;
+                    $_value67[] = $this->value;
 
                     if ($this->position < strlen($this->string)) {
                         $_success = true;
@@ -1260,29 +1506,29 @@ class Parser
                 }
 
                 if ($_success) {
-                    $_value59[] = $this->value;
+                    $_value67[] = $this->value;
 
-                    $this->value = $_value59;
+                    $this->value = $_value67;
                 }
 
                 if (!$_success) {
                     break;
                 }
 
-                $_value61[] = $this->value;
+                $_value69[] = $this->value;
             }
 
             if (!$this->cut) {
                 $_success = true;
-                $this->position = $_position60;
-                $this->value = $_value61;
+                $this->position = $_position68;
+                $this->value = $_value69;
             }
 
-            $this->cut = $_cut62;
+            $this->cut = $_cut70;
         }
 
         if ($_success) {
-            $this->value = strval(substr($this->string, $_position63, $this->position - $_position63));
+            $this->value = strval(substr($this->string, $_position71, $this->position - $_position71));
         }
 
         $this->cache['RAW_STRING'][$_position] = array(
@@ -1310,26 +1556,26 @@ class Parser
             return $_success;
         }
 
-        $_value71 = array();
+        $_value79 = array();
 
         $_success = $this->parseCODE_START();
 
         if ($_success) {
-            $_value71[] = $this->value;
+            $_value79[] = $this->value;
 
-            $_position70 = $this->position;
+            $_position78 = $this->position;
 
-            $_value68 = array();
-            $_cut69 = $this->cut;
+            $_value76 = array();
+            $_cut77 = $this->cut;
 
             while (true) {
-                $_position67 = $this->position;
+                $_position75 = $this->position;
 
                 $this->cut = false;
-                $_value66 = array();
+                $_value74 = array();
 
-                $_position64 = $this->position;
-                $_cut65 = $this->cut;
+                $_position72 = $this->position;
+                $_cut73 = $this->cut;
 
                 $this->cut = false;
                 $_success = $this->parseCODE_END();
@@ -1341,11 +1587,11 @@ class Parser
                     $_success = false;
                 }
 
-                $this->position = $_position64;
-                $this->cut = $_cut65;
+                $this->position = $_position72;
+                $this->cut = $_cut73;
 
                 if ($_success) {
-                    $_value66[] = $this->value;
+                    $_value74[] = $this->value;
 
                     if ($this->position < strlen($this->string)) {
                         $_success = true;
@@ -1357,28 +1603,28 @@ class Parser
                 }
 
                 if ($_success) {
-                    $_value66[] = $this->value;
+                    $_value74[] = $this->value;
 
-                    $this->value = $_value66;
+                    $this->value = $_value74;
                 }
 
                 if (!$_success) {
                     break;
                 }
 
-                $_value68[] = $this->value;
+                $_value76[] = $this->value;
             }
 
             if (!$this->cut) {
                 $_success = true;
-                $this->position = $_position67;
-                $this->value = $_value68;
+                $this->position = $_position75;
+                $this->value = $_value76;
             }
 
-            $this->cut = $_cut69;
+            $this->cut = $_cut77;
 
             if ($_success) {
-                $this->value = strval(substr($this->string, $_position70, $this->position - $_position70));
+                $this->value = strval(substr($this->string, $_position78, $this->position - $_position78));
             }
 
             if ($_success) {
@@ -1387,15 +1633,15 @@ class Parser
         }
 
         if ($_success) {
-            $_value71[] = $this->value;
+            $_value79[] = $this->value;
 
             $_success = $this->parseCODE_END();
         }
 
         if ($_success) {
-            $_value71[] = $this->value;
+            $_value79[] = $this->value;
 
-            $this->value = $_value71;
+            $this->value = $_value79;
         }
 
         if ($_success) {
@@ -1429,7 +1675,7 @@ class Parser
             return $_success;
         }
 
-        $_value72 = array();
+        $_value80 = array();
 
         if (strtolower(substr($this->string, $this->position, strlen('```php'))) === strtolower('```php')) {
             $_success = true;
@@ -1442,15 +1688,15 @@ class Parser
         }
 
         if ($_success) {
-            $_value72[] = $this->value;
+            $_value80[] = $this->value;
 
             $_success = $this->parseEOL();
         }
 
         if ($_success) {
-            $_value72[] = $this->value;
+            $_value80[] = $this->value;
 
-            $this->value = $_value72;
+            $this->value = $_value80;
         }
 
         $this->cache['CODE_START'][$_position] = array(
@@ -1478,7 +1724,7 @@ class Parser
             return $_success;
         }
 
-        $_value75 = array();
+        $_value83 = array();
 
         if (substr($this->string, $this->position, strlen('```')) === '```') {
             $_success = true;
@@ -1491,27 +1737,27 @@ class Parser
         }
 
         if ($_success) {
-            $_value75[] = $this->value;
+            $_value83[] = $this->value;
 
-            $_position73 = $this->position;
-            $_cut74 = $this->cut;
+            $_position81 = $this->position;
+            $_cut82 = $this->cut;
 
             $this->cut = false;
             $_success = $this->parseEOL();
 
             if (!$_success && !$this->cut) {
-                $this->position = $_position73;
+                $this->position = $_position81;
 
                 $_success = $this->parseEOF();
             }
 
-            $this->cut = $_cut74;
+            $this->cut = $_cut82;
         }
 
         if ($_success) {
-            $_value75[] = $this->value;
+            $_value83[] = $this->value;
 
-            $this->value = $_value75;
+            $this->value = $_value83;
         }
 
         $this->cache['CODE_END'][$_position] = array(
@@ -1539,10 +1785,10 @@ class Parser
             return $_success;
         }
 
-        $_value78 = array();
+        $_value86 = array();
 
-        $_position76 = $this->position;
-        $_cut77 = $this->cut;
+        $_position84 = $this->position;
+        $_cut85 = $this->cut;
 
         $this->cut = false;
         $_success = $this->parseHTML_COMMENT_END();
@@ -1554,19 +1800,19 @@ class Parser
             $_success = false;
         }
 
-        $this->position = $_position76;
-        $this->cut = $_cut77;
+        $this->position = $_position84;
+        $this->cut = $_cut85;
 
         if ($_success) {
-            $_value78[] = $this->value;
+            $_value86[] = $this->value;
 
             $_success = $this->parseVOID_LINE();
         }
 
         if ($_success) {
-            $_value78[] = $this->value;
+            $_value86[] = $this->value;
 
-            $this->value = $_value78;
+            $this->value = $_value86;
         }
 
         if ($_success) {
@@ -1600,19 +1846,19 @@ class Parser
             return $_success;
         }
 
-        $_value85 = array();
+        $_value93 = array();
 
-        $_value83 = array();
-        $_cut84 = $this->cut;
+        $_value91 = array();
+        $_cut92 = $this->cut;
 
         while (true) {
-            $_position82 = $this->position;
+            $_position90 = $this->position;
 
             $this->cut = false;
-            $_value81 = array();
+            $_value89 = array();
 
-            $_position79 = $this->position;
-            $_cut80 = $this->cut;
+            $_position87 = $this->position;
+            $_cut88 = $this->cut;
 
             $this->cut = false;
             $_success = $this->parseEOL();
@@ -1624,11 +1870,11 @@ class Parser
                 $_success = false;
             }
 
-            $this->position = $_position79;
-            $this->cut = $_cut80;
+            $this->position = $_position87;
+            $this->cut = $_cut88;
 
             if ($_success) {
-                $_value81[] = $this->value;
+                $_value89[] = $this->value;
 
                 if ($this->position < strlen($this->string)) {
                     $_success = true;
@@ -1640,36 +1886,36 @@ class Parser
             }
 
             if ($_success) {
-                $_value81[] = $this->value;
+                $_value89[] = $this->value;
 
-                $this->value = $_value81;
+                $this->value = $_value89;
             }
 
             if (!$_success) {
                 break;
             }
 
-            $_value83[] = $this->value;
+            $_value91[] = $this->value;
         }
 
         if (!$this->cut) {
             $_success = true;
-            $this->position = $_position82;
-            $this->value = $_value83;
+            $this->position = $_position90;
+            $this->value = $_value91;
         }
 
-        $this->cut = $_cut84;
+        $this->cut = $_cut92;
 
         if ($_success) {
-            $_value85[] = $this->value;
+            $_value93[] = $this->value;
 
             $_success = $this->parseEOL();
         }
 
         if ($_success) {
-            $_value85[] = $this->value;
+            $_value93[] = $this->value;
 
-            $this->value = $_value85;
+            $this->value = $_value93;
         }
 
         if ($_success) {
@@ -1703,20 +1949,20 @@ class Parser
             return $_success;
         }
 
-        $_value86 = array();
+        $_value94 = array();
 
         $_success = $this->parse_();
 
         if ($_success) {
-            $_value86[] = $this->value;
+            $_value94[] = $this->value;
 
             $_success = $this->parseEOL();
         }
 
         if ($_success) {
-            $_value86[] = $this->value;
+            $_value94[] = $this->value;
 
-            $this->value = $_value86;
+            $this->value = $_value94;
         }
 
         if ($_success) {
@@ -1750,12 +1996,12 @@ class Parser
             return $_success;
         }
 
-        $_value91 = array();
+        $_value99 = array();
 
         $_success = $this->parse_();
 
         if ($_success) {
-            $_value91[] = $this->value;
+            $_value99[] = $this->value;
 
             if (substr($this->string, $this->position, strlen('<!--')) === '<!--') {
                 $_success = true;
@@ -1769,10 +2015,10 @@ class Parser
         }
 
         if ($_success) {
-            $_value91[] = $this->value;
+            $_value99[] = $this->value;
 
-            $_position87 = $this->position;
-            $_cut88 = $this->cut;
+            $_position95 = $this->position;
+            $_cut96 = $this->cut;
 
             $this->cut = false;
             if (substr($this->string, $this->position, strlen('-')) === '-') {
@@ -1787,35 +2033,35 @@ class Parser
 
             if (!$_success && !$this->cut) {
                 $_success = true;
-                $this->position = $_position87;
+                $this->position = $_position95;
                 $this->value = null;
             }
 
-            $this->cut = $_cut88;
+            $this->cut = $_cut96;
         }
 
         if ($_success) {
-            $_value91[] = $this->value;
+            $_value99[] = $this->value;
 
-            $_position89 = $this->position;
-            $_cut90 = $this->cut;
+            $_position97 = $this->position;
+            $_cut98 = $this->cut;
 
             $this->cut = false;
             $_success = $this->parseEOL();
 
             if (!$_success && !$this->cut) {
                 $_success = true;
-                $this->position = $_position89;
+                $this->position = $_position97;
                 $this->value = null;
             }
 
-            $this->cut = $_cut90;
+            $this->cut = $_cut98;
         }
 
         if ($_success) {
-            $_value91[] = $this->value;
+            $_value99[] = $this->value;
 
-            $this->value = $_value91;
+            $this->value = $_value99;
         }
 
         $this->cache['HTML_COMMENT_START'][$_position] = array(
@@ -1843,50 +2089,50 @@ class Parser
             return $_success;
         }
 
-        $_value96 = array();
+        $_value104 = array();
 
         $_success = $this->parse_();
 
         if ($_success) {
-            $_value96[] = $this->value;
+            $_value104[] = $this->value;
 
-            $_position92 = $this->position;
-            $_cut93 = $this->cut;
+            $_position100 = $this->position;
+            $_cut101 = $this->cut;
 
             $this->cut = false;
             $_success = $this->parseCOMMENT_END();
 
             if (!$_success && !$this->cut) {
-                $this->position = $_position92;
+                $this->position = $_position100;
 
                 $_success = $this->parseCOMMENT_END_COLD_FUSION();
             }
 
-            $this->cut = $_cut93;
+            $this->cut = $_cut101;
         }
 
         if ($_success) {
-            $_value96[] = $this->value;
+            $_value104[] = $this->value;
 
-            $_position94 = $this->position;
-            $_cut95 = $this->cut;
+            $_position102 = $this->position;
+            $_cut103 = $this->cut;
 
             $this->cut = false;
             $_success = $this->parseEOL();
 
             if (!$_success && !$this->cut) {
                 $_success = true;
-                $this->position = $_position94;
+                $this->position = $_position102;
                 $this->value = null;
             }
 
-            $this->cut = $_cut95;
+            $this->cut = $_cut103;
         }
 
         if ($_success) {
-            $_value96[] = $this->value;
+            $_value104[] = $this->value;
 
-            $this->value = $_value96;
+            $this->value = $_value104;
         }
 
         $this->cache['HTML_COMMENT_END'][$_position] = array(
@@ -1984,15 +2230,15 @@ class Parser
             return $_success;
         }
 
-        $_value99 = array();
+        $_value107 = array();
 
         $_success = $this->parse_();
 
         if ($_success) {
-            $_value99[] = $this->value;
+            $_value107[] = $this->value;
 
-            $_position97 = $this->position;
-            $_cut98 = $this->cut;
+            $_position105 = $this->position;
+            $_cut106 = $this->cut;
 
             $this->cut = false;
             if (substr($this->string, $this->position, strlen("\r")) === "\r") {
@@ -2007,15 +2253,15 @@ class Parser
 
             if (!$_success && !$this->cut) {
                 $_success = true;
-                $this->position = $_position97;
+                $this->position = $_position105;
                 $this->value = null;
             }
 
-            $this->cut = $_cut98;
+            $this->cut = $_cut106;
         }
 
         if ($_success) {
-            $_value99[] = $this->value;
+            $_value107[] = $this->value;
 
             if (substr($this->string, $this->position, strlen("\n")) === "\n") {
                 $_success = true;
@@ -2029,9 +2275,9 @@ class Parser
         }
 
         if ($_success) {
-            $_value99[] = $this->value;
+            $_value107[] = $this->value;
 
-            $this->value = $_value99;
+            $this->value = $_value107;
         }
 
         $this->cache['EOL'][$_position] = array(
@@ -2059,8 +2305,8 @@ class Parser
             return $_success;
         }
 
-        $_position100 = $this->position;
-        $_cut101 = $this->cut;
+        $_position108 = $this->position;
+        $_cut109 = $this->cut;
 
         $this->cut = false;
         if ($this->position < strlen($this->string)) {
@@ -2078,8 +2324,8 @@ class Parser
             $_success = false;
         }
 
-        $this->position = $_position100;
-        $this->cut = $_cut101;
+        $this->position = $_position108;
+        $this->cut = $_cut109;
 
         $this->cache['EOF'][$_position] = array(
             'success' => $_success,
@@ -2106,15 +2352,15 @@ class Parser
             return $_success;
         }
 
-        $_value105 = array();
-        $_cut106 = $this->cut;
+        $_value113 = array();
+        $_cut114 = $this->cut;
 
         while (true) {
-            $_position104 = $this->position;
+            $_position112 = $this->position;
 
             $this->cut = false;
-            $_position102 = $this->position;
-            $_cut103 = $this->cut;
+            $_position110 = $this->position;
+            $_cut111 = $this->cut;
 
             $this->cut = false;
             if (substr($this->string, $this->position, strlen(" ")) === " ") {
@@ -2128,7 +2374,7 @@ class Parser
             }
 
             if (!$_success && !$this->cut) {
-                $this->position = $_position102;
+                $this->position = $_position110;
 
                 if (substr($this->string, $this->position, strlen("\t")) === "\t") {
                     $_success = true;
@@ -2141,22 +2387,22 @@ class Parser
                 }
             }
 
-            $this->cut = $_cut103;
+            $this->cut = $_cut111;
 
             if (!$_success) {
                 break;
             }
 
-            $_value105[] = $this->value;
+            $_value113[] = $this->value;
         }
 
         if (!$this->cut) {
             $_success = true;
-            $this->position = $_position104;
-            $this->value = $_value105;
+            $this->position = $_position112;
+            $this->value = $_value113;
         }
 
-        $this->cut = $_cut106;
+        $this->cut = $_cut114;
 
         $this->cache['_'][$_position] = array(
             'success' => $_success,
