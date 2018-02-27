@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Example;
 
+use hanneskod\readmetester\Annotations;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
@@ -13,11 +14,6 @@ use hanneskod\readmetester\Parser\Definition;
  */
 class ExampleFactory
 {
-    const ANNOTATION_IGNORE = 'ignore';
-    const ANNOTATION_EXAMPLE = 'example';
-    const ANNOTATION_INCLUDE = 'include';
-    const ANNOTATION_CONTEXT = 'exampleContext';
-
     /**
      * @var ExpectationFactory
      */
@@ -64,17 +60,17 @@ class ExampleFactory
             }
 
             foreach ($def->getAnnotations() as $annotation) {
-                if ($annotation->isNamed(self::ANNOTATION_IGNORE)) {
+                if ($annotation->isNamed(Annotations::ANNOTATION_IGNORE)) {
                     $ignoreExample = true;
                     continue;
                 }
 
-                if ($annotation->isNamed(self::ANNOTATION_EXAMPLE)) {
+                if ($annotation->isNamed(Annotations::ANNOTATION_EXAMPLE)) {
                     $name = $annotation->getArgument();
                     continue;
                 }
 
-                if ($annotation->isNamed(self::ANNOTATION_INCLUDE)) {
+                if ($annotation->isNamed(Annotations::ANNOTATION_INCLUDE)) {
                     $toInclude = $annotation->getArgument();
 
                     if (!isset($examples[$toInclude])) {
@@ -92,7 +88,7 @@ class ExampleFactory
                     continue;
                 }
 
-                if ($annotation->isNamed(self::ANNOTATION_CONTEXT)) {
+                if ($annotation->isNamed(Annotations::ANNOTATION_CONTEXT)) {
                     $context = $code;
                     continue;
                 }
