@@ -72,7 +72,7 @@ Feature: Filter argument
     And 1 examples are ignored
     And 0 failures are found
 
-  Scenario: I filter flaged only
+  Scenario: I filter flagged only
     Given a markdown file:
     """
     ```php
@@ -83,12 +83,12 @@ Feature: Filter argument
     // this-examples-has-an-annotation
     ```
     """
-    And the command line argument '--named-only'
+    And the command line argument '--flagged-only'
     When I run readme tester
     Then 1 examples are evaluated
     And 1 examples are ignored
 
-  Scenario: I filter flaged only using unnamed example
+  Scenario: I filter flagged only using unnamed example
     Given a markdown file:
     """
     ```php
@@ -99,7 +99,7 @@ Feature: Filter argument
     // this-examples-has-an-annotation
     ```
     """
-    And the command line argument '--named-only'
+    And the command line argument '--flagged-only'
     When I run readme tester
     Then 1 examples are evaluated
     And 1 examples are ignored

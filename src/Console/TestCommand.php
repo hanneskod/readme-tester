@@ -48,10 +48,10 @@ class TestCommand extends Command
                 "One of 'std' or 'json'"
             )
             ->addOption(
-                'named-only',
+                'flagged-only',
                 null,
                 InputOption::VALUE_NONE,
-                'Test only named examples'
+                'Test only examples flagged with the @example annotation'
             )
             ->addOption(
                 'ignore-unknown-annotations',
@@ -86,7 +86,7 @@ class TestCommand extends Command
 
         if ($filter = $input->getOption('filter')) {
             $engineBuilder->setFilter(new RegexpFilter($filter));
-        } elseif ($input->getOption('named-only')) {
+        } elseif ($input->getOption('flagged-only')) {
             $engineBuilder->setFilter(new UnnamedFilter);
         }
 
