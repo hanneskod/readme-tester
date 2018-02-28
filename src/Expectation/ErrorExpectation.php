@@ -36,14 +36,12 @@ class ErrorExpectation implements ExpectationInterface
 
     public function handle(OutcomeInterface $outcome): Status
     {
-        $error = $outcome->getPayload()['error'] ?? '';
-
-        if (!$this->regexp->isMatch($error)) {
+        if (!$this->regexp->isMatch($outcome->getContent())) {
             return new Failure(
-                "Failed asserting that error '$error' matches {$this->regexp}"
+                "Failed asserting that error '{$outcome->getContent()}' matches {$this->regexp}"
             );
         }
 
-        return new Success("Asserted that error '$error' matches {$this->regexp}");
+        return new Success("Asserted that error '{$outcome->getContent()}' matches {$this->regexp}");
     }
 }

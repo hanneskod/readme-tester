@@ -14,11 +14,18 @@ class OutputOutcomeTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testPayload()
+    public function testMustBeHandled()
+    {
+        $this->assertTrue(
+            (new OutputOutcome(''))->mustBeHandled()
+        );
+    }
+
+    public function testContent()
     {
         $this->assertSame(
-            ['output' => 'foobar'],
-            (new OutputOutcome('foobar'))->getPayload()
+            'foobar',
+            (new OutputOutcome('foobar'))->getContent()
         );
     }
 

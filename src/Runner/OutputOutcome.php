@@ -24,9 +24,14 @@ class OutputOutcome implements OutcomeInterface
         return self::TYPE_OUTPUT;
     }
 
-    public function getPayload(): array
+    public function mustBeHandled(): bool
     {
-        return ['output' => $this->output];
+        return true;
+    }
+
+    public function getContent(): string
+    {
+        return $this->output;
     }
 
     public function __tostring(): string

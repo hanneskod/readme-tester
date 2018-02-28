@@ -16,7 +16,15 @@ class IsolationRunnerTest extends AbstractRunnerTest
     public function testIsolation()
     {
         $runner = $this->createRunner();
-        $this->assertEmpty($runner->run(new CodeBlock('class Foo {}')));
-        $this->assertEmpty($runner->run(new CodeBlock('class Foo {}')));
+
+        $this->assertInstanceOf(
+            VoidOutcome::CLASS,
+            $runner->run(new CodeBlock('class Foo {}'))
+        );
+
+        $this->assertInstanceOf(
+            VoidOutcome::CLASS,
+            $runner->run(new CodeBlock('class Foo {}'))
+        );
     }
 }

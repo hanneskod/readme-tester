@@ -9,6 +9,7 @@ use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Expectation\Status;
 use hanneskod\readmetester\Parser\CodeBlock;
 use hanneskod\readmetester\Runner\RunnerInterface;
+use hanneskod\readmetester\Runner\OutcomeInterface;
 
 class ExampleTesterTest extends \PHPUnit\Framework\TestCase
 {
@@ -21,13 +22,15 @@ class ExampleTesterTest extends \PHPUnit\Framework\TestCase
         $example->getExpectations()->willReturn(['list-of-expectations']);
         $example->shouldBeEvaluated()->willReturn(true);
 
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+
         $runner = $this->prophesize(RunnerInterface::CLASS);
-        $runner->run($codeBlock)->willReturn(['list-of-outcomes']);
+        $runner->run($codeBlock)->willReturn($outcome);
 
         $status = $this->prophesize(Status::CLASS);
 
         $evaluator = $this->prophesize(ExpectationEvaluator::CLASS);
-        $evaluator->evaluate(['list-of-expectations'], ['list-of-outcomes'])->willReturn([$status]);
+        $evaluator->evaluate(['list-of-expectations'], $outcome)->willReturn([$status]);
 
         $listener = $this->prophesize(ListenerInterface::CLASS);
 

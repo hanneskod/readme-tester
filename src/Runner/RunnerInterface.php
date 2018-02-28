@@ -7,12 +7,9 @@ namespace hanneskod\readmetester\Runner;
 use hanneskod\readmetester\Parser\CodeBlock;
 
 /**
- * Runners are able to execute example code
+ * Defines object that are able to execute example code
  */
 interface RunnerInterface
 {
-    /**
-     * @return OutcomeInterface[]
-     */
-    public function run(CodeBlock $codeBlock): array;
+    public function run(CodeBlock $codeBlock): OutcomeInterface;
 }

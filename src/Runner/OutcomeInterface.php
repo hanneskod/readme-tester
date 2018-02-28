@@ -20,9 +20,9 @@ interface OutcomeInterface
     const TYPE_ERROR = 'TYPE_ERROR';
 
     /**
-     * Convert outcome to string
+     * Void type identifier
      */
-    public function __tostring(): string;
+    const TYPE_VOID = 'TYPE_VOID';
 
     /**
      * Get a token describing the outcome type
@@ -32,9 +32,17 @@ interface OutcomeInterface
     public function getType(): string;
 
     /**
-     * Get the actual outcome data
-     *
-     * The structure of the returned array may differ in the various outcomes
+     * Check unhandled outcome should trigger an error
      */
-    public function getPayload(): array;
+    public function mustBeHandled(): bool;
+
+    /**
+     * Get the actual outcome data
+     */
+    public function getContent(): string;
+
+    /**
+     * Get a free text description of this outcome
+     */
+    public function __tostring(): string;
 }

@@ -24,9 +24,14 @@ class ErrorOutcome implements OutcomeInterface
         return self::TYPE_ERROR;
     }
 
-    public function getPayload(): array
+    public function mustBeHandled(): bool
     {
-        return ['error' => $this->message];
+        return true;
+    }
+
+    public function getContent(): string
+    {
+        return $this->message;
     }
 
     public function __tostring(): string

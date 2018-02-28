@@ -8,29 +8,45 @@ use hanneskod\readmetester\Runner\OutcomeInterface;
 
 class ExpectationEvaluatorTest extends \PHPUnit\Framework\TestCase
 {
-    public function testThatUnhandledOutcomeCasesFailure()
+    public function testThatUnhandledOutcomeTriggersFailure()
     {
         $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->mustBeHandled()->willReturn(true);
         $outcome->__tostring()->willReturn('');
         $this->assertInstanceOf(
             Failure::CLASS,
-            (new ExpectationEvaluator)->evaluate([], [$outcome->reveal()])[0]
+            (new ExpectationEvaluator)->evaluate([], $outcome->reveal())[0]
+        );
+    }
+
+    public function testThatUnhandledOutcomesThatDoesNotNeedToBeHandledAreIgnored()
+    {
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->mustBeHandled()->willReturn(false);
+        $this->assertEmpty(
+            (new ExpectationEvaluator)->evaluate([], $outcome->reveal())
         );
     }
 
     public function testThatUnhandlingExpectationCasesFailure()
     {
+        $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->mustBeHandled()->willReturn(false);
+
         $expectation = $this->prophesize(ExpectationInterface::CLASS);
         $expectation->__tostring()->willReturn('');
+        $expectation->handles($outcome)->willReturn(false);
+
         $this->assertInstanceOf(
             Failure::CLASS,
-            (new ExpectationEvaluator)->evaluate([$expectation->reveal()], [])[0]
+            (new ExpectationEvaluator)->evaluate([$expectation->reveal()], $outcome->reveal())[0]
         );
     }
 
     public function testHandle()
     {
         $outcome = $this->prophesize(OutcomeInterface::CLASS);
+        $outcome->mustBeHandled()->willReturn(true);
         $outcome->__tostring()->willReturn('');
 
         $exptA = $this->prophesize(ExpectationInterface::CLASS);
@@ -42,7 +58,7 @@ class ExpectationEvaluatorTest extends \PHPUnit\Framework\TestCase
         $exptB->handles($outcome)->willReturn(true);
         $exptB->handle($outcome)->willReturn(new Success(''));
 
-        $statuses = (new ExpectationEvaluator)->evaluate([$exptA->reveal(), $exptB->reveal()], [$outcome->reveal()]);
+        $statuses = (new ExpectationEvaluator)->evaluate([$exptA->reveal(), $exptB->reveal()], $outcome->reveal());
 
         $this->assertInstanceOf(Failure::CLASS, $statuses[0]);
         $this->assertInstanceOf(Success::CLASS, $statuses[1]);

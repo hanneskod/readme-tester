@@ -36,14 +36,12 @@ class OutputExpectation implements ExpectationInterface
 
     public function handle(OutcomeInterface $outcome): Status
     {
-        $output = $outcome->getPayload()['output'] ?? '';
-
-        if (!$this->regexp->isMatch($output)) {
+        if (!$this->regexp->isMatch($outcome->getContent())) {
             return new Failure(
-                "Failed asserting that output '$output' matches {$this->regexp}"
+                "Failed asserting that output '{$outcome->getContent()}' matches {$this->regexp}"
             );
         }
 
-        return new Success("Asserted that output '$output' matches {$this->regexp}");
+        return new Success("Asserted that output '{$outcome->getContent()}' matches {$this->regexp}");
     }
 }

@@ -13,9 +13,10 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
 {
     abstract public function createRunner(): RunnerInterface;
 
-    public function testNoOutcome()
+    public function testVoidOutcome()
     {
-        $this->assertEmpty(
+        $this->assertInstanceOf(
+            VoidOutcome::CLASS,
             $this->createRunner()->run(new CodeBlock('$a = 1 + 2;'))
         );
     }
@@ -24,7 +25,7 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             new OutputOutcome('foo'),
-            $this->createRunner()->run(new CodeBlock('echo "foo";'))[0]
+            $this->createRunner()->run(new CodeBlock('echo "foo";'))
         );
     }
 
@@ -32,7 +33,7 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(
             ErrorOutcome::CLASS,
-            $this->createRunner()->run(new CodeBlock('throw new Exception;'))[0]
+            $this->createRunner()->run(new CodeBlock('throw new Exception;'))
         );
     }
 
@@ -40,7 +41,7 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(
             ErrorOutcome::CLASS,
-            $this->createRunner()->run(new CodeBlock('trigger_error("ERROR");'))[0]
+            $this->createRunner()->run(new CodeBlock('trigger_error("ERROR");'))
         );
     }
 
@@ -48,7 +49,7 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(
             ErrorOutcome::CLASS,
-            $this->createRunner()->run(new CodeBlock('this_function_does_not_exist();'))[0]
+            $this->createRunner()->run(new CodeBlock('this_function_does_not_exist();'))
         );
     }
 }

@@ -23,7 +23,7 @@ class ErrorExpectationTest extends \PHPUnit\Framework\TestCase
     public function testNoMatch()
     {
         $outcome = $this->prophesize(OutcomeInterface::CLASS);
-        $outcome->getPayload()->willReturn(['error' => 'bar']);
+        $outcome->getContent()->willReturn('bar');
         $this->assertInstanceOf(
             Failure::CLASS,
             (new ErrorExpectation(new Regexp('/foo/')))->handle($outcome->reveal())
@@ -33,7 +33,7 @@ class ErrorExpectationTest extends \PHPUnit\Framework\TestCase
     public function testMatch()
     {
         $outcome = $this->prophesize(OutcomeInterface::CLASS);
-        $outcome->getPayload()->willReturn(['error' => 'foo']);
+        $outcome->getContent()->willReturn('foo');
         $this->assertInstanceOf(
             Success::CLASS,
             (new ErrorExpectation(new Regexp('/foo/')))->handle($outcome->reveal())

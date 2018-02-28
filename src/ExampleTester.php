@@ -53,9 +53,9 @@ class ExampleTester
             $listener->onExample($example);
         }
 
-        $outcomes = $this->runner->run($example->getCodeBlock());
+        $outcome = $this->runner->run($example->getCodeBlock());
 
-        foreach ($this->evaluator->evaluate($example->getExpectations(), $outcomes) as $status) {
+        foreach ($this->evaluator->evaluate($example->getExpectations(), $outcome) as $status) {
             foreach ($this->listeners as $listener) {
                 $listener->onExpectation($status);
             }

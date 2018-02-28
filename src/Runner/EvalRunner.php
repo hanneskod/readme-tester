@@ -11,13 +11,8 @@ use hanneskod\readmetester\Parser\CodeBlock;
  */
 class EvalRunner implements RunnerInterface
 {
-    /**
-     * @return OutcomeInterface[]
-     */
-    public function run(CodeBlock $codeBlock): array
+    public function run(CodeBlock $codeBlock): OutcomeInterface
     {
-        $outcomes = [];
-
         ob_start();
 
         try {
@@ -25,16 +20,18 @@ class EvalRunner implements RunnerInterface
             @eval($codeBlock);
             $lastErrorAfter = error_get_last();
             if ($lastErrorBefore != $lastErrorAfter) {
-                $outcomes[] = new ErrorOutcome("{$lastErrorAfter['type']}: {$lastErrorAfter['message']}");
+                ob_end_clean();
+                return new ErrorOutcome("{$lastErrorAfter['type']}: {$lastErrorAfter['message']}");
             }
         } catch (\Throwable $e) {
-            $outcomes[] = new ErrorOutcome((string)$e);
+            ob_end_clean();
+            return new ErrorOutcome((string)$e);
         }
 
         if ($output = ob_get_clean()) {
-            $outcomes[] = new OutputOutcome($output);
+            return new OutputOutcome($output);
         }
 
-        return $outcomes;
+        return new VoidOutcome;
     }
 }

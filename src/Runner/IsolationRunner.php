@@ -12,22 +12,19 @@ use Symfony\Component\Process\PhpProcess;
  */
 class IsolationRunner implements RunnerInterface
 {
-    /**
-     * @return OutcomeInterface[]
-     */
-    public function run(CodeBlock $codeBlock): array
+    public function run(CodeBlock $codeBlock): OutcomeInterface
     {
         $process = new PhpProcess("<?php $codeBlock");
-
         $process->run();
-        $outcomes = [];
 
         if ($errorOutput = $process->getErrorOutput()) {
-            $outcomes[] = new ErrorOutcome(trim($errorOutput));
-        } elseif ($output = $process->getOutput()) {
-            $outcomes[] = new OutputOutcome($output);
+            return new ErrorOutcome(trim($errorOutput));
         }
 
-        return $outcomes;
+        if ($output = $process->getOutput()) {
+            return new OutputOutcome($output);
+        }
+
+        return new VoidOutcome;
     }
 }

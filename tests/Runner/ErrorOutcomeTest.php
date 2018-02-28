@@ -14,11 +14,18 @@ class ErrorOutcomeTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testPayload()
+    public function testMustBeHandled()
+    {
+        $this->assertTrue(
+            (new ErrorOutcome(''))->mustBeHandled()
+        );
+    }
+
+    public function testContent()
     {
         $this->assertSame(
-            ['error' => 'foobar'],
-            (new ErrorOutcome('foobar'))->getPayload()
+            'foobar',
+            (new ErrorOutcome('foobar'))->getContent()
         );
     }
 
