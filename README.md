@@ -126,29 +126,6 @@ it will be transformed into one, `abc` is transformed into `/^abc$/`.
 echo "abc";
 ```
 
-#### Expecting exceptions
-
-<!-- @expectException Exception -->
-```php
-// Example is preceded by <!-- @expectException Exception -->
-throw new Exception();
-```
-
-#### Expecting return values
-
-<!-- @expectReturnType integer -->
-```php
-// Example is preceded by <!-- @expectReturnType integer -->
-// Type descriptor used by gettype() or a class name can be used
-return 1;
-```
-
-<!-- @expectReturn /foo/ -->
-```php
-// Example is preceded by <!-- @expectReturn /foo/ -->
-return 'foo';
-```
-
 ### Linking examples together
 
 An example may include a previous example using the `@include` annotation. This

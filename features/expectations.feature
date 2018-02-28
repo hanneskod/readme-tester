@@ -97,7 +97,7 @@ Feature: Example expectations
  Scenario: I expect an exception
     Given a markdown file:
     """
-    <!-- @expectException RuntimeException -->
+    <!-- @expectError /RuntimeException/ -->
     ```php
     throw new RuntimeException;
     ```
@@ -107,10 +107,10 @@ Feature: Example expectations
     And 0 failures are found
     And the exit code is 0
 
- Scenario: I fail expecting an exception
+ Scenario: I fail expecting an error
     Given a markdown file:
     """
-    <!-- @expectException RuntimeException -->
+    <!-- @expectError -->
     ```php
     // No exception is thrown here...
     ```
@@ -120,59 +120,7 @@ Feature: Example expectations
     And 1 failures are found
     And the exit code is 1
 
- Scenario: I expect a returned scalar type
-    Given a markdown file:
-    """
-    <!-- @expectReturnType string -->
-    ```php
-    return 'string';
-    ```
-    """
-    When I run readme tester
-    Then 1 expectations are found
-    And 0 failures are found
-    And the exit code is 0
-
- Scenario: I expect a returned object
-    Given a markdown file:
-    """
-    <!-- @expectReturnType DateTime -->
-    ```php
-    return new DateTime;
-    ```
-    """
-    When I run readme tester
-    Then 1 expectations are found
-    And 0 failures are found
-    And the exit code is 0
-
-  Scenario: I expect a return value using a regular expresion
-    Given a markdown file:
-    """
-    <!-- @expectReturn /regular/ -->
-    ```php
-    return 'This output is matched using a regular expression';
-    ```
-    """
-    When I run readme tester
-    Then 1 expectations are found
-    And 0 failures are found
-    And the exit code is 0
-
- Scenario: I expect a return value using a string
-    Given a markdown file:
-    """
-    <!-- @expectReturn abc -->
-    ```php
-    return 'abc';
-    ```
-    """
-    When I run readme tester
-    Then 1 expectations are found
-    And 0 failures are found
-    And the exit code is 0
-
- Scenario: I fail as an exception is not expected
+ Scenario: I fail as an error is not expected
     Given a markdown file:
     """
     ```php

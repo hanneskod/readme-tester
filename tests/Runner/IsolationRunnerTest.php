@@ -19,14 +19,4 @@ class IsolationRunnerTest extends AbstractRunnerTest
         $this->assertEmpty($runner->run(new CodeBlock('class Foo {}')));
         $this->assertEmpty($runner->run(new CodeBlock('class Foo {}')));
     }
-
-    public function testReturnScalar()
-    {
-        $this->markTestIncomplete('Isolation test runner does not support asserting return values');
-    }
-
-    public function testReturnObject()
-    {
-        $this->markTestIncomplete('Isolation test runner does not support asserting return values');
-    }
 }

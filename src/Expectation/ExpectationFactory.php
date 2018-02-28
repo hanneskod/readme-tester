@@ -22,18 +22,6 @@ class ExpectationFactory
             return new ErrorExpectation(new Regexp($annotation->getArgument() ?: '//'));
         }
 
-        if ($annotation->isNamed('expectException')) {
-            return new ExceptionExpectation($annotation->getArgument());
-        }
-
-        if ($annotation->isNamed('expectReturnType')) {
-            return new ReturnTypeExpectation($annotation->getArgument());
-        }
-
-        if ($annotation->isNamed('expectReturn')) {
-            return new ReturnExpectation(new Regexp($annotation->getArgument()));
-        }
-
         return null;
     }
 }

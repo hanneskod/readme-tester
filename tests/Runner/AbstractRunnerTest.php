@@ -28,27 +28,11 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testReturnScalar()
-    {
-        $this->assertEquals(
-            new ReturnOutcome('1234', 'integer', ''),
-            $this->createRunner()->run(new CodeBlock('return 1234;'))[0]
-        );
-    }
-
-    public function testReturnObject()
-    {
-        $this->assertEquals(
-            new ReturnOutcome('', 'object', 'A'),
-            $this->createRunner()->run(new CodeBlock('class A {} return new A;'))[0]
-        );
-    }
-
     public function testException()
     {
-        $this->assertEquals(
-            new ExceptionOutcome('Exception', 'msg', 10),
-            $this->createRunner()->run(new CodeBlock('throw new Exception("msg", 10);'))[0]
+        $this->assertInstanceOf(
+            ErrorOutcome::CLASS,
+            $this->createRunner()->run(new CodeBlock('throw new Exception;'))[0]
         );
     }
 

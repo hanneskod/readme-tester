@@ -49,28 +49,4 @@ class ExpectationFactoryTest extends \PHPUnit\Framework\TestCase
             (new ExpectationFactory)->createExpectation(new Annotation('expectError'))
         );
     }
-
-    function testCreateExceptionExpectation()
-    {
-        $this->assertEquals(
-            new ExceptionExpectation('arg'),
-            (new ExpectationFactory)->createExpectation(new Annotation('expectException', 'arg'))
-        );
-    }
-
-    function testCreateReturnTypeExpectation()
-    {
-        $this->assertEquals(
-            new ReturnTypeExpectation('arg'),
-            (new ExpectationFactory)->createExpectation(new Annotation('expectReturnType', 'arg'))
-        );
-    }
-
-    function testCreateReturnExpectation()
-    {
-        $this->assertEquals(
-            new ReturnExpectation(new Regexp('arg')),
-            (new ExpectationFactory)->createExpectation(new Annotation('expectReturn', 'arg'))
-        );
-    }
 }

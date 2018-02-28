@@ -15,16 +15,6 @@ interface OutcomeInterface
     const TYPE_OUTPUT = 'TYPE_OUTPUT';
 
     /**
-     * Return type identifier
-     */
-    const TYPE_RETURN = 'TYPE_RETURN';
-
-    /**
-     * Exception type identifier
-     */
-    const TYPE_EXCEPTION = 'TYPE_EXCEPTION';
-
-    /**
      * Error type identifier
      */
     const TYPE_ERROR = 'TYPE_ERROR';
