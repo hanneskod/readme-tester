@@ -29,14 +29,6 @@ class CodeBlock
      */
     public function prepend(CodeBlock $codeBlock): CodeBlock
     {
-        return new CodeBlock(
-            sprintf(
-                "%s\n%s%s\n%s",
-                'ob_start();',
-                $codeBlock,
-                'ob_end_clean();',
-                $this
-            )
-        );
+        return new CodeBlock("$codeBlock$this");
     }
 }

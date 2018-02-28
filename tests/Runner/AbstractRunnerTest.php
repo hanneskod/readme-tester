@@ -52,4 +52,12 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
             $this->createRunner()->run(new CodeBlock('this_function_does_not_exist();'))
         );
     }
+
+    public function testNamespace()
+    {
+        $this->assertInstanceOf(
+            VoidOutcome::CLASS,
+            $this->createRunner()->run(new CodeBlock('namespace test;'))
+        );
+    }
 }

@@ -17,7 +17,7 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
     function testPrepend()
     {
         $this->assertSame(
-            "ob_start();\n[FOO]ob_end_clean();\n[BAR]",
+            "[FOO][BAR]",
             (string)(new CodeBlock('[BAR]'))->prepend(new CodeBlock('[FOO]'))
         );
     }

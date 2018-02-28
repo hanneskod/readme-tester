@@ -10,7 +10,7 @@ use Symfony\Component\Process\PhpProcess;
 /**
  * Execute code in isolation using symfony php-process
  */
-class IsolationRunner implements RunnerInterface
+class ProcessRunner implements RunnerInterface
 {
     public function run(CodeBlock $codeBlock): OutcomeInterface
     {

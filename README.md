@@ -128,43 +128,33 @@ echo "abc";
 
 ### Linking examples together
 
-An example may include a previous example using the `@include` annotation. This
-will copy the code of the includeed example into the current and wrapp it in
-output buffering so that output may be asserted in each of the examples.
+An example may include a previous example using the `@include` annotation, this
+will copy the code of the includeed example into the current.
 
-<!--
-    @example parent
-    @expectOutput A
--->
+<!-- @example parent -->
 ```php
 /*
 Example is preceded by
-<!--
-    @example parent
-    @expectOutput A
--->
+<!-- @example parent -->
 */
-$data = ['parent' => 'A', 'child' => 'B'];
-echo $data['parent'];
+$data = 'parent-data';
 ```
 
 Now we can include the named example `parent`.
 
 <!--
-    @example child
     @include parent
-    @expectOutput B
+    @expectOutput parent-data
 -->
 ```php
 /*
 Example is preceded by
 <!--
-    @example child
     @include parent
-    @expectOutput B
+    @expectOutput parent-data
 -->
 */
-echo $data['child'];
+echo $data;
 ```
 
 ### Hidden examples
@@ -212,7 +202,6 @@ echo $var;
 If you want every example in a readme to include a base context you can use
 the `exampleContext` annotation as in the following example.
 
-<!-- @example context -->
 <!-- @exampleContext -->
 ```php
 /*

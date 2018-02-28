@@ -13,7 +13,7 @@ use hanneskod\readmetester\EngineBuilder;
 use hanneskod\readmetester\SourceFileIterator;
 use hanneskod\readmetester\Example\RegexpFilter;
 use hanneskod\readmetester\Example\UnnamedFilter;
-use hanneskod\readmetester\Runner\IsolationRunner;
+use hanneskod\readmetester\Runner\ProcessRunner;
 
 /**
  * CLI command to run test
@@ -45,7 +45,8 @@ class TestCommand extends Command
                 'format',
                 null,
                 InputOption::VALUE_REQUIRED,
-                "One of 'std' or 'json'"
+                'Set output format (default or json)',
+                'default'
             )
             ->addOption(
                 'flagged-only',
@@ -60,10 +61,11 @@ class TestCommand extends Command
                 'Ignore example annotations that are not known to readme-tester'
             )
             ->addOption(
-                'isolation',
+                'runner',
                 null,
-                InputOption::VALUE_NONE,
-                'Run tests in isolation'
+                InputOption::VALUE_REQUIRED,
+                'Specify the example runner to use (process or eval)',
+                'eval'
             )
             ->addOption(
                 'bootstrap',
@@ -90,8 +92,8 @@ class TestCommand extends Command
             $engineBuilder->setFilter(new UnnamedFilter);
         }
 
-        if ($input->getOption('isolation')) {
-            $engineBuilder->setRunner(new IsolationRunner);
+        if ($input->getOption('runner') == 'process') {
+            $engineBuilder->setRunner(new ProcessRunner);
         }
 
         if ($input->getOption('ignore-unknown-annotations')) {

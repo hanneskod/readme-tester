@@ -86,3 +86,19 @@ Feature: Example context
     When I run readme tester
     Then 1 expectations are found
     And 0 failures are found
+
+  Scenario: I use a namespaced context
+    Given a markdown file:
+    """
+    <!-- @exampleContext -->
+    ```php
+    namespace foospace;
+    ```
+    <!-- @expectOutput foospace -->
+    ```php
+    echo __NAMESPACE__;
+    ```
+    """
+    When I run readme tester
+    Then 1 expectations are found
+    And 0 failures are found

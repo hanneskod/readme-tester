@@ -6,11 +6,11 @@ namespace hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Parser\CodeBlock;
 
-class IsolationRunnerTest extends AbstractRunnerTest
+class ProcessRunnerTest extends AbstractRunnerTest
 {
     public function createRunner(): RunnerInterface
     {
-        return new IsolationRunner;
+        return new ProcessRunner;
     }
 
     public function testIsolation()
