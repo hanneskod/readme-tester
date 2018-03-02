@@ -5,8 +5,4 @@ namespace hanneskod\readmetester\Console;
 
 (@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
 
-use Symfony\Component\Console\Application;
-
-$app = new Application('Reamde-Tester', 'dev');
-$app->add(new TestCommand);
-$app->run();
+(new Application('Reamde-Tester', 'dev'))->run();

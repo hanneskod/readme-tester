@@ -10,3 +10,4 @@
 * Added the `--ignore-unknown-annotations` option
 * Annotation arguments can now be enclosed in single as well as double qoutes
 * Included examples are no longer wrapped in output buffering
+* Is now a single command application (eg. no `test` argument)

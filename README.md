@@ -40,9 +40,6 @@ Install using composer
 composer require --dev hanneskod/readme-tester:^1.0@beta
 ```
 
-> NOTE! Readme-tester works just as good as a development dependency of your
-> project as installed *globally*.
-
 Writing examples
 ----------------
 When readme-tester validates a markdown file all php colorized code blocks are
@@ -225,13 +222,13 @@ The command line tool
 Using the command line tool is as simple as
 
 ```shell
-vendor/bin/readme-tester test README.md
+vendor/bin/readme-tester README.md
 ```
 
 For more detailed information use
 
 ```shell
-vendor/bin/readme-tester help test
+vendor/bin/readme-tester -h
 ```
 
 PHPUnit integration
