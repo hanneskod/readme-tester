@@ -7,6 +7,7 @@ namespace hanneskod\readmetester\PHPUnit;
 use hanneskod\readmetester\Engine;
 use hanneskod\readmetester\EngineBuilder;
 use hanneskod\readmetester\SourceFileIterator;
+use hanneskod\readmetester\Runner\EvalRunner;
 use PHPUnit\Framework\TestCase;
 
 class AssertReadme
@@ -18,7 +19,7 @@ class AssertReadme
 
     public function __construct(TestCase $testCase, Engine $engine = null)
     {
-        $this->engine = $engine ?: (new EngineBuilder)->buildEngine();
+        $this->engine = $engine ?: (new EngineBuilder)->setRunner(new EvalRunner)->buildEngine();
         $this->engine->registerListener(new PhpunitListener($testCase));
     }
 

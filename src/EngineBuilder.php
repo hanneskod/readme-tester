@@ -11,7 +11,6 @@ use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Runner\RunnerInterface;
-use hanneskod\readmetester\Runner\EvalRunner;
 
 class EngineBuilder
 {
@@ -53,13 +52,27 @@ class EngineBuilder
             new Parser,
             new ExampleFactory(
                 new ExpectationFactory,
-                $this->filter ?: new NullFilter,
+                $this->getFilter(),
                 $this->ignoreUnknownAnnotations
             ),
             new ExampleTester(
-                $this->runner ?: new EvalRunner,
+                $this->getRunner(),
                 new ExpectationEvaluator
             )
         );
+    }
+
+    private function getFilter(): FilterInterface
+    {
+        return $this->filter ?: new NullFilter;
+    }
+
+    private function getRunner(): RunnerInterface
+    {
+        if (!isset($this->runner)) {
+            throw new \LogicException('Unable to create engine, runner not set');
+        }
+
+        return $this->runner;
     }
 }

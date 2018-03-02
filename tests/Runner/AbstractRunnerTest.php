@@ -11,7 +11,7 @@ use hanneskod\readmetester\Parser\CodeBlock;
  */
 abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
 {
-    abstract public function createRunner(): RunnerInterface;
+    abstract public function createRunner(string $bootstrap = ''): RunnerInterface;
 
     public function testVoidOutcome()
     {
@@ -58,6 +58,14 @@ abstract class AbstractRunnerTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(
             VoidOutcome::CLASS,
             $this->createRunner()->run(new CodeBlock('namespace test;'))
+        );
+    }
+
+    public function testBootstrap()
+    {
+        $this->assertInstanceOf(
+            VoidOutcome::CLASS,
+            $this->createRunner(__DIR__ . '/BootstrappedClass.php')->run(new CodeBlock('new BootstrappedClass;'))
         );
     }
 }

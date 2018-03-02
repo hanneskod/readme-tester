@@ -6,8 +6,8 @@ namespace hanneskod\readmetester\Runner;
 
 class EvalRunnerTest extends AbstractRunnerTest
 {
-    public function createRunner(): RunnerInterface
+    public function createRunner(string $bootstrap = ''): RunnerInterface
     {
-        return new EvalRunner;
+        return new EvalRunner($bootstrap);
     }
 }

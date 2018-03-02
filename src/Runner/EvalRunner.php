@@ -11,13 +11,20 @@ use hanneskod\readmetester\Parser\CodeBlock;
  */
 class EvalRunner implements RunnerInterface
 {
+    public function __construct(string $bootstrap = '')
+    {
+        if ($bootstrap) {
+            require_once $bootstrap;
+        }
+    }
+
     public function run(CodeBlock $codeBlock): OutcomeInterface
     {
         ob_start();
 
         try {
             $lastErrorBefore = error_get_last();
-            @eval($codeBlock);
+            eval($codeBlock);
             $lastErrorAfter = error_get_last();
             if ($lastErrorBefore != $lastErrorAfter) {
                 ob_end_clean();

@@ -13,6 +13,7 @@ use hanneskod\readmetester\EngineBuilder;
 use hanneskod\readmetester\SourceFileIterator;
 use hanneskod\readmetester\Example\RegexpFilter;
 use hanneskod\readmetester\Example\UnnamedFilter;
+use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\ProcessRunner;
 
 /**
@@ -65,7 +66,7 @@ class TestCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Specify the example runner to use (process or eval)',
-                'eval'
+                'process'
             )
             ->addOption(
                 'bootstrap',
@@ -84,6 +85,12 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $formatter = $input->getOption('format') == 'json'
+            ? new JsonFormatter($output)
+            : new DefaultFormatter($output);
+
+        $formatter->onInvokationStart();
+
         $engineBuilder = new EngineBuilder;
 
         if ($filter = $input->getOption('filter')) {
@@ -92,8 +99,19 @@ class TestCommand extends Command
             $engineBuilder->setFilter(new UnnamedFilter);
         }
 
-        if ($input->getOption('runner') == 'process') {
-            $engineBuilder->setRunner(new ProcessRunner);
+        if ($bootstrap = $this->readBootstrap($input)) {
+            $formatter->onBootstrap($bootstrap);
+        }
+
+        switch ($input->getOption('runner')) {
+            case 'process':
+                $engineBuilder->setRunner(new ProcessRunner($bootstrap));
+                break;
+            case 'eval':
+                $engineBuilder->setRunner(new EvalRunner($bootstrap));
+                break;
+            default:
+                throw new \RuntimeException("Unknown runner '{$input->getOption('runner')}'");
         }
 
         if ($input->getOption('ignore-unknown-annotations')) {
@@ -102,18 +120,10 @@ class TestCommand extends Command
 
         $engine = $engineBuilder->buildEngine();
 
-        $exitStatus = new ExitStatusListener;
-        $engine->registerListener($exitStatus);
-
-        $formatter = $input->getOption('format') == 'json'
-            ? new JsonFormatter($output)
-            : new DefaultFormatter($output);
-
         $engine->registerListener($formatter);
 
-        $formatter->onInvokationStart();
-
-        $this->bootstrap($input, $formatter);
+        $exitStatus = new ExitStatusListener;
+        $engine->registerListener($exitStatus);
 
         foreach ($input->getArgument('source') as $source) {
             foreach (new SourceFileIterator($source) as $filename => $contents) {
@@ -127,21 +137,20 @@ class TestCommand extends Command
         return $exitStatus->getStatusCode();
     }
 
-    private function bootstrap(InputInterface $input, $formatter)
+    private function readBootstrap(InputInterface $input): string
     {
         if ($filename = $input->getOption('bootstrap')) {
             if (!file_exists($filename) || !is_readable($filename)) {
                 throw new \RuntimeException("Unable to bootstrap $filename");
             }
 
-            require_once $filename;
-            $formatter->onBootstrap($filename);
-            return;
+            return realpath($filename);
         }
 
         if (!$input->getOption('no-auto-bootstrap') && is_readable(self::DEFAULT_BOOTSTRAP)) {
-            require_once self::DEFAULT_BOOTSTRAP;
-            $formatter->onBootstrap(self::DEFAULT_BOOTSTRAP);
+            return realpath(self::DEFAULT_BOOTSTRAP);
         }
+
+        return '';
     }
 }

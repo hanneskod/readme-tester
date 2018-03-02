@@ -8,9 +8,9 @@ use hanneskod\readmetester\Parser\CodeBlock;
 
 class ProcessRunnerTest extends AbstractRunnerTest
 {
-    public function createRunner(): RunnerInterface
+    public function createRunner(string $bootstrap = ''): RunnerInterface
     {
-        return new ProcessRunner;
+        return new ProcessRunner($bootstrap);
     }
 
     public function testIsolation()

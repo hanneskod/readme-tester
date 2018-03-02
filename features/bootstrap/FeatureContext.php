@@ -14,12 +14,12 @@ class FeatureContext implements Context, SnippetAcceptingContext
     /**
      * @var string Name of directory where test files are keept
      */
-    private $sourceDir;
+    private $tempDir;
 
     /**
      * @var string[] Arguments used when invoking readme-tester
      */
-    private $args = [];
+    private $args;
 
     /**
      * @var integer Return value of the last readme-tester execution
@@ -31,15 +31,16 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     private $output;
 
-    public function __construct()
+    public function __construct(string $tempDir = '', array $args = [])
     {
-        $this->sourceDir = sys_get_temp_dir() . '/readmetester-behat-' . rand() . '/';
-        mkdir($this->sourceDir);
+        $this->tempDir = $tempDir ?: sys_get_temp_dir() . '/readmetester-behat-' . rand() . '/';
+        mkdir($this->tempDir);
+        $this->args = $args;
     }
 
     public function __destruct()
     {
-        exec("rm -rf {$this->sourceDir}");
+        exec("rm -rf {$this->tempDir}");
     }
 
     /**
@@ -47,7 +48,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function aMarkdownFile(PyStringNode $string)
     {
-        file_put_contents($this->sourceDir . rand() . '.md', (string)$string);
+        file_put_contents($this->tempDir . rand() . '.md', (string)$string);
     }
 
     /**
@@ -55,7 +56,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function aSourceFile($filename, PyStringNode $string)
     {
-        file_put_contents($this->sourceDir . $filename, (string)$string);
+        file_put_contents($this->tempDir . $filename, (string)$string);
     }
 
 
@@ -73,9 +74,9 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iRunReadmeTester()
     {
-        $command = realpath('bin/readme-tester') . " test {$this->sourceDir} --format=json " . implode(' ', $this->args);
+        $command = realpath('bin/readme-tester') . " test {$this->tempDir} --format=json " . implode(' ', $this->args);
         $cwd = getcwd();
-        chdir($this->sourceDir);
+        chdir($this->tempDir);
         exec($command, $output, $this->returnValue);
         $this->output = json_decode(implode($output), true);
         chdir($cwd);

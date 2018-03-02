@@ -12,10 +12,26 @@ use Symfony\Component\Process\PhpProcess;
  */
 class ProcessRunner implements RunnerInterface
 {
+    /**
+     * @var string
+     */
+    private $bootstrapCode;
+
+    public function __construct(string $bootstrap = '')
+    {
+        $this->bootstrapCode = $bootstrap ? "require '$bootstrap';" : '';
+    }
+
     public function run(CodeBlock $codeBlock): OutcomeInterface
     {
-        $process = new PhpProcess("<?php $codeBlock");
+        $filename = tempnam(sys_get_temp_dir(), 'doctestphp');
+
+        file_put_contents($filename, "<?php $codeBlock");
+
+        $process = new PhpProcess("<?php {$this->bootstrapCode} require '$filename';");
         $process->run();
+
+        unlink($filename);
 
         if ($errorOutput = $process->getErrorOutput()) {
             return new ErrorOutcome(trim($errorOutput));

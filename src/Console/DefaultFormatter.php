@@ -50,12 +50,12 @@ class DefaultFormatter implements FormatterInterface
 
     public function onInvokationStart(): void
     {
-        $this->output->writeln("Readme-Tester by Hannes Forsgård.");
+        $this->output->writeln("Readme-Tester by Hannes Forsgård");
     }
 
     public function onBootstrap(string $filename): void
     {
-        $this->output->writeln("Loading bootstrap <comment>$filename</comment>");
+        $this->output->writeln("Using bootstrap <comment>$filename</comment>");
     }
 
     public function onFile(string $filename): void
@@ -97,7 +97,7 @@ class DefaultFormatter implements FormatterInterface
     {
         $this->output->writeln(
             sprintf(
-                "<%s>%s file%s tested, %s example%s,%s %s assertion%s, %s failure%s.</%s>",
+                "<%s>%s file%s, %s tested example%s,%s %s assertion%s, %s failure%s</%s>",
                 $this->failureCount ? 'error' : 'comment',
                 $this->fileCount,
                 $this->fileCount == 1 ? '' : 's',
