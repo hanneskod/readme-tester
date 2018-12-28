@@ -88,6 +88,6 @@ class JsonFormatter implements FormatterInterface
 
     public function onInvokationEnd(): void
     {
-        $this->output->writeln(json_encode($this->data, JSON_PRETTY_PRINT));
+        $this->output->writeln((string)json_encode($this->data, JSON_PRETTY_PRINT));
     }
 }

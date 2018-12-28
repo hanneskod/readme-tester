@@ -27,7 +27,7 @@ class SourceFileIterator implements \IteratorAggregate
         }
 
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->filename)) as $fileInfo) {
-            $basePath = realpath($this->filename);
+            $basePath = (string)realpath($this->filename);
             if (in_array(strtolower($fileInfo->getExtension()), ['md', 'mdown', 'markdown'])) {
                 $displayPath = rtrim($this->filename, '/') . str_replace($basePath, '', $fileInfo->getRealPath());
                 yield $displayPath => $this->readFile($fileInfo->getRealPath());
@@ -41,6 +41,6 @@ class SourceFileIterator implements \IteratorAggregate
             throw new \Exception("Not able to read $filename");
         }
 
-        return file_get_contents($filename);
+        return (string)file_get_contents($filename);
     }
 }

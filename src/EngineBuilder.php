@@ -29,6 +29,11 @@ class EngineBuilder
      */
     private $ignoreUnknownAnnotations = false;
 
+    public function __construct()
+    {
+        $this->filter = new NullFilter;
+    }
+
     public function setIgnoreUnknownAnnotations($flag = true)
     {
         $this->ignoreUnknownAnnotations = $flag;
@@ -64,7 +69,7 @@ class EngineBuilder
 
     private function getFilter(): FilterInterface
     {
-        return $this->filter ?: new NullFilter;
+        return $this->filter;
     }
 
     private function getRunner(): RunnerInterface

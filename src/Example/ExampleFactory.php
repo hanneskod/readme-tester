@@ -6,6 +6,7 @@ namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Annotations;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
+use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
 
@@ -84,8 +85,10 @@ class ExampleFactory
                 }
 
                 if ($expectation = $this->expectationFactory->createExpectation($annotation)) {
-                    $expectations[] = $expectation;
-                    continue;
+                    if ($expectation instanceof ExpectationInterface) {
+                        $expectations[] = $expectation;
+                        continue;
+                    }
                 }
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_CONTEXT)) {

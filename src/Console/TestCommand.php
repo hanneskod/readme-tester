@@ -140,15 +140,15 @@ class TestCommand extends Command
     private function readBootstrap(InputInterface $input): string
     {
         if ($filename = $input->getOption('bootstrap')) {
-            if (!file_exists($filename) || !is_readable($filename)) {
+            if (!is_file($filename) || !is_readable($filename)) {
                 throw new \RuntimeException("Unable to bootstrap $filename");
             }
 
-            return realpath($filename);
+            return (string)realpath($filename);
         }
 
         if (!$input->getOption('no-auto-bootstrap') && is_readable(self::DEFAULT_BOOTSTRAP)) {
-            return realpath(self::DEFAULT_BOOTSTRAP);
+            return (string)realpath(self::DEFAULT_BOOTSTRAP);
         }
 
         return '';

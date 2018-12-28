@@ -24,7 +24,7 @@ class ProcessRunner implements RunnerInterface
 
     public function run(CodeBlock $codeBlock): OutcomeInterface
     {
-        $filename = tempnam(sys_get_temp_dir(), 'doctestphp');
+        $filename = (string)tempnam(sys_get_temp_dir(), 'doctestphp');
 
         file_put_contents($filename, "<?php $codeBlock");
 
