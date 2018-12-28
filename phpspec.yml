@@ -1,0 +1,6 @@
+suites:
+    inroute:
+        namespace: hanneskod\readmetester
+        psr4_prefix: hanneskod\readmetester
+
+formatter.name: dot
