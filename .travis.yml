@@ -15,6 +15,6 @@ install:
 
 script:
   - phpunit --verbose
-  - phpspec run --v
+  - phpspec run -v
   - behat --verbose
   - bob examples
