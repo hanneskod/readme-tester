@@ -2,10 +2,10 @@
 
 namespace Bob\BuildConfig;
 
-task('default', ['test', 'phpstan', 'sniff']);
+task('default', ['test', 'examples', 'phpstan', 'sniff']);
 
 desc('Run unit and feature tests');
-task('test', ['phpunit', 'behat']);
+task('test', ['phpunit', 'phpspec', 'behat']);
 
 desc('Run phpunit tests');
 task('phpunit', ['src/Parser/Parser.php'], function() {
@@ -13,10 +13,22 @@ task('phpunit', ['src/Parser/Parser.php'], function() {
     println('Phpunit tests passed');
 });
 
+desc('Run phpspec tests');
+task('phpspec', ['src/Parser/Parser.php'], function() {
+    sh('phpspec run', null, ['failOnError' => true]);
+    println('Phpspec tests passed');
+});
+
 desc('Run behat feature tests');
 task('behat', ['src/Parser/Parser.php'], function() {
     sh('behat --stop-on-failure', null, ['failOnError' => true]);
     println('Behat feature tests passed');
+});
+
+desc('Test examples');
+task('examples', function() {
+    sh('bin/readme-tester README.md', null, ['failOnError' => true]);
+    println('Examples passed');
 });
 
 desc('Run statical analysis using phpstan');

@@ -10,8 +10,10 @@ php:
 install:
   - composer install --no-dev
   - composer global require behat/behat:^3.3
+  - composer global require phpspec/phpspec:^5.1
   - export PATH=$PATH:$HOME/.composer/vendor/bin/
 
 script:
   - phpunit --verbose
+  - phpspec run --v
   - behat --verbose
