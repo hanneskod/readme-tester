@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Example\ExampleFactory;
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Parser\Definition;
 
@@ -18,7 +18,7 @@ class EngineTest extends \PHPUnit\Framework\TestCase
         $parser = $this->prophesize(Parser::CLASS);
         $parser->parse('foobar')->willReturn([$definition]);
 
-        $example = $this->prophesize(Example::CLASS);
+        $example = $this->prophesize(ExampleInterface::CLASS);
 
         $exampleFactory = $this->prophesize(ExampleFactory::CLASS);
         $exampleFactory->createExamples($definition)->willReturn([$example]);

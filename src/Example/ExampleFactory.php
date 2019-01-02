@@ -15,28 +15,22 @@ use hanneskod\readmetester\Parser\Definition;
 
 class ExampleFactory
 {
-    /**
-     * @var ExpectationFactory
-     */
+    /** @var ExpectationFactory */
     private $expectationFactory;
 
-    /**
-     * @var FilterInterface
-     */
-    private $filter;
+    /** @var ProcessorInterface */
+    private $processor;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $ignoreUnknownAnnotations;
 
     public function __construct(
         ExpectationFactory $expectationFactory,
-        FilterInterface $filter,
+        ProcessorInterface $processor,
         bool $ignoreUnknownAnnotations = false
     ) {
         $this->expectationFactory = $expectationFactory;
-        $this->filter = $filter;
+        $this->processor = $processor;
         $this->ignoreUnknownAnnotations = $ignoreUnknownAnnotations;
     }
 
@@ -54,7 +48,7 @@ class ExampleFactory
             $name = new AnonymousName('');
             $code = $def->getCodeBlock();
             $expectations = [];
-            $ignoreExample = false;
+            $active = true;
 
             if ($context) {
                 $code = $code->prepend($context);
@@ -62,7 +56,7 @@ class ExampleFactory
 
             foreach ($def->getAnnotations() as $annotation) {
                 if ($annotation->isNamed(Annotations::ANNOTATION_IGNORE)) {
-                    $ignoreExample = true;
+                    $active = false;
                     continue;
                 }
 
@@ -107,13 +101,9 @@ class ExampleFactory
                 throw new \RuntimeException("Example '{$name->getShortName()}' already exists");
             }
 
-            if (!$this->filter->isValid($name->getCompleteName())) {
-                $ignoreExample = true;
-            }
-
-            $examples[] = $ignoreExample
-                ? new IgnoredExample($name, $code, $expectations)
-                : new Example($name, $code, $expectations);
+            $examples[] = $this->processor->process(
+                (new Example($name, $code, $expectations))->withActive($active)
+            );
         }
 
         return $examples;

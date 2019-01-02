@@ -8,8 +8,11 @@ use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Name\NameInterface;
 use hanneskod\readmetester\Parser\CodeBlock;
 
-class Example implements ExampleInterface
+final class Example implements ExampleInterface
 {
+    /** @var bool */
+    private $active = true;
+
     /** @var NameInterface */
     private $name;
 
@@ -22,7 +25,7 @@ class Example implements ExampleInterface
     /**
      * @param ExpectationInterface[] $expectations
      */
-    public function __construct(NameInterface $name, CodeBlock $code, array $expectations)
+    public function __construct(NameInterface $name, CodeBlock $code, array $expectations = [])
     {
         $this->name = $name;
         $this->code = $code;
@@ -36,7 +39,14 @@ class Example implements ExampleInterface
 
     public function isActive(): bool
     {
-        return true;
+        return $this->active;
+    }
+
+    public function withActive(bool $active): ExampleInterface
+    {
+        $new = clone $this;
+        $new->active = $active;
+        return $new;
     }
 
     public function getCodeBlock(): CodeBlock

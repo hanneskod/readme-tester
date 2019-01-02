@@ -29,4 +29,9 @@ interface ExampleInterface
      * Check if example is active, eg. should be evaluated
      */
     public function isActive(): bool;
+
+    /**
+     * Create a new example with active setting
+     */
+    public function withActive(bool $active): ExampleInterface;
 }

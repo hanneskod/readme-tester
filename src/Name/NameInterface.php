@@ -28,4 +28,9 @@ interface NameInterface
      * Check if this name equals $name
      */
     public function equals(NameInterface $name): bool;
+
+    /**
+     * Check if name is to be regarded as void
+     */
+    public function isUnnamed(): bool;
 }

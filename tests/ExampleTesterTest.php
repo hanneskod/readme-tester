@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Expectation\Status;
 use hanneskod\readmetester\Parser\CodeBlock;
@@ -17,7 +17,7 @@ class ExampleTesterTest extends \PHPUnit\Framework\TestCase
     {
         $codeBlock = $this->prophesize(CodeBlock::CLASS);
 
-        $example = $this->prophesize(Example::CLASS);
+        $example = $this->prophesize(ExampleInterface::CLASS);
         $example->getCodeBlock()->willReturn($codeBlock);
         $example->getExpectations()->willReturn(['list-of-expectations']);
         $example->isActive()->willReturn(true);
@@ -44,7 +44,7 @@ class ExampleTesterTest extends \PHPUnit\Framework\TestCase
 
     public function testIgnoredExamples()
     {
-        $example = $this->prophesize(Example::CLASS);
+        $example = $this->prophesize(ExampleInterface::CLASS);
         $example->isActive()->willReturn(false);
 
         $runner = $this->prophesize(RunnerInterface::CLASS);

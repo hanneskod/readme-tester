@@ -11,8 +11,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use hanneskod\readmetester\EngineBuilder;
 use hanneskod\readmetester\SourceFileIterator;
-use hanneskod\readmetester\Example\RegexpFilter;
-use hanneskod\readmetester\Example\UnnamedFilter;
+use hanneskod\readmetester\Example\FilterRegexpProcessor;
+use hanneskod\readmetester\Example\FilterUnnamedProcessor;
+use hanneskod\readmetester\Expectation\Regexp;
 use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\ProcessRunner;
 
@@ -94,9 +95,9 @@ class TestCommand extends Command
         $engineBuilder = new EngineBuilder;
 
         if ($filter = $input->getOption('filter')) {
-            $engineBuilder->setFilter(new RegexpFilter($filter));
+            $engineBuilder->setProcessor(new FilterRegexpProcessor(new Regexp($filter)));
         } elseif ($input->getOption('named-only')) {
-            $engineBuilder->setFilter(new UnnamedFilter);
+            $engineBuilder->setProcessor(new FilterUnnamedProcessor);
         }
 
         if ($bootstrap = $this->readBootstrap($input)) {

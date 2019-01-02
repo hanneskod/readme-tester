@@ -21,7 +21,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $examples = $factory->createExamples(
@@ -35,7 +35,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $examples = $factory->createExamples(
@@ -49,7 +49,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $this->expectException(\RuntimeException::CLASS);
@@ -64,7 +64,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $examples = $factory->createExamples(
@@ -82,7 +82,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
         $expectationFactory = $this->prophesize(ExpectationFactory::CLASS);
         $expectationFactory->createExpectation($expectationAnnotation)->willReturn($expectation);
 
-        $factory = new ExampleFactory($expectationFactory->reveal(), new NullFilter);
+        $factory = new ExampleFactory($expectationFactory->reveal(), new ProcessorContainer);
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''), $expectationAnnotation)
@@ -95,7 +95,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $codeBlock = $this->prophesize(CodeBlock::CLASS)->reveal();
@@ -111,7 +111,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $this->expectException(\RuntimeException::CLASS);
@@ -125,7 +125,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $parentCode = $this->prophesize(CodeBlock::CLASS)->reveal();
@@ -147,7 +147,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $contextCode = $this->prophesize(CodeBlock::CLASS)->reveal();
@@ -165,7 +165,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter
+            new ProcessorContainer
         );
 
         $this->expectException(\RuntimeException::CLASS);
@@ -179,7 +179,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
-            new NullFilter,
+            new ProcessorContainer,
             true
         );
 

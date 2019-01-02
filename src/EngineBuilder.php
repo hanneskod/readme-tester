@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Example\ExampleFactory;
-use hanneskod\readmetester\Example\FilterInterface;
-use hanneskod\readmetester\Example\NullFilter;
+use hanneskod\readmetester\Example\ProcessorInterface;
+use hanneskod\readmetester\Example\ProcessorContainer;
 use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
@@ -15,9 +15,9 @@ use hanneskod\readmetester\Runner\RunnerInterface;
 class EngineBuilder
 {
     /**
-     * @var FilterInterface
+     * @var ProcessorInterface
      */
-    private $filter;
+    private $processor;
 
     /**
      * @var RunnerInterface
@@ -31,7 +31,7 @@ class EngineBuilder
 
     public function __construct()
     {
-        $this->filter = new NullFilter;
+        $this->processor = new ProcessorContainer;
     }
 
     public function setIgnoreUnknownAnnotations($flag = true)
@@ -39,9 +39,9 @@ class EngineBuilder
         $this->ignoreUnknownAnnotations = $flag;
     }
 
-    public function setFilter(FilterInterface $filter): self
+    public function setProcessor(ProcessorInterface $processor): self
     {
-        $this->filter = $filter;
+        $this->processor = $processor;
         return $this;
     }
 
@@ -57,7 +57,7 @@ class EngineBuilder
             new Parser,
             new ExampleFactory(
                 new ExpectationFactory,
-                $this->getFilter(),
+                $this->processor,
                 $this->ignoreUnknownAnnotations
             ),
             new ExampleTester(
@@ -65,11 +65,6 @@ class EngineBuilder
                 new ExpectationEvaluator
             )
         );
-    }
-
-    private function getFilter(): FilterInterface
-    {
-        return $this->filter;
     }
 
     private function getRunner(): RunnerInterface

@@ -37,4 +37,9 @@ final class ExampleName implements NameInterface
     {
         return $name->getCompleteName() == $this->getCompleteName();
     }
+
+    public function isUnnamed(): bool
+    {
+        return false;
+    }
 }

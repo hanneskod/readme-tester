@@ -33,4 +33,9 @@ final class AnonymousName implements NameInterface
     {
         return false;
     }
+
+    public function isUnnamed(): bool
+    {
+        return true;
+    }
 }

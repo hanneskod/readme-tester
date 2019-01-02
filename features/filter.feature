@@ -21,7 +21,7 @@ Feature: Filter argument
     echo 'bar';
     ```
     """
-    And the command line argument '--filter=:bar'
+    And the command line argument '--filter=bar'
     When I run readme tester
     Then 1 examples are evaluated
     And 1 examples are ignored
@@ -66,7 +66,7 @@ Feature: Filter argument
     echo $str;
     ```
     """
-    And the command line argument '--filter=:bar'
+    And the command line argument '--filter=bar'
     When I run readme tester
     Then 1 examples are evaluated
     And 1 examples are ignored

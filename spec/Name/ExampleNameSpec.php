@@ -52,4 +52,9 @@ class ExampleNameSpec extends ObjectBehavior
         $name->getCompleteName()->willReturn('bar:foo');
         $this->equals($name)->shouldReturn(true);
     }
+
+    function it_is_not_unnamed()
+    {
+        $this->shouldNotBeUnnamed();
+    }
 }

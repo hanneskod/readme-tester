@@ -45,4 +45,9 @@ class AnonymousNameSpec extends ObjectBehavior
     {
         $this->equals($name)->shouldReturn(false);
     }
+
+    function it_is_unnamed()
+    {
+        $this->shouldBeUnnamed();
+    }
 }
