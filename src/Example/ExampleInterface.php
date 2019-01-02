@@ -24,4 +24,9 @@ interface ExampleInterface
      * @return ExpectationInterface[]
      */
     public function getExpectations(): array;
+
+    /**
+     * Check if example is active, eg. should be evaluated
+     */
+    public function isActive(): bool;
 }

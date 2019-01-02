@@ -20,7 +20,7 @@ class ExampleTesterTest extends \PHPUnit\Framework\TestCase
         $example = $this->prophesize(Example::CLASS);
         $example->getCodeBlock()->willReturn($codeBlock);
         $example->getExpectations()->willReturn(['list-of-expectations']);
-        $example->shouldBeEvaluated()->willReturn(true);
+        $example->isActive()->willReturn(true);
 
         $outcome = $this->prophesize(OutcomeInterface::CLASS);
 
@@ -45,7 +45,7 @@ class ExampleTesterTest extends \PHPUnit\Framework\TestCase
     public function testIgnoredExamples()
     {
         $example = $this->prophesize(Example::CLASS);
-        $example->shouldBeEvaluated()->willReturn(false);
+        $example->isActive()->willReturn(false);
 
         $runner = $this->prophesize(RunnerInterface::CLASS);
         $evaluator = $this->prophesize(ExpectationEvaluator::CLASS);

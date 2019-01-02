@@ -13,7 +13,7 @@ class IgnoredExampleTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse(
             (new IgnoredExample($this->createMock(NameInterface::CLASS), $this->createMock(CodeBlock::CLASS), []))
-                ->shouldBeEvaluated()
+                ->isActive()
         );
     }
 }

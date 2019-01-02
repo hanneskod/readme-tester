@@ -12,7 +12,7 @@ use hanneskod\readmetester\Parser\CodeBlock;
  */
 class IgnoredExample extends Example
 {
-    public function shouldBeEvaluated(): bool
+    public function isActive(): bool
     {
         return false;
     }

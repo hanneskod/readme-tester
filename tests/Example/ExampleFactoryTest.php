@@ -71,7 +71,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition(new CodeBlock(''), new Annotation('ignore'), new Annotation('example', 'name'))
         );
 
-        $this->assertFalse($examples[0]->shouldBeEvaluated());
+        $this->assertFalse($examples[0]->isActive());
     }
 
     function testCreateExpectationsFromAnnotations()

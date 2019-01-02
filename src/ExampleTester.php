@@ -42,7 +42,7 @@ class ExampleTester
 
     public function testExample(ExampleInterface $example): void
     {
-        if (!$example->shouldBeEvaluated()) {
+        if (!$example->isActive()) {
             foreach ($this->listeners as $listener) {
                 $listener->onIgnoredExample($example);
             }

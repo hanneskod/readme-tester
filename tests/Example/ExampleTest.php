@@ -23,7 +23,7 @@ class ExampleTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue(
             (new Example($this->createMock(NameInterface::CLASS), $this->createMock(CodeBlock::CLASS), []))
-                ->shouldBeEvaluated()
+                ->isActive()
         );
     }
 

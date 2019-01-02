@@ -34,7 +34,7 @@ class Example implements ExampleInterface
         return $this->name;
     }
 
-    public function shouldBeEvaluated(): bool
+    public function isActive(): bool
     {
         return true;
     }
