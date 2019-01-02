@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\Status;
 
 /**
@@ -15,12 +15,12 @@ interface ListenerInterface
     /**
      * Called on example evaluation
      */
-    public function onExample(Example $example): void;
+    public function onExample(ExampleInterface $example): void;
 
     /**
      * Called when an example is skipped
      */
-    public function onIgnoredExample(Example $example): void;
+    public function onIgnoredExample(ExampleInterface $example): void;
 
     /**
      * Called on expectation evaluation

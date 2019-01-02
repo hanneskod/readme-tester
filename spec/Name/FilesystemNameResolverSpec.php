@@ -4,22 +4,22 @@ declare(strict_types = 1);
 
 namespace spec\hanneskod\readmetester\Name;
 
-use hanneskod\readmetester\Name\FilesystemResolver;
-use hanneskod\readmetester\Name\ResolverInterface;
+use hanneskod\readmetester\Name\FilesystemNameResolver;
+use hanneskod\readmetester\Name\NameResolverInterface;
 use hanneskod\readmetester\Name\NameInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class FilesystemResolverSpec extends ObjectBehavior
+class FilesystemNameResolverSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(FilesystemResolver::CLASS);
+        $this->shouldHaveType(FilesystemNameResolver::CLASS);
     }
 
     function it_is_a_resolver()
     {
-        $this->shouldHaveType(ResolverInterface::CLASS);
+        $this->shouldHaveType(NameResolverInterface::CLASS);
     }
 
     function it_returns_resolved_paths(NameInterface $baseName, NameInterface $toResolve)
@@ -32,16 +32,16 @@ class FilesystemResolverSpec extends ObjectBehavior
     function it_returns_expanded_paths(NameInterface $baseName, NameInterface $toResolve)
     {
         $toResolve->getShortName()->willReturn('');
-        $toResolve->getNamespaceName()->willReturn(__DIR__ . '/../Name/FilesystemResolverSpec.php');
-        $this->resolve($baseName, $toResolve)->shouldResolveNamespaceTo(__DIR__ . '/FilesystemResolverSpec.php');
+        $toResolve->getNamespaceName()->willReturn(__DIR__ . '/../Name/FilesystemNameResolverSpec.php');
+        $this->resolve($baseName, $toResolve)->shouldResolveNamespaceTo(__DIR__ . '/FilesystemNameResolverSpec.php');
     }
 
     function it_prepends_basepath_if_applicable(NameInterface $baseName, NameInterface $toResolve)
     {
         $toResolve->getShortName()->willReturn('');
-        $toResolve->getNamespaceName()->willReturn('FilesystemResolverSpec.php');
+        $toResolve->getNamespaceName()->willReturn('FilesystemNameResolverSpec.php');
         $baseName->getNamespaceName()->willReturn(__DIR__ . '/OtherFile.php');
-        $this->resolve($baseName, $toResolve)->shouldResolveNamespaceTo(__DIR__ . '/FilesystemResolverSpec.php');
+        $this->resolve($baseName, $toResolve)->shouldResolveNamespaceTo(__DIR__ . '/FilesystemNameResolverSpec.php');
     }
 
     function it_ignores_if_unable_to_resolve(NameInterface $baseName, NameInterface $toResolve)

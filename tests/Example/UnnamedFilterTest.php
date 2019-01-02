@@ -9,7 +9,7 @@ class UnnamedFilterTest extends \PHPUnit\Framework\TestCase
     function testIsValid()
     {
         $this->assertFalse(
-            (new UnnamedFilter)->isValid('')
+            (new UnnamedFilter)->isValid('UNNAMED')
         );
 
         $this->assertTrue(

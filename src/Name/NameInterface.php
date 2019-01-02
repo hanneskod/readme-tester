@@ -12,7 +12,7 @@ interface NameInterface
     /**
      * Get the complete name
      */
-    public function getName(): string;
+    public function getCompleteName(): string;
 
     /**
      * Get the part of name not describing a namespace
@@ -23,4 +23,9 @@ interface NameInterface
      * Get the namespace part of name
      */
     public function getNamespaceName(): string;
+
+    /**
+     * Check if this name equals $name
+     */
+    public function equals(NameInterface $name): bool;
 }

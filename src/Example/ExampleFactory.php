@@ -7,12 +7,12 @@ namespace hanneskod\readmetester\Example;
 use hanneskod\readmetester\Annotations;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
+use hanneskod\readmetester\Name\AnonymousName;
+use hanneskod\readmetester\Name\ExampleName;
+use hanneskod\readmetester\Name\NameInterface;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
 
-/**
- * Create Examples objects from Definitions
- */
 class ExampleFactory
 {
     /**
@@ -43,7 +43,7 @@ class ExampleFactory
     /**
      * Create examples from definitions
      *
-     * @return Example[]
+     * @return ExampleInterface[]
      */
     public function createExamples(Definition ...$defs): array
     {
@@ -51,7 +51,7 @@ class ExampleFactory
         $context = null;
 
         foreach ($defs as $index => $def) {
-            $name = '';
+            $name = new AnonymousName('');
             $code = $def->getCodeBlock();
             $expectations = [];
             $ignoreExample = false;
@@ -67,20 +67,22 @@ class ExampleFactory
                 }
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_EXAMPLE)) {
-                    $name = $annotation->getArgument() ?: (string)($index + 1);
+                    if ($annotation->getArgument()) {
+                        $name = new ExampleName($annotation->getArgument(), $name->getNamespaceName());
+                    }
                     continue;
                 }
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_INCLUDE)) {
-                    $toInclude = $annotation->getArgument();
+                    $toInclude = $this->readExample($examples, new ExampleName($annotation->getArgument(), ''));
 
-                    if (!isset($examples[$toInclude])) {
+                    if (is_null($toInclude)) {
                         throw new \RuntimeException(
-                            "Example '$toInclude' does not exist and can not be included in definition $name"
+                            "Example '{$annotation->getArgument()}' can not be included in {$name->getShortName()}"
                         );
                     }
 
-                    $code = $code->prepend($examples[$toInclude]->getCodeBlock());
+                    $code = $code->prepend($toInclude->getCodeBlock());
                     continue;
                 }
 
@@ -101,23 +103,30 @@ class ExampleFactory
                 }
             }
 
-            if (isset($examples[$name])) {
-                throw new \RuntimeException("Example '$name' already exists in definition " . ($index + 1));
+            if ($this->readExample($examples, $name)) {
+                throw new \RuntimeException("Example '{$name->getShortName()}' already exists");
             }
 
-            if (!$this->filter->isValid($name)) {
+            if (!$this->filter->isValid($name->getCompleteName())) {
                 $ignoreExample = true;
             }
 
-            if (!$name) {
-                $name = (string)($index + 1);
-            }
-
-            $examples[$name] = $ignoreExample
+            $examples[] = $ignoreExample
                 ? new IgnoredExample($name, $code, $expectations)
                 : new Example($name, $code, $expectations);
         }
 
         return $examples;
+    }
+
+    private function readExample(array $examples, NameInterface $name): ?ExampleInterface
+    {
+        foreach ($examples as $example) {
+            if ($example->getName()->equals($name)) {
+                return $example;
+            }
+        }
+
+        return null;
     }
 }

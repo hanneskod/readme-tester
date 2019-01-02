@@ -50,10 +50,10 @@ class TestCommand extends Command
                 'default'
             )
             ->addOption(
-                'flagged-only',
+                'named-only',
                 null,
                 InputOption::VALUE_NONE,
-                'Test only examples flagged with the @example annotation'
+                'Test only named examples'
             )
             ->addOption(
                 'ignore-unknown-annotations',
@@ -95,7 +95,7 @@ class TestCommand extends Command
 
         if ($filter = $input->getOption('filter')) {
             $engineBuilder->setFilter(new RegexpFilter($filter));
-        } elseif ($input->getOption('flagged-only')) {
+        } elseif ($input->getOption('named-only')) {
             $engineBuilder->setFilter(new UnnamedFilter);
         }
 

@@ -21,7 +21,7 @@ Feature: Filter argument
     echo 'bar';
     ```
     """
-    And the command line argument '--filter=bar'
+    And the command line argument '--filter=:bar'
     When I run readme tester
     Then 1 examples are evaluated
     And 1 examples are ignored
@@ -66,40 +66,28 @@ Feature: Filter argument
     echo $str;
     ```
     """
-    And the command line argument '--filter=bar'
+    And the command line argument '--filter=:bar'
     When I run readme tester
     Then 1 examples are evaluated
     And 1 examples are ignored
     And 0 failures are found
 
-  Scenario: I filter flagged only
+  Scenario: I filter named only
     Given a markdown file:
     """
     ```php
-    // this-example-has-no-annotation
-    ```
-    <!-- @example foo -->
-    ```php
-    // this-examples-has-an-annotation
-    ```
-    """
-    And the command line argument '--flagged-only'
-    When I run readme tester
-    Then 1 examples are evaluated
-    And 1 examples are ignored
-
-  Scenario: I filter flagged only using unnamed example
-    Given a markdown file:
-    """
-    ```php
-    // this-example-has-no-annotation
+    // ignored: example has no annotation
     ```
     <!-- @example -->
     ```php
-    // this-examples-has-an-annotation
+    // ignored: example has no name
+    ```
+    <!-- @example foo -->
+    ```php
+    // evaluated!
     ```
     """
-    And the command line argument '--flagged-only'
+    And the command line argument '--named-only'
     When I run readme tester
     Then 1 examples are evaluated
-    And 1 examples are ignored
+    And 2 examples are ignored

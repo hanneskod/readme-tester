@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\PHPUnit;
 
 use hanneskod\readmetester\ListenerInterface;
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\Status;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\AssertionFailedError;
@@ -27,12 +27,12 @@ class PhpunitListener implements ListenerInterface
         $this->testCase = $testCase;
     }
 
-    public function onExample(Example $example): void
+    public function onExample(ExampleInterface $example): void
     {
-        $this->exampleName = $example->getName();
+        $this->exampleName = $example->getName()->getCompleteName();
     }
 
-    public function onIgnoredExample(Example $example): void
+    public function onIgnoredExample(ExampleInterface $example): void
     {
     }
 

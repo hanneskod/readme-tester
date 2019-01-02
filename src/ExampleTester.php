@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Expectation\Status;
 use hanneskod\readmetester\Runner\RunnerInterface;
@@ -40,7 +40,7 @@ class ExampleTester
         $this->listeners[] = $listener;
     }
 
-    public function testExample(Example $example): void
+    public function testExample(ExampleInterface $example): void
     {
         if (!$example->shouldBeEvaluated()) {
             foreach ($this->listeners as $listener) {

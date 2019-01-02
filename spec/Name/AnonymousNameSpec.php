@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace spec\hanneskod\readmetester\Name;
 
-use hanneskod\readmetester\Name\NamespaceName;
+use hanneskod\readmetester\Name\AnonymousName;
 use hanneskod\readmetester\Name\NameInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class NamespaceNameSpec extends ObjectBehavior
+class AnonymousNameSpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,7 +18,7 @@ class NamespaceNameSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(NamespaceName::CLASS);
+        $this->shouldHaveType(AnonymousName::CLASS);
     }
 
     function it_is_a_name()
@@ -31,13 +31,18 @@ class NamespaceNameSpec extends ObjectBehavior
         $this->getNamespaceName()->shouldReturn('namespace');
     }
 
-    function it_does_not_contain_a_short_name()
+    function it_contains_a_standard_short_name()
     {
-        $this->shouldThrow(\RuntimeException::CLASS)->during('getShortName');
+        $this->getShortName()->shouldReturn('UNNAMED');
     }
 
-    function it_does_not_contain_a_complete_name()
+    function it_contains_a_standard_complete_name()
     {
-        $this->shouldThrow(\RuntimeException::CLASS)->during('getName');
+        $this->getCompleteName()->shouldReturn('namespace:UNNAMED');
+    }
+
+    function it_never_equals_a_name(NameInterface $name)
+    {
+        $this->equals($name)->shouldReturn(false);
     }
 }

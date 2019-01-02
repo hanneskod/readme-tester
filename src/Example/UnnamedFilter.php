@@ -11,6 +11,6 @@ class UnnamedFilter implements FilterInterface
 {
     public function isValid(string $name): bool
     {
-        return !!$name;
+        return !preg_match('/UNNAMED$/', $name);
     }
 }

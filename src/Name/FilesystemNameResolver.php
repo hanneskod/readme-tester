@@ -7,7 +7,7 @@ namespace hanneskod\readmetester\Name;
 /**
  * Resolve namespace names to filesystem file paths
  */
-final class FilesystemResolver implements ResolverInterface
+final class FilesystemNameResolver implements NameResolverInterface
 {
     public function resolve(NameInterface $baseName, NameInterface $toResolve): NameInterface
     {

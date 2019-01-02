@@ -38,6 +38,18 @@ class ExampleNameSpec extends ObjectBehavior
 
     function it_contains_a_complete_name()
     {
-        $this->getName()->shouldReturn('bar:foo');
+        $this->getCompleteName()->shouldReturn('bar:foo');
+    }
+
+    function it_does_not_equal_wrong_name(NameInterface $name)
+    {
+        $name->getCompleteName()->willReturn('baz');
+        $this->equals($name)->shouldReturn(false);
+    }
+
+    function it_equals_correct_name(NameInterface $name)
+    {
+        $name->getCompleteName()->willReturn('bar:foo');
+        $this->equals($name)->shouldReturn(true);
     }
 }

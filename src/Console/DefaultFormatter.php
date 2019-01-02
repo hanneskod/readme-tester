@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Console;
 
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\Status;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -64,17 +64,17 @@ class DefaultFormatter implements FormatterInterface
         $this->output->writeln("Testing examples in <comment>$filename</comment>");
     }
 
-    public function onExample(Example $example): void
+    public function onExample(ExampleInterface $example): void
     {
         $this->exampleCount++;
-        $this->output->writeln("<info>@example {$example->getName()}</info>");
+        $this->output->writeln("<info>@example {$example->getName()->getShortName()}</info>");
     }
 
-    public function onIgnoredExample(Example $example): void
+    public function onIgnoredExample(ExampleInterface $example): void
     {
         $this->ignoredCount++;
         if ($this->output->isVerbose()) {
-            $this->output->writeln("ignored <info>@example {$example->getName()}</info>");
+            $this->output->writeln("ignored <info>@example {$example->getName()->getShortName()}</info>");
         }
     }
 

@@ -6,6 +6,8 @@ namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
+use hanneskod\readmetester\Name\AnonymousName;
+use hanneskod\readmetester\Name\ExampleName;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
 use hanneskod\readmetester\Parser\CodeBlock;
@@ -15,7 +17,7 @@ use hanneskod\readmetester\Parser\CodeBlock;
  */
 class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    function testIndexAsDefaultName()
+    function testAnonymousDefaultName()
     {
         $factory = new ExampleFactory(
             $this->prophesize(ExpectationFactory::CLASS)->reveal(),
@@ -26,7 +28,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition(new CodeBlock(''))
         );
 
-        $this->assertSame('1', $examples['1']->getName());
+        $this->assertEquals(new AnonymousName(''), $examples[0]->getName());
     }
 
     function testNameFromAnnotation()
@@ -40,7 +42,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition(new CodeBlock(''), new Annotation('example', 'foobar'))
         );
 
-        $this->assertSame('foobar', $examples['foobar']->getName());
+        $this->assertEquals(new ExampleName('foobar', ''), $examples[0]->getName());
     }
 
     function testExceptionWhenNameIsNotUnique()
@@ -69,7 +71,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition(new CodeBlock(''), new Annotation('ignore'), new Annotation('example', 'name'))
         );
 
-        $this->assertFalse($examples['name']->shouldBeEvaluated());
+        $this->assertFalse($examples[0]->shouldBeEvaluated());
     }
 
     function testCreateExpectationsFromAnnotations()
@@ -86,7 +88,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition(new CodeBlock(''), $expectationAnnotation)
         );
 
-        $this->assertEquals([$expectation], $examples['1']->getExpectations());
+        $this->assertEquals([$expectation], $examples[0]->getExpectations());
     }
 
     function testCreateSimpleCodeBlock()
@@ -102,7 +104,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition($codeBlock)
         );
 
-        $this->assertSame($codeBlock, $examples['1']->getCodeBlock());
+        $this->assertSame($codeBlock, $examples[0]->getCodeBlock());
     }
 
     function testExceptionIfIncludedExampleDoesNotExist()

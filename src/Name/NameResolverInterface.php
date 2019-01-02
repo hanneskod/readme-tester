@@ -2,7 +2,7 @@
 
 namespace hanneskod\readmetester\Name;
 
-interface ResolverInterface
+interface NameResolverInterface
 {
     /**
      * Resolve name using base namespace
