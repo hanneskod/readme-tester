@@ -42,7 +42,7 @@ class PhpunitListener implements ListenerInterface
         if (!$status->isSuccess()) {
             $this->testCase->getTestResultObject()->addFailure(
                 $this->testCase,
-                new AssertionFailedError("Example {$this->exampleName}: $status"),
+                new AssertionFailedError("Example {$this->exampleName}: {$status->getDescription()}"),
                 0.0
             );
         }

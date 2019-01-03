@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 
 /**
  * Execute code using eval()
@@ -27,7 +27,7 @@ final class EvalRunner implements RunnerInterface
 
         try {
             $lastErrorBefore = error_get_last();
-            eval($codeBlock);
+            eval($codeBlock->getCode());
             $lastErrorAfter = error_get_last();
             if ($lastErrorBefore != $lastErrorAfter) {
                 ob_end_clean();

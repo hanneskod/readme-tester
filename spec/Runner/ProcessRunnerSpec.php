@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Runner\ProcessRunner;
 use hanneskod\readmetester\Runner\VoidOutcome;
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

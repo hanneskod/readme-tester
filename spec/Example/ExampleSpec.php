@@ -8,7 +8,7 @@ use hanneskod\readmetester\Example\Example;
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Name\NameInterface;
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Exception\Example\FailureException;
 use Prophecy\Argument;

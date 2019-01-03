@@ -2,6 +2,8 @@
 
 namespace hanneskod\readmetester\Parser;
 
+use hanneskod\readmetester\Utils\CodeBlock;
+
 class Parser
 {
     protected $string;

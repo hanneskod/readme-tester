@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Name\NameInterface;
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 
 class ExampleTest extends \PHPUnit\Framework\TestCase
 {

@@ -7,7 +7,7 @@ namespace hanneskod\readmetester;
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Expectation\StatusInterface;
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\OutcomeInterface;
 

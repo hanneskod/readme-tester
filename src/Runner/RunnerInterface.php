@@ -2,7 +2,7 @@
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 
 /**
  * Defines object that are able to execute example code

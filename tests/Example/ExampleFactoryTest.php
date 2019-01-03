@@ -10,7 +10,7 @@ use hanneskod\readmetester\Name\AnonymousName;
 use hanneskod\readmetester\Name\ExampleName;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 
 /**
  * @covers \hanneskod\readmetester\ExampleFactory

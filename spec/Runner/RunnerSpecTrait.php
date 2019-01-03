@@ -8,7 +8,7 @@ use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\ErrorOutcome;
 use hanneskod\readmetester\Runner\OutputOutcome;
 use hanneskod\readmetester\Runner\VoidOutcome;
-use hanneskod\readmetester\Parser\CodeBlock;
+use hanneskod\readmetester\Utils\CodeBlock;
 
 trait RunnerSpecTrait
 {

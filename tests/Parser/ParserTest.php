@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Parser;
 
+use hanneskod\readmetester\Utils\CodeBlock;
+
 class ParserTest extends \PHPUnit\Framework\TestCase
 {
     function testReadmeWithNoExamples()

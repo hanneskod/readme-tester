@@ -2,6 +2,8 @@
 
 namespace hanneskod\readmetester\Parser;
 
+use hanneskod\readmetester\Utils\CodeBlock;
+
 grammar Parser
 {
     start FILE = examples:(EXAMPLE / VOID_LINE)* .* {
