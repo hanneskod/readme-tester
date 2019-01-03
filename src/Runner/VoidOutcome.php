@@ -4,10 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-/**
- * Empty outcome
- */
-class VoidOutcome implements OutcomeInterface
+final class VoidOutcome implements OutcomeInterface
 {
     public function getType(): string
     {
@@ -24,7 +21,7 @@ class VoidOutcome implements OutcomeInterface
         return '';
     }
 
-    public function __tostring(): string
+    public function getDescription(): string
     {
         return 'void outcome';
     }

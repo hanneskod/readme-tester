@@ -12,7 +12,7 @@ class ExpectationEvaluatorTest extends \PHPUnit\Framework\TestCase
     {
         $outcome = $this->prophesize(OutcomeInterface::CLASS);
         $outcome->mustBeHandled()->willReturn(true);
-        $outcome->__tostring()->willReturn('');
+        $outcome->getDescription()->willReturn('');
         $this->assertInstanceOf(
             Failure::CLASS,
             (new ExpectationEvaluator)->evaluate([], $outcome->reveal())[0]
@@ -47,7 +47,7 @@ class ExpectationEvaluatorTest extends \PHPUnit\Framework\TestCase
     {
         $outcome = $this->prophesize(OutcomeInterface::CLASS);
         $outcome->mustBeHandled()->willReturn(true);
-        $outcome->__tostring()->willReturn('');
+        $outcome->getDescription()->willReturn('');
 
         $exptA = $this->prophesize(ExpectationInterface::CLASS);
         $exptA->getDescription()->willReturn('');

@@ -18,7 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "hanneskod\\readmetester\\": "tests/"
+            "spec\\hanneskod\\readmetester\\": "spec/"
         }
     },
     "bin": [
@@ -26,7 +26,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "symfony/console": ">=2.4, <5",
+        "symfony/console": "^4",
         "symfony/process": "^4"
     }
 }

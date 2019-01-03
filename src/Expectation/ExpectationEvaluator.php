@@ -36,7 +36,7 @@ class ExpectationEvaluator
         }
 
         if (!$isHandled) {
-            $statuses[] = new Failure("Unhandled $outcome");
+            $statuses[] = new Failure("Unhandled {$outcome->getDescription()}");
         }
 
         return $statuses;

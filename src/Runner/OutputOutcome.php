@@ -4,14 +4,9 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-/**
- * Output from an executed code block
- */
-class OutputOutcome implements OutcomeInterface
+final class OutputOutcome implements OutcomeInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $output;
 
     public function __construct(string $output)
@@ -34,7 +29,7 @@ class OutputOutcome implements OutcomeInterface
         return $this->output;
     }
 
-    public function __tostring(): string
+    public function getDescription(): string
     {
         return "output '{$this->output}'";
     }

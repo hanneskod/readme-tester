@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace hanneskod\readmetester\Runner;
 
 /**
- * Represents an outcome (effect) of an executed code block
+ * Represents an outcome (effect) of an executed example
  */
 interface OutcomeInterface
 {
@@ -32,7 +30,7 @@ interface OutcomeInterface
     public function getType(): string;
 
     /**
-     * Check unhandled outcome should trigger an error
+     * Check if unhandled outcome should trigger an error
      */
     public function mustBeHandled(): bool;
 
@@ -44,5 +42,5 @@ interface OutcomeInterface
     /**
      * Get a free text description of this outcome
      */
-    public function __tostring(): string;
+    public function getDescription(): string;
 }

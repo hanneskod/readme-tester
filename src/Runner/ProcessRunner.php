@@ -10,15 +10,17 @@ use Symfony\Component\Process\PhpProcess;
 /**
  * Execute code in isolation using symfony php-process
  */
-class ProcessRunner implements RunnerInterface
+final class ProcessRunner implements RunnerInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $bootstrapCode;
 
     public function __construct(string $bootstrap = '')
     {
+        if ($bootstrap && !file_exists($bootstrap)) {
+            throw new \RuntimeException("Unable to load bootstrap $bootstrap, file does not exist");
+        }
+
         $this->bootstrapCode = $bootstrap ? "require '$bootstrap';" : '';
     }
 

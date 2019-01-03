@@ -9,11 +9,14 @@ use hanneskod\readmetester\Parser\CodeBlock;
 /**
  * Execute code using eval()
  */
-class EvalRunner implements RunnerInterface
+final class EvalRunner implements RunnerInterface
 {
     public function __construct(string $bootstrap = '')
     {
         if ($bootstrap) {
+            if (!file_exists($bootstrap)) {
+                throw new \RuntimeException("Unable to load bootstrap $bootstrap, file does not exist");
+            }
             require_once $bootstrap;
         }
     }
