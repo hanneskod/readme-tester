@@ -6,6 +6,7 @@ namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Example\ExampleFactory;
 use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\RegistryInterface;
 use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Parser\Definition;
 
@@ -20,8 +21,11 @@ class EngineTest extends \PHPUnit\Framework\TestCase
 
         $example = $this->prophesize(ExampleInterface::CLASS);
 
+        $registry = $this->prophesize(RegistryInterface::CLASS);
+        $registry->getExamples()->willReturn([$example]);
+
         $exampleFactory = $this->prophesize(ExampleFactory::CLASS);
-        $exampleFactory->createExamples($definition)->willReturn([$example]);
+        $exampleFactory->createExamples($definition)->willReturn($registry);
 
         $tester = $this->prophesize(ExampleTester::CLASS);
         $tester->testExample($example)->shouldBeCalled();

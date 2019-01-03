@@ -34,14 +34,9 @@ class ExampleFactory
         $this->ignoreUnknownAnnotations = $ignoreUnknownAnnotations;
     }
 
-    /**
-     * Create examples from definitions
-     *
-     * @return ExampleInterface[]
-     */
-    public function createExamples(Definition ...$defs): array
+    public function createExamples(Definition ...$defs): RegistryInterface
     {
-        $examples = [];
+        $registry = new ExampleRegistry;
         $context = null;
 
         foreach ($defs as $index => $def) {
@@ -68,15 +63,15 @@ class ExampleFactory
                 }
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_INCLUDE)) {
-                    $toInclude = $this->readExample($examples, new ExampleName($annotation->getArgument(), ''));
+                    $nameToInclude = new ExampleName($annotation->getArgument(), '');
 
-                    if (is_null($toInclude)) {
+                    if (!$registry->hasExample($nameToInclude)) {
                         throw new \RuntimeException(
                             "Example '{$annotation->getArgument()}' can not be included in {$name->getShortName()}"
                         );
                     }
 
-                    $code = $code->prepend($toInclude->getCodeBlock());
+                    $code = $code->prepend($registry->getExample($nameToInclude)->getCodeBlock());
                     continue;
                 }
 
@@ -97,26 +92,17 @@ class ExampleFactory
                 }
             }
 
-            if ($this->readExample($examples, $name)) {
+            if ($registry->hasExample($name)) {
                 throw new \RuntimeException("Example '{$name->getShortName()}' already exists");
             }
 
-            $examples[] = $this->processor->process(
-                (new Example($name, $code, $expectations))->withActive($active)
+            $registry->setExample(
+                $this->processor->process(
+                    (new Example($name, $code, $expectations))->withActive($active)
+                )
             );
         }
 
-        return $examples;
-    }
-
-    private function readExample(array $examples, NameInterface $name): ?ExampleInterface
-    {
-        foreach ($examples as $example) {
-            if ($example->getName()->equals($name)) {
-                return $example;
-            }
-        }
-
-        return null;
+        return $registry;
     }
 }

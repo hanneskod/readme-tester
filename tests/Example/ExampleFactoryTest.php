@@ -26,7 +26,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''))
-        );
+        )->getExamples();
 
         $this->assertEquals(new AnonymousName(''), $examples[0]->getName());
     }
@@ -40,7 +40,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''), new Annotation('example', 'foobar'))
-        );
+        )->getExamples();
 
         $this->assertEquals(new ExampleName('foobar', ''), $examples[0]->getName());
     }
@@ -69,7 +69,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''), new Annotation('ignore'), new Annotation('example', 'name'))
-        );
+        )->getExamples();
 
         $this->assertFalse($examples[0]->isActive());
     }
@@ -86,7 +86,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $examples = $factory->createExamples(
             new Definition(new CodeBlock(''), $expectationAnnotation)
-        );
+        )->getExamples();
 
         $this->assertEquals([$expectation], $examples[0]->getExpectations());
     }
@@ -102,7 +102,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $examples = $factory->createExamples(
             new Definition($codeBlock)
-        );
+        )->getExamples();
 
         $this->assertSame($codeBlock, $examples[0]->getCodeBlock());
     }
@@ -116,7 +116,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->expectException(\RuntimeException::CLASS);
 
-        $examples = $factory->createExamples(
+        $factory->createExamples(
             new Definition(new CodeBlock(''), new Annotation('include', 'does-not-exist'))
         );
     }
@@ -155,7 +155,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $exampleCode->prepend($contextCode)->shouldBeCalled();
 
-        $examples = $factory->createExamples(
+        $factory->createExamples(
             new Definition($contextCode, new Annotation('exampleContext')),
             new Definition($exampleCode->reveal())
         );
@@ -172,7 +172,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
 
         $factory->createExamples(
             new Definition(new CodeBlock(''), new Annotation('annotation-name-does-not-exist'))
-        );
+        )->getExamples();
     }
 
     function testIgnoreUnknownAnnotation()
@@ -187,7 +187,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             1,
             $factory->createExamples(
                 new Definition(new CodeBlock(''), new Annotation('annotation-name-does-not-exist'))
-            )
+            )->getExamples()
         );
     }
 }

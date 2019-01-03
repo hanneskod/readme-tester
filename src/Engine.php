@@ -42,9 +42,9 @@ class Engine
     /**
      * Test examples in file
      */
-    public function testFile(string $contents): void
+    public function testFile(string $raw): void
     {
-        foreach ($this->exampleFactory->createExamples(...$this->parser->parse($contents)) as $example) {
+        foreach ($this->exampleFactory->createExamples(...$this->parser->parse($raw))->getExamples() as $example) {
             $this->tester->testExample($example);
         }
     }
