@@ -6,7 +6,7 @@ namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
-use hanneskod\readmetester\Expectation\Status;
+use hanneskod\readmetester\Expectation\StatusInterface;
 use hanneskod\readmetester\Parser\CodeBlock;
 use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\OutcomeInterface;
@@ -27,7 +27,7 @@ class ExampleTesterTest extends \PHPUnit\Framework\TestCase
         $runner = $this->prophesize(RunnerInterface::CLASS);
         $runner->run($codeBlock)->willReturn($outcome);
 
-        $status = $this->prophesize(Status::CLASS);
+        $status = $this->prophesize(StatusInterface::CLASS);
 
         $evaluator = $this->prophesize(ExpectationEvaluator::CLASS);
         $evaluator->evaluate(['list-of-expectations'], $outcome)->willReturn([$status]);

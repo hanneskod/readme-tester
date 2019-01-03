@@ -5,28 +5,24 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Runner\OutcomeInterface;
+use hanneskod\readmetester\Utils\Regexp;
 
 /**
  * Validate that correct error is produced
  */
-class ErrorExpectation implements ExpectationInterface
+final class ErrorExpectation implements ExpectationInterface
 {
-    /**
-     * @var Regexp Expression matching error
-     */
+    /** @var Regexp */
     private $regexp;
 
-    /**
-     * Set regular expression matching error
-     */
     public function __construct(Regexp $regexp)
     {
         $this->regexp = $regexp;
     }
 
-    public function __tostring(): string
+    public function getDescription(): string
     {
-        return "expecting error to match regexp {$this->regexp}";
+        return "expecting error to match regexp {$this->regexp->getRegexp()}";
     }
 
     public function handles(OutcomeInterface $outcome): bool
@@ -34,14 +30,14 @@ class ErrorExpectation implements ExpectationInterface
         return $outcome->getType() == OutcomeInterface::TYPE_ERROR;
     }
 
-    public function handle(OutcomeInterface $outcome): Status
+    public function handle(OutcomeInterface $outcome): StatusInterface
     {
         if (!$this->regexp->isMatch($outcome->getContent())) {
             return new Failure(
-                "Failed asserting that error '{$outcome->getContent()}' matches {$this->regexp}"
+                "Failed asserting that error '{$outcome->getContent()}' matches {$this->regexp->getRegexp()}"
             );
         }
 
-        return new Success("Asserted that error '{$outcome->getContent()}' matches {$this->regexp}");
+        return new Success("Asserted that error '{$outcome->getContent()}' matches {$this->regexp->getRegexp()}");
     }
 }

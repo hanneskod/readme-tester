@@ -34,7 +34,7 @@ class ExpectationEvaluatorTest extends \PHPUnit\Framework\TestCase
         $outcome->mustBeHandled()->willReturn(false);
 
         $expectation = $this->prophesize(ExpectationInterface::CLASS);
-        $expectation->__tostring()->willReturn('');
+        $expectation->getDescription()->willReturn('');
         $expectation->handles($outcome)->willReturn(false);
 
         $this->assertInstanceOf(
@@ -50,11 +50,11 @@ class ExpectationEvaluatorTest extends \PHPUnit\Framework\TestCase
         $outcome->__tostring()->willReturn('');
 
         $exptA = $this->prophesize(ExpectationInterface::CLASS);
-        $exptA->__tostring()->willReturn('');
+        $exptA->getDescription()->willReturn('');
         $exptA->handles($outcome)->willReturn(false);
 
         $exptB = $this->prophesize(ExpectationInterface::CLASS);
-        $exptB->__tostring()->willReturn('');
+        $exptB->getDescription()->willReturn('');
         $exptB->handles($outcome)->willReturn(true);
         $exptB->handle($outcome)->willReturn(new Success(''));
 

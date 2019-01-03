@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Parser\Annotation;
+use hanneskod\readmetester\Utils\Regexp;
 
 /**
  * @covers \hanneskod\readmetester\Expectation\ExpectationFactory

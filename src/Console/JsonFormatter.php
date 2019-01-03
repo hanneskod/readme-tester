@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Console;
 
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Expectation\Status;
+use hanneskod\readmetester\Expectation\StatusInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -73,10 +73,10 @@ class JsonFormatter implements FormatterInterface
         $this->data['counts']['ignored']++;
     }
 
-    public function onExpectation(Status $status): void
+    public function onExpectation(StatusInterface $status): void
     {
         $this->data['tests'][$this->keys['file']][$this->keys['example']][] = [
-            $status->isSuccess() ? 'success' : 'failure' => (string)$status
+            $status->isSuccess() ? 'success' : 'failure' => $status->getDescription()
         ];
 
         $this->data['counts']['assertions']++;

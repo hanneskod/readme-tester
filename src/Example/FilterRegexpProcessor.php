@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Example;
 
-use hanneskod\readmetester\Expectation\Regexp;
+use hanneskod\readmetester\Utils\Regexp;
 
 /**
  * Filter examples matching a regular expression string

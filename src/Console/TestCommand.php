@@ -13,9 +13,9 @@ use hanneskod\readmetester\EngineBuilder;
 use hanneskod\readmetester\SourceFileIterator;
 use hanneskod\readmetester\Example\FilterRegexpProcessor;
 use hanneskod\readmetester\Example\FilterUnnamedProcessor;
-use hanneskod\readmetester\Expectation\Regexp;
 use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\ProcessRunner;
+use hanneskod\readmetester\Utils\Regexp;
 
 /**
  * CLI command to run test

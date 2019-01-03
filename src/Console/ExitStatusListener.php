@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Console;
 
 use hanneskod\readmetester\ListenerInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Expectation\Status;
+use hanneskod\readmetester\Expectation\StatusInterface;
 
 /**
  * Capture exit status
@@ -26,7 +26,7 @@ class ExitStatusListener implements ListenerInterface
     {
     }
 
-    public function onExpectation(Status $status): void
+    public function onExpectation(StatusInterface $status): void
     {
         if (!$status->isSuccess()) {
             $this->exitStatus = 1;

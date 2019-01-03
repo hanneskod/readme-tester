@@ -6,6 +6,7 @@ namespace hanneskod\readmetester\Expectation;
 
 use hanneskod\readmetester\Annotations;
 use hanneskod\readmetester\Parser\Annotation;
+use hanneskod\readmetester\Utils\Regexp;
 
 /**
  * Create expectations from annotation data

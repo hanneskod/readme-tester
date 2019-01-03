@@ -10,9 +10,9 @@ use hanneskod\readmetester\Runner\OutcomeInterface;
 interface ExpectationInterface
 {
     /**
-     * Cast expectation to a descriptive string
+     * Get a free text description of expectation
      */
-    public function __tostring(): string;
+    public function getDescription(): string;
 
     /**
      * Check if this expectation handles an outcome
@@ -22,5 +22,5 @@ interface ExpectationInterface
     /**
      * Handle outcome
      */
-    public function handle(OutcomeInterface $outcome): Status;
+    public function handle(OutcomeInterface $outcome): StatusInterface;
 }

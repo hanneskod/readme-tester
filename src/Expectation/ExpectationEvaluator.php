@@ -19,7 +19,7 @@ class ExpectationEvaluator
      *
      * @param  ExpectationInterface[] $expectations
      * @param  OutcomeInterface       $outcome
-     * @return Status[]
+     * @return StatusInterface[]
      */
     public function evaluate(array $expectations, OutcomeInterface $outcome): array
     {
@@ -31,7 +31,7 @@ class ExpectationEvaluator
                 $statuses[$index] = $expectation->handle($outcome);
                 $isHandled = true;
             } else {
-                $statuses[$index] = new Failure("Failed $expectation");
+                $statuses[$index] = new Failure("Failed {$expectation->getDescription()}");
             }
         }
 

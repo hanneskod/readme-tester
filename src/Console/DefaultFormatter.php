@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Console;
 
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Expectation\Status;
+use hanneskod\readmetester\Expectation\StatusInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -78,18 +78,18 @@ class DefaultFormatter implements FormatterInterface
         }
     }
 
-    public function onExpectation(Status $status): void
+    public function onExpectation(StatusInterface $status): void
     {
         $this->expectationCount++;
 
         if (!$status->isSuccess()) {
             $this->failureCount++;
-            $this->output->writeln("\n<error>$status</error>\n");
+            $this->output->writeln("\n<error>{$status->getDescription()}</error>\n");
             return;
         }
 
         if ($this->output->isVerbose()) {
-            $this->output->writeln(" $status");
+            $this->output->writeln(" {$status->getDescription()}");
         }
     }
 

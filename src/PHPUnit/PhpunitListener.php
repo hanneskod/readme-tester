@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\PHPUnit;
 
 use hanneskod\readmetester\ListenerInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Expectation\Status;
+use hanneskod\readmetester\Expectation\StatusInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\AssertionFailedError;
 
@@ -36,7 +36,7 @@ class PhpunitListener implements ListenerInterface
     {
     }
 
-    public function onExpectation(Status $status): void
+    public function onExpectation(StatusInterface $status): void
     {
         $this->testCase->addToAssertionCount(1);
         if (!$status->isSuccess()) {

@@ -2,16 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester\Expectation;
+namespace hanneskod\readmetester\Utils;
 
 /**
  * Regular expression container
  */
 class Regexp
 {
-    /**
-     * @var string Regular expression
-     */
+    /** @var string */
     private $regexp;
 
     public function __construct(string $regexp)
@@ -22,7 +20,7 @@ class Regexp
     /**
      * Get expression as string
      */
-    public function __toString(): string
+    public function getRegexp(): string
     {
         return $this->regexp;
     }

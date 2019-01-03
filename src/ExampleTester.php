@@ -6,7 +6,6 @@ namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
-use hanneskod\readmetester\Expectation\Status;
 use hanneskod\readmetester\Runner\RunnerInterface;
 
 /**

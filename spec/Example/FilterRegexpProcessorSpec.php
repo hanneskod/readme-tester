@@ -7,8 +7,8 @@ namespace spec\hanneskod\readmetester\Example;
 use hanneskod\readmetester\Example\FilterRegexpProcessor;
 use hanneskod\readmetester\Example\ProcessorInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Expectation\Regexp;
 use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Regexp;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
