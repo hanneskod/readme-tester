@@ -3,18 +3,20 @@ sudo: false
 language: php
 
 php:
+  - 7.4
   - 7.3
   - 7.2
   - 7.1
 
 install:
   - composer install
-  - composer global require chh/bob:^1@alpha
-  - export PATH=$PATH:$HOME/.config/composer/vendor/bin/:$HOME/.composer/vendor/bin/
-  - bob install_dev_tools
+  - wget -O phive.phar https://phar.io/releases/phive.phar
+  - php phive.phar install phpunit:7 --trust-gpg-keys 4AA394086372C20A
+  - php phive.phar install behat/behat:3 --force-accept-unsigned
+  - php phive.phar install phpspec/phpspec:6 --force-accept-unsigned
 
 script:
-  - phpunit --verbose
-  - phpspec run -v
-  - behat --verbose
-  - bob examples
+  - tools/phpunit --verbose
+  - tools/phpspec run -v
+  - tools/behat --verbose
+  - bin/readme-tester README.md
