@@ -1,0 +1,12 @@
+{
+    "output": "readme-tester.phar",
+    "directories": [
+        "src",
+        "vendor"
+    ],
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Php"
+    ],
+    "algorithm": "SHA512",
+    "chmod": "0555"
+}

@@ -2,7 +2,15 @@
 
 namespace Bob\BuildConfig;
 
-task('default', ['test', 'phpstan', 'sniff']);
+task('default', ['all']);
+
+desc('Build phar');
+task('build', ['test'], function () {
+    sh('box compile', null, ['failOnError' => true]);
+});
+
+desc('Run all targets');
+task('all', ['test', 'phpstan', 'sniff', 'build']);
 
 desc('Run unit and feature tests');
 task('test', ['phpunit', 'phpspec', 'behat', 'examples']);
@@ -33,7 +41,7 @@ task('examples', function() {
 
 desc('Run statical analysis using phpstan');
 task('phpstan', function() {
-    sh('phpstan analyze -c phpstan.neon -l 7 src', null, ['failOnError' => true]);
+    sh('phpstan analyze -c phpstan.neon -l 5 src', null, ['failOnError' => true]);
     println('Phpstan analysis passed');
 });
 
