@@ -108,12 +108,12 @@ Feature: Basic syntax
   Scenario: I include a code block with a complex name
     Given a markdown file:
     """
-    <!-- @example "foo bar" -->
+    <!-- @example "foo-bar" -->
     ```php
     $str = 'foo bar';
     ```
     <!--
-        @include "foo bar"
+        @include "foo-bar"
         @expectOutput "/foo bar/"
     -->
     ```php

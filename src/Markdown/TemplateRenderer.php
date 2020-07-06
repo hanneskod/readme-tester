@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace hanneskod\readmetester\Markdown;
+
+use hanneskod\readmetester\Example\ExampleStoreInterface;
+
+class TemplateRenderer
+{
+    public function render(Template $template): ExampleStoreInterface
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'readmetester');
+
+        file_put_contents($filename, '<?php ' . $template->getCode());
+
+        $error = '';
+
+        set_error_handler(function ($errno, $errstr) use (&$error) {
+            $error = $errstr;
+        });
+
+        try {
+            $exampleStore = @include $filename;
+        } catch (\Throwable $e) {
+            throw new \RuntimeException("Unable to render example: {$e->getMessage()}");
+        }
+
+        restore_error_handler();
+
+        if ($error) {
+            throw new \RuntimeException("Unable to render example: $error");
+        }
+
+        unlink($filename);
+
+        if (!$exampleStore instanceof ExampleStoreInterface) {
+            throw new \LogicException("Invalid return from generated example store");
+        }
+
+        return $exampleStore;
+    }
+}

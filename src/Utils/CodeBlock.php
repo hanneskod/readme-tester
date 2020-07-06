@@ -6,8 +6,7 @@ namespace hanneskod\readmetester\Utils;
 
 class CodeBlock
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
     public function __construct(string $code)
     {

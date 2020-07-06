@@ -7,7 +7,7 @@ interface NameInterface
     /**
      * Namespace/short name delimiter
      */
-    const NAME_DELIMITER = ':';
+    const NAMESPACE_DELIMITER = ':';
 
     /**
      * Get the complete name

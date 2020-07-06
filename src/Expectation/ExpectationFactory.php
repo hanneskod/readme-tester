@@ -10,6 +10,7 @@ use hanneskod\readmetester\Utils\Regexp;
 
 /**
  * Create expectations from annotation data
+ * TODO replaced by transformations
  */
 class ExpectationFactory
 {

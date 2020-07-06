@@ -8,7 +8,7 @@ use hanneskod\readmetester\Annotations;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Name\AnonymousName;
-use hanneskod\readmetester\Name\ExampleName;
+use hanneskod\readmetester\Name\NamespacedName;
 use hanneskod\readmetester\Name\NameInterface;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
@@ -40,7 +40,7 @@ class ExampleFactory
         $context = null;
 
         foreach ($defs as $index => $def) {
-            $name = new AnonymousName('');
+            $name = new AnonymousName;
             $code = $def->getCodeBlock();
             $expectations = [];
             $active = true;
@@ -57,13 +57,13 @@ class ExampleFactory
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_EXAMPLE)) {
                     if ($annotation->getArgument()) {
-                        $name = new ExampleName($annotation->getArgument(), $name->getNamespaceName());
+                        $name = new NamespacedName($name->getNamespaceName(), $annotation->getArgument());
                     }
                     continue;
                 }
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_INCLUDE)) {
-                    $nameToInclude = new ExampleName($annotation->getArgument(), '');
+                    $nameToInclude = new NamespacedName('', $annotation->getArgument());
 
                     if (!$registry->hasExample($nameToInclude)) {
                         throw new \RuntimeException(
@@ -96,9 +96,17 @@ class ExampleFactory
                 throw new \RuntimeException("Example '{$name->getShortName()}' already exists");
             }
 
+            $example = new Example($name, $code);
+
+            foreach ($expectations as $expectation) {
+                $example = $example->withExpectation($expectation);
+            }
+
+            $example = $example->withActive($active);
+
             $registry->setExample(
                 $this->processor->process(
-                    (new Example($name, $code, $expectations))->withActive($active)
+                    $example
                 )
             );
         }

@@ -9,8 +9,7 @@ namespace hanneskod\readmetester\Expectation;
  */
 final class Success implements StatusInterface
 {
-    /** @var string */
-    private $desc;
+    private string $desc;
 
     public function __construct(string $desc)
     {

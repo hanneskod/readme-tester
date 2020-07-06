@@ -7,7 +7,7 @@ namespace hanneskod\readmetester\Example;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Name\AnonymousName;
-use hanneskod\readmetester\Name\ExampleName;
+use hanneskod\readmetester\Name\NamespacedName;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
 use hanneskod\readmetester\Utils\CodeBlock;
@@ -28,7 +28,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition(new CodeBlock(''))
         )->getExamples();
 
-        $this->assertEquals(new AnonymousName(''), $examples[0]->getName());
+        $this->assertEquals(new AnonymousName, $examples[0]->getName());
     }
 
     function testNameFromAnnotation()
@@ -42,7 +42,7 @@ class ExampleFactoryTest extends \PHPUnit\Framework\TestCase
             new Definition(new CodeBlock(''), new Annotation('example', 'foobar'))
         )->getExamples();
 
-        $this->assertEquals(new ExampleName('foobar', ''), $examples[0]->getName());
+        $this->assertEquals(new NamespacedName('', 'foobar'), $examples[0]->getName());
     }
 
     function testExceptionWhenNameIsNotUnique()

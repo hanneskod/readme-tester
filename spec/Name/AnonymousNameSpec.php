@@ -11,11 +11,6 @@ use Prophecy\Argument;
 
 class AnonymousNameSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $this->beConstructedWith('namespace');
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType(AnonymousName::CLASS);
@@ -26,8 +21,14 @@ class AnonymousNameSpec extends ObjectBehavior
         $this->shouldHaveType(NameInterface::CLASS);
     }
 
+    function it_defaults_to_no_namespace()
+    {
+        $this->getNamespaceName()->shouldReturn('');
+    }
+
     function it_contains_a_namespace()
     {
+        $this->beConstructedWith('namespace');
         $this->getNamespaceName()->shouldReturn('namespace');
     }
 
@@ -38,12 +39,18 @@ class AnonymousNameSpec extends ObjectBehavior
 
     function it_contains_a_standard_complete_name()
     {
+        $this->getCompleteName()->shouldReturn('UNNAMED');
+    }
+
+    function it_can_build_complete_name()
+    {
+        $this->beConstructedWith('namespace');
         $this->getCompleteName()->shouldReturn('namespace:UNNAMED');
     }
 
-    function it_never_equals_a_name(NameInterface $name)
+    function it_never_equals_a_name()
     {
-        $this->equals($name)->shouldReturn(false);
+        $this->equals($this)->shouldReturn(false);
     }
 
     function it_is_unnamed()

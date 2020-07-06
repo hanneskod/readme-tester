@@ -21,7 +21,7 @@ final class FilterRegexpProcessor implements ProcessorInterface
 
     public function process(ExampleInterface $example): ExampleInterface
     {
-        if (!$this->regexp->isMatch($example->getName()->getShortName())) {
+        if (!$this->regexp->matches($example->getName()->getShortName())) {
             return $example->withActive(false);
         }
 

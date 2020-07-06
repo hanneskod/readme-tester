@@ -9,8 +9,7 @@ namespace hanneskod\readmetester\Utils;
  */
 class Regexp
 {
-    /** @var string */
-    private $regexp;
+    private string $regexp;
 
     public function __construct(string $regexp)
     {
@@ -28,7 +27,7 @@ class Regexp
     /**
      * Check if this expression matches subject
      */
-    public function isMatch(string $subject): bool
+    public function matches(string $subject): bool
     {
         return !!preg_match($this->regexp, $subject);
     }

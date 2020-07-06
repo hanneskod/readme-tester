@@ -9,9 +9,9 @@ use hanneskod\readmetester\Utils\CodeBlock;
 interface ExampleInterface
 {
     /**
-     * Get example name
+     * @return iterable<object>
      */
-    public function getName(): NameInterface;
+    public function getAttributes(): iterable;
 
     /**
      * Get example code block
@@ -19,11 +19,19 @@ interface ExampleInterface
     public function getCodeBlock(): CodeBlock;
 
     /**
-     * Get expectations associated with example
-     *
-     * @return ExpectationInterface[]
+     * @return iterable<ExpectationInterface>
      */
-    public function getExpectations(): array;
+    public function getExpectations(): iterable;
+
+    /**
+     * @return iterable<NameInterface>
+     */
+    public function getImports(): iterable;
+
+    /**
+     * Get example name
+     */
+    public function getName(): NameInterface;
 
     /**
      * Check if example is active, eg. should be evaluated
@@ -31,7 +39,37 @@ interface ExampleInterface
     public function isActive(): bool;
 
     /**
+     * Check of thes example should work as a context for other examples
+     */
+    public function isContext(): bool;
+
+    /**
      * Create a new example with active setting
      */
     public function withActive(bool $active): ExampleInterface;
+
+    /**
+     * Create a new example with code block
+     */
+    public function withCodeBlock(CodeBlock $code): ExampleInterface;
+
+    /**
+     * Create a new example with expectation
+     */
+    public function withExpectation(ExpectationInterface $expectation): ExampleInterface;
+
+    /**
+     * Create a new example with include
+     */
+    public function withImport(NameInterface $name): ExampleInterface;
+
+    /**
+     * Create a new example that works as a context for other examples
+     */
+    public function withIsContext(bool $flag): ExampleInterface;
+
+    /**
+     * Create a new example with name
+     */
+    public function withName(NameInterface $name): ExampleInterface;
 }

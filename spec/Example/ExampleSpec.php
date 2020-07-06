@@ -40,15 +40,76 @@ class ExampleSpec extends ObjectBehavior
         $this->getCodeBlock()->shouldReturn($codeBlock);
     }
 
+    function it_contains_attributes($name, $codeBlock)
+    {
+        $obj = new class() {};
+        $this->beConstructedWith($name, $codeBlock, [$obj]);
+        $this->getAttributes()->shouldIterateAs([$obj]);
+    }
+
     function it_defaults_to_active()
     {
         $this->shouldBeActive();
     }
 
+    function it_defaults_to_no_context()
+    {
+        $this->shouldNotBeContext();
+    }
+
+    function it_defaults_to_no_expectations()
+    {
+        $this->getExpectations()->shouldIterateAs([]);
+    }
+
+    function it_defaults_to_no_imports()
+    {
+        $this->getImports()->shouldIterateAs([]);
+    }
+
     function it_can_create_with_active()
     {
         $this->withActive(false)->shouldCreateExampleThat(function ($example) {
-            return $example->isActive() == false;
+            return false === $example->isActive();
+        });
+    }
+
+    function it_can_create_with_context()
+    {
+        $this->withIsContext(true)->shouldCreateExampleThat(function ($example) {
+            return true === $example->isContext();
+        });
+    }
+
+    function it_can_create_with_code_block(CodeBlock $newCode)
+    {
+        $newCode = $newCode->getWrappedObject();
+        $this->withCodeBlock($newCode)->shouldCreateExampleThat(function ($example) use ($newCode) {
+            return $example->getCodeBlock() === $newCode;
+        });
+    }
+
+    function it_can_create_with_expectation(ExpectationInterface $expectation)
+    {
+        $expectation = $expectation->getWrappedObject();
+        $this->withExpectation($expectation)->shouldCreateExampleThat(function ($example) use ($expectation) {
+            return $example->getExpectations() === [$expectation];
+        });
+    }
+
+    function it_can_create_with_include(NameInterface $include)
+    {
+        $include = $include->getWrappedObject();
+        $this->withImport($include)->shouldCreateExampleThat(function ($example) use ($include) {
+            return $example->getImports() === [$include];
+        });
+    }
+
+    function it_can_create_with_name(NameInterface $name)
+    {
+        $name = $name->getWrappedObject();
+        $this->withName($name)->shouldCreateExampleThat(function ($example) use ($name) {
+            return $example->getName() === $name;
         });
     }
 

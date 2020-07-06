@@ -10,26 +10,49 @@ use hanneskod\readmetester\Utils\CodeBlock;
 
 final class Example implements ExampleInterface
 {
-    /** @var bool */
-    private $active = true;
+    private bool $active = true;
+    private bool $context = false;
 
-    /** @var NameInterface */
-    private $name;
+    private CodeBlock $code;
+    private NameInterface $name;
 
-    /** @var CodeBlock */
-    private $code;
+    /** @var array<object> */
+    private array $attributes;
 
-    /** @var ExpectationInterface[] */
-    private $expectations;
+    /** @var array<ExpectationInterface> */
+    private array $expectations = [];
+
+    /** @var array<NameInterface> */
+    private array $imports = [];
 
     /**
-     * @param ExpectationInterface[] $expectations
+     * @param array<object> $attributes
      */
-    public function __construct(NameInterface $name, CodeBlock $code, array $expectations = [])
+    public function __construct(NameInterface $name, CodeBlock $code, array $attributes = [])
     {
         $this->name = $name;
         $this->code = $code;
-        $this->expectations = $expectations;
+        $this->attributes = $attributes;
+    }
+
+    public function getAttributes(): iterable
+    {
+        return $this->attributes;
+    }
+
+    public function getCodeBlock(): CodeBlock
+    {
+        return $this->code;
+    }
+
+    public function getExpectations(): iterable
+    {
+        return $this->expectations;
+    }
+
+    public function getImports(): iterable
+    {
+        return $this->imports;
     }
 
     public function getName(): NameInterface
@@ -42,6 +65,11 @@ final class Example implements ExampleInterface
         return $this->active;
     }
 
+    public function isContext(): bool
+    {
+        return $this->context;
+    }
+
     public function withActive(bool $active): ExampleInterface
     {
         $new = clone $this;
@@ -49,16 +77,38 @@ final class Example implements ExampleInterface
         return $new;
     }
 
-    public function getCodeBlock(): CodeBlock
+    public function withCodeBlock(CodeBlock $code): ExampleInterface
     {
-        return $this->code;
+        $new = clone $this;
+        $new->code = $code;
+        return $new;
     }
 
-    /**
-     * @return ExpectationInterface[]
-     */
-    public function getExpectations(): array
+    public function withExpectation(ExpectationInterface $expectation): ExampleInterface
     {
-        return $this->expectations;
+        $new = clone $this;
+        $new->expectations[] = $expectation;
+        return $new;
+    }
+
+    public function withImport(NameInterface $name): ExampleInterface
+    {
+        $new = clone $this;
+        $new->imports[] = $name;
+        return $new;
+    }
+
+    public function withIsContext(bool $flag): ExampleInterface
+    {
+        $new = clone $this;
+        $new->context = $flag;
+        return $new;
+    }
+
+    public function withName(NameInterface $name): ExampleInterface
+    {
+        $new = clone $this;
+        $new->name = $name;
+        return $new;
     }
 }

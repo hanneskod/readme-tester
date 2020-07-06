@@ -32,7 +32,7 @@ class FilterRegexpProcessorSpec extends ObjectBehavior
     {
         $example->getName()->willReturn($name);
         $name->getShortName()->willReturn('foobar');
-        $regexp->isMatch('foobar')->willReturn(false);
+        $regexp->matches('foobar')->willReturn(false);
 
         $example->withActive(false)->willReturn($example)->shouldBeCalled();
         $this->process($example)->shouldReturn($example);
@@ -42,7 +42,7 @@ class FilterRegexpProcessorSpec extends ObjectBehavior
     {
         $example->getName()->willReturn($name);
         $name->getShortName()->willReturn('foobar');
-        $regexp->isMatch('foobar')->willReturn(true);
+        $regexp->matches('foobar')->willReturn(true);
 
         $this->process($example)->shouldReturn($example);
     }

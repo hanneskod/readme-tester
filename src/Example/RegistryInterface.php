@@ -4,6 +4,7 @@ namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Name\NameInterface;
 
+// TODO replace with ExampleStoreInterface
 interface RegistryInterface
 {
     /**
