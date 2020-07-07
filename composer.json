@@ -3,7 +3,7 @@
     "description": "Validate code examples in readme files",
     "keywords": ["code examples", "readme", "testing", "phpunit"],
     "homepage": "https://github.com/hanneskod/readme-tester",
-    "type": "library",
+    "type": "project",
     "license": "Unlicense",
     "authors": [
         {

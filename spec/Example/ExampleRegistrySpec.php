@@ -51,6 +51,7 @@ class ExampleRegistrySpec extends ObjectBehavior
     function it_throws_on_non_loaded_example(NameInterface $name)
     {
         $name->getCompleteName()->willReturn('foobar');
+        $name->getShortName()->willReturn('foobar');
         $this->shouldThrow(\RuntimeException::CLASS)->during('getExample', [$name]);
     }
 
