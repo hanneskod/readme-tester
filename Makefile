@@ -85,13 +85,13 @@ $(BEHAT_CMD):
 	$(PHIVE_CMD) install behat/behat:3 --force-accept-unsigned
 
 $(PHPSTAN_CMD):
-	$(PHIVE_CMD) install phpstan
+	$(PHIVE_CMD) install phpstan --force-accept-unsigned
 
 $(PHPCS_CMD):
-	$(PHIVE_CMD) install phpcs
+	$(PHIVE_CMD) install phpcs --force-accept-unsigned
 
 $(BOX_CMD):
-	$(PHIVE_CMD) install humbug/box
+	$(PHIVE_CMD) install humbug/box --force-accept-unsigned
 
 $(PHAR_COMPOSER_CMD):
 	$(PHIVE_CMD) install clue/phar-composer:1 --force-accept-unsigned
