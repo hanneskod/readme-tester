@@ -10,16 +10,13 @@ php:
 install:
     - composer install
     - wget -O phive.phar https://phar.io/releases/phive.phar
-    - php phive.phar install phpunit:7 --trust-gpg-keys 4AA394086372C20A
-    - php phive.phar install behat/behat:3 --force-accept-unsigned
-    - php phive.phar install phpspec/phpspec:6 --force-accept-unsigned
-    - php phive.phar install humbug/box:3 --force-accept-unsigned
+    - make tools/phpspec tools/phpunit tools/behat tools/box PHIVE_CMD="php phive.phar"
 
 script:
     - tools/phpunit --verbose
     - tools/phpspec run -v
     - tools/behat --verbose
-    - bin/readme-tester README.md
+    - bin/readme-tester
     - tools/box compile
 
 deploy:

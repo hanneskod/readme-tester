@@ -1,6 +1,6 @@
 /vendor
 /composer.phar
-/composer.lock
-/phive.*
+/.phive
 /tools
+/.phpunit.result.cache
 /readme-tester.phar
