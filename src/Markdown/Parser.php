@@ -1127,7 +1127,6 @@ class Parser
         if ($_success) {
             $this->value = call_user_func(function () use (&$header) {
                 return Name::createAttribute($header);
-                return 'ReadmeTester\Name("' . addslashes(trim($header)) . '")';
             });
         }
 
@@ -1387,7 +1386,6 @@ class Parser
         if ($_success) {
             $this->value = call_user_func(function () use (&$header) {
                 return Name::createAttribute($header);
-                return 'ReadmeTester\Name("' . addslashes(trim($header)) . '")';
             });
         }
 

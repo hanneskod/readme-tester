@@ -15,7 +15,7 @@ PHPEG_CMD=tools/phpeg
 
 TARGET=readme-tester.phar
 
-PARSER_ROOT=src/Parser/Parser
+PARSER_ROOT=src/Markdown/Parser
 PARSER=$(PARSER_ROOT).php
 
 .PHONY: all
@@ -23,7 +23,7 @@ all: test analyze build
 
 .PHONY: clean
 clean:
-	rm composer.lock
+	rm -f composer.lock
 	rm -f $(PARSER)
 	rm -rf vendor
 	rm -rf tools
@@ -65,7 +65,7 @@ phpstan: vendor/installed $(PHPSTAN_CMD)
 
 .PHONY: phpcs
 phpcs: $(PHPCS_CMD)
-	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER)
+	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER),src/Parser/Parser.php
 	#$(PHPCS_CMD) spec --standard=spec/ruleset.xml
 
 composer.lock: composer.json
@@ -88,7 +88,7 @@ $(PHPSTAN_CMD):
 	$(PHIVE_CMD) install phpstan --force-accept-unsigned
 
 $(PHPCS_CMD):
-	$(PHIVE_CMD) install phpcs --force-accept-unsigned
+	$(PHIVE_CMD) install phpcs:^3.5.5 --force-accept-unsigned
 
 $(BOX_CMD):
 	$(PHIVE_CMD) install humbug/box --force-accept-unsigned

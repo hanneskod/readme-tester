@@ -1,4 +1,5 @@
 parameters:
 	excludes_analyse:
+		- src/Markdown/Parser.php
 		- src/Parser/Parser.php
 		- src/PHPUnit

@@ -50,7 +50,6 @@ FOOTER;
         $code = self::HEADER;
 
         foreach ($this->definitions as $key => $definition) {
-
             // TODO Attributes! Should be <<Attr>> instead of docblock
 
             // TODO preg_replace values ska vara konstanter

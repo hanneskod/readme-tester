@@ -16,11 +16,13 @@ class ImportSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
+        $this->beConstructedWith('');
         $this->shouldHaveType(Import::CLASS);
     }
 
     function it_is_a_transformation()
     {
+        $this->beConstructedWith('');
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 

@@ -13,11 +13,13 @@ class FileInputSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
+        $this->beConstructedWith('');
         $this->shouldHaveType(FileInput::CLASS);
     }
 
     function it_is_an_input()
     {
+        $this->beConstructedWith('');
         $this->shouldHaveType(InputInterface::CLASS);
     }
 

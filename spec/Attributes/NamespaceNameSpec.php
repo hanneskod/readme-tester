@@ -16,11 +16,13 @@ class NamespaceNameSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
+        $this->beConstructedWith('');
         $this->shouldHaveType(NamespaceName::CLASS);
     }
 
     function it_is_a_transformation()
     {
+        $this->beConstructedWith('');
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 
