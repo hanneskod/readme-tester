@@ -12,10 +12,8 @@ Why?
 Did you update your library, but forgot to update code examples in README? Are
 your users complaining on syntax errors in your examples? Do you find it too
 cumbersome to manually test all examples? Then readme-tester is for you!
-
 Readme-tester lets you automate the process of validating PHP code examples in
-markdown files. You can use the command line tool, or integrate with your
-phpunit test suite and never have to worry about failing examples again.
+markdown files.
 
 Table of contents
 -----------------
@@ -29,7 +27,6 @@ Table of contents
     * [Hidden examples](#hidden-examples)
     * [Creating a default example context](#creating-a-default-example-context)
   * [The command line tool](#the-command-line-tool)
-  * [PHPUnit integration](#phpunit-integration)
 
 Installation
 ------------
@@ -228,41 +225,4 @@ For more detailed information use
 
 ```shell
 vendor/bin/readme-tester -h
-```
-
-PHPUnit integration
--------------------
-If you are using PHPUnit >= 6 you may subclass `ReadmeTestCase` and use
-`assertReadme()` to test readme snippets through phpunit.
-
-<!-- @ignore -->
-```php
-class ReadmeTest extends \hanneskod\readmetester\PHPUnit\ReadmeTestCase
-{
-    public function testReadmeIntegrationTests()
-    {
-        $this->assertReadme('README.md');
-    }
-}
-```
-
-### Integrating with global installations
-
-If readme-tester is expected to be installed *globally* we dont't want phpunit
-to break when readme-tester is not present. Use the `AssertReadme` class instead
-of subclassing `ReadmeTestCase`.
-
-<!-- @ignore -->
-```php
-class GlobalReadmeIntegration extends \PHPUnit\Framework\TestCase
-{
-    public function testReadmeIntegrationTests()
-    {
-        if (!class_exists('hanneskod\readmetester\PHPUnit\AssertReadme')) {
-            $this->markTestSkipped('Readme-tester is not available.');
-        }
-
-        (new \hanneskod\readmetester\PHPUnit\AssertReadme($this))->assertReadme('README.md');
-    }
-}
 ```

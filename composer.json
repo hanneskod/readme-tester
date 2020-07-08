@@ -1,7 +1,7 @@
 {
     "name": "hanneskod/readme-tester",
     "description": "Validate code examples in readme files",
-    "keywords": ["code examples", "readme", "testing", "phpunit"],
+    "keywords": ["code examples", "readme", "testing"],
     "homepage": "https://github.com/hanneskod/readme-tester",
     "type": "project",
     "license": "Unlicense",
