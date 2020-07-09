@@ -10,10 +10,9 @@ php:
 install:
     - composer install
     - wget -O phive.phar https://phar.io/releases/phive.phar
-    - make tools/phpspec tools/phpunit tools/behat tools/box PHIVE_CMD="php phive.phar"
+    - make tools/phpspec tools/behat tools/box PHIVE_CMD="php phive.phar"
 
 script:
-    - tools/phpunit --verbose
     - tools/phpspec run -v
     - tools/behat --verbose
     - bin/readme-tester

@@ -2,7 +2,6 @@ COMPOSER_CMD=composer
 PHIVE_CMD=phive
 
 PHPSPEC_CMD=tools/phpspec
-PHPUNIT_CMD=tools/phpunit
 BEHAT_CMD=tools/behat
 README_TESTER_CMD=bin/readme-tester
 PHPSTAN_CMD=tools/phpstan
@@ -38,15 +37,11 @@ $(PARSER): $(PARSER_ROOT).peg $(PHPEG_CMD)
 	$(PHPEG_CMD) generate $<
 
 .PHONY: test
-test: phpspec phpunit behat docs
+test: phpspec behat docs
 
 .PHONY: phpspec
 phpspec: vendor/installed $(PARSER) $(PHPSPEC_CMD)
 	$(PHPSPEC_CMD) run
-
-.PHONY: phpunit
-phpunit: vendor/installed $(PARSER) $(PHPUNIT_CMD)
-	$(PHPUNIT_CMD)
 
 .PHONY: behat
 behat: vendor/installed $(PARSER) $(BEHAT_CMD)
@@ -77,9 +72,6 @@ vendor/installed: composer.lock
 
 $(PHPSPEC_CMD):
 	$(PHIVE_CMD) install phpspec/phpspec:6 --force-accept-unsigned
-
-$(PHPUNIT_CMD):
-	$(PHIVE_CMD) install phpunit:8 --trust-gpg-keys 4AA394086372C20A
 
 $(BEHAT_CMD):
 	$(PHIVE_CMD) install behat/behat:3 --force-accept-unsigned

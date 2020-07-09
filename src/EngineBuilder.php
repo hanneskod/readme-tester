@@ -14,20 +14,9 @@ use hanneskod\readmetester\Runner\RunnerInterface;
 
 class EngineBuilder
 {
-    /**
-     * @var ProcessorInterface
-     */
-    private $processor;
-
-    /**
-     * @var RunnerInterface
-     */
-    private $runner;
-
-    /**
-     * @var bool
-     */
-    private $ignoreUnknownAnnotations = false;
+    private ProcessorInterface $processor;
+    private RunnerInterface $runner;
+    private bool $ignoreUnknownAnnotations = false;
 
     public function __construct()
     {

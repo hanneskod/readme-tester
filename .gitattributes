@@ -8,6 +8,5 @@
 /CHANGES.md export-ignore
 /nitpick.json export-ignore
 /phpstan.neon export-ignore
-/phpunit.xml export-ignore
 /README.md export-ignore
 /src/Parser/Parser.peg export-ignore

@@ -13,15 +13,8 @@ use hanneskod\readmetester\Runner\RunnerInterface;
  */
 class ExampleTester
 {
-    /**
-     * @var RunnerInterface
-     */
-    private $runner;
-
-    /**
-     * @var ExpectationEvaluator
-     */
-    private $evaluator;
+    private RunnerInterface $runner;
+    private ExpectationEvaluator $evaluator;
 
     /**
      * @var ListenerInterface[]

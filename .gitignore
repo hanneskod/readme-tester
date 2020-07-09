@@ -2,5 +2,4 @@
 /composer.phar
 /.phive
 /tools
-/.phpunit.result.cache
 /readme-tester.phar

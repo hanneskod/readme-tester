@@ -17,9 +17,8 @@ class ExpectationEvaluator
      * If outcome is marked as mustBeHandled it must be handled by at least one
      * expectation. Expectations that does not handle an outcome triggers failure.
      *
-     * @param  ExpectationInterface[] $expectations
-     * @param  OutcomeInterface       $outcome
-     * @return StatusInterface[]
+     * @param array<ExpectationInterface> $expectations
+     * @return array<StatusInterface>
      */
     public function evaluate(array $expectations, OutcomeInterface $outcome): array
     {

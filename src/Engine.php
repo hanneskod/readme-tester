@@ -12,20 +12,9 @@ use hanneskod\readmetester\Parser\Parser;
  */
 class Engine
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
-
-    /**
-     * @var ExampleFactory
-     */
-    private $exampleFactory;
-
-    /**
-     * @var ExampleTester
-     */
-    private $tester;
+    private Parser $parser;
+    private ExampleFactory $exampleFactory;
+    private ExampleTester $tester;
 
     public function __construct(Parser $parser, ExampleFactory $exampleFactory, ExampleTester $tester)
     {
