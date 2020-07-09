@@ -47,8 +47,7 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
         return [
             'containExample' => function (iterable $examples, Example $expected) {
                 foreach ($examples as $example) {
-                    if (
-                        $example->getName()->getCompleteName() == $expected->getName()->getCompleteName()
+                    if ($example->getName()->getCompleteName() == $expected->getName()->getCompleteName()
                         && $example->getCodeBlock()->getCode() == $expected->getCodeBlock()->getCode()
                         && $example->getAttributes() == $expected->getAttributes()
                     ) {
@@ -62,6 +61,7 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
     }
 }
 
+// phpcs:disable
 class ConcreteReflectionExampleStore extends ReflectionExampleStore
 {
     /**

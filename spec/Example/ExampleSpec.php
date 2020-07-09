@@ -42,7 +42,8 @@ class ExampleSpec extends ObjectBehavior
 
     function it_contains_attributes($name, $codeBlock)
     {
-        $obj = new class() {};
+        $obj = new class() {
+        };
         $this->beConstructedWith($name, $codeBlock, [$obj]);
         $this->getAttributes()->shouldIterateAs([$obj]);
     }

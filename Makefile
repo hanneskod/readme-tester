@@ -61,7 +61,7 @@ phpstan: vendor/installed $(PHPSTAN_CMD)
 .PHONY: phpcs
 phpcs: $(PHPCS_CMD)
 	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER),src/Parser/Parser.php
-	#$(PHPCS_CMD) spec --standard=spec/ruleset.xml
+	$(PHPCS_CMD) spec --standard=spec/ruleset.xml
 
 composer.lock: composer.json
 	@echo composer.lock is not up to date

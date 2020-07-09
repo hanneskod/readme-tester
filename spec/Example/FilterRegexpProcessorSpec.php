@@ -14,7 +14,8 @@ use Prophecy\Argument;
 
 class FilterRegexpProcessorSpec extends ObjectBehavior
 {
-    function let(Regexp $regexp) {
+    function let(Regexp $regexp)
+    {
         $this->beConstructedWith($regexp);
     }
 

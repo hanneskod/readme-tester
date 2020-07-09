@@ -56,6 +56,7 @@ trait RunnerSpecTrait
     function it_can_be_bootstraped()
     {
         $this->beConstructedWith(__DIR__ . '/Bootstrap.php');
-        $this->run(new CodeBlock('new Bootstrap;'))->shouldHaveType(VoidOutcome::CLASS);
+        $this->run(new CodeBlock('new \spec\hanneskod\readmetester\Runner\Bootstrap;'))
+            ->shouldHaveType(VoidOutcome::CLASS);
     }
 }

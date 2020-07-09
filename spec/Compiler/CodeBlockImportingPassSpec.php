@@ -70,7 +70,8 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
         $context = (new Example(NamespacedName::fromString('context'), new CodeBlock('C')))
             ->withIsContext(true);
 
-        $this->process(new ArrayExampleStore([$example, $import, $context]))->shouldReturnExampleWithCode('example', 'CIE');
+        $this->process(new ArrayExampleStore([$example, $import, $context]))
+            ->shouldReturnExampleWithCode('example', 'CIE');
     }
 
     function it_does_not_add_context_to_self()
@@ -106,7 +107,8 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
         $context = (new Example(NamespacedName::fromString('context'), new CodeBlock('C')))
             ->withIsContext(true);
 
-        $this->process(new ArrayExampleStore([$example, $import1, $import2, $context]))->shouldReturnExampleWithCode('example', 'I1CI2E');
+        $this->process(new ArrayExampleStore([$example, $import1, $import2, $context]))
+            ->shouldReturnExampleWithCode('example', 'I1CI2E');
     }
 
     function it_ignores_contexts_in_other_namespaces()
