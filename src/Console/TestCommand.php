@@ -40,14 +40,14 @@ class TestCommand extends Command
                 'file-extension',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'File extension to use while scanning for files',
+                'File extension to use while scanning for test files',
                 ['md', 'mdown', 'markdown']
             )
             ->addOption(
                 'ignore',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Path to ignore while scanning for files',
+                'Path to ignore while scanning for test files',
                 ['vendor']
             )
             ->addOption(
@@ -62,12 +62,6 @@ class TestCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Set output format (default or json)',
                 'default'
-            )
-            ->addOption(
-                'ignore-unknown-annotations',
-                null,
-                InputOption::VALUE_NONE,
-                'Ignore example annotations that are not known to readme-tester'
             )
             ->addOption(
                 'runner',
@@ -125,10 +119,6 @@ class TestCommand extends Command
                 throw new \RuntimeException("Unknown runner '$runner'");
         }
 
-        if ($input->getOption('ignore-unknown-annotations')) {
-            $engineBuilder->setIgnoreUnknownAnnotations();
-        }
-
         $engine = $engineBuilder->buildEngine();
 
         $engine->registerListener($formatter);
@@ -136,6 +126,7 @@ class TestCommand extends Command
         $exitStatus = new ExitStatusListener;
         $engine->registerListener($exitStatus);
 
+        // TODO let finder be constructed through a DIC for better ini-setting support..
         $finder = (new Finder)->files()->in('.')->ignoreUnreadableDirs();
 
         // Set paths to scan

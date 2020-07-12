@@ -16,16 +16,10 @@ class EngineBuilder
 {
     private ProcessorInterface $processor;
     private RunnerInterface $runner;
-    private bool $ignoreUnknownAnnotations = false;
 
     public function __construct()
     {
         $this->processor = new ProcessorContainer;
-    }
-
-    public function setIgnoreUnknownAnnotations(bool $flag = true): void
-    {
-        $this->ignoreUnknownAnnotations = $flag;
     }
 
     public function setProcessor(ProcessorInterface $processor): self
@@ -46,8 +40,7 @@ class EngineBuilder
             new Parser,
             new ExampleFactory(
                 new ExpectationFactory,
-                $this->processor,
-                $this->ignoreUnknownAnnotations
+                $this->processor
             ),
             new ExampleTester(
                 $this->getRunner(),

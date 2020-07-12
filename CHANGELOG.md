@@ -7,6 +7,7 @@ This project now adheres to [Semantic Versioning](http://semver.org/).
 
 - Removed built in phpunit integration
 - Removed the `--named-only` command line option
+- Removed the `--ignore-unknown-annotations` command line option
 - Added the `--file-extension` command line option
 - Added the `--ignore` command line option
 

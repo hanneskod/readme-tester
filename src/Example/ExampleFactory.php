@@ -15,16 +15,13 @@ class ExampleFactory
 {
     private ExpectationFactory $expectationFactory;
     private ProcessorInterface $processor;
-    private bool $ignoreUnknownAnnotations;
 
     public function __construct(
         ExpectationFactory $expectationFactory,
-        ProcessorInterface $processor,
-        bool $ignoreUnknownAnnotations = false
+        ProcessorInterface $processor
     ) {
         $this->expectationFactory = $expectationFactory;
         $this->processor = $processor;
-        $this->ignoreUnknownAnnotations = $ignoreUnknownAnnotations;
     }
 
     public function createExamples(Definition ...$defs): ExampleRegistry
@@ -78,10 +75,6 @@ class ExampleFactory
                 if ($annotation->isNamed(Annotations::ANNOTATION_CONTEXT)) {
                     $context = $code;
                     continue;
-                }
-
-                if (!$this->ignoreUnknownAnnotations) {
-                    throw new \RuntimeException("Unknown annotation @{$annotation->getName()}");
                 }
             }
 
