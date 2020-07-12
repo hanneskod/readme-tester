@@ -49,7 +49,7 @@ behat: vendor/installed $(PARSER) $(BEHAT_CMD)
 
 .PHONY: docs
 docs: vendor/installed $(PARSER) $(README_TESTER_CMD)
-	$(README_TESTER_CMD)
+	$(README_TESTER_CMD) README.md
 
 .PHONY: analyze
 analyze: phpstan phpcs

@@ -10,11 +10,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use hanneskod\readmetester\EngineBuilder;
-use hanneskod\readmetester\SourceFileIterator;
 use hanneskod\readmetester\Example\FilterRegexpProcessor;
 use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\ProcessRunner;
 use hanneskod\readmetester\Utils\Regexp;
+use Symfony\Component\Finder\Finder;
 
 /**
  * CLI command to run test
@@ -31,10 +31,24 @@ class TestCommand extends Command
         $this->setName('test')
             ->setDescription('Test examples in readme file')
             ->addArgument(
-                'source',
+                'path',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-                'One or more files or directories to test',
-                ['README.md']
+                'One or more paths to scan for test files',
+                []
+            )
+            ->addOption(
+                'file-extension',
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'File extension to use while scanning for files',
+                ['md', 'mdown', 'markdown']
+            )
+            ->addOption(
+                'ignore',
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Path to ignore while scanning for files',
+                ['vendor']
             )
             ->addOption(
                 'filter',
@@ -122,14 +136,35 @@ class TestCommand extends Command
         $exitStatus = new ExitStatusListener;
         $engine->registerListener($exitStatus);
 
-        /** @var array<string> */
-        $sources = $input->getArgument('source');
+        $finder = (new Finder)->files()->in('.')->ignoreUnreadableDirs();
 
-        foreach ($sources as $source) {
-            foreach (new SourceFileIterator($source) as $filename => $contents) {
-                $formatter->onFile($filename);
-                $engine->testFile($contents);
-            }
+        // Set paths to scan
+        $finder->path(
+            array_map(
+                fn($path) => '/^' . preg_quote($path, '/') . '/',
+                (array)$input->getArgument('path')
+            )
+        );
+
+        // Set file extensions (case insensitive)
+        $finder->name(
+            array_map(
+                fn($extension) => '/\\.' . preg_quote($extension, '/') . '$/i',
+                (array)$input->getOption('file-extension')
+            )
+        );
+
+        // Set paths to ignore
+        $finder->notPath(
+            array_map(
+                fn($path) => '/^' . preg_quote($path, '/') . '/',
+                (array)$input->getOption('ignore')
+            )
+        );
+
+        foreach ($finder as $file) {
+            $formatter->onFile($file->getRelativePathname());
+            $engine->testFile($file->getContents());
         }
 
         $formatter->onInvokationEnd();

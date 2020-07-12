@@ -26,3 +26,22 @@ Feature: CLI features
     And the command line argument '--ignore-unknown-annotations'
     When I run readme tester
     Then 1 examples are evaluated
+
+  Scenario: I specify the file extension
+    Given a source file 'foo.BAR':
+    """
+    """
+    And the command line argument '--file-extension=bar'
+    When I run readme tester
+    Then 1 files are found
+
+  Scenario: I ignore a path
+    Given a source file 'foo.md':
+    """
+    """
+    And a source file 'bar.md':
+    """
+    """
+    And the command line argument '--ignore=bar'
+    When I run readme tester
+    Then 1 files are found
