@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace spec\hanneskod\readmetester\Utils;
 
-use hanneskod\readmetester\Utils\Name;
+use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class NameSpec extends ObjectBehavior
+class NameObjSpec extends ObjectBehavior
 {
     function let()
     {
@@ -17,7 +17,7 @@ class NameSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Name::CLASS);
+        $this->shouldHaveType(NameObj::CLASS);
     }
 
     function it_contains_a_namespace()

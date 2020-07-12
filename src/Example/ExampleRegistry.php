@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Example;
 
-use hanneskod\readmetester\Utils\Name;
+use hanneskod\readmetester\Utils\NameObj;
 
 final class ExampleRegistry implements RegistryInterface
 {
@@ -16,12 +16,12 @@ final class ExampleRegistry implements RegistryInterface
         $this->examples[$example->getName()->getFullName()] = $example;
     }
 
-    public function hasExample(Name $name): bool
+    public function hasExample(NameObj $name): bool
     {
         return isset($this->examples[$name->getFullName()]);
     }
 
-    public function getExample(Name $name): ExampleInterface
+    public function getExample(NameObj $name): ExampleInterface
     {
         if (!isset($this->examples[$name->getFullName()])) {
             throw new \RuntimeException("Example '{$name->getShortName()}' does not exist");

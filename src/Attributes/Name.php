@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Utils\Name as NameObj;
+use hanneskod\readmetester\Utils\NameObj;
 
 #<<\PhpAttribute>>
 class Name implements TransformationInterface

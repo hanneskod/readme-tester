@@ -7,7 +7,7 @@ namespace spec\hanneskod\readmetester\Example;
 use hanneskod\readmetester\Example\ExampleRegistry;
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Example\RegistryInterface;
-use hanneskod\readmetester\Utils\Name;
+use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -23,7 +23,7 @@ class ExampleRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(RegistryInterface::CLASS);
     }
 
-    function it_can_have_example(ExampleInterface $example, Name $name)
+    function it_can_have_example(ExampleInterface $example, NameObj $name)
     {
         $name->getFullName()->willReturn('foobar');
         $example->getName()->willReturn($name);
@@ -31,20 +31,20 @@ class ExampleRegistrySpec extends ObjectBehavior
         $this->hasExample($name)->shouldReturn(true);
     }
 
-    function it_does_not_have_non_loaded_examples(Name $name)
+    function it_does_not_have_non_loaded_examples(NameObj $name)
     {
         $name->getFullName()->willReturn('foobar');
         $this->hasExample($name)->shouldReturn(false);
     }
 
-    function it_throws_on_non_loaded_example(Name $name)
+    function it_throws_on_non_loaded_example(NameObj $name)
     {
         $name->getFullName()->willReturn('foobar');
         $name->getShortName()->willReturn('foobar');
         $this->shouldThrow(\RuntimeException::CLASS)->during('getExample', [$name]);
     }
 
-    function it_can_get_example(ExampleInterface $example, Name $name)
+    function it_can_get_example(ExampleInterface $example, NameObj $name)
     {
         $name->getFullName()->willReturn('foobar');
         $example->getName()->willReturn($name);
@@ -55,8 +55,8 @@ class ExampleRegistrySpec extends ObjectBehavior
     function it_can_get_loaded_examples(
         ExampleInterface $exampleA,
         ExampleInterface $exampleB,
-        Name $nameA,
-        Name $nameB
+        NameObj $nameA,
+        NameObj $nameB
     ) {
         $nameA->getFullName()->willReturn('foo');
         $nameB->getFullName()->willReturn('bar');

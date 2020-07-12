@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Utils\Name;
+use hanneskod\readmetester\Utils\NameObj;
 
 #<<\PhpAttribute>>
 class Import implements TransformationInterface
@@ -23,7 +23,7 @@ class Import implements TransformationInterface
     public function transform(ExampleInterface $example): ExampleInterface
     {
         return $example->withImport(
-            Name::fromString($this->name, $example->getName()->getNamespaceName())
+            NameObj::fromString($this->name, $example->getName()->getNamespaceName())
         );
     }
 }

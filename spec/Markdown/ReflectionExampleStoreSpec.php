@@ -9,7 +9,7 @@ use hanneskod\readmetester\Attributes\Ignore;
 use hanneskod\readmetester\Example\Example;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\CodeBlock;
-use hanneskod\readmetester\Utils\Name;
+use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Exception\Example\FailureException;
 use Prophecy\Argument;
@@ -35,7 +35,7 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
     {
         $this->getExamples()->shouldContainExample(
             new Example(
-                new Name('', 'example1'),
+                new NameObj('', 'example1'),
                 new CodeBlock('foobar'),
                 [new Ignore]
             )

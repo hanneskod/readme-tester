@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Utils;
 
-class Name
+class NameObj
 {
     const NAMESPACE_DELIMITER = ':';
 

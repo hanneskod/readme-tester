@@ -7,7 +7,7 @@ namespace spec\hanneskod\readmetester\Attributes;
 use hanneskod\readmetester\Attributes\Name;
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Utils\Name as NameObj;
+use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

@@ -7,7 +7,7 @@ namespace spec\hanneskod\readmetester\Attributes;
 use hanneskod\readmetester\Attributes\NamespaceName;
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Utils\Name;
+use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -25,13 +25,13 @@ class NamespaceNameSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 
-    function it_transforms_namespace_name(ExampleInterface $example, Name $name)
+    function it_transforms_namespace_name(ExampleInterface $example, NameObj $name)
     {
         $this->beConstructedWith('foo');
         $example->getName()->willReturn($name);
         $name->getShortName()->willReturn('bar');
 
-        $example->withName(new Name('foo', 'bar'))->willReturn($example)->shouldBeCalled();
+        $example->withName(new NameObj('foo', 'bar'))->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
     }

@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationInterface;
-use hanneskod\readmetester\Utils\Name;
+use hanneskod\readmetester\Utils\NameObj;
 use hanneskod\readmetester\Utils\CodeBlock;
 
 final class Example implements ExampleInterface
@@ -14,7 +14,7 @@ final class Example implements ExampleInterface
     private bool $context = false;
 
     private CodeBlock $code;
-    private Name $name;
+    private NameObj $name;
 
     /** @var array<object> */
     private array $attributes;
@@ -28,7 +28,7 @@ final class Example implements ExampleInterface
     /**
      * @param array<object> $attributes
      */
-    public function __construct(Name $name, CodeBlock $code, array $attributes = [])
+    public function __construct(NameObj $name, CodeBlock $code, array $attributes = [])
     {
         $this->name = $name;
         $this->code = $code;
@@ -55,7 +55,7 @@ final class Example implements ExampleInterface
         return $this->imports;
     }
 
-    public function getName(): Name
+    public function getName(): NameObj
     {
         return $this->name;
     }
@@ -91,7 +91,7 @@ final class Example implements ExampleInterface
         return $new;
     }
 
-    public function withImport(Name $name): ExampleInterface
+    public function withImport(NameObj $name): ExampleInterface
     {
         $new = clone $this;
         $new->imports[] = $name;
@@ -105,7 +105,7 @@ final class Example implements ExampleInterface
         return $new;
     }
 
-    public function withName(Name $name): ExampleInterface
+    public function withName(NameObj $name): ExampleInterface
     {
         $new = clone $this;
         $new->name = $name;
