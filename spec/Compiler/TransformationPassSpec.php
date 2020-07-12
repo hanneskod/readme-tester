@@ -8,7 +8,7 @@ use hanneskod\readmetester\Compiler\TransformationPass;
 use hanneskod\readmetester\Compiler\CompilerPassInterface;
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ArrayExampleStore;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -25,7 +25,7 @@ class TransformationPassSpec extends ObjectBehavior
         $this->shouldHaveType(CompilerPassInterface::CLASS);
     }
 
-    function it_ignores_non_transformation_attributes(ExampleStoreInterface $store, ExampleInterface $example)
+    function it_ignores_non_transformation_attributes(ExampleStoreInterface $store, ExampleObj $example)
     {
         $example->getAttributes()->willReturn([(object)array()]);
         $store->getExamples()->willReturn([$example]);
@@ -34,8 +34,8 @@ class TransformationPassSpec extends ObjectBehavior
 
     function it_transforms(
         ExampleStoreInterface $store,
-        ExampleInterface $originalExample,
-        ExampleInterface $transformedExample,
+        ExampleObj $originalExample,
+        ExampleObj $transformedExample,
         TransformationInterface $transformation
     ) {
         $transformation->transform($originalExample)->willReturn($transformedExample);

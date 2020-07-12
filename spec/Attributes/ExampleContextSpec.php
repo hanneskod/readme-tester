@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Attributes\ExampleContext;
 use hanneskod\readmetester\Compiler\TransformationInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -22,7 +22,7 @@ class ExampleContextSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 
-    function it_transforms(ExampleInterface $example)
+    function it_transforms(ExampleObj $example)
     {
         $example->withIsContext(true)->willReturn($example)->shouldBeCalled();
         $this->transform($example)->shouldReturn($example);

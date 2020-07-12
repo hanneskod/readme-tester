@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Example\ArrayExampleStore;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,7 +22,7 @@ class ArrayExampleStoreSpec extends ObjectBehavior
         $this->shouldHaveType(ExampleStoreInterface::CLASS);
     }
 
-    function it_contains_examples(ExampleInterface $example)
+    function it_contains_examples(ExampleObj $example)
     {
         $this->beConstructedWith([$example]);
         $this->getExamples()->shouldIterateAs([$example]);

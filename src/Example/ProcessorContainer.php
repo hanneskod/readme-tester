@@ -17,7 +17,7 @@ final class ProcessorContainer implements ProcessorInterface
         $this->processors = $processors;
     }
 
-    public function process(ExampleInterface $example): ExampleInterface
+    public function process(ExampleObj $example): ExampleObj
     {
         foreach ($this->processors as $processor) {
             $example = $processor->process($example);

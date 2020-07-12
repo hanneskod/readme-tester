@@ -7,7 +7,7 @@ namespace spec\hanneskod\readmetester\Attributes;
 use hanneskod\readmetester\Attributes\IgnoreUnmarkedExamples;
 use hanneskod\readmetester\Attributes\Example;
 use hanneskod\readmetester\Compiler\TransformationInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -23,14 +23,14 @@ class IgnoreUnmarkedExamplesSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 
-    function it_ignores_unmaked_example(ExampleInterface $example)
+    function it_ignores_unmaked_example(ExampleObj $example)
     {
         $example->getAttributes()->willReturn([(object)array()]);
         $example->withActive(false)->willReturn($example)->shouldBeCalled();
         $this->transform($example)->shouldReturn($example);
     }
 
-    function it_skipps_marked_example(ExampleInterface $example)
+    function it_skipps_marked_example(ExampleObj $example)
     {
         $example->getAttributes()->willReturn([new Example]);
         $example->withActive(false)->shouldNotBeCalled();

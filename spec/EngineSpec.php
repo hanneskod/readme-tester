@@ -8,8 +8,8 @@ use hanneskod\readmetester\Engine;
 use hanneskod\readmetester\ExampleTester;
 use hanneskod\readmetester\ListenerInterface;
 use hanneskod\readmetester\Example\ExampleFactory;
-use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Example\RegistryInterface;
+use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Example\ExampleRegistry;
 use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Parser\Definition;
 use PhpSpec\ObjectBehavior;
@@ -20,8 +20,8 @@ class EngineSpec extends ObjectBehavior
     function it_tests_file(
         Definition $definition,
         Parser $parser,
-        ExampleInterface $example,
-        RegistryInterface $registry,
+        ExampleObj $example,
+        ExampleRegistry $registry,
         ExampleFactory $exampleFactory,
         ExampleTester $tester
     ) {

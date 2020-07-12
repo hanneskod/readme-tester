@@ -19,7 +19,7 @@ final class FilterRegexpProcessor implements ProcessorInterface
         $this->regexp = $regexp;
     }
 
-    public function process(ExampleInterface $example): ExampleInterface
+    public function process(ExampleObj $example): ExampleObj
     {
         if (!$this->regexp->matches($example->getName()->getShortName())) {
             return $example->withActive(false);

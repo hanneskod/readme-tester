@@ -32,7 +32,7 @@ class ExampleFactory
         $this->ignoreUnknownAnnotations = $ignoreUnknownAnnotations;
     }
 
-    public function createExamples(Definition ...$defs): RegistryInterface
+    public function createExamples(Definition ...$defs): ExampleRegistry
     {
         $registry = new ExampleRegistry;
         $context = null;
@@ -94,7 +94,7 @@ class ExampleFactory
                 throw new \RuntimeException("Example '{$name->getShortName()}' already exists");
             }
 
-            $example = new Example($name, $code);
+            $example = new ExampleObj($name, $code);
 
             foreach ($expectations as $expectation) {
                 $example = $example->withExpectation($expectation);

@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Attributes\ExpectOutput;
 use hanneskod\readmetester\Compiler\TransformationInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\OutputExpectation;
 use hanneskod\readmetester\Utils\Regexp;
 use PhpSpec\ObjectBehavior;
@@ -26,7 +26,7 @@ class ExpectOutputSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 
-    function it_transforms(ExampleInterface $example)
+    function it_transforms(ExampleObj $example)
     {
         $this->beConstructedWith('foo');
 

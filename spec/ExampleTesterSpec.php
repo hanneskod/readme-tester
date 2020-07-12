@@ -5,7 +5,7 @@ namespace spec\hanneskod\readmetester;
 
 use hanneskod\readmetester\ExampleTester;
 use hanneskod\readmetester\ListenerInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Runner\OutcomeInterface;
 use hanneskod\readmetester\Runner\RunnerInterface;
@@ -18,7 +18,7 @@ class ExampleTesterSpec extends ObjectBehavior
 {
     function it_tests_examples_and_fires_events(
         CodeBlock $codeBlock,
-        ExampleInterface $example,
+        ExampleObj $example,
         OutcomeInterface $outcome,
         RunnerInterface $runner,
         StatusInterface $status,
@@ -43,7 +43,7 @@ class ExampleTesterSpec extends ObjectBehavior
     }
 
     function it_ignores_examples(
-        ExampleInterface $example,
+        ExampleObj $example,
         RunnerInterface $runner,
         ExpectationEvaluator $evaluator,
         ListenerInterface $listener

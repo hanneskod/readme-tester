@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Markdown;
 
 use hanneskod\readmetester\Markdown\TemplateRenderer;
 use hanneskod\readmetester\Markdown\Template;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

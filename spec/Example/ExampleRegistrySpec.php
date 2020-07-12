@@ -5,8 +5,7 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Example\ExampleRegistry;
-use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Example\RegistryInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -18,12 +17,7 @@ class ExampleRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(ExampleRegistry::CLASS);
     }
 
-    function it_is_a_registry()
-    {
-        $this->shouldHaveType(RegistryInterface::CLASS);
-    }
-
-    function it_can_have_example(ExampleInterface $example, NameObj $name)
+    function it_can_have_example(ExampleObj $example, NameObj $name)
     {
         $name->getFullName()->willReturn('foobar');
         $example->getName()->willReturn($name);
@@ -44,7 +38,7 @@ class ExampleRegistrySpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::CLASS)->during('getExample', [$name]);
     }
 
-    function it_can_get_example(ExampleInterface $example, NameObj $name)
+    function it_can_get_example(ExampleObj $example, NameObj $name)
     {
         $name->getFullName()->willReturn('foobar');
         $example->getName()->willReturn($name);
@@ -53,8 +47,8 @@ class ExampleRegistrySpec extends ObjectBehavior
     }
 
     function it_can_get_loaded_examples(
-        ExampleInterface $exampleA,
-        ExampleInterface $exampleB,
+        ExampleObj $exampleA,
+        ExampleObj $exampleB,
         NameObj $nameA,
         NameObj $nameB
     ) {

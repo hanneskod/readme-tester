@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Compiler;
 
 use hanneskod\readmetester\Compiler\UniqueNamePass;
 use hanneskod\readmetester\Compiler\CompilerPassInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
@@ -24,7 +24,7 @@ class UniqueNamePassSpec extends ObjectBehavior
         $this->shouldHaveType(CompilerPassInterface::CLASS);
     }
 
-    function it_ignores_non_duplicates(ExampleStoreInterface $store, ExampleInterface $example, NameObj $name)
+    function it_ignores_non_duplicates(ExampleStoreInterface $store, ExampleObj $example, NameObj $name)
     {
         $store->getExamples()->willReturn([$example]);
         $example->getName()->willReturn($name);
@@ -32,7 +32,7 @@ class UniqueNamePassSpec extends ObjectBehavior
         $this->process($store)->shouldReturn($store);
     }
 
-    function it_throws_on_duplicates(ExampleStoreInterface $store, ExampleInterface $example, NameObj $name)
+    function it_throws_on_duplicates(ExampleStoreInterface $store, ExampleObj $example, NameObj $name)
     {
         $store->getExamples()->willReturn([$example, $example]);
         $example->getName()->willReturn($name);

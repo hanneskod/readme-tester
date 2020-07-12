@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Example\FilterRegexpProcessor;
 use hanneskod\readmetester\Example\ProcessorInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\NameObj;
 use hanneskod\readmetester\Utils\Regexp;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +29,7 @@ class FilterRegexpProcessorSpec extends ObjectBehavior
         $this->shouldHaveType(ProcessorInterface::CLASS);
     }
 
-    function it_filters_on_no_match($regexp, ExampleInterface $example, NameObj $name)
+    function it_filters_on_no_match($regexp, ExampleObj $example, NameObj $name)
     {
         $example->getName()->willReturn($name);
         $name->getShortName()->willReturn('foobar');
@@ -39,7 +39,7 @@ class FilterRegexpProcessorSpec extends ObjectBehavior
         $this->process($example)->shouldReturn($example);
     }
 
-    function it_ignores_matching($regexp, ExampleInterface $example, NameObj $name)
+    function it_ignores_matching($regexp, ExampleObj $example, NameObj $name)
     {
         $example->getName()->willReturn($name);
         $name->getShortName()->willReturn('foobar');

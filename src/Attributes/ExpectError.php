@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Compiler\TransformationInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\ErrorExpectation;
 use hanneskod\readmetester\Utils\Regexp;
 
@@ -21,7 +21,7 @@ class ExpectError implements TransformationInterface
         $this->regexp = $regexp;
     }
 
-    public function transform(ExampleInterface $example): ExampleInterface
+    public function transform(ExampleObj $example): ExampleObj
     {
         return $example->withExpectation(
             new ErrorExpectation(new Regexp($this->regexp))

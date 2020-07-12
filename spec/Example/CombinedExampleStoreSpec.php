@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Example\CombinedExampleStore;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -27,7 +27,7 @@ class CombinedExampleStoreSpec extends ObjectBehavior
         $this->getExamples()->shouldIterateAs([]);
     }
 
-    function it_can_add_example_store(ExampleStoreInterface $store, ExampleInterface $example)
+    function it_can_add_example_store(ExampleStoreInterface $store, ExampleObj $example)
     {
         $store->getExamples()->willReturn([$example]);
         $this->addExampleStore($store);

@@ -6,11 +6,11 @@ namespace hanneskod\readmetester\Example;
 
 final class ArrayExampleStore implements ExampleStoreInterface
 {
-    /** @var array<ExampleInterface> */
+    /** @var array<ExampleObj> */
     private array $examples;
 
     /**
-     * @param array<ExampleInterface> $examples
+     * @param array<ExampleObj> $examples
      */
     public function __construct(array $examples = [])
     {

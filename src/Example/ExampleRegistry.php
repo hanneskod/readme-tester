@@ -6,12 +6,12 @@ namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Utils\NameObj;
 
-final class ExampleRegistry implements RegistryInterface
+class ExampleRegistry
 {
-    /** @var ExampleInterface[] */
-    private $examples = [];
+    /** @var array<ExampleObj> */
+    private array $examples = [];
 
-    public function setExample(ExampleInterface $example): void
+    public function setExample(ExampleObj $example): void
     {
         $this->examples[$example->getName()->getFullName()] = $example;
     }
@@ -21,7 +21,7 @@ final class ExampleRegistry implements RegistryInterface
         return isset($this->examples[$name->getFullName()]);
     }
 
-    public function getExample(NameObj $name): ExampleInterface
+    public function getExample(NameObj $name): ExampleObj
     {
         if (!isset($this->examples[$name->getFullName()])) {
             throw new \RuntimeException("Example '{$name->getShortName()}' does not exist");

@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Attributes\Import;
 use hanneskod\readmetester\Compiler\TransformationInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\NameObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -25,7 +25,7 @@ class ImportSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 
-    function it_transforms(ExampleInterface $example, NameObj $name)
+    function it_transforms(ExampleObj $example, NameObj $name)
     {
         $this->beConstructedWith('foo');
         $example->getName()->willReturn($name);

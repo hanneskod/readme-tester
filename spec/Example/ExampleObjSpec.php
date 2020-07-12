@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace spec\hanneskod\readmetester\Example;
 
-use hanneskod\readmetester\Example\Example;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Utils\NameObj;
 use hanneskod\readmetester\Utils\CodeBlock;
@@ -13,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use PhpSpec\Exception\Example\FailureException;
 use Prophecy\Argument;
 
-class ExampleSpec extends ObjectBehavior
+class ExampleObjSpec extends ObjectBehavior
 {
     function let(NameObj $name, CodeBlock $codeBlock)
     {
@@ -22,12 +21,7 @@ class ExampleSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Example::CLASS);
-    }
-
-    function it_is_an_example()
-    {
-        $this->shouldHaveType(ExampleInterface::CLASS);
+        $this->shouldHaveType(ExampleObj::class);
     }
 
     function it_contains_name($name)
@@ -117,7 +111,7 @@ class ExampleSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'createExampleThat' => function (ExampleInterface $example, callable $operation) {
+            'createExampleThat' => function (ExampleObj $example, callable $operation) {
                 return !!$operation($example);
             }
         ];

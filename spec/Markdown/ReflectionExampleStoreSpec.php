@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Markdown;
 
 use hanneskod\readmetester\Markdown\ReflectionExampleStore;
 use hanneskod\readmetester\Attributes\Ignore;
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Utils\NameObj;
@@ -34,7 +34,7 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
     function it_finds_example()
     {
         $this->getExamples()->shouldContainExample(
-            new Example(
+            new ExampleObj(
                 new NameObj('', 'example1'),
                 new CodeBlock('foobar'),
                 [new Ignore]
@@ -45,7 +45,7 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'containExample' => function (iterable $examples, Example $expected) {
+            'containExample' => function (iterable $examples, ExampleObj $expected) {
                 foreach ($examples as $example) {
                     if ($example->getName()->getFullName() == $expected->getName()->getFullName()
                         && $example->getCodeBlock()->getCode() == $expected->getCodeBlock()->getCode()

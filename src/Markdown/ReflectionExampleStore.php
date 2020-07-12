@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Markdown;
 
-use hanneskod\readmetester\Example\Example;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Utils\NameObj;
@@ -37,7 +37,7 @@ abstract class ReflectionExampleStore implements ExampleStoreInterface
                 // TODO throw LogicException if method is abstract (not invokable)
                 // TODO throw LogicException if method does not return a string
 
-                yield new Example(
+                yield new ExampleObj(
                     new NameObj('', $method->name),
                     new CodeBlock($method->invoke($this)),
                     $attributes

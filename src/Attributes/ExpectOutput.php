@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Compiler\TransformationInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\OutputExpectation;
 use hanneskod\readmetester\Utils\Regexp;
 
@@ -21,7 +21,7 @@ class ExpectOutput implements TransformationInterface
         $this->regexp = $regexp;
     }
 
-    public function transform(ExampleInterface $example): ExampleInterface
+    public function transform(ExampleObj $example): ExampleObj
     {
         return $example->withExpectation(
             new OutputExpectation(new Regexp($this->regexp))

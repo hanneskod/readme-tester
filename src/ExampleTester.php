@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Runner\RunnerInterface;
 
@@ -32,7 +32,7 @@ class ExampleTester
         $this->listeners[] = $listener;
     }
 
-    public function testExample(ExampleInterface $example): void
+    public function testExample(ExampleObj $example): void
     {
         if (!$example->isActive()) {
             foreach ($this->listeners as $listener) {

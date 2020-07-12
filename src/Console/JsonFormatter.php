@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Console;
 
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\StatusInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -60,14 +60,14 @@ class JsonFormatter implements FormatterInterface
         $this->keys['file'] = $filename;
     }
 
-    public function onExample(ExampleInterface $example): void
+    public function onExample(ExampleObj $example): void
     {
         $this->data['tests'][$this->keys['file']][$example->getName()->getFullName()] = [];
         $this->data['counts']['examples']++;
         $this->keys['example'] = $example->getName()->getFullName();
     }
 
-    public function onIgnoredExample(ExampleInterface $example): void
+    public function onIgnoredExample(ExampleObj $example): void
     {
         $this->data['tests'][$this->keys['file']][$example->getName()->getFullName()] = 'IGNORED';
         $this->data['counts']['ignored']++;

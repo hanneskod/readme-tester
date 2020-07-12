@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Attributes;
 
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 
 #<<\PhpAttribute>>
 class Example extends Name
@@ -14,7 +14,7 @@ class Example extends Name
         parent::__construct($name);
     }
 
-    public function transform(ExampleInterface $example): ExampleInterface
+    public function transform(ExampleObj $example): ExampleObj
     {
         if ($this->name) {
             return parent::transform($example);

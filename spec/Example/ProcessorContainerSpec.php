@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Example\ProcessorContainer;
 use hanneskod\readmetester\Example\ProcessorInterface;
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -22,7 +22,7 @@ class ProcessorContainerSpec extends ObjectBehavior
         $this->shouldHaveType(ProcessorInterface::CLASS);
     }
 
-    function it_calls_processors(ProcessorInterface $proccA, ProcessorInterface $proccB, ExampleInterface $example)
+    function it_calls_processors(ProcessorInterface $proccA, ProcessorInterface $proccB, ExampleObj $example)
     {
         $this->beConstructedWith($proccA, $proccB);
         $proccA->process($example)->willReturn($example)->shouldBeCalled();

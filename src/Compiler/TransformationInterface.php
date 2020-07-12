@@ -2,9 +2,9 @@
 
 namespace hanneskod\readmetester\Compiler;
 
-use hanneskod\readmetester\Example\ExampleInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 
 interface TransformationInterface
 {
-    public function transform(ExampleInterface $example): ExampleInterface;
+    public function transform(ExampleObj $example): ExampleObj;
 }

@@ -5,7 +5,7 @@ namespace hanneskod\readmetester\Example;
 interface ExampleStoreInterface
 {
     /**
-     * @return iterable<ExampleInterface>
+     * @return iterable<ExampleObj>
      */
     public function getExamples(): iterable;
 }
