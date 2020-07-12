@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Example;
 
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 
 final class ExampleRegistry implements RegistryInterface
 {
@@ -13,26 +13,21 @@ final class ExampleRegistry implements RegistryInterface
 
     public function setExample(ExampleInterface $example): void
     {
-        if ($example->getName()->isUnnamed()) {
-            $this->examples[] = $example;
-            return;
-        }
-
-        $this->examples[$example->getName()->getCompleteName()] = $example;
+        $this->examples[$example->getName()->getFullName()] = $example;
     }
 
-    public function hasExample(NameInterface $name): bool
+    public function hasExample(Name $name): bool
     {
-        return !$name->isUnnamed() && isset($this->examples[$name->getCompleteName()]);
+        return isset($this->examples[$name->getFullName()]);
     }
 
-    public function getExample(NameInterface $name): ExampleInterface
+    public function getExample(Name $name): ExampleInterface
     {
-        if (!isset($this->examples[$name->getCompleteName()])) {
+        if (!isset($this->examples[$name->getFullName()])) {
             throw new \RuntimeException("Example '{$name->getShortName()}' does not exist");
         }
 
-        return $this->examples[$name->getCompleteName()];
+        return $this->examples[$name->getFullName()];
     }
 
     public function getExamples(): array

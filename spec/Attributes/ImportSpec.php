@@ -7,8 +7,7 @@ namespace spec\hanneskod\readmetester\Attributes;
 use hanneskod\readmetester\Attributes\Import;
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Name\NamespacedName;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -26,13 +25,13 @@ class ImportSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::CLASS);
     }
 
-    function it_transforms(ExampleInterface $example, NameInterface $name)
+    function it_transforms(ExampleInterface $example, Name $name)
     {
         $this->beConstructedWith('foo');
         $example->getName()->willReturn($name);
         $name->getNamespaceName()->willReturn('bar');
 
-        $example->withImport(NamespacedName::fromString('foo', 'bar'))->willReturn($example)->shouldBeCalled();
+        $example->withImport(Name::fromString('foo', 'bar'))->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
     }

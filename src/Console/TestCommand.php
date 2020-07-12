@@ -12,7 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use hanneskod\readmetester\EngineBuilder;
 use hanneskod\readmetester\SourceFileIterator;
 use hanneskod\readmetester\Example\FilterRegexpProcessor;
-use hanneskod\readmetester\Example\FilterUnnamedProcessor;
 use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\ProcessRunner;
 use hanneskod\readmetester\Utils\Regexp;
@@ -49,12 +48,6 @@ class TestCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Set output format (default or json)',
                 'default'
-            )
-            ->addOption(
-                'named-only',
-                null,
-                InputOption::VALUE_NONE,
-                'Test only named examples'
             )
             ->addOption(
                 'ignore-unknown-annotations',
@@ -96,8 +89,6 @@ class TestCommand extends Command
 
         if ($filter = $input->getOption('filter')) {
             $engineBuilder->setProcessor(new FilterRegexpProcessor(new Regexp($filter)));
-        } elseif ($input->getOption('named-only')) {
-            $engineBuilder->setProcessor(new FilterUnnamedProcessor);
         }
 
         if ($bootstrap = $this->readBootstrap($input)) {

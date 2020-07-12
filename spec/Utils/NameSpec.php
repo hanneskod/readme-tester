@@ -2,14 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace spec\hanneskod\readmetester\Name;
+namespace spec\hanneskod\readmetester\Utils;
 
-use hanneskod\readmetester\Name\NamespacedName;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class NamespacedNameSpec extends ObjectBehavior
+class NameSpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,12 +17,7 @@ class NamespacedNameSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(NamespacedName::CLASS);
-    }
-
-    function it_is_a_name()
-    {
-        $this->shouldHaveType(NameInterface::CLASS);
+        $this->shouldHaveType(Name::CLASS);
     }
 
     function it_contains_a_namespace()
@@ -38,36 +32,19 @@ class NamespacedNameSpec extends ObjectBehavior
 
     function it_contains_a_complete_name()
     {
-        $this->getCompleteName()->shouldReturn('foo:bar');
+        $this->getFullName()->shouldReturn('foo:bar');
     }
 
     function it_contains_a_complete_name_with_no_namespace()
     {
         $this->beConstructedWith('', 'bar');
-        $this->getCompleteName()->shouldReturn('bar');
+        $this->getFullName()->shouldReturn('bar');
     }
 
     function it_sanitizes_names()
     {
         $this->beConstructedWith('clean, me', 'aåäö');
-        $this->getCompleteName()->shouldReturn('clean-me:a');
-    }
-
-    function it_does_not_equal_wrong_name(NameInterface $name)
-    {
-        $name->getCompleteName()->willReturn('baz');
-        $this->equals($name)->shouldReturn(false);
-    }
-
-    function it_equals_correct_name(NameInterface $name)
-    {
-        $name->getCompleteName()->willReturn('foo:bar');
-        $this->equals($name)->shouldReturn(true);
-    }
-
-    function it_is_not_unnamed()
-    {
-        $this->shouldNotBeUnnamed();
+        $this->getFullName()->shouldReturn('clean-me:a');
     }
 
     function it_creates_from_string()

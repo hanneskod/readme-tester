@@ -2,10 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester\Name;
+namespace hanneskod\readmetester\Utils;
 
-class NamespacedName implements NameInterface
+class Name
 {
+    const NAMESPACE_DELIMITER = ':';
+
     private const INVALID_CHAR_REGEXP = "/[^a-z0-9.\\/_-]/i";
 
     private string $namespace;
@@ -27,7 +29,7 @@ class NamespacedName implements NameInterface
         $this->shortName = self::sanitizeName($shortName);
     }
 
-    public function getCompleteName(): string
+    public function getFullName(): string
     {
         return $this->getNamespaceName()
             ? $this->getNamespaceName() . self::NAMESPACE_DELIMITER . $this->getShortName()
@@ -42,16 +44,6 @@ class NamespacedName implements NameInterface
     public function getNamespaceName(): string
     {
         return $this->namespace;
-    }
-
-    public function equals(NameInterface $name): bool
-    {
-        return $name->getCompleteName() == $this->getCompleteName();
-    }
-
-    public function isUnnamed(): bool
-    {
-        return false;
     }
 
     private static function sanitizeName(string $name): string

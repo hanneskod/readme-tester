@@ -71,23 +71,3 @@ Feature: Filter argument
     Then 1 examples are evaluated
     And 1 examples are ignored
     And 0 failures are found
-
-  Scenario: I filter named only
-    Given a markdown file:
-    """
-    ```php
-    // ignored: example has no annotation
-    ```
-    <!-- @example -->
-    ```php
-    // ignored: example has no name
-    ```
-    <!-- @example foo -->
-    ```php
-    // evaluated!
-    ```
-    """
-    And the command line argument '--named-only'
-    When I run readme tester
-    Then 1 examples are evaluated
-    And 2 examples are ignored

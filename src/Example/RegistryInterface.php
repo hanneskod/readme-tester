@@ -2,7 +2,7 @@
 
 namespace hanneskod\readmetester\Example;
 
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 
 // TODO replace with ExampleStoreInterface
 interface RegistryInterface
@@ -15,12 +15,12 @@ interface RegistryInterface
     /**
      * Check if example is loaded
      */
-    public function hasExample(NameInterface $name): bool;
+    public function hasExample(Name $name): bool;
 
     /**
      * Get loaded example by name
      */
-    public function getExample(NameInterface $name): ExampleInterface;
+    public function getExample(Name $name): ExampleInterface;
 
     /**
      * Get all loaded examples

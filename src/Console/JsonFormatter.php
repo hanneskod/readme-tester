@@ -62,14 +62,14 @@ class JsonFormatter implements FormatterInterface
 
     public function onExample(ExampleInterface $example): void
     {
-        $this->data['tests'][$this->keys['file']][$example->getName()->getCompleteName()] = [];
+        $this->data['tests'][$this->keys['file']][$example->getName()->getFullName()] = [];
         $this->data['counts']['examples']++;
-        $this->keys['example'] = $example->getName()->getCompleteName();
+        $this->keys['example'] = $example->getName()->getFullName();
     }
 
     public function onIgnoredExample(ExampleInterface $example): void
     {
-        $this->data['tests'][$this->keys['file']][$example->getName()->getCompleteName()] = 'IGNORED';
+        $this->data['tests'][$this->keys['file']][$example->getName()->getFullName()] = 'IGNORED';
         $this->data['counts']['ignored']++;
     }
 

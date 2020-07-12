@@ -7,7 +7,7 @@ namespace spec\hanneskod\readmetester\Example;
 use hanneskod\readmetester\Example\Example;
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use hanneskod\readmetester\Utils\CodeBlock;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Exception\Example\FailureException;
@@ -15,7 +15,7 @@ use Prophecy\Argument;
 
 class ExampleSpec extends ObjectBehavior
 {
-    function let(NameInterface $name, CodeBlock $codeBlock)
+    function let(Name $name, CodeBlock $codeBlock)
     {
         $this->beConstructedWith($name, $codeBlock);
     }
@@ -98,7 +98,7 @@ class ExampleSpec extends ObjectBehavior
         });
     }
 
-    function it_can_create_with_include(NameInterface $include)
+    function it_can_create_with_include(Name $include)
     {
         $include = $include->getWrappedObject();
         $this->withImport($include)->shouldCreateExampleThat(function ($example) use ($include) {
@@ -106,7 +106,7 @@ class ExampleSpec extends ObjectBehavior
         });
     }
 
-    function it_can_create_with_name(NameInterface $name)
+    function it_can_create_with_name(Name $name)
     {
         $name = $name->getWrappedObject();
         $this->withName($name)->shouldCreateExampleThat(function ($example) use ($name) {

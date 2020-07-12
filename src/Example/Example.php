@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationInterface;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use hanneskod\readmetester\Utils\CodeBlock;
 
 final class Example implements ExampleInterface
@@ -14,7 +14,7 @@ final class Example implements ExampleInterface
     private bool $context = false;
 
     private CodeBlock $code;
-    private NameInterface $name;
+    private Name $name;
 
     /** @var array<object> */
     private array $attributes;
@@ -22,13 +22,13 @@ final class Example implements ExampleInterface
     /** @var array<ExpectationInterface> */
     private array $expectations = [];
 
-    /** @var array<NameInterface> */
+    /** @var array<Name> */
     private array $imports = [];
 
     /**
      * @param array<object> $attributes
      */
-    public function __construct(NameInterface $name, CodeBlock $code, array $attributes = [])
+    public function __construct(Name $name, CodeBlock $code, array $attributes = [])
     {
         $this->name = $name;
         $this->code = $code;
@@ -55,7 +55,7 @@ final class Example implements ExampleInterface
         return $this->imports;
     }
 
-    public function getName(): NameInterface
+    public function getName(): Name
     {
         return $this->name;
     }
@@ -91,7 +91,7 @@ final class Example implements ExampleInterface
         return $new;
     }
 
-    public function withImport(NameInterface $name): ExampleInterface
+    public function withImport(Name $name): ExampleInterface
     {
         $new = clone $this;
         $new->imports[] = $name;
@@ -105,7 +105,7 @@ final class Example implements ExampleInterface
         return $new;
     }
 
-    public function withName(NameInterface $name): ExampleInterface
+    public function withName(Name $name): ExampleInterface
     {
         $new = clone $this;
         $new->name = $name;

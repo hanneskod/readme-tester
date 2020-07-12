@@ -9,7 +9,7 @@ use hanneskod\readmetester\Compiler\CompilerPassInterface;
 use hanneskod\readmetester\Example\ArrayExampleStore;
 use hanneskod\readmetester\Example\Example;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
-use hanneskod\readmetester\Name\NamespacedName;
+use hanneskod\readmetester\Utils\Name;
 use hanneskod\readmetester\Utils\CodeBlock;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -28,33 +28,33 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_builds_simple_examples()
     {
-        $example = new Example(NamespacedName::fromString('example'), new CodeBlock('E'));
+        $example = new Example(Name::fromString('example'), new CodeBlock('E'));
         $this->process(new ArrayExampleStore([$example]))->shouldReturnExampleWithCode('example', 'E');
     }
 
     function it_throws_on_missing_import()
     {
-        $example = (new Example(NamespacedName::fromString('example'), new CodeBlock('E')))
-            ->withImport(NamespacedName::fromString('does-not-exist'));
+        $example = (new Example(Name::fromString('example'), new CodeBlock('E')))
+            ->withImport(Name::fromString('does-not-exist'));
 
         $this->shouldThrow(\RuntimeException::class)->duringProcess(new ArrayExampleStore([$example]));
     }
 
     function it_adds_import()
     {
-        $example = (new Example(NamespacedName::fromString('example'), new CodeBlock('E')))
-            ->withImport(NamespacedName::fromString('import'));
+        $example = (new Example(Name::fromString('example'), new CodeBlock('E')))
+            ->withImport(Name::fromString('import'));
 
-        $import = new Example(NamespacedName::fromString('import'), new CodeBlock('I'));
+        $import = new Example(Name::fromString('import'), new CodeBlock('I'));
 
         $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode('example', 'IE');
     }
 
     function it_adds_context()
     {
-        $example = new Example(NamespacedName::fromString('example'), new CodeBlock('E'));
+        $example = new Example(Name::fromString('example'), new CodeBlock('E'));
 
-        $context = (new Example(NamespacedName::fromString('context'), new CodeBlock('C')))
+        $context = (new Example(Name::fromString('context'), new CodeBlock('C')))
             ->withIsContext(true);
 
         $this->process(new ArrayExampleStore([$example, $context]))->shouldReturnExampleWithCode('example', 'CE');
@@ -62,12 +62,12 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_adds_context_and_import()
     {
-        $example = (new Example(NamespacedName::fromString('example'), new CodeBlock('E')))
-            ->withImport(NamespacedName::fromString('import'));
+        $example = (new Example(Name::fromString('example'), new CodeBlock('E')))
+            ->withImport(Name::fromString('import'));
 
-        $import = new Example(NamespacedName::fromString('import'), new CodeBlock('I'));
+        $import = new Example(Name::fromString('import'), new CodeBlock('I'));
 
-        $context = (new Example(NamespacedName::fromString('context'), new CodeBlock('C')))
+        $context = (new Example(Name::fromString('context'), new CodeBlock('C')))
             ->withIsContext(true);
 
         $this->process(new ArrayExampleStore([$example, $import, $context]))
@@ -76,7 +76,7 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_does_not_add_context_to_self()
     {
-        $example = (new Example(NamespacedName::fromString('example'), new CodeBlock('E')))
+        $example = (new Example(Name::fromString('example'), new CodeBlock('E')))
             ->withIsContext(true);
 
         $this->process(new ArrayExampleStore([$example]))->shouldReturnExampleWithCode('example', 'E');
@@ -84,10 +84,10 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_adds_import_that_is_also_a_context_only_once()
     {
-        $example = (new Example(NamespacedName::fromString('example'), new CodeBlock('E')))
-            ->withImport(NamespacedName::fromString('import'));
+        $example = (new Example(Name::fromString('example'), new CodeBlock('E')))
+            ->withImport(Name::fromString('import'));
 
-        $import = (new Example(NamespacedName::fromString('import'), new CodeBlock('I')))
+        $import = (new Example(Name::fromString('import'), new CodeBlock('I')))
             ->withIsContext(true);
 
         $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode('example', 'IE');
@@ -95,16 +95,16 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_puts_contexts_before_imports()
     {
-        $example = (new Example(NamespacedName::fromString('example'), new CodeBlock('E')))
-            ->withImport(NamespacedName::fromString('import1'))
-            ->withImport(NamespacedName::fromString('import2'));
+        $example = (new Example(Name::fromString('example'), new CodeBlock('E')))
+            ->withImport(Name::fromString('import1'))
+            ->withImport(Name::fromString('import2'));
 
-        $import1 = (new Example(NamespacedName::fromString('import1'), new CodeBlock('I1')))
+        $import1 = (new Example(Name::fromString('import1'), new CodeBlock('I1')))
             ->withIsContext(true);
 
-        $import2 = new Example(NamespacedName::fromString('import2'), new CodeBlock('I2'));
+        $import2 = new Example(Name::fromString('import2'), new CodeBlock('I2'));
 
-        $context = (new Example(NamespacedName::fromString('context'), new CodeBlock('C')))
+        $context = (new Example(Name::fromString('context'), new CodeBlock('C')))
             ->withIsContext(true);
 
         $this->process(new ArrayExampleStore([$example, $import1, $import2, $context]))
@@ -113,9 +113,9 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_ignores_contexts_in_other_namespaces()
     {
-        $example = new Example(NamespacedName::fromString('foo:example'), new CodeBlock('E'));
+        $example = new Example(Name::fromString('foo:example'), new CodeBlock('E'));
 
-        $context = (new Example(NamespacedName::fromString('bar:context'), new CodeBlock('C')))
+        $context = (new Example(Name::fromString('bar:context'), new CodeBlock('C')))
             ->withIsContext(true);
 
         $this->process(new ArrayExampleStore([$example, $context]))->shouldReturnExampleWithCode('foo:example', 'E');
@@ -123,10 +123,10 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_adds_namespaced_import()
     {
-        $example = (new Example(NamespacedName::fromString('foo:example'), new CodeBlock('E')))
-            ->withImport(NamespacedName::fromString('bar:import'));
+        $example = (new Example(Name::fromString('foo:example'), new CodeBlock('E')))
+            ->withImport(Name::fromString('bar:import'));
 
-        $import = new Example(NamespacedName::fromString('bar:import'), new CodeBlock('I'));
+        $import = new Example(Name::fromString('bar:import'), new CodeBlock('I'));
 
         $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode('foo:example', 'IE');
     }
@@ -136,7 +136,7 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
         return [
             'returnExampleWithCode' => function (ExampleStoreInterface $store, string $name, string $code) {
                 foreach ($store->getExamples() as $example) {
-                    if ($example->getName()->getCompleteName() === $name) {
+                    if ($example->getName()->getFullName() === $name) {
                         return $example->getCodeBlock()->getCode() === $code;
                     }
                 }

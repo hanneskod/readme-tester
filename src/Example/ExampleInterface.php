@@ -3,7 +3,7 @@
 namespace hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Expectation\ExpectationInterface;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use hanneskod\readmetester\Utils\CodeBlock;
 
 interface ExampleInterface
@@ -24,14 +24,14 @@ interface ExampleInterface
     public function getExpectations(): iterable;
 
     /**
-     * @return iterable<NameInterface>
+     * @return iterable<Name>
      */
     public function getImports(): iterable;
 
     /**
      * Get example name
      */
-    public function getName(): NameInterface;
+    public function getName(): Name;
 
     /**
      * Check if example is active, eg. should be evaluated
@@ -61,7 +61,7 @@ interface ExampleInterface
     /**
      * Create a new example with include
      */
-    public function withImport(NameInterface $name): ExampleInterface;
+    public function withImport(Name $name): ExampleInterface;
 
     /**
      * Create a new example that works as a context for other examples
@@ -71,5 +71,5 @@ interface ExampleInterface
     /**
      * Create a new example with name
      */
-    public function withName(NameInterface $name): ExampleInterface;
+    public function withName(Name $name): ExampleInterface;
 }

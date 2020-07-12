@@ -19,7 +19,7 @@ final class CodeBlockImportingPass implements CompilerPassInterface
         $done = [];
 
         foreach ($store->getExamples() as $example) {
-            $exampleName = $example->getName()->getCompleteName();
+            $exampleName = $example->getName()->getFullName();
             $namespace = $example->getName()->getNamespaceName();
 
             // Create context collection for this namespace
@@ -40,7 +40,7 @@ final class CodeBlockImportingPass implements CompilerPassInterface
             // List contexts and imports once (array_flip implies uniqueness)
             $imports = array_flip([
                 ...$contexts[$example->getName()->getNamespaceName()] ?? [],
-                ...array_map(fn($name) => $name->getCompleteName(), $example->getImports()),
+                ...array_map(fn($name) => $name->getFullName(), $example->getImports()),
             ]);
 
             // Remove current example if in list

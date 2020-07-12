@@ -7,7 +7,7 @@ namespace hanneskod\readmetester\Markdown;
 use hanneskod\readmetester\Example\Example;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\CodeBlock;
-use hanneskod\readmetester\Name\NamespacedName;
+use hanneskod\readmetester\Utils\Name;
 
 /**
  * Extract examples from concrete class using reflection
@@ -38,7 +38,7 @@ abstract class ReflectionExampleStore implements ExampleStoreInterface
                 // TODO throw LogicException if method does not return a string
 
                 yield new Example(
-                    new NamespacedName('', $method->name),
+                    new Name('', $method->name),
                     new CodeBlock($method->invoke($this)),
                     $attributes
                 );

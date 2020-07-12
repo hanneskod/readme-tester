@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
-use hanneskod\readmetester\Name\NamespacedName;
+use hanneskod\readmetester\Utils\Name;
 
 #<<\PhpAttribute>>
 class NamespaceName implements TransformationInterface
@@ -23,7 +23,7 @@ class NamespaceName implements TransformationInterface
     public function transform(ExampleInterface $example): ExampleInterface
     {
         return $example->withName(
-            new NamespacedName(
+            new Name(
                 $this->namespace,
                 $example->getName()->getShortName()
             )

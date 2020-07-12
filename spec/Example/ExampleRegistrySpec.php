@@ -7,7 +7,7 @@ namespace spec\hanneskod\readmetester\Example;
 use hanneskod\readmetester\Example\ExampleRegistry;
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Example\RegistryInterface;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -23,64 +23,50 @@ class ExampleRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(RegistryInterface::CLASS);
     }
 
-    function it_can_have_example(ExampleInterface $example, NameInterface $name)
+    function it_can_have_example(ExampleInterface $example, Name $name)
     {
-        $name->getCompleteName()->willReturn('foobar');
-        $name->isUnnamed()->willReturn(false);
+        $name->getFullName()->willReturn('foobar');
         $example->getName()->willReturn($name);
         $this->setExample($example);
         $this->hasExample($name)->shouldReturn(true);
     }
 
-    function it_does_not_have_non_loaded_examples(NameInterface $name)
+    function it_does_not_have_non_loaded_examples(Name $name)
     {
-        $name->getCompleteName()->willReturn('foobar');
-        $name->isUnnamed()->willReturn(false);
+        $name->getFullName()->willReturn('foobar');
         $this->hasExample($name)->shouldReturn(false);
     }
 
-    function it_does_not_have_unnamed_examples(ExampleInterface $example, NameInterface $name)
+    function it_throws_on_non_loaded_example(Name $name)
     {
-        $name->getCompleteName()->willReturn('foobar');
-        $name->isUnnamed()->willReturn(true);
-        $example->getName()->willReturn($name);
-        $this->setExample($example);
-        $this->hasExample($name)->shouldReturn(false);
-    }
-
-    function it_throws_on_non_loaded_example(NameInterface $name)
-    {
-        $name->getCompleteName()->willReturn('foobar');
+        $name->getFullName()->willReturn('foobar');
         $name->getShortName()->willReturn('foobar');
         $this->shouldThrow(\RuntimeException::CLASS)->during('getExample', [$name]);
     }
 
-    function it_can_get_example(ExampleInterface $example, NameInterface $name)
+    function it_can_get_example(ExampleInterface $example, Name $name)
     {
-        $name->getCompleteName()->willReturn('foobar');
-        $name->isUnnamed()->willReturn(false);
+        $name->getFullName()->willReturn('foobar');
         $example->getName()->willReturn($name);
         $this->setExample($example);
         $this->getExample($name)->shouldReturn($example);
     }
 
     function it_can_get_loaded_examples(
-        ExampleInterface $unnamedEx,
-        ExampleInterface $namedEx,
-        NameInterface $unnamed,
-        NameInterface $named
+        ExampleInterface $exampleA,
+        ExampleInterface $exampleB,
+        Name $nameA,
+        Name $nameB
     ) {
-        $unnamed->getCompleteName()->willReturn('foo');
-        $unnamed->isUnnamed()->willReturn(true);
-        $named->getCompleteName()->willReturn('bar');
-        $named->isUnnamed()->willReturn(false);
+        $nameA->getFullName()->willReturn('foo');
+        $nameB->getFullName()->willReturn('bar');
 
-        $unnamedEx->getName()->willReturn($unnamed);
-        $namedEx->getName()->willReturn($named);
+        $exampleA->getName()->willReturn($nameA);
+        $exampleB->getName()->willReturn($nameB);
 
-        $this->setExample($unnamedEx);
-        $this->setExample($namedEx);
+        $this->setExample($exampleA);
+        $this->setExample($exampleB);
 
-        $this->getExamples()->shouldIterateAs([$unnamedEx, $namedEx]);
+        $this->getExamples()->shouldIterateAs([$exampleA, $exampleB]);
     }
 }

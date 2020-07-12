@@ -9,7 +9,7 @@ use hanneskod\readmetester\Attributes\Ignore;
 use hanneskod\readmetester\Example\Example;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\CodeBlock;
-use hanneskod\readmetester\Name\NamespacedName;
+use hanneskod\readmetester\Utils\Name;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Exception\Example\FailureException;
 use Prophecy\Argument;
@@ -35,7 +35,7 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
     {
         $this->getExamples()->shouldContainExample(
             new Example(
-                new NamespacedName('', 'example1'),
+                new Name('', 'example1'),
                 new CodeBlock('foobar'),
                 [new Ignore]
             )
@@ -47,7 +47,7 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
         return [
             'containExample' => function (iterable $examples, Example $expected) {
                 foreach ($examples as $example) {
-                    if ($example->getName()->getCompleteName() == $expected->getName()->getCompleteName()
+                    if ($example->getName()->getFullName() == $expected->getName()->getFullName()
                         && $example->getCodeBlock()->getCode() == $expected->getCodeBlock()->getCode()
                         && $example->getAttributes() == $expected->getAttributes()
                     ) {

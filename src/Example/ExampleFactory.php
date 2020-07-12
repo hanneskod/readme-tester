@@ -7,9 +7,7 @@ namespace hanneskod\readmetester\Example;
 use hanneskod\readmetester\Annotations;
 use hanneskod\readmetester\Expectation\ExpectationFactory;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
-use hanneskod\readmetester\Name\AnonymousName;
-use hanneskod\readmetester\Name\NamespacedName;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use hanneskod\readmetester\Parser\Annotation;
 use hanneskod\readmetester\Parser\Definition;
 
@@ -40,7 +38,7 @@ class ExampleFactory
         $context = null;
 
         foreach ($defs as $index => $def) {
-            $name = new AnonymousName;
+            $name = new Name('', uniqid());
             $code = $def->getCodeBlock();
             $expectations = [];
             $active = true;
@@ -57,13 +55,13 @@ class ExampleFactory
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_EXAMPLE)) {
                     if ($annotation->getArgument()) {
-                        $name = new NamespacedName($name->getNamespaceName(), $annotation->getArgument());
+                        $name = new Name($name->getNamespaceName(), $annotation->getArgument());
                     }
                     continue;
                 }
 
                 if ($annotation->isNamed(Annotations::ANNOTATION_INCLUDE)) {
-                    $nameToInclude = new NamespacedName('', $annotation->getArgument());
+                    $nameToInclude = new Name('', $annotation->getArgument());
 
                     if (!$registry->hasExample($nameToInclude)) {
                         throw new \RuntimeException(

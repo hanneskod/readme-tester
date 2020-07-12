@@ -8,7 +8,7 @@ use hanneskod\readmetester\Compiler\UniqueNamePass;
 use hanneskod\readmetester\Compiler\CompilerPassInterface;
 use hanneskod\readmetester\Example\ExampleInterface;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
-use hanneskod\readmetester\Name\NameInterface;
+use hanneskod\readmetester\Utils\Name;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -24,19 +24,19 @@ class UniqueNamePassSpec extends ObjectBehavior
         $this->shouldHaveType(CompilerPassInterface::CLASS);
     }
 
-    function it_ignores_non_duplicates(ExampleStoreInterface $store, ExampleInterface $example, NameInterface $name)
+    function it_ignores_non_duplicates(ExampleStoreInterface $store, ExampleInterface $example, Name $name)
     {
         $store->getExamples()->willReturn([$example]);
         $example->getName()->willReturn($name);
-        $name->getCompleteName()->willReturn('foobar');
+        $name->getFullName()->willReturn('foobar');
         $this->process($store)->shouldReturn($store);
     }
 
-    function it_throws_on_duplicates(ExampleStoreInterface $store, ExampleInterface $example, NameInterface $name)
+    function it_throws_on_duplicates(ExampleStoreInterface $store, ExampleInterface $example, Name $name)
     {
         $store->getExamples()->willReturn([$example, $example]);
         $example->getName()->willReturn($name);
-        $name->getCompleteName()->willReturn('foobar');
+        $name->getFullName()->willReturn('foobar');
         $this->shouldThrow(\RuntimeException::class)->duringProcess($store);
     }
 }

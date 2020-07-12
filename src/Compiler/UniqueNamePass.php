@@ -16,7 +16,7 @@ final class UniqueNamePass implements CompilerPassInterface
         $names = [];
 
         foreach ($store->getExamples() as $example) {
-            $name = $example->getName()->getCompleteName();
+            $name = $example->getName()->getFullName();
 
             if (isset($names[$name])) {
                 throw new \RuntimeException("Unable to create example '$name', name already exists");
