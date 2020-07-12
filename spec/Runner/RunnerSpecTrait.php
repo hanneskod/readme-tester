@@ -14,12 +14,12 @@ trait RunnerSpecTrait
 {
     function it_is_a_runner()
     {
-        $this->shouldHaveType(RunnerInterface::CLASS);
+        $this->shouldHaveType(RunnerInterface::class);
     }
 
     function it_returns_void_on_no_outcome()
     {
-        $this->run(new CodeBlock('$a = 1 + 2;'))->shouldHaveType(VoidOutcome::CLASS);
+        $this->run(new CodeBlock('$a = 1 + 2;'))->shouldHaveType(VoidOutcome::class);
     }
 
     function it_returns_output()
@@ -29,34 +29,34 @@ trait RunnerSpecTrait
 
     function it_returns_error_on_exception()
     {
-        $this->run(new CodeBlock('throw new Exception;'))->shouldHaveType(ErrorOutcome::CLASS);
+        $this->run(new CodeBlock('throw new Exception;'))->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_returns_error_on_trigger_error()
     {
-        $this->run(new CodeBlock('trigger_error("ERROR");'))->shouldHaveType(ErrorOutcome::CLASS);
+        $this->run(new CodeBlock('trigger_error("ERROR");'))->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_returns_error_on_fatal_error()
     {
-        $this->run(new CodeBlock('this_function_does_not_exist();'))->shouldHaveType(ErrorOutcome::CLASS);
+        $this->run(new CodeBlock('this_function_does_not_exist();'))->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_can_be_namespaced()
     {
-        $this->run(new CodeBlock('namespace test;'))->shouldHaveType(VoidOutcome::CLASS);
+        $this->run(new CodeBlock('namespace test;'))->shouldHaveType(VoidOutcome::class);
     }
 
     function it_throws_on_invalid_bootstrap()
     {
         $this->beConstructedWith('this-filename-does-not-exist');
-        $this->shouldThrow(\RuntimeException::CLASS)->duringInstantiation();
+        $this->shouldThrow(\RuntimeException::class)->duringInstantiation();
     }
 
     function it_can_be_bootstraped()
     {
         $this->beConstructedWith(__DIR__ . '/Bootstrap.php');
         $this->run(new CodeBlock('new \spec\hanneskod\readmetester\Runner\Bootstrap;'))
-            ->shouldHaveType(VoidOutcome::CLASS);
+            ->shouldHaveType(VoidOutcome::class);
     }
 }

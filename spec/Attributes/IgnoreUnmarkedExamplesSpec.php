@@ -15,12 +15,12 @@ class IgnoreUnmarkedExamplesSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(IgnoreUnmarkedExamples::CLASS);
+        $this->shouldHaveType(IgnoreUnmarkedExamples::class);
     }
 
     function it_is_a_transformation()
     {
-        $this->shouldHaveType(TransformationInterface::CLASS);
+        $this->shouldHaveType(TransformationInterface::class);
     }
 
     function it_ignores_unmaked_example(ExampleObj $example)

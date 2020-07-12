@@ -15,12 +15,12 @@ class ExampleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(Example::CLASS);
+        $this->shouldHaveType(Example::class);
     }
 
     function it_is_a_transformation()
     {
-        $this->shouldHaveType(TransformationInterface::CLASS);
+        $this->shouldHaveType(TransformationInterface::class);
     }
 
     function it_transforms_name(ExampleObj $example, NameObj $name)

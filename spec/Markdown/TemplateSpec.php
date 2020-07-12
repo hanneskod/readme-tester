@@ -15,7 +15,7 @@ class TemplateSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith([], []);
-        $this->shouldHaveType(Template::CLASS);
+        $this->shouldHaveType(Template::class);
     }
 
     function it_creates_example_code()

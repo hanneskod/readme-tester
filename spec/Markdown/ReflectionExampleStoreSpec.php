@@ -23,12 +23,12 @@ class ReflectionExampleStoreSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ReflectionExampleStore::CLASS);
+        $this->shouldHaveType(ReflectionExampleStore::class);
     }
 
     function it_is_an_example_store()
     {
-        $this->shouldHaveType(ExampleStoreInterface::CLASS);
+        $this->shouldHaveType(ExampleStoreInterface::class);
     }
 
     function it_finds_example()

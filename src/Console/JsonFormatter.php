@@ -19,12 +19,12 @@ class JsonFormatter implements FormatterInterface
     private $output;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $data;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $keys;
 

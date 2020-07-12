@@ -18,12 +18,12 @@ class SuccessSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Success::CLASS);
+        $this->shouldHaveType(Success::class);
     }
 
     function it_is_a_status()
     {
-        $this->shouldHaveType(StatusInterface::CLASS);
+        $this->shouldHaveType(StatusInterface::class);
     }
 
     function it_has_a_description()

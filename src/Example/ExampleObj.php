@@ -36,9 +36,9 @@ class ExampleObj
     }
 
     /**
-     * @return iterable<object>
+     * @return array<object>
      */
-    public function getAttributes(): iterable
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -52,17 +52,17 @@ class ExampleObj
     }
 
     /**
-     * @return iterable<ExpectationInterface>
+     * @return array<ExpectationInterface>
      */
-    public function getExpectations(): iterable
+    public function getExpectations(): array
     {
         return $this->expectations;
     }
 
     /**
-     * @return iterable<NameObj>
+     * @return array<NameObj>
      */
-    public function getImports(): iterable
+    public function getImports(): array
     {
         return $this->imports;
     }

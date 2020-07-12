@@ -56,7 +56,7 @@ analyze: phpstan phpcs
 
 .PHONY: phpstan
 phpstan: vendor/installed $(PHPSTAN_CMD)
-	$(PHPSTAN_CMD) analyze -c phpstan.neon -l 5 src
+	$(PHPSTAN_CMD) analyze -c phpstan.neon -l 8 src
 
 .PHONY: phpcs
 phpcs: $(PHPCS_CMD)

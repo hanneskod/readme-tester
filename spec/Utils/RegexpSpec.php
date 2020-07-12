@@ -13,7 +13,7 @@ class RegexpSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith('');
-        $this->shouldHaveType(Regexp::CLASS);
+        $this->shouldHaveType(Regexp::class);
     }
 
     function it_can_match()

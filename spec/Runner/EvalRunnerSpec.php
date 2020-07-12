@@ -14,6 +14,6 @@ class EvalRunnerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EvalRunner::CLASS);
+        $this->shouldHaveType(EvalRunner::class);
     }
 }

@@ -14,12 +14,12 @@ class ExampleContextSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ExampleContext::CLASS);
+        $this->shouldHaveType(ExampleContext::class);
     }
 
     function it_is_a_transformation()
     {
-        $this->shouldHaveType(TransformationInterface::CLASS);
+        $this->shouldHaveType(TransformationInterface::class);
     }
 
     function it_transforms(ExampleObj $example)

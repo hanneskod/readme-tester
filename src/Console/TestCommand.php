@@ -26,7 +26,7 @@ class TestCommand extends Command
      */
     const DEFAULT_BOOTSTRAP = 'vendor/autoload.php';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('test')
             ->setDescription('Test examples in readme file')
@@ -87,7 +87,10 @@ class TestCommand extends Command
 
         $engineBuilder = new EngineBuilder;
 
-        if ($filter = $input->getOption('filter')) {
+        /** @var string */
+        $filter = $input->getOption('filter');
+
+        if ($filter) {
             $engineBuilder->setProcessor(new FilterRegexpProcessor(new Regexp($filter)));
         }
 
@@ -103,7 +106,9 @@ class TestCommand extends Command
                 $engineBuilder->setRunner(new EvalRunner($bootstrap));
                 break;
             default:
-                throw new \RuntimeException("Unknown runner '{$input->getOption('runner')}'");
+                /** @var string */
+                $runner = $input->getOption('runner');
+                throw new \RuntimeException("Unknown runner '$runner'");
         }
 
         if ($input->getOption('ignore-unknown-annotations')) {
@@ -117,7 +122,10 @@ class TestCommand extends Command
         $exitStatus = new ExitStatusListener;
         $engine->registerListener($exitStatus);
 
-        foreach ($input->getArgument('source') as $source) {
+        /** @var array<string> */
+        $sources = $input->getArgument('source');
+
+        foreach ($sources as $source) {
             foreach (new SourceFileIterator($source) as $filename => $contents) {
                 $formatter->onFile($filename);
                 $engine->testFile($contents);
@@ -131,7 +139,10 @@ class TestCommand extends Command
 
     private function readBootstrap(InputInterface $input): string
     {
-        if ($filename = $input->getOption('bootstrap')) {
+        /** @var string */
+        $filename = $input->getOption('bootstrap');
+
+        if ($filename) {
             if (!is_file($filename) || !is_readable($filename)) {
                 throw new \RuntimeException("Unable to bootstrap $filename");
             }

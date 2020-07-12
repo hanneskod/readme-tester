@@ -31,7 +31,9 @@ final class EvalRunner implements RunnerInterface
             $lastErrorAfter = error_get_last();
             if ($lastErrorBefore != $lastErrorAfter) {
                 ob_end_clean();
-                return new ErrorOutcome("{$lastErrorAfter['type']}: {$lastErrorAfter['message']}");
+                $lastErrorAfterType = $lastErrorAfter['type'] ?? '';
+                $lastErrorAfterMessage = $lastErrorAfter['message'] ?? '';
+                return new ErrorOutcome("$lastErrorAfterType: $lastErrorAfterMessage");
             }
         } catch (\Throwable $e) {
             ob_end_clean();

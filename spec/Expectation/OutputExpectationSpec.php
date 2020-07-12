@@ -22,12 +22,12 @@ class OutputExpectationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(OutputExpectation::CLASS);
+        $this->shouldHaveType(OutputExpectation::class);
     }
 
     function it_is_an_expectation()
     {
-        $this->shouldHaveType(ExpectationInterface::CLASS);
+        $this->shouldHaveType(ExpectationInterface::class);
     }
 
     function it_can_be_converted_to_string($regexp)
@@ -53,7 +53,7 @@ class OutputExpectationSpec extends ObjectBehavior
         $outcome->getContent()->willReturn('foobar');
         $regexp->matches('foobar')->willReturn(false);
         $regexp->getRegexp()->willReturn('');
-        $this->handle($outcome)->shouldHaveType(Failure::CLASS);
+        $this->handle($outcome)->shouldHaveType(Failure::class);
     }
 
     function it_returns_success_on_match($regexp, OutcomeInterface $outcome)
@@ -61,6 +61,6 @@ class OutputExpectationSpec extends ObjectBehavior
         $outcome->getContent()->willReturn('foobar');
         $regexp->matches('foobar')->willReturn(true);
         $regexp->getRegexp()->willReturn('');
-        $this->handle($outcome)->shouldHaveType(Success::CLASS);
+        $this->handle($outcome)->shouldHaveType(Success::class);
     }
 }

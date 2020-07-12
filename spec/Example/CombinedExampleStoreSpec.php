@@ -14,12 +14,12 @@ class CombinedExampleStoreSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(CombinedExampleStore::CLASS);
+        $this->shouldHaveType(CombinedExampleStore::class);
     }
 
     function it_is_an_example_store()
     {
-        $this->shouldHaveType(ExampleStoreInterface::CLASS);
+        $this->shouldHaveType(ExampleStoreInterface::class);
     }
 
     function it_defaults_to_no_examples()

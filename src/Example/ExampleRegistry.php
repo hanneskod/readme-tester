@@ -30,6 +30,9 @@ class ExampleRegistry
         return $this->examples[$name->getFullName()];
     }
 
+    /**
+     * @return array<ExampleObj>
+     */
     public function getExamples(): array
     {
         return array_values($this->examples);

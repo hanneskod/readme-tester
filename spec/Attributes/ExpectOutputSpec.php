@@ -17,13 +17,13 @@ class ExpectOutputSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith('');
-        $this->shouldHaveType(ExpectOutput::CLASS);
+        $this->shouldHaveType(ExpectOutput::class);
     }
 
     function it_is_a_transformation()
     {
         $this->beConstructedWith('');
-        $this->shouldHaveType(TransformationInterface::CLASS);
+        $this->shouldHaveType(TransformationInterface::class);
     }
 
     function it_transforms(ExampleObj $example)

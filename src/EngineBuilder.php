@@ -23,7 +23,7 @@ class EngineBuilder
         $this->processor = new ProcessorContainer;
     }
 
-    public function setIgnoreUnknownAnnotations($flag = true)
+    public function setIgnoreUnknownAnnotations(bool $flag = true): void
     {
         $this->ignoreUnknownAnnotations = $flag;
     }

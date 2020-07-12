@@ -16,7 +16,7 @@ class ExpectationEvaluatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ExpectationEvaluator::CLASS);
+        $this->shouldHaveType(ExpectationEvaluator::class);
     }
 
     function it_triggers_failure_on_unhandled_outcome(OutcomeInterface $outcome)

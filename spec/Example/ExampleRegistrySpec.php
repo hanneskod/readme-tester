@@ -14,7 +14,7 @@ class ExampleRegistrySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ExampleRegistry::CLASS);
+        $this->shouldHaveType(ExampleRegistry::class);
     }
 
     function it_can_have_example(ExampleObj $example, NameObj $name)
@@ -35,7 +35,7 @@ class ExampleRegistrySpec extends ObjectBehavior
     {
         $name->getFullName()->willReturn('foobar');
         $name->getShortName()->willReturn('foobar');
-        $this->shouldThrow(\RuntimeException::CLASS)->during('getExample', [$name]);
+        $this->shouldThrow(\RuntimeException::class)->during('getExample', [$name]);
     }
 
     function it_can_get_example(ExampleObj $example, NameObj $name)

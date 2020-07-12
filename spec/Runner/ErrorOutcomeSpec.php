@@ -18,12 +18,12 @@ class ErrorOutcomeSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ErrorOutcome::CLASS);
+        $this->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_is_an_outcome()
     {
-        $this->shouldHaveType(OutcomeInterface::CLASS);
+        $this->shouldHaveType(OutcomeInterface::class);
     }
 
     function it_is_an_error_type()

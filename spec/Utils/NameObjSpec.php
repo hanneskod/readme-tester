@@ -17,7 +17,7 @@ class NameObjSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(NameObj::CLASS);
+        $this->shouldHaveType(NameObj::class);
     }
 
     function it_contains_a_namespace()

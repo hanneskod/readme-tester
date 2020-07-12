@@ -17,7 +17,7 @@ class CodeBlockSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CodeBlock::CLASS);
+        $this->shouldHaveType(CodeBlock::class);
     }
 
     function it_contains_code()

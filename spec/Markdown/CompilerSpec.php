@@ -24,12 +24,12 @@ class CompilerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Compiler::CLASS);
+        $this->shouldHaveType(Compiler::class);
     }
 
     function it_is_a_compiler()
     {
-        $this->shouldHaveType(CompilerInterface::CLASS);
+        $this->shouldHaveType(CompilerInterface::class);
     }
 
     function it_compiles(

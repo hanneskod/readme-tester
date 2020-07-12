@@ -18,7 +18,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @return string The command name
      */
-    protected function getCommandName(InputInterface $input)
+    protected function getCommandName(InputInterface $input): string
     {
         // This should return the name of your command.
         return 'test';
@@ -27,9 +27,9 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * Gets the default commands that should always be available.
      *
-     * @return array An array of default Command instances
+     * @return array<\Symfony\Component\Console\Command\Command> An array of default Command instances
      */
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         // Keep the core default commands to have the HelpCommand
         // which is used when using the --help option
@@ -44,7 +44,7 @@ class Application extends \Symfony\Component\Console\Application
      * Overridden so that the application doesn't expect the command
      * name to be the first argument.
      */
-    public function getDefinition()
+    public function getDefinition(): \Symfony\Component\Console\Input\InputDefinition
     {
         $inputDefinition = parent::getDefinition();
         // clear out the normal first argument, which is the command name

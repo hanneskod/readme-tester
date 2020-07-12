@@ -6,19 +6,21 @@ namespace hanneskod\readmetester;
 
 /**
  * Iterate over markdown formatted source files
+ *
+ * @implements \IteratorAggregate<string, string>
  */
 class SourceFileIterator implements \IteratorAggregate
 {
-    /**
-     * @var string Source file or directory name
-     */
-    private $filename;
+    private string $filename;
 
     public function __construct(string $filename)
     {
         $this->filename = $filename;
     }
 
+    /**
+     * @return \Traversable<string, string>
+     */
     public function getIterator(): \Traversable
     {
         if (is_file($this->filename)) {

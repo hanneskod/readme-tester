@@ -48,7 +48,7 @@ class NameObj
 
     private static function sanitizeName(string $name): string
     {
-        return preg_replace(
+        return (string)preg_replace(
             self::INVALID_CHAR_REGEXP,
             '',
             str_replace(' ', '-', $name)

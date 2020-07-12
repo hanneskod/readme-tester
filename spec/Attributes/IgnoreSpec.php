@@ -14,12 +14,12 @@ class IgnoreSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(Ignore::CLASS);
+        $this->shouldHaveType(Ignore::class);
     }
 
     function it_is_a_transformation()
     {
-        $this->shouldHaveType(TransformationInterface::CLASS);
+        $this->shouldHaveType(TransformationInterface::class);
     }
 
     function it_transforms(ExampleObj $example)

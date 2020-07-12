@@ -14,12 +14,12 @@ class ProcessorContainerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProcessorContainer::CLASS);
+        $this->shouldHaveType(ProcessorContainer::class);
     }
 
     function it_is_a_processor()
     {
-        $this->shouldHaveType(ProcessorInterface::CLASS);
+        $this->shouldHaveType(ProcessorInterface::class);
     }
 
     function it_calls_processors(ProcessorInterface $proccA, ProcessorInterface $proccB, ExampleObj $example)

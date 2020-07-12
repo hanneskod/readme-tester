@@ -12,6 +12,10 @@ class TemplateRenderer
     {
         $filename = tempnam(sys_get_temp_dir(), 'readmetester');
 
+        if (!$filename) {
+            throw new \LogicException("Unable to generate temporary name");
+        }
+
         file_put_contents($filename, '<?php ' . $template->getCode());
 
         $error = '';

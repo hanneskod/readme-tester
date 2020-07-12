@@ -22,12 +22,12 @@ class MultipassCompilerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(MultipassCompiler::CLASS);
+        $this->shouldHaveType(MultipassCompiler::class);
     }
 
     function it_is_a_compiler()
     {
-        $this->shouldHaveType(CompilerInterface::CLASS);
+        $this->shouldHaveType(CompilerInterface::class);
     }
 
     function it_compiles($decoratedCompiler, $compilerPass, InputInterface $input, ExampleStoreInterface $store)

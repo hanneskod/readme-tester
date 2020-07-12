@@ -21,12 +21,12 @@ class FilterRegexpProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FilterRegexpProcessor::CLASS);
+        $this->shouldHaveType(FilterRegexpProcessor::class);
     }
 
     function it_is_a_processor()
     {
-        $this->shouldHaveType(ProcessorInterface::CLASS);
+        $this->shouldHaveType(ProcessorInterface::class);
     }
 
     function it_filters_on_no_match($regexp, ExampleObj $example, NameObj $name)

@@ -16,12 +16,12 @@ class ProcessRunnerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProcessRunner::CLASS);
+        $this->shouldHaveType(ProcessRunner::class);
     }
 
     function it_runs_examples_in_isolation()
     {
-        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::CLASS);
-        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::CLASS);
+        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::class);
+        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::class);
     }
 }

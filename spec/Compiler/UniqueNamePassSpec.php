@@ -16,12 +16,12 @@ class UniqueNamePassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(UniqueNamePass::CLASS);
+        $this->shouldHaveType(UniqueNamePass::class);
     }
 
     function it_is_a_compiler_pass()
     {
-        $this->shouldHaveType(CompilerPassInterface::CLASS);
+        $this->shouldHaveType(CompilerPassInterface::class);
     }
 
     function it_ignores_non_duplicates(ExampleStoreInterface $store, ExampleObj $example, NameObj $name)

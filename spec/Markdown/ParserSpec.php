@@ -15,7 +15,7 @@ class ParserSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(Parser::CLASS);
+        $this->shouldHaveType(Parser::class);
     }
 
     function it_tests_doc_with_no_examples()

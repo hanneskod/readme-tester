@@ -18,12 +18,12 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(CodeBlockImportingPass::CLASS);
+        $this->shouldHaveType(CodeBlockImportingPass::class);
     }
 
     function it_is_a_compiler_pass()
     {
-        $this->shouldHaveType(CompilerPassInterface::CLASS);
+        $this->shouldHaveType(CompilerPassInterface::class);
     }
 
     function it_builds_simple_examples()

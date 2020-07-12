@@ -14,12 +14,12 @@ class CompilerFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(CompilerFactory::CLASS);
+        $this->shouldHaveType(CompilerFactory::class);
     }
 
     function it_is_a_compiler_factory()
     {
-        $this->shouldHaveType(CompilerFactoryInterface::CLASS);
+        $this->shouldHaveType(CompilerFactoryInterface::class);
     }
 
     function it_creates_compilers()

@@ -19,7 +19,7 @@ final class FileInput implements InputInterface
             throw new \RuntimeException("Not able to read $this->filename");
         }
 
-        return file_get_contents($this->filename);
+        return (string)file_get_contents($this->filename);
     }
 
     public function getDefaultNamespace(): string

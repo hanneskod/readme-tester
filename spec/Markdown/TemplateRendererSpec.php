@@ -15,7 +15,7 @@ class TemplateRendererSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(TemplateRenderer::CLASS);
+        $this->shouldHaveType(TemplateRenderer::class);
     }
 
     function it_renders(Template $template)
