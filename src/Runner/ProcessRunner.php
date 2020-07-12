@@ -12,8 +12,7 @@ use Symfony\Component\Process\PhpProcess;
  */
 final class ProcessRunner implements RunnerInterface
 {
-    /** @var string */
-    private $bootstrapCode;
+    private string $bootstrapCode;
 
     public function __construct(string $bootstrap = '')
     {

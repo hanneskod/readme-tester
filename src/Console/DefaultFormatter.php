@@ -13,35 +13,32 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DefaultFormatter implements FormatterInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
+    private OutputInterface $output;
 
     /**
-     * @var int The number of files tested
+     * The number of files tested
      */
-    private $fileCount = 0;
+    private int $fileCount = 0;
 
     /**
-     * @var int The number of examples
+     * The number of examples
      */
-    private $exampleCount = 0;
+    private int $exampleCount = 0;
 
     /**
-     * @var int The number of ignored examples
+     * The number of ignored examples
      */
-    private $ignoredCount = 0;
+    private int $ignoredCount = 0;
 
     /**
-     * @var int The number of assertions
+     * The number of assertions
      */
-    private $expectationCount = 0;
+    private int $expectationCount = 0;
 
     /**
-     * @var int The number of failed assertions
+     * The number of failed assertions
      */
-    private $failureCount = 0;
+    private int $failureCount = 0;
 
     public function __construct(OutputInterface $output)
     {

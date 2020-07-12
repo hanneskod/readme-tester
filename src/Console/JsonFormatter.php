@@ -11,12 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Default text output formatter
  */
-class JsonFormatter implements FormatterInterface
+final class JsonFormatter implements FormatterInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
+    private OutputInterface $output;
 
     /**
      * @var array<string, mixed>

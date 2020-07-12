@@ -6,8 +6,7 @@ namespace hanneskod\readmetester\Runner;
 
 final class OutputOutcome implements OutcomeInterface
 {
-    /** @var string */
-    private $output;
+    private string $output;
 
     public function __construct(string $output)
     {

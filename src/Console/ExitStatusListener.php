@@ -11,12 +11,9 @@ use hanneskod\readmetester\Expectation\StatusInterface;
 /**
  * Capture exit status
  */
-class ExitStatusListener implements ListenerInterface
+final class ExitStatusListener implements ListenerInterface
 {
-    /**
-     * @var int
-     */
-    private $exitStatus = 0;
+    private int $exitStatus = 0;
 
     public function onExample(ExampleObj $example): void
     {

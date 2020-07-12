@@ -9,8 +9,8 @@ namespace hanneskod\readmetester\Example;
  */
 final class ProcessorContainer implements ProcessorInterface
 {
-    /** @var ProcessorInterface[] */
-    private $processors;
+    /** @var array<ProcessorInterface> */
+    private array $processors;
 
     public function __construct(ProcessorInterface ...$processors)
     {

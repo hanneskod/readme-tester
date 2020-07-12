@@ -11,8 +11,7 @@ use hanneskod\readmetester\Utils\Regexp;
  */
 final class FilterRegexpProcessor implements ProcessorInterface
 {
-    /** @var Regexp */
-    private $regexp;
+    private Regexp $regexp;
 
     public function __construct(Regexp $regexp)
     {

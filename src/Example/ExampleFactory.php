@@ -13,14 +13,9 @@ use hanneskod\readmetester\Parser\Definition;
 
 class ExampleFactory
 {
-    /** @var ExpectationFactory */
-    private $expectationFactory;
-
-    /** @var ProcessorInterface */
-    private $processor;
-
-    /** @var bool */
-    private $ignoreUnknownAnnotations;
+    private ExpectationFactory $expectationFactory;
+    private ProcessorInterface $processor;
+    private bool $ignoreUnknownAnnotations;
 
     public function __construct(
         ExpectationFactory $expectationFactory,
