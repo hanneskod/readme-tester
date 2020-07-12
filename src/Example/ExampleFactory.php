@@ -14,14 +14,10 @@ use hanneskod\readmetester\Parser\Definition;
 class ExampleFactory
 {
     private ExpectationFactory $expectationFactory;
-    private ProcessorInterface $processor;
 
-    public function __construct(
-        ExpectationFactory $expectationFactory,
-        ProcessorInterface $processor
-    ) {
+    public function __construct(ExpectationFactory $expectationFactory)
+    {
         $this->expectationFactory = $expectationFactory;
-        $this->processor = $processor;
     }
 
     public function createExamples(Definition ...$defs): ExampleRegistry
@@ -90,11 +86,7 @@ class ExampleFactory
 
             $example = $example->withActive($active);
 
-            $registry->setExample(
-                $this->processor->process(
-                    $example
-                )
-            );
+            $registry->setExample($example);
         }
 
         return $registry;

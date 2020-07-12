@@ -51,12 +51,6 @@ class TestCommand extends Command
                 ['vendor']
             )
             ->addOption(
-                'filter',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Filter which examples to test using a regular expression'
-            )
-            ->addOption(
                 'format',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -94,13 +88,6 @@ class TestCommand extends Command
         $formatter->onInvokationStart();
 
         $engineBuilder = new EngineBuilder;
-
-        /** @var string */
-        $filter = $input->getOption('filter');
-
-        if ($filter) {
-            $engineBuilder->setProcessor(new FilterRegexpProcessor(new Regexp($filter)));
-        }
 
         if ($bootstrap = $this->readBootstrap($input)) {
             $formatter->onBootstrap($bootstrap);
