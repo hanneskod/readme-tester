@@ -33,3 +33,20 @@ Feature: CLI features
     And the command line argument '--ignore=bar'
     When I run readme tester
     Then 1 files are found
+
+  Scenario: I stop on failure
+    Given a markdown file:
+    """
+    <!-- @expectOutput failure1 -->
+    ```php
+    ```
+    <!-- @expectOutput failure2 -->
+    ```php
+    ```
+    """
+    Given a markdown file:
+    """
+    """
+    And the command line argument '--stop-on-failure'
+    When I run readme tester
+    Then 1 failures are found

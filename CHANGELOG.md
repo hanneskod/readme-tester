@@ -11,6 +11,7 @@ This project now adheres to [Semantic Versioning](http://semver.org/).
 - Removed the `--filter` command line option
 - Added the `--file-extension` command line option
 - Added the `--ignore` command line option
+- Added the `--stop-on-failure` command line option
 
 ## [1.0.0] - 2020-07-06
 

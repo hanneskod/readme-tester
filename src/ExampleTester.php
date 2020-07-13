@@ -4,27 +4,26 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
-use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Runner\RunnerInterface;
 
-/**
- * Run example code and evaluate expectations
- */
-class ExampleTester
+final class ExampleTester
 {
     private RunnerInterface $runner;
     private ExpectationEvaluator $evaluator;
+    private bool $stopOnFailure;
 
     /**
      * @var ListenerInterface[]
      */
     private $listeners = [];
 
-    public function __construct(RunnerInterface $runner, ExpectationEvaluator $evaluator)
+    public function __construct(RunnerInterface $runner, ExpectationEvaluator $evaluator, bool $stopOnFailure)
     {
         $this->runner = $runner;
         $this->evaluator = $evaluator;
+        $this->stopOnFailure = $stopOnFailure;
     }
 
     public function registerListener(ListenerInterface $listener): void
@@ -32,24 +31,30 @@ class ExampleTester
         $this->listeners[] = $listener;
     }
 
-    public function testExample(ExampleObj $example): void
+    public function test(ExampleStoreInterface $exampleStore): void
     {
-        if (!$example->isActive()) {
-            foreach ($this->listeners as $listener) {
-                $listener->onIgnoredExample($example);
+        foreach ($exampleStore->getExamples() as $example) {
+            if (!$example->isActive()) {
+                foreach ($this->listeners as $listener) {
+                    $listener->onIgnoredExample($example);
+                }
+                continue;
             }
-            return;
-        }
 
-        foreach ($this->listeners as $listener) {
-            $listener->onExample($example);
-        }
-
-        $outcome = $this->runner->run($example->getCodeBlock());
-
-        foreach ($this->evaluator->evaluate($example->getExpectations(), $outcome) as $status) {
             foreach ($this->listeners as $listener) {
-                $listener->onExpectation($status);
+                $listener->onExample($example);
+            }
+
+            $outcome = $this->runner->run($example->getCodeBlock());
+
+            foreach ($this->evaluator->evaluate($example->getExpectations(), $outcome) as $status) {
+                foreach ($this->listeners as $listener) {
+                    $listener->onExpectation($status);
+                }
+
+                if ($this->stopOnFailure && !$status->isSuccess()) {
+                    break 2;
+                }
             }
         }
     }

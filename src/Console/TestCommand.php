@@ -9,8 +9,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use hanneskod\readmetester\EngineBuilder;
-use hanneskod\readmetester\Example\FilterRegexpProcessor;
+use hanneskod\readmetester\ExampleTester;
+use hanneskod\readmetester\Example\ExampleFactory;
+use hanneskod\readmetester\Example\ArrayExampleStore;
+use hanneskod\readmetester\Expectation\ExpectationEvaluator;
+use hanneskod\readmetester\Expectation\ExpectationFactory;
+use hanneskod\readmetester\Parser\Parser;
+use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\ProcessRunner;
 use hanneskod\readmetester\Utils\Regexp;
@@ -76,6 +81,12 @@ class TestCommand extends Command
                 InputOption::VALUE_NONE,
                 "Don't try to load a local composer autoloader when boostrap is not definied"
             )
+            ->addOption(
+                'stop-on-failure',
+                's',
+                InputOption::VALUE_NONE,
+                "Stop processing on first failed test"
+            )
         ;
     }
 
@@ -87,33 +98,38 @@ class TestCommand extends Command
 
         $formatter->onInvokationStart();
 
-        $engineBuilder = new EngineBuilder;
-
         if ($bootstrap = $this->readBootstrap($input)) {
             $formatter->onBootstrap($bootstrap);
         }
 
+        /** @var RunnerInterface */
+        $runner = null;
+
         switch ($input->getOption('runner')) {
             case 'process':
-                $engineBuilder->setRunner(new ProcessRunner($bootstrap));
+                $runner = new ProcessRunner($bootstrap);
                 break;
             case 'eval':
-                $engineBuilder->setRunner(new EvalRunner($bootstrap));
+                $runner = new EvalRunner($bootstrap);
                 break;
             default:
                 /** @var string */
-                $runner = $input->getOption('runner');
-                throw new \RuntimeException("Unknown runner '$runner'");
+                $runnerId = $input->getOption('runner');
+                throw new \RuntimeException("Unknown runner '$runnerId'");
         }
 
-        $engine = $engineBuilder->buildEngine();
+        $tester = new ExampleTester(
+            $runner,
+            new ExpectationEvaluator,
+            (bool)$input->getOption('stop-on-failure')
+        );
 
-        $engine->registerListener($formatter);
+        $tester->registerListener($formatter);
 
         $exitStatus = new ExitStatusListener;
-        $engine->registerListener($exitStatus);
 
-        // TODO let finder be constructed through a DIC for better ini-setting support..
+        $tester->registerListener($exitStatus);
+
         $finder = (new Finder)->files()->in('.')->ignoreUnreadableDirs();
 
         // Set paths to scan
@@ -140,10 +156,23 @@ class TestCommand extends Command
             )
         );
 
+        $exampleFactory = new ExampleFactory(new ExpectationFactory);
+
+        $parser = new Parser;
+
+        $examples = [];
+
         foreach ($finder as $file) {
+            //TODO replace with FoundFileEvent...
             $formatter->onFile($file->getRelativePathname());
-            $engine->testFile($file->getContents());
+
+            $examples = [
+                ...$examples,
+                ...$exampleFactory->createExamples(...$parser->parse($file->getContents()))->getExamples()
+            ];
         }
+
+        $tester->test(new ArrayExampleStore($examples));
 
         $formatter->onInvokationEnd();
 
