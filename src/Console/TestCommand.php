@@ -10,15 +10,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use hanneskod\readmetester\ExampleTester;
-use hanneskod\readmetester\Example\ExampleFactory;
-use hanneskod\readmetester\Example\ArrayExampleStore;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
-use hanneskod\readmetester\Expectation\ExpectationFactory;
-use hanneskod\readmetester\Parser\Parser;
 use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\ProcessRunner;
-use hanneskod\readmetester\Utils\Regexp;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -156,23 +151,21 @@ class TestCommand extends Command
             )
         );
 
-        $exampleFactory = new ExampleFactory(new ExpectationFactory);
-
-        $parser = new Parser;
-
-        $examples = [];
+        $inputs = [];
 
         foreach ($finder as $file) {
-            //TODO replace with FoundFileEvent...
             $formatter->onFile($file->getRelativePathname());
 
-            $examples = [
-                ...$examples,
-                ...$exampleFactory->createExamples(...$parser->parse($file->getContents()))->getExamples()
-            ];
+            // TODO FileInput ska ta en symfony istället...
+            $inputs[] = new \hanneskod\readmetester\Compiler\FileInput($file->getRelativePathname());
         }
 
-        $tester->test(new ArrayExampleStore($examples));
+        $compiler = (new \hanneskod\readmetester\Markdown\CompilerFactory)->createCompiler();
+
+        // TODO ska inte compile ta arrayen istället?? ...är ju ganka onödigt..
+        $tester->test(
+            $compiler->compile(...$inputs)
+        );
 
         $formatter->onInvokationEnd();
 

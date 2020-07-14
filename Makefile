@@ -49,7 +49,7 @@ behat: vendor/installed $(PARSER) $(BEHAT_CMD)
 
 .PHONY: docs
 docs: vendor/installed $(PARSER) $(README_TESTER_CMD)
-	$(README_TESTER_CMD) README.md
+	$(README_TESTER_CMD) README.md docs
 
 .PHONY: analyze
 analyze: phpstan phpcs
@@ -60,7 +60,7 @@ phpstan: vendor/installed $(PHPSTAN_CMD)
 
 .PHONY: phpcs
 phpcs: $(PHPCS_CMD)
-	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER),src/Parser/Parser.php
+	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER)
 	$(PHPCS_CMD) spec --standard=spec/ruleset.xml
 
 composer.lock: composer.json

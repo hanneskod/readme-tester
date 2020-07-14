@@ -6,17 +6,17 @@ Feature: Example context
   Scenario: I create a context
     Given a markdown file:
     """
-    <!-- @exampleContext -->
+    <<ReadmeTester\ExampleContext>>
     ```php
     $context = 'This output is matched using a regular expression';
     ```
 
-    <!-- @expectOutput /regular/ -->
+    <<ReadmeTester\ExpectOutput('/regular/')>>
     ```php
     echo $context;
     ```
 
-    <!-- @expectOutput /matched/ -->
+    <<ReadmeTester\ExpectOutput('/matched/')>>
     ```php
     echo $context;
     ```
@@ -29,13 +29,13 @@ Feature: Example context
     Given a markdown file:
     """
     <!--
-    @exampleContext
+    <<ReadmeTester\ExampleContext>>
     ```php
     $context = 'This output is matched using a regular expression';
     ```
     -->
 
-    <!-- @expectOutput /regular/ -->
+    <<ReadmeTester\ExpectOutput('/regular/')>>
     ```php
     echo $context;
     ```
@@ -47,16 +47,14 @@ Feature: Example context
   Scenario: I create a context using an ignored example
     Given a markdown file:
     """
-    <!--
-        @exampleContext
-        @ignore
-        @expectOutput /regular/
-    -->
+    <<ReadmeTester\Ignore>>
+    <<ReadmeTester\ExampleContext>>
+    <<ReadmeTester\ExpectOutput('/regular/')>>
     ```php
     $context = 'This output is matched using a regular expression';
     ```
 
-    <!-- @expectOutput /regular/ -->
+    <<ReadmeTester\ExpectOutput('/regular/')>>
     ```php
     echo $context;
     ```
@@ -68,17 +66,17 @@ Feature: Example context
   Scenario: I create multiple contexts
     Given a markdown file:
     """
-    <!-- @exampleContext -->
+    <<ReadmeTester\ExampleContext>>
     ```php
     $a = 'A';
     ```
 
-    <!-- @exampleContext -->
+    <<ReadmeTester\ExampleContext>>
     ```php
     $b = 'B';
     ```
 
-    <!-- @expectOutput /^AB$/ -->
+    <<ReadmeTester\ExpectOutput('/^AB$/')>>
     ```php
     echo $a, $b;
     ```
@@ -90,11 +88,11 @@ Feature: Example context
   Scenario: I use a namespaced context
     Given a markdown file:
     """
-    <!-- @exampleContext -->
+    <<ReadmeTester\ExampleContext>>
     ```php
     namespace foospace;
     ```
-    <!-- @expectOutput foospace -->
+    <<ReadmeTester\ExpectOutput('foospace')>>
     ```php
     echo __NAMESPACE__;
     ```

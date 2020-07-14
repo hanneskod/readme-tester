@@ -34,7 +34,7 @@ echo "global";
 ```
 
 <<ReadmeTester\Example("Test global namespace")>>
-<<ReadmeTester\Import("global:to-import">>
+<<ReadmeTester\Import("global:to-import")>>
 <<ReadmeTester\ExpectOutput("global")>>
 ```php
 ```

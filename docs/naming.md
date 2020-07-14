@@ -59,25 +59,25 @@ This hidden block is intended to validate that blocks are really named as descri
 
 <<ReadmeTester\Example("Test namespaced name")>>
 <<ReadmeTester\Import("Foo:Bar")>>
-<<ReadmeTester\ExpectOutput("Foo:Bar")>>
+<<ReadmeTester\ExpectOutput("/Foo:Bar/")>>
 ```php
 ```
 
 <<ReadmeTester\Example("Test default name")>>
 <<ReadmeTester\Import("exampel1")>>
-<<ReadmeTester\ExpectOutput("naming.md:exampel1")>>
+<<ReadmeTester\ExpectOutput("/naming.md:exampel1/")>>
 ```php
 ```
 
 <<ReadmeTester\Example("Test header name")>>
 <<ReadmeTester\Import("Headers-as-example-names")>>
-<<ReadmeTester\ExpectOutput("naming.md:Headers-as-example-names")>>
+<<ReadmeTester\ExpectOutput("/naming.md:Headers-as-example-names/")>>
 ```php
 ```
 
 <<ReadmeTester\Example("Test example attribute")>>
 <<ReadmeTester\Import("example-name")>>
-<<ReadmeTester\ExpectOutput("naming.md:example-name")>>
+<<ReadmeTester\ExpectOutput("/naming.md:example-name/")>>
 ```php
 ```
 -->

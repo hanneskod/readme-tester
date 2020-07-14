@@ -26,7 +26,7 @@ Feature: Basic syntax
   Scenario: I ignore a PHP code block
     Given a markdown file:
     """
-    <!-- @ignore -->
+    <<ReadmeTester\Ignore>>
     ```php
     $a = 'foobar';
     ```
@@ -37,8 +37,8 @@ Feature: Basic syntax
   Scenario: I use multiple annotation lines
     Given a markdown file:
     """
-    <!-- @expectOutput /foo/ -->
-    <!-- @expectOutput /bar/ -->
+    <<ReadmeTester\ExpectOutput('/foo/')>>
+    <<ReadmeTester\ExpectOutput('/bar/')>>
     ```php
     echo 'foobar';
     ```
@@ -47,12 +47,12 @@ Feature: Basic syntax
     Then 2 expectations are found
     And 0 failures are found
 
-  Scenario: I use an annotation block
+  Scenario: I use an html comment block
     Given a markdown file:
     """
     <!--
-        @expectOutput /foo/
-        @expectOutput /bar/
+    <<ReadmeTester\ExpectOutput('/foo/')>>
+    <<ReadmeTester\ExpectOutput('/bar/')>>
     -->
     ```php
     echo 'foobar';
@@ -65,14 +65,12 @@ Feature: Basic syntax
   Scenario: I include a code block
     Given a markdown file:
     """
-    <!-- @example parent -->
+    <<ReadmeTester\Example('parent')>>
     ```php
     $str = 'parent';
     ```
-    <!--
-        @include parent
-        @expectOutput /parent/
-    -->
+    <<ReadmeTester\Import('parent')>>
+    <<ReadmeTester\ExpectOutput('/parent/')>>
     ```php
     echo $str;
     ```
@@ -84,19 +82,17 @@ Feature: Basic syntax
   Scenario: I include multiple code blocks
     Given a markdown file:
     """
-    <!-- @example A -->
+    <<ReadmeTester\Example('A')>>
     ```php
     $A = 'A';
     ```
-    <!-- @example B -->
+    <<ReadmeTester\Example('B')>>
     ```php
     $B = 'B';
     ```
-    <!--
-        @include A
-        @include B
-        @expectOutput /AB/
-    -->
+    <<ReadmeTester\Import('A')>>
+    <<ReadmeTester\Import('B')>>
+    <<ReadmeTester\ExpectOutput('/AB/')>>
     ```php
     echo $A, $B;
     ```
@@ -108,14 +104,12 @@ Feature: Basic syntax
   Scenario: I include a code block with a complex name
     Given a markdown file:
     """
-    <!-- @example "foo-bar" -->
+    <<ReadmeTester\Example('foo-bar')>>
     ```php
     $str = 'foo bar';
     ```
-    <!--
-        @include "foo-bar"
-        @expectOutput "/foo bar/"
-    -->
+    <<ReadmeTester\Import('foo-bar')>>
+    <<ReadmeTester\ExpectOutput('/foo bar/')>>
     ```php
     echo $str;
     ```

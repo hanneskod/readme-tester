@@ -64,14 +64,14 @@ class DefaultFormatter implements FormatterInterface
     public function onExample(ExampleObj $example): void
     {
         $this->exampleCount++;
-        $this->output->writeln("<info>@example {$example->getName()->getShortName()}</info>");
+        $this->output->writeln("<info>@example {$example->getName()->getFullName()}</info>");
     }
 
     public function onIgnoredExample(ExampleObj $example): void
     {
         $this->ignoredCount++;
         if ($this->output->isVerbose()) {
-            $this->output->writeln("ignored <info>@example {$example->getName()->getShortName()}</info>");
+            $this->output->writeln("ignored <info>@example {$example->getName()->getFullName()}</info>");
         }
     }
 

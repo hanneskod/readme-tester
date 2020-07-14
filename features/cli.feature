@@ -37,10 +37,10 @@ Feature: CLI features
   Scenario: I stop on failure
     Given a markdown file:
     """
-    <!-- @expectOutput failure1 -->
+    <<ReadmeTester\ExpectOutput('failure1')>>
     ```php
     ```
-    <!-- @expectOutput failure2 -->
+    <<ReadmeTester\ExpectOutput('failure2')>>
     ```php
     ```
     """

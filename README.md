@@ -19,7 +19,7 @@ Table of contents
 -----------------
   * [Installation](#installation)
   * [Writing examples](#writing-examples)
-    * [Annotations](#annotations)
+    * [Attributes](#attributes)
     * [Naming examples](#naming-examples)
     * [Ignoring examples](#ignoring-examples)
     * [Expectations](#expectations)
@@ -33,7 +33,7 @@ Installation
 Install using composer
 
 ```shell
-composer require --dev hanneskod/readme-tester:^1.0@beta
+composer require --dev hanneskod/readme-tester
 ```
 
 Writing examples
@@ -46,107 +46,82 @@ identifier.
     // This code is validated
     ```
 
-### Annotations
+### Attributes
 
-To specify how examples should be tested readme-tester uses annotations hidden
-inside HTML comments. In this way testing related instructions are hidden when
-rendered on github or similar.
+To specify how examples should be tested readme-tester uses php8 attributes.
+Attributes may be hidden inside HTML comments, to make sure that instructions
+related to testing are not rendered on github or similar.
 
-A block of annotations can look like this
+A set of attributes may look like this
 
 ```
-<!-- @example "an example" -->
-<!-- @expectOutput /foobar/ -->
+<<ReadmeTester\Example('name')>>
+<<ReadmeTester\ExpectOutput('/foobar/')>>
 ```
 
 Or like this
 
 ```
 <!--
-    @example "an example"
-    @expectOutput /foobar/
+<<ReadmeTester\Example('name')>>
+<<ReadmeTester\ExpectOutput('/foobar/')>>
 -->
 ```
 
-Readme-tester will only recongnize annotations directly before the code block
-example, meaning that there must be no content between the annotations and the
-code.
-
-#### Annotation arguments
-
-Annotation tags are prefixed with `@` and are followed by a list of arguments
-separated by spaces. If an argument includes spaces it can be enclosed in
-double (`"`) or single quotes (`'`).
-
 ### Naming examples
 
-Examples may be named using the `@example` annotation. Naming is optional but
-gives better error reporting and simplifies referencing.
+Examples may be named using the `Example` attribute, where naming is optional,
+or by using the `Name` attribute. Naming gives better error reporting and
+simplifies referencing.
 
 ### Ignoring examples
 
-Examples may be ignored using the `@ignore` annotation. Ignored examples are
+Examples may be ignored using the `Ignore` attribute. Ignored examples are
 not validated in any way.
 
-<!-- @ignore -->
+<<ReadmeTester\Ignore>>
 ```php
-// Example is preceded by <!-- @ignore -->
 // This code is skipped, the syntax error is ignored.
 echo foobar";
 ```
 
 ### Expectations
 
-Add assertions to code blocks using one of the expectation annotations.
+Add assertions to code blocks using one of the expectation attributes.
 Multiple expectations can be specified for an example.
 
 #### Expecting output
 
 Assert the output of an example using a regular expression.
 
-<!-- @expectOutput "/regular expression/" -->
+<<ReadmeTester\ExpectOutput('/regular expression/')>>
 ```php
-// Example is preceded by <!-- @expectOutput "/regular expression/" -->
 echo "This output is matched using a regular expression";
 ```
 
-If the annotation argument of `@expectOutput` is not a valid regular expression
-it will be transformed into one, `abc` is transformed into `/^abc$/`.
+If the argument is not a valid regular expression it will be transformed into
+one, `abc` is transformed into `/^abc$/`.
 
-<!-- @expectOutput abc -->
+<<ReadmeTester\ExpectOutput('abc')>>
 ```php
-// Example is preceded by <!-- @expectOutput abc -->
 echo "abc";
 ```
 
 ### Linking examples together
 
-An example may include a previous example using the `@include` annotation, this
+An example may include a previous example using the `Import` attribute, this
 will copy the code of the includeed example into the current.
 
-<!-- @example parent -->
+<<ReadmeTester\Example('parent')>>
 ```php
-/*
-Example is preceded by
-<!-- @example parent -->
-*/
 $data = 'parent-data';
 ```
 
 Now we can include the named example `parent`.
 
-<!--
-    @include parent
-    @expectOutput parent-data
--->
+<<ReadmeTester\Import('parent')>>
+<<ReadmeTester\ExpectOutput('parent-data')>>
 ```php
-/*
-Example is preceded by
-<!--
-    @include parent
-    @expectOutput parent-data
--->
-*/
 echo $data;
 ```
 
@@ -158,7 +133,7 @@ defined inside a html comment. Consider the following example:
 
 
     <!--
-    @example my-hidden-example
+    <<ReadmeTester\Example('my-hidden-example')>>
 
     ```php
     // Som setup...
@@ -166,50 +141,24 @@ defined inside a html comment. Consider the following example:
     ```
     -->
 
-<!--
-@example my-hidden-example
-
+<<ReadmeTester\Import('my-hidden-example')>>
+<<ReadmeTester\ExpectOutput('foobar')>>
 ```php
-// Som setup...
-$var = 'foobar';
-```
--->
-
-<!--
-    @include my-hidden-example
-    @expectOutput "foobar"
--->
-```php
-/*
-Example is preceded by
-<!--
-    @include my-hidden-example
-    @expectOutput "foobar"
--->
-*/
 echo $var;
 ```
 
 ### Creating a default example context
 
 If you want every example in a readme to include a base context you can use
-the `exampleContext` annotation as in the following example.
+the `ExampleContext` attribute as in the following example.
 
-<!-- @exampleContext -->
+<<ReadmeTester\ExampleContext>>
 ```php
-/*
-Example is preceded by
-<!-- @exampleContext -->
-*/
 $context = 'setup...';
 ```
 
-<!-- @expectOutput /setup/ -->
+<<ReadmeTester\ExpectOutput('/setup/')>>
 ```php
-/*
-Example is preceded by
-<!-- @expectOutput /setup/ -->
-*/
 echo $context;
 ```
 

@@ -6,7 +6,7 @@ Feature: Example expectations
   Scenario: I expect output using a regular expresion
     Given a markdown file:
     """
-    <!-- @expectOutput /regular/ -->
+    <<ReadmeTester\ExpectOutput('/regular/')>>
     ```php
     echo 'This output is matched using a regular expression';
     ```
@@ -19,7 +19,7 @@ Feature: Example expectations
  Scenario: I fail expecting output using a regular expresion
     Given a markdown file:
     """
-    <!-- @expectOutput /regular/ -->
+    <<ReadmeTester\ExpectOutput('/regular/')>>
     ```php
     echo 'The regepxp does not match this..';
     ```
@@ -32,7 +32,7 @@ Feature: Example expectations
  Scenario: I expect output using a string
     Given a markdown file:
     """
-    <!-- @expectOutput abc -->
+    <<ReadmeTester\ExpectOutput('abc')>>
     ```php
     echo 'abc';
     ```
@@ -45,7 +45,7 @@ Feature: Example expectations
  Scenario: I fail expecting output using a string
     Given a markdown file:
     """
-    <!-- @expectOutput abc -->
+    <<ReadmeTester\ExpectOutput('abc')>>
     ```php
     echo 'abcd';
     ```
@@ -55,10 +55,10 @@ Feature: Example expectations
     And 1 failures are found
     And the exit code is 1
 
- Scenario: I expect output with no argument
+ Scenario: I ignore output
     Given a markdown file:
     """
-    <!-- @expectOutput -->
+    <<ReadmeTester\IgnoreOutput>>
     ```php
     echo 'abc';
     ```
@@ -71,7 +71,7 @@ Feature: Example expectations
   Scenario: I expect an error
     Given a markdown file:
     """
-    <!-- @expectError /this_function_does_not_exist/ -->
+    <<ReadmeTester\ExpectError('/this_function_does_not_exist/')>>
     ```php
     this_function_does_not_exist();
     ```
@@ -81,10 +81,10 @@ Feature: Example expectations
     And 0 failures are found
     And the exit code is 0
 
-  Scenario: I expect an error with no argument
+  Scenario: I ignore an error
     Given a markdown file:
     """
-    <!-- @expectError -->
+    <<ReadmeTester\IgnoreError>>
     ```php
     this_function_does_not_exist();
     ```
@@ -97,7 +97,7 @@ Feature: Example expectations
  Scenario: I expect an exception
     Given a markdown file:
     """
-    <!-- @expectError /RuntimeException/ -->
+    <<ReadmeTester\ExpectError('/RuntimeException/')>>
     ```php
     throw new RuntimeException;
     ```
@@ -110,7 +110,7 @@ Feature: Example expectations
  Scenario: I fail expecting an error
     Given a markdown file:
     """
-    <!-- @expectError -->
+    <<ReadmeTester\ExpectError('')>>
     ```php
     // No exception is thrown here...
     ```
