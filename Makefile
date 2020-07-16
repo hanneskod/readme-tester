@@ -14,11 +14,15 @@ PHPEG_CMD=tools/phpeg
 
 TARGET=readme-tester.phar
 
+CONTAINER=src/DependencyInjection/ProjectServiceContainer.php
+
 PARSER_ROOT=src/Markdown/Parser
 PARSER=$(PARSER_ROOT).php
 
+SRC_FILES:=$(shell find src/ -type f -name '*.php' ! -path $(CONTAINER))
+
 .PHONY: all
-all: test analyze build
+all: test analyze build check
 
 .PHONY: clean
 clean:
@@ -30,7 +34,7 @@ clean:
 .PHONY: build
 build: $(TARGET)
 
-$(TARGET): vendor/installed $(PARSER) $(BOX_CMD)
+$(TARGET): vendor/installed $(PARSER) $(BOX_CMD) $(SRC_FILES)
 	$(BOX_CMD) compile
 
 $(PARSER): $(PARSER_ROOT).peg $(PHPEG_CMD)
@@ -49,7 +53,11 @@ behat: vendor/installed $(PARSER) $(BEHAT_CMD)
 
 .PHONY: docs
 docs: vendor/installed $(PARSER) $(README_TESTER_CMD)
-	$(README_TESTER_CMD) README.md docs
+	$(README_TESTER_CMD) README.md docs --runner process
+	$(README_TESTER_CMD) README.md docs --runner eval --ignore docs/runners.md
+
+check: $(TARGET)
+	./$(TARGET) README.md docs
 
 .PHONY: analyze
 analyze: phpstan phpcs

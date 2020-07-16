@@ -1,5 +1,6 @@
 <!--
 <<ReadmeTester\NamespaceName("global")>>
+<<ReadmeTester\IgnoreUnmarkedExamples>>
 -->
 
 # Global attributes
@@ -20,6 +21,7 @@ This is the logical equivalent to applying the NamespaceName atttribute to every
 eample in this file. The following example will automatically be in the _global_
 namespace.
 
+<!-- <<ReadmeTester\Example>> -->
 ```php
 // In the global namespace
 ```
@@ -37,5 +39,10 @@ echo "global";
 <<ReadmeTester\Import("global:to-import")>>
 <<ReadmeTester\ExpectOutput("global")>>
 ```php
+```
+
+```php
+this is invalid and should be ignored as the IgnoreUnmarkedExamples attribute
+is used globally..
 ```
 -->

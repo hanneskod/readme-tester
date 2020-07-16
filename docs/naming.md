@@ -22,7 +22,7 @@ a simple incremented value.
 <<ReadmeTester\Ignore>>
 -->
 ```php
-echo "This example can be referenced using naming.md:exampel1";
+echo "This example can be referenced using naming.md:example1";
 ```
 
 > NOTE that the file path used as default namespace depends on the current
@@ -64,8 +64,8 @@ This hidden block is intended to validate that blocks are really named as descri
 ```
 
 <<ReadmeTester\Example("Test default name")>>
-<<ReadmeTester\Import("exampel1")>>
-<<ReadmeTester\ExpectOutput("/naming.md:exampel1/")>>
+<<ReadmeTester\Import("example1")>>
+<<ReadmeTester\ExpectOutput("/naming.md:example1/")>>
 ```php
 ```
 

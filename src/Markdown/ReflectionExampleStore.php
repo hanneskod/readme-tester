@@ -7,6 +7,7 @@ namespace hanneskod\readmetester\Markdown;
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Utils\Loader;
 use hanneskod\readmetester\Utils\NameObj;
 
 /**
@@ -29,7 +30,7 @@ abstract class ReflectionExampleStore implements ExampleStoreInterface
                 // * new fully\qualified\attribute\classname
                 foreach (explode(PHP_EOL, (string)$method->getDocComment()) as $line) {
                     if (preg_match('/^\s*\*\s*(new.+)/', $line, $matches)) {
-                        $attributes[] = eval("return {$matches[1]};");
+                        $attributes[] = Loader::load("return {$matches[1]};");
                     }
                 }
 
