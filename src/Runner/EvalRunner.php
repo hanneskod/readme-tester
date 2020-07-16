@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Attributes\Isolate;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\Loader;
 
 final class EvalRunner implements RunnerInterface
@@ -19,13 +20,19 @@ final class EvalRunner implements RunnerInterface
         }
     }
 
-    public function run(CodeBlock $codeBlock): OutcomeInterface
+    public function run(ExampleObj $example): OutcomeInterface
     {
+        foreach ($example->getAttributes() as $attribute) {
+            if ($attribute instanceof Isolate) {
+                return new SkippedOutcome('Example skipped as it requires isolation');
+            }
+        }
+
         ob_start();
 
         try {
             $lastErrorBefore = error_get_last();
-            Loader::load($codeBlock->getCode());
+            Loader::load($example->getCodeBlock()->getCode());
             $lastErrorAfter = error_get_last();
             if ($lastErrorBefore != $lastErrorAfter) {
                 ob_end_clean();

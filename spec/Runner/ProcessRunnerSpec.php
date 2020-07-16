@@ -21,7 +21,7 @@ class ProcessRunnerSpec extends ObjectBehavior
 
     function it_runs_examples_in_isolation()
     {
-        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::class);
-        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::class);
+        $this->run($this->an_example('class Foo {}'))->shouldHaveType(VoidOutcome::class);
+        $this->run($this->an_example('class Foo {}'))->shouldHaveType(VoidOutcome::class);
     }
 }

@@ -8,7 +8,9 @@ use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\ErrorOutcome;
 use hanneskod\readmetester\Runner\OutputOutcome;
 use hanneskod\readmetester\Runner\VoidOutcome;
+use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Utils\NameObj;
 
 trait RunnerSpecTrait
 {
@@ -17,34 +19,42 @@ trait RunnerSpecTrait
         $this->shouldHaveType(RunnerInterface::class);
     }
 
+    function an_example(string $code): ExampleObj
+    {
+        return new ExampleObj(
+            new NameObj('', ''),
+            new CodeBlock($code)
+        );
+    }
+
     function it_returns_void_on_no_outcome()
     {
-        $this->run(new CodeBlock('$a = 1 + 2;'))->shouldHaveType(VoidOutcome::class);
+        $this->run($this->an_example('$a = 1 + 2;'))->shouldHaveType(VoidOutcome::class);
     }
 
     function it_returns_output()
     {
-        $this->run(new CodeBlock('echo "foo";'))->shouldBeLike(new OutputOutcome('foo'));
+        $this->run($this->an_example('echo "foo";'))->shouldBeLike(new OutputOutcome('foo'));
     }
 
     function it_returns_error_on_exception()
     {
-        $this->run(new CodeBlock('throw new Exception;'))->shouldHaveType(ErrorOutcome::class);
+        $this->run($this->an_example('throw new Exception;'))->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_returns_error_on_trigger_error()
     {
-        $this->run(new CodeBlock('trigger_error("ERROR");'))->shouldHaveType(ErrorOutcome::class);
+        $this->run($this->an_example('trigger_error("ERROR");'))->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_returns_error_on_fatal_error()
     {
-        $this->run(new CodeBlock('this_function_does_not_exist();'))->shouldHaveType(ErrorOutcome::class);
+        $this->run($this->an_example('this_function_does_not_exist();'))->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_can_be_namespaced()
     {
-        $this->run(new CodeBlock('namespace test;'))->shouldHaveType(VoidOutcome::class);
+        $this->run($this->an_example('namespace test;'))->shouldHaveType(VoidOutcome::class);
     }
 
     function it_throws_on_invalid_bootstrap()
@@ -56,7 +66,7 @@ trait RunnerSpecTrait
     function it_can_be_bootstraped()
     {
         $this->beConstructedWith(__DIR__ . '/Bootstrap.php');
-        $this->run(new CodeBlock('new \spec\hanneskod\readmetester\Runner\Bootstrap;'))
+        $this->run($this->an_example('new \spec\hanneskod\readmetester\Runner\Bootstrap;'))
             ->shouldHaveType(VoidOutcome::class);
     }
 }

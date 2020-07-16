@@ -1,4 +1,8 @@
-# Runners
+<!--
+<<ReadmeTester\Isolate>>
+-->
+
+# Isolation
 
 Readmetester can use different runners to execute examples. The default runner
 executes all examples in isolation. This makes for a solid testing experience,
@@ -32,3 +36,5 @@ function parent_function() {}
 <<ReadmeTester\Import('parent')>>
 ```php
 ```
+
+Use the `Isolate` attribute to require that an example be executed in isolation.

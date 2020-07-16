@@ -23,6 +23,11 @@ interface OutcomeInterface
     const TYPE_VOID = 'TYPE_VOID';
 
     /**
+     * Skipped type identifier
+     */
+    const TYPE_SKIPPED = 'TYPE_SKIPPED';
+
+    /**
      * Get a token describing the outcome type
      *
      * See the list of type constants in OutcomeInterface

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Example\ExampleObj;
 use Symfony\Component\Process\PhpProcess;
 
 /**
@@ -23,11 +23,11 @@ final class ProcessRunner implements RunnerInterface
         $this->bootstrapCode = $bootstrap ? "require '$bootstrap';" : '';
     }
 
-    public function run(CodeBlock $codeBlock): OutcomeInterface
+    public function run(ExampleObj $example): OutcomeInterface
     {
         $filename = (string)tempnam(sys_get_temp_dir(), 'doctestphp');
 
-        file_put_contents($filename, "<?php {$codeBlock->getCode()}");
+        file_put_contents($filename, "<?php {$example->getCodeBlock()->getCode()}");
 
         $process = new PhpProcess("<?php {$this->bootstrapCode} require '$filename';");
         $process->run();

@@ -2,12 +2,12 @@
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Example\ExampleObj;
 
 /**
  * Defines object that are able to execute example code
  */
 interface RunnerInterface
 {
-    public function run(CodeBlock $codeBlock): OutcomeInterface;
+    public function run(ExampleObj $example): OutcomeInterface;
 }

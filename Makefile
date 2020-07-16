@@ -54,7 +54,7 @@ behat: vendor/installed $(PARSER) $(BEHAT_CMD)
 .PHONY: docs
 docs: vendor/installed $(PARSER) $(README_TESTER_CMD)
 	$(README_TESTER_CMD) README.md docs --runner process
-	$(README_TESTER_CMD) README.md docs --runner eval --ignore docs/runners.md
+	$(README_TESTER_CMD) README.md docs --runner eval
 
 check: $(TARGET)
 	./$(TARGET) README.md docs

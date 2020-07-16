@@ -7,6 +7,7 @@ namespace hanneskod\readmetester;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Runner\RunnerInterface;
+use hanneskod\readmetester\Runner\SkippedOutcome;
 
 final class ExampleTester
 {
@@ -41,11 +42,20 @@ final class ExampleTester
                 continue;
             }
 
+            $outcome = $this->runner->run($example);
+
+            if ($outcome instanceof SkippedOutcome) {
+                foreach ($this->listeners as $listener) {
+                    // TODO this is not ignored but skipped..
+                    // should use SkippedOutcome::getDescription() to echo why to the user...
+                    $listener->onIgnoredExample($example);
+                }
+                continue;
+            }
+
             foreach ($this->listeners as $listener) {
                 $listener->onExample($example);
             }
-
-            $outcome = $this->runner->run($example->getCodeBlock());
 
             foreach ($this->evaluator->evaluate($example->getExpectations(), $outcome) as $status) {
                 foreach ($this->listeners as $listener) {

@@ -44,6 +44,10 @@ global attribute.
 
 Import the contents (prepend) of a named example into the current one.
 
+## Isolate
+
+Require that the example be executed in isolation.
+
 ## Name
 
 Give current example a short name.
