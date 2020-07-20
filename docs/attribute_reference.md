@@ -1,10 +1,5 @@
 # Attribute reference
 
-## Bootstrap
-
-Load the example into the current environment. Its symbols will be globally
-avaliable. Implies ignore.
-
 ## Example
 
 Mark example as a readmetester example. Optionally give it a name.
