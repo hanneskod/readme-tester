@@ -3,6 +3,24 @@
 Add assertions to code blocks using one of the expectation attributes.
 Multiple expectations can be specified for an example.
 
+## Asserting state
+
+Use the `Assert` attbitue to add a custom assertion to the end of the example
+(as if written with phps assert method).
+
+<<ReadmeTester\Assert('$shouldBeTrue')>>
+```php
+$shouldBeTrue = true;
+```
+
+Failed assertions triggers an error
+
+<<ReadmeTester\Assert('$shouldBeTrue')>>
+<<ReadmeTester\IgnoreError>>
+```php
+$shouldBeTrue = false;
+```
+
 ## Expecting output
 
 Assert the output of an example using a regular expression.

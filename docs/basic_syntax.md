@@ -75,3 +75,14 @@ defined inside a html comment. Consider the following example:
 ```php
 echo $hiddenVar;
 ```
+
+## PHP mode
+
+By default examples start in php mode, meaning that no `<?php` opening tag is
+needed. Use `StartInHtmlMode` to alter this behaviour.
+
+    <<ReadmeTester\StartInHtmlMode>>
+    <<ReadmeTester\ExpectOutput("/html/")>>
+    ```php
+    <?php echo "this example started in html mode";
+    ```

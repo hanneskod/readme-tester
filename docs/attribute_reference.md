@@ -1,5 +1,13 @@
 # Attribute reference
 
+## AppendCode
+
+Append code to the current example.
+
+## Assert
+
+Add a custom assertion to the end of the example.
+
 ## Example
 
 Mark example as a readmetester example. Optionally give it a name.
@@ -50,3 +58,11 @@ Give current example a short name.
 ## NamespaceName
 
 Give current a namespace name. Namespace defaults to filename.
+
+## PrependCode
+
+Prepend code to the current example.
+
+## StartInHtmlMode
+
+Start example in html mode instead of the default php mode.
