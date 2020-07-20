@@ -48,7 +48,7 @@ throw new RuntimeException;
 <<ReadmeTester\Name('ignoring-an-error')>>
 <<ReadmeTester\IgnoreError>>
 ```php
-trigger_error("");
+trigger_error("this-should-be-ignored");
 ```
 
 <<ReadmeTester\Name('expecting-a-syntax-error')>>

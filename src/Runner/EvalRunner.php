@@ -28,24 +28,35 @@ final class EvalRunner implements RunnerInterface
             }
         }
 
+        $errorOutput = '';
+
+        set_error_handler(
+            function (int $errno, string $errstr) use (&$errorOutput) {
+                $errorOutput = $errstr;
+                return true;
+            },
+            E_ALL
+        );
+
         ob_start();
 
         try {
-            $lastErrorBefore = error_get_last();
             Loader::load($example->getCodeBlock()->getCode());
-            $lastErrorAfter = error_get_last();
-            if ($lastErrorBefore != $lastErrorAfter) {
-                ob_end_clean();
-                $lastErrorAfterType = $lastErrorAfter['type'] ?? '';
-                $lastErrorAfterMessage = $lastErrorAfter['message'] ?? '';
-                return new ErrorOutcome("$lastErrorAfterType: $lastErrorAfterMessage");
-            }
         } catch (\Throwable $e) {
+            restore_error_handler();
             ob_end_clean();
             return new ErrorOutcome((string)$e);
         }
 
-        if ($output = ob_get_clean()) {
+        restore_error_handler();
+
+        $output = ob_get_clean();
+
+        if ($errorOutput) {
+            return new ErrorOutcome($errorOutput);
+        }
+
+        if ($output) {
             return new OutputOutcome($output);
         }
 

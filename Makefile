@@ -57,7 +57,7 @@ docs: vendor/installed $(PARSER) $(README_TESTER_CMD)
 	$(README_TESTER_CMD) README.md docs --runner eval
 
 check: $(TARGET)
-	./$(TARGET) README.md docs
+	./$(TARGET) README.md docs --ignore docs/custom_attributes.md
 
 .PHONY: analyze
 analyze: phpstan phpcs
