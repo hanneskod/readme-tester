@@ -51,6 +51,12 @@ class TestCommand extends Command
                 ['vendor']
             )
             ->addOption(
+                'stdin',
+                null,
+                InputOption::VALUE_NONE,
+                'Read from stdin instead of scaning the filesystem'
+            )
+            ->addOption(
                 'format',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -87,6 +93,8 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // TODO grab all objects from DIC
+
         $formatter = $input->getOption('format') == 'json'
             ? new JsonFormatter($output)
             : new DefaultFormatter($output);
@@ -125,47 +133,46 @@ class TestCommand extends Command
 
         $tester->registerListener($exitStatus);
 
-        $finder = (new Finder)->files()->in('.')->ignoreUnreadableDirs();
-
-        // Set paths to scan
-        $finder->path(
-            array_map(
-                fn($path) => '/^' . preg_quote($path, '/') . '/',
-                (array)$input->getArgument('path')
-            )
-        );
-
-        // Set file extensions (case insensitive)
-        $finder->name(
-            array_map(
-                fn($extension) => '/\\.' . preg_quote($extension, '/') . '$/i',
-                (array)$input->getOption('file-extension')
-            )
-        );
-
-        // Set paths to ignore
-        $finder->notPath(
-            array_map(
-                fn($path) => '/^' . preg_quote($path, '/') . '/',
-                (array)$input->getOption('ignore')
-            )
-        );
-
         $inputs = [];
 
-        foreach ($finder as $file) {
-            $formatter->onFile($file->getRelativePathname());
+        if ($input->getOption('stdin')) {
+            $inputs[] = new \hanneskod\readmetester\Compiler\StdinInput;
+        } else {
+            $finder = (new Finder)->files()->in('.')->ignoreUnreadableDirs();
 
-            // TODO FileInput ska ta en symfony istället...
-            $inputs[] = new \hanneskod\readmetester\Compiler\FileInput($file->getRelativePathname());
+            // Set paths to scan
+            $finder->path(
+                array_map(
+                    fn($path) => '/^' . preg_quote($path, '/') . '/',
+                    (array)$input->getArgument('path')
+                )
+            );
+
+            // Set file extensions (case insensitive)
+            $finder->name(
+                array_map(
+                    fn($extension) => '/\\.' . preg_quote($extension, '/') . '$/i',
+                    (array)$input->getOption('file-extension')
+                )
+            );
+
+            // Set paths to ignore
+            $finder->notPath(
+                array_map(
+                    fn($path) => '/^' . preg_quote($path, '/') . '/',
+                    (array)$input->getOption('ignore')
+                )
+            );
+
+            foreach ($finder as $file) {
+                $formatter->onFile($file->getRelativePathname());
+                $inputs[] = new \hanneskod\readmetester\Compiler\FileInput($file);
+            }
         }
 
         $compiler = (new \hanneskod\readmetester\Markdown\CompilerFactory)->createCompiler();
 
-        // TODO ska inte compile ta arrayen istället?? ...är ju ganka onödigt..
-        $tester->test(
-            $compiler->compile(...$inputs)
-        );
+        $tester->test($compiler->compile($inputs));
 
         $formatter->onInvokationEnd();
 

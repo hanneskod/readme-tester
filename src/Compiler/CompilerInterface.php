@@ -6,5 +6,8 @@ use hanneskod\readmetester\Example\ExampleStoreInterface;
 
 interface CompilerInterface
 {
-    public function compile(InputInterface ...$inputs): ExampleStoreInterface;
+    /**
+     * @param array<InputInterface> $inputs
+     */
+    public function compile(array $inputs): ExampleStoreInterface;
 }

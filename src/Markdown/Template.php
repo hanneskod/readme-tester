@@ -52,9 +52,6 @@ FOOTER;
         foreach ($this->definitions as $key => $definition) {
             // TODO Attributes! Should be <<Attr>> instead of docblock
 
-            // TODO preg_replace values ska vara konstanter
-            // TODO sätt name till example$key som standard. så att alla exempel har i alla fall ett namn...
-
             $attributesStr = array_reduce(
                 array_map(
                     fn($attr) => preg_replace('/^ReadmeTester\\\\/i', '\hanneskod\readmetester\Attributes\\', $attr),

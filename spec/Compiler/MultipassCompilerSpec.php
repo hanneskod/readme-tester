@@ -32,8 +32,8 @@ class MultipassCompilerSpec extends ObjectBehavior
 
     function it_compiles($decoratedCompiler, $compilerPass, InputInterface $input, ExampleStoreInterface $store)
     {
-        $decoratedCompiler->compile($input, $input)->willReturn($store)->shouldBeCalled();
+        $decoratedCompiler->compile([$input, $input])->willReturn($store)->shouldBeCalled();
         $compilerPass->process($store)->willReturn($store)->shouldBeCalled();
-        $this->compile($input, $input)->shouldReturn($store);
+        $this->compile([$input, $input])->shouldReturn($store);
     }
 }

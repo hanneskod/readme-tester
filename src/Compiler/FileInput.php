@@ -4,26 +4,24 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Compiler;
 
+use Symfony\Component\Finder\SplFileInfo;
+
 final class FileInput implements InputInterface
 {
-    private string $filename;
+    private SplFileInfo $fileInfo;
 
-    public function __construct(string $filename)
+    public function __construct(SplFileInfo $fileInfo)
     {
-        $this->filename = $filename;
+        $this->fileInfo = $fileInfo;
     }
 
     public function getContents(): string
     {
-        if (!is_file($this->filename) || !is_readable($this->filename)) {
-            throw new \RuntimeException("Not able to read $this->filename");
-        }
-
-        return (string)file_get_contents($this->filename);
+        return $this->fileInfo->getContents();
     }
 
     public function getDefaultNamespace(): string
     {
-        return $this->filename;
+        return $this->fileInfo->getRelativePathname();
     }
 }

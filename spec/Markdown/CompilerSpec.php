@@ -60,6 +60,6 @@ class CompilerSpec extends ObjectBehavior
         $expected->addExampleStore($storeA->getWrappedObject());
         $expected->addExampleStore($storeB->getWrappedObject());
 
-        $this->compile($inputA, $inputB)->shouldBeLike($expected);
+        $this->compile([$inputA, $inputB])->shouldBeLike($expected);
     }
 }

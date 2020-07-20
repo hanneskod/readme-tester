@@ -24,9 +24,9 @@ final class MultipassCompiler implements CompilerInterface
         $this->compilerPasses = $compilerPasses;
     }
 
-    public function compile(InputInterface ...$inputs): ExampleStoreInterface
+    public function compile(array $inputs): ExampleStoreInterface
     {
-        $store = $this->decoratedCompiler->compile(...$inputs);
+        $store = $this->decoratedCompiler->compile($inputs);
 
         foreach ($this->compilerPasses as $pass) {
             $store = $pass->process($store);
