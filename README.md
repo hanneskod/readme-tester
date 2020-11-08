@@ -35,3 +35,7 @@ For more detailed information use
 ```shell
 vendor/bin/readme-tester -h
 ```
+
+## How to write tests
+
+[Read the documentation](/docs)

@@ -8,15 +8,19 @@ Multiple expectations can be specified for an example.
 Use the `Assert` attbitue to add a custom assertion to the end of the example
 (as if written with phps assert method).
 
+```
 #[ReadmeTester\Assert('$shouldBeTrue')]
+```
 ```php
 $shouldBeTrue = true;
 ```
 
 Failed assertions triggers an error
 
+```
 #[ReadmeTester\Assert('$shouldBeTrue')]
 #[ReadmeTester\IgnoreError]
+```
 ```php
 $shouldBeTrue = false;
 ```
@@ -25,8 +29,10 @@ $shouldBeTrue = false;
 
 Assert the output of an example using a regular expression.
 
+```
 #[ReadmeTester\Name('expecting-output-using-a-regular-expression')]
 #[ReadmeTester\ExpectOutput('/regular expression/')]
+```
 ```php
 echo "This output is matched using a regular expression";
 ```
@@ -34,8 +40,10 @@ echo "This output is matched using a regular expression";
 If the argument is not a valid regular expression it will be transformed into
 one, `abc` is transformed into `/^abc$/`.
 
+```
 #[ReadmeTester\Name('expecting-output-using-a-string')]
 #[ReadmeTester\ExpectOutput('abc')]
+```
 ```php
 echo "abc";
 ```
@@ -44,33 +52,43 @@ echo "abc";
 
 The `IgnoreOutput` attribute acts as shorthand to expect any output.
 
+```
 #[ReadmeTester\IgnoreOutput]
+```
 ```php
 echo 'abc';
 ```
 
 ## Expecting errors
 
+```
 #[ReadmeTester\Name('expecting-an-error')]
 #[ReadmeTester\ExpectError('/this_function_does_not_exist/')]
+```
 ```php
 this_function_does_not_exist();
 ```
 
+```
 #[ReadmeTester\Name('expecting-an-exception')]
 #[ReadmeTester\ExpectError('/RuntimeException/')]
+```
 ```php
 throw new RuntimeException;
 ```
 
+```
 #[ReadmeTester\Name('ignoring-an-error')]
 #[ReadmeTester\IgnoreError]
+```
 ```php
 trigger_error("this-should-be-ignored");
 ```
 
+```
 #[ReadmeTester\Name('expecting-a-syntax-error')]
 #[ReadmeTester\ExpectError('/syntax/')]
+```
 ```php
 echo "lkj;
 ```

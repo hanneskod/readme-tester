@@ -9,7 +9,9 @@ examples. Ignored examples are not validated in any way.
 By using the `Ignore` attribute. Since the following example is ignored the
 obious error does not matter.
 
+```
 #[ReadmeTester\Ignore]
+```
 ```php
 this is not a valid php statement
 ```
@@ -22,4 +24,4 @@ the `Example` attribute.
 
 As it does not really make sense to apply `IgnoreUnmarkedExamples` to individual
 examples (we use the `Ignore` attribute for this), `IgnoreUnmarkedExamples` is
-best used as a _global_ attribute.
+best used as a [global](global_attributes.md) attribute.
