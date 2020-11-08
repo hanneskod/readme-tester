@@ -8,7 +8,7 @@ use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\CodeBlock;
 
-#<<\PhpAttribute>>
+#[\Attribute]
 class PrependCode implements TransformationInterface
 {
     use AttributeFactoryTrait;

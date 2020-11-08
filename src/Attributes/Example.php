@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Attributes;
 
 use hanneskod\readmetester\Example\ExampleObj;
 
-#<<\PhpAttribute>>
+#[\Attribute]
 class Example extends Name
 {
     public function __construct(string $name = '')

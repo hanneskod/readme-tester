@@ -17,7 +17,7 @@ Feature: Bootstrap argument
     """
     And a markdown file:
     """
-    <<ReadmeTester\ExpectOutput('foo')>>
+    #[ReadmeTester\ExpectOutput('foo')]
     ```php
     (new Foo)->out();
     ```

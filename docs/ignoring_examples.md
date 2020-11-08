@@ -9,7 +9,7 @@ examples. Ignored examples are not validated in any way.
 By using the `Ignore` attribute. Since the following example is ignored the
 obious error does not matter.
 
-<<ReadmeTester\Ignore>>
+#[ReadmeTester\Ignore]
 ```php
 this is not a valid php statement
 ```

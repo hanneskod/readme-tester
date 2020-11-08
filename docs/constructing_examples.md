@@ -5,14 +5,14 @@
 An example may import the contents of another example using the `Import`
 attribute.
 
-<<ReadmeTester\Example('parent')>>
+#[ReadmeTester\Example('parent')]
 ```php
 $data = 'parent-data';
 ```
 
-<<ReadmeTester\Example('child')>>
-<<ReadmeTester\Import('parent')>>
-<<ReadmeTester\ExpectOutput('parent-data')>>
+#[ReadmeTester\Example('child')]
+#[ReadmeTester\Import('parent')]
+#[ReadmeTester\ExpectOutput('parent-data')]
 ```php
 echo $data;
 ```
@@ -25,10 +25,10 @@ aha,
 Det här borde väll implicit betyda att parent också importeras!!
 
 Tillfällig ignore..
-<<ReadmeTester\Ignore>>
+#[ReadmeTester\Ignore]
 
-<<ReadmeTester\Import('child')>>
-<<ReadmeTester\ExpectOutput('parent-data')>>
+#[ReadmeTester\Import('child')]
+#[ReadmeTester\ExpectOutput('parent-data')]
 ```php
 ```
 
@@ -36,17 +36,17 @@ Tillfällig ignore..
 
 Works as expected.
 
-<<ReadmeTester\Example('A')>>
+#[ReadmeTester\Example('A')]
 ```php
 $A = 'A';
 ```
-<<ReadmeTester\Example('B')>>
+#[ReadmeTester\Example('B')]
 ```php
 $B = 'B';
 ```
-<<ReadmeTester\Import('A')>>
-<<ReadmeTester\Import('B')>>
-<<ReadmeTester\ExpectOutput('/AB/')>>
+#[ReadmeTester\Import('A')]
+#[ReadmeTester\Import('B')]
+#[ReadmeTester\ExpectOutput('/AB/')]
 ```php
 echo $A, $B;
 ```
@@ -56,9 +56,9 @@ echo $A, $B;
 You may also prepend or append code to the example using the `PrependCode` and
 `AppendCode` attributes.
 
-<<ReadmeTester\PrependCode("echo 'foo ';")>>
-<<ReadmeTester\AppendCode("echo ' baz';")>>
-<<ReadmeTester\ExpectOutput('foo bar baz')>>
+#[ReadmeTester\PrependCode("echo 'foo ';")]
+#[ReadmeTester\AppendCode("echo ' baz';")]
+#[ReadmeTester\ExpectOutput('foo bar baz')]
 ```php
 echo "bar";
 ```

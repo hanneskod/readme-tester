@@ -7,7 +7,7 @@ namespace hanneskod\readmetester\Attributes;
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleObj;
 
-#<<\PhpAttribute>>
+#[\Attribute]
 class IgnoreUnmarkedExamples implements TransformationInterface
 {
     use AttributeFactoryTrait;

@@ -9,7 +9,7 @@ use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\OutputExpectation;
 use hanneskod\readmetester\Utils\Regexp;
 
-#<<\PhpAttribute>>
+#[\Attribute]
 class ExpectOutput implements TransformationInterface
 {
     use AttributeFactoryTrait;

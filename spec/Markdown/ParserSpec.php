@@ -106,7 +106,7 @@ README
     {
         $this->parse(<<<'README'
 <!--
-<<GlobalAttribute>>
+#[GlobalAttribute]
 -->
 README
         )->shouldBeLike(new Template(
@@ -118,7 +118,7 @@ README
     function it_finds_compact_global_attribute()
     {
         $this->parse(<<<'README'
-<!--<<GlobalAttribute>>-->
+<!--#[GlobalAttribute]-->
 README
         )->shouldBeLike(new Template(
             ['GlobalAttribute'],
@@ -130,8 +130,8 @@ README
     {
         $this->parse(<<<'README'
 <!--
-<<Foo>>
-<<Bar>>
+#[Foo]
+#[Bar]
 -->
 README
         )->shouldBeLike(new Template(
@@ -144,9 +144,9 @@ README
     {
         $this->parse(<<<'README'
 <!--
-<<
+#[
 GlobalAttribute("foo bar", Bar::class)
->>
+]
 -->
 README
         )->shouldBeLike(new Template(
@@ -161,11 +161,11 @@ README
 <!--
 Ignored
 
-<<Foo>>
+#[Foo]
 
 Ignored
 
-Ignored<<Bar>>Ignored
+Ignored#[Bar]Ignored
 
 Ignored
 -->
@@ -179,8 +179,8 @@ README
     function it_sees_only_the_first_block_as_global()
     {
         $this->parse(<<<'README'
-<!--<<Foo>>-->
-<!--<<Bar>>-->
+<!--#[Foo]-->
+<!--#[Bar]-->
 README
         )->shouldBeLike(new Template(
             ['Foo'],
@@ -192,7 +192,7 @@ README
     {
         $this->parse(<<<'README'
 .
-<!--<<Not-vied-as-global-as-it-is-not-first-content-in-file>>-->
+<!--#[Not-vied-as-global-as-it-is-not-first-content-in-file]-->
 README
         )->shouldBeLike(new Template(
             [],
@@ -203,7 +203,7 @@ README
     function it_finds_example_attribute()
     {
         $this->parse(<<<'README'
-<<Foo>>
+#[Foo]
 ```php
 ```
 README
@@ -218,7 +218,7 @@ README
         $this->parse(<<<'README'
 .
 <!--
-<<Foo>>
+#[Foo]
 -->
 ```php
 ```
@@ -232,8 +232,8 @@ README
     function it_finds_multiple_example_attributes()
     {
         $this->parse(<<<'README'
-<<Foo>>
-<<Bar>>
+#[Foo]
+#[Bar]
 ```php
 ```
 README
@@ -248,8 +248,8 @@ README
         $this->parse(<<<'README'
 .
 <!--
-<<Foo>>
-<<Bar>>
+#[Foo]
+#[Bar]
 -->
 ```php
 ```
@@ -264,11 +264,11 @@ README
     {
         $this->parse(<<<'README'
 Some content
-before<<Foo>>after
+before#[Foo]after
 More content
-<<Bar>>
+#[Bar]
 
-<<Baz>>
+#[Baz]
 
 ```php
 ```
@@ -283,11 +283,11 @@ README
     {
         $this->parse(<<<'README'
 Some content
-before<!--<<Foo>>-->after
+before<!--#[Foo]-->after
 More content
-<!--<<Bar>>-->
+<!--#[Bar]-->
 
-<!--<<Baz>>-->
+<!--#[Baz]-->
 
 ```php
 ```
@@ -303,7 +303,7 @@ README
         $this->parse(<<<'README'
 .
 <!---
-<<Foo>>
+#[Foo]
 --->
 ```php
 ```
@@ -441,8 +441,8 @@ README
     {
         $this->parse(<<<'README'
 <!--
-<<Foo>>
-<<Bar>>
+#[Foo]
+#[Bar]
 ```php
 ```
 -->
@@ -460,7 +460,7 @@ README
 <!--
 Ignored
 
-<<Foo>>
+#[Foo]
 
 Ignored
 ```php
@@ -479,11 +479,11 @@ README
         $this->parse(<<<'README'
 .
 <!--
-<<Foo>>
+#[Foo]
 ```php
 Foo
 ```
-<<Bar>>
+#[Bar]
 ```php
 Bar
 ```

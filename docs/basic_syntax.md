@@ -26,16 +26,16 @@ related to testing are not rendered on github or similar.
 A set of attributes may look like this
 
 ```
-<<ReadmeTester\Example('name')>>
-<<ReadmeTester\ExpectOutput('/code/')>>
+#[ReadmeTester\Example('name')]
+#[ReadmeTester\ExpectOutput('/code/')]
 ```
 
 Or like this
 
 ```
 <!--
-<<ReadmeTester\Example('name')>>
-<<ReadmeTester\ExpectOutput('/code/')>>
+#[ReadmeTester\Example('name')]
+#[ReadmeTester\ExpectOutput('/code/')]
 -->
 ```
 
@@ -44,7 +44,7 @@ of an HTML comment block with a fenced block of php code.
 
 
     <!--
-    <<ReadmeTester\Example("simple-example-with-attribute")>>
+    #[ReadmeTester\Example("simple-example-with-attribute")]
     -->
     ```php
     echo "this code is validated";
@@ -60,7 +60,7 @@ defined inside a html comment. Consider the following example:
     <!--
     This example is hidden in a html comment
 
-    <<ReadmeTester\Example('hidden-example')>>
+    #[ReadmeTester\Example('hidden-example')]
 
     It will not be rendered in for example github..
 
@@ -69,9 +69,9 @@ defined inside a html comment. Consider the following example:
     ```
     -->
 
-<<ReadmeTester\Example('import-hidden-example')>>
-<<ReadmeTester\Import('hidden-example')>>
-<<ReadmeTester\ExpectOutput('foobar')>>
+#[ReadmeTester\Example('import-hidden-example')]
+#[ReadmeTester\Import('hidden-example')]
+#[ReadmeTester\ExpectOutput('foobar')]
 ```php
 echo $hiddenVar;
 ```
@@ -81,8 +81,8 @@ echo $hiddenVar;
 By default examples start in php mode, meaning that no `<?php` opening tag is
 needed. Use `StartInHtmlMode` to alter this behaviour.
 
-    <<ReadmeTester\StartInHtmlMode>>
-    <<ReadmeTester\ExpectOutput("/html/")>>
+    #[ReadmeTester\StartInHtmlMode]
+    #[ReadmeTester\ExpectOutput("/html/")]
     ```php
     <?php echo "this example started in html mode";
     ```

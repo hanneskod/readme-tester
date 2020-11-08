@@ -32,13 +32,13 @@ grammar Parser
         return $attr;
     };
 
-    ATTRIBUTE_START = '<<';
+    ATTRIBUTE_START = '#[';
 
-    ATTRIBUTE_END = '>>';
+    ATTRIBUTE_END = ']';
 
     HEADER = ATX_HEADER / SETEXT_HEADER;
 
-    ATX_HEADER = '#'+ header:$((!('#' / EOL) .)+) '#'* EOL {
+    ATX_HEADER = !ATTRIBUTE_START '#'+ header:$((!('#' / EOL) .)+) '#'* EOL {
         return Name::createAttribute($header);
     };
 

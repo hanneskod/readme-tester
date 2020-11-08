@@ -9,7 +9,7 @@ use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\ErrorExpectation;
 use hanneskod\readmetester\Utils\Regexp;
 
-#<<\PhpAttribute>>
+#[\Attribute]
 class ExpectError implements TransformationInterface
 {
     use AttributeFactoryTrait;

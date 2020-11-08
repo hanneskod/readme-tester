@@ -6,7 +6,7 @@ Feature: Example expectations
  Scenario: I fail expecting output using a regular expresion
     Given a markdown file:
     """
-    <<ReadmeTester\ExpectOutput('/regular/')>>
+    #[ReadmeTester\ExpectOutput('/regular/')]
     ```php
     echo 'The regepxp does not match this..';
     ```
@@ -19,7 +19,7 @@ Feature: Example expectations
  Scenario: I fail expecting output using a string
     Given a markdown file:
     """
-    <<ReadmeTester\ExpectOutput('abc')>>
+    #[ReadmeTester\ExpectOutput('abc')]
     ```php
     echo 'abcd';
     ```
@@ -32,7 +32,7 @@ Feature: Example expectations
  Scenario: I fail expecting an error
     Given a markdown file:
     """
-    <<ReadmeTester\ExpectError('')>>
+    #[ReadmeTester\ExpectError('')]
     ```php
     // No exception is thrown here...
     ```

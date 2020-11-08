@@ -8,7 +8,7 @@ use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\NameObj;
 
-#<<\PhpAttribute>>
+#[\Attribute]
 class Name implements TransformationInterface
 {
     use AttributeFactoryTrait;

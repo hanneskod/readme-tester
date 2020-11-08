@@ -4,8 +4,6 @@ language: php
 
 php:
     - 7.4
-    - 7.3
-    - 7.2
 
 install:
     - composer install
@@ -27,4 +25,4 @@ deploy:
     on:
         repo: hanneskod/readme-tester
         tags: true
-        condition: ${TRAVIS_PHP_VERSION:0:3} == "7.2"
+        condition: ${TRAVIS_PHP_VERSION:0:3} == "7.4"

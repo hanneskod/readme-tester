@@ -3,3 +3,4 @@
 /.phive
 /tools
 /readme-tester.phar
+/*.local.*

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Attributes;
 
-#<<\PhpAttribute>>
+#[\Attribute]
 class Assert extends AppendCode
 {
     public function __construct(string $assertion)

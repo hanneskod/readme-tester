@@ -50,7 +50,7 @@ FOOTER;
         $code = self::HEADER;
 
         foreach ($this->definitions as $key => $definition) {
-            // TODO Attributes! Should be <<Attr>> instead of docblock
+            // TODO Attributes! Should be #[Attr] instead of docblock
 
             $attributesStr = array_reduce(
                 array_map(

@@ -13,3 +13,4 @@
 /README.md export-ignore
 /src/Markdown/Parser.peg export-ignore
 /composer.lock binary
+/src/Markdown/Parser.php binary
