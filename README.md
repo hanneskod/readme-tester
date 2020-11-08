@@ -14,12 +14,45 @@ cumbersome to manually test all examples? Then readme-tester is for you!
 Readme-tester lets you automate the process of validating PHP code examples in
 markdown files.
 
+## Example
+
+```
+#[ReadmeTester\ExpectOutput('/foo/')]
+```
+```php
+echo "foobar";
+```
+
 ## Installation
 
-Install using composer
+### As a phar archive (recommended)
+
+Download the latest phar archive from the
+[releases](https://github.com/hanneskod/readme-tester/releases) tab.
+
+Optionally rename `readme-tester.phar` to `readme-tester` for a smoother experience.
+
+### Through composer
 
 ```shell
 composer require --dev hanneskod/readme-tester
+```
+
+This will make `readme-tester` avaliable as `vendor/bin/readme-tester`.
+
+### From source
+
+To build you need `make`
+
+```shell
+make
+sudo make install
+```
+
+If composer is not installed as `composer` you can use something like
+
+```shell
+make COMPOSER_CMD=./composer.phar
 ```
 
 ## The command line tool
@@ -27,15 +60,15 @@ composer require --dev hanneskod/readme-tester
 Using the command line tool is as simple as
 
 ```shell
-vendor/bin/readme-tester README.md
+readme-tester README.md
 ```
 
 For more detailed information use
 
 ```shell
-vendor/bin/readme-tester -h
+readme-tester -h
 ```
 
-## How to write tests
+## Getting started
 
 [Read the documentation](/docs)
