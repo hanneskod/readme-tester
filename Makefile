@@ -19,6 +19,7 @@ CONTAINER=src/DependencyInjection/ProjectServiceContainer.php
 PARSER_ROOT=src/Markdown/Parser
 PARSER=$(PARSER_ROOT).php
 
+ETC_FILES:=$(shell find etc/ -type f -name '*')
 SRC_FILES:=$(shell find src/ -type f -name '*.php' ! -path $(CONTAINER))
 
 .PHONY: all
@@ -27,15 +28,24 @@ all: test analyze build check
 .PHONY: clean
 clean:
 	rm -f composer.lock
-	rm -f $(PARSER)
 	rm -rf vendor
 	rm -rf tools
+
+.PHONY: maintainer-clean
+maintainer-clean: clean
+	@echo 'This command is intended for maintainers to use; it'
+	@echo 'deletes files that may need special tools to rebuild.'
+	rm -f $(CONTAINER)
+	rm -f $(PARSER)
 
 .PHONY: build
 build: $(TARGET)
 
-$(TARGET): vendor/installed $(PARSER) $(BOX_CMD) $(SRC_FILES)
+$(TARGET): vendor/installed $(CONTAINER) $(PARSER) $(BOX_CMD) $(SRC_FILES)
 	$(BOX_CMD) compile
+
+$(CONTAINER): vendor/installed $(ETC_FILES) $(SRC_FILES)
+	bin/build_container > $@
 
 $(PARSER): $(PARSER_ROOT).peg $(PHPEG_CMD)
 	$(PHPEG_CMD) generate $<
@@ -48,11 +58,11 @@ phpspec: vendor/installed $(PARSER) $(PHPSPEC_CMD)
 	$(PHPSPEC_CMD) run
 
 .PHONY: behat
-behat: vendor/installed $(PARSER) $(BEHAT_CMD)
+behat: vendor/installed $(CONTAINER) $(PARSER) $(BEHAT_CMD)
 	$(BEHAT_CMD) --stop-on-failure
 
 .PHONY: docs
-docs: vendor/installed $(PARSER) $(README_TESTER_CMD)
+docs: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
 	$(README_TESTER_CMD) README.md docs --runner process
 	$(README_TESTER_CMD) README.md docs --runner eval
 
@@ -68,7 +78,7 @@ phpstan: vendor/installed $(PHPSTAN_CMD)
 
 .PHONY: phpcs
 phpcs: $(PHPCS_CMD)
-	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER)
+	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER),$(CONTAINER)
 	$(PHPCS_CMD) spec --standard=spec/ruleset.xml
 
 composer.lock: composer.json

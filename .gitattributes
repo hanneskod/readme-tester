@@ -1,4 +1,6 @@
+/bin/build_container export-ignore
 /docs export-ignore
+/etc export-ignore
 /features export-ignore
 /spec export-ignore
 /.gitattributes export-ignore
@@ -14,3 +16,4 @@
 /src/Markdown/Parser.peg export-ignore
 /composer.lock binary
 /src/Markdown/Parser.php binary
+/src/DependencyInjection/ProjectServiceContainer.php binary

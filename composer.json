@@ -29,13 +29,19 @@
     ],
     "config": {
         "platform": {
-            "php": "7.4"
+            "php": "7.4.0"
         }
     },
     "require": {
         "php": ">=7.4",
         "symfony/console": "^5",
+        "symfony/dependency-injection": "^5",
         "symfony/finder": "^5",
         "symfony/process": "^5"
+    },
+    "require-dev": {
+        "symfony/config": "^5",
+        "symfony/yaml": "^5",
+        "symfony/expression-language": "^5"
     }
 }

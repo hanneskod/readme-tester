@@ -1,0 +1,20 @@
+services:
+    _defaults:
+        public: false
+        autowire: true
+
+    hanneskod\readmetester\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection/ProjectServiceContainer.php}'
+
+    application:
+        class: Symfony\Component\Console\SingleCommandApplication
+        public: true
+        configurator: ['@hanneskod\readmetester\CliConsole', 'configure']
+        calls:
+            - method: 'setName'
+              arguments: ['Readme-Tester']
+            - method: 'setVersion'
+              arguments: ['dev']
+            - method: 'setCode'
+              arguments: ['@hanneskod\readmetester\CliConsole']

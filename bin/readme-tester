@@ -3,21 +3,8 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester;
-
-use Symfony\Component\Console\SingleCommandApplication;
+use hanneskod\readmetester\DependencyInjection\ProjectServiceContainer;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// TODO all denna setup kan göras snyggt i dic..
-$app = new SingleCommandApplication;
-
-$console = new CliConsole;
-
-$console->configure($app);
-
-$app
-    ->setName('Readme-Tester')
-    ->setVersion('dev')
-    ->setCode($console)
-    ->run();
+(new ProjectServiceContainer)->get('application')->run();
