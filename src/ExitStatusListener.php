@@ -2,9 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester\Console;
+namespace hanneskod\readmetester;
 
-use hanneskod\readmetester\ListenerInterface;
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\StatusInterface;
 

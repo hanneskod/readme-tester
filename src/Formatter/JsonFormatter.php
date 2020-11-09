@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester\Console;
+namespace hanneskod\readmetester\Formatter;
 
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\StatusInterface;

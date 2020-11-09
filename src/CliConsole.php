@@ -2,33 +2,29 @@
 
 declare(strict_types = 1);
 
-namespace hanneskod\readmetester\Console;
+namespace hanneskod\readmetester;
 
+use hanneskod\readmetester\ExampleTester;
+use hanneskod\readmetester\Expectation\ExpectationEvaluator;
+use hanneskod\readmetester\Formatter\JsonFormatter;
+use hanneskod\readmetester\Formatter\DefaultFormatter;
+use hanneskod\readmetester\Runner\RunnerInterface;
+use hanneskod\readmetester\Runner\EvalRunner;
+use hanneskod\readmetester\Runner\ProcessRunner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use hanneskod\readmetester\ExampleTester;
-use hanneskod\readmetester\Expectation\ExpectationEvaluator;
-use hanneskod\readmetester\Runner\RunnerInterface;
-use hanneskod\readmetester\Runner\EvalRunner;
-use hanneskod\readmetester\Runner\ProcessRunner;
 use Symfony\Component\Finder\Finder;
 
-/**
- * CLI command to run test
- */
-class TestCommand extends Command
+final class CliConsole
 {
-    /**
-     * Path to default bootstrap file
-     */
-    const DEFAULT_BOOTSTRAP = 'vendor/autoload.php';
+    private const DEFAULT_BOOTSTRAP_PATH = 'vendor/autoload.php';
 
-    protected function configure(): void
+    public function configure(Command $command): void
     {
-        $this->setName('test')
+        $command->setName('test')
             ->setDescription('Test examples in readme file')
             ->addArgument(
                 'path',
@@ -91,7 +87,7 @@ class TestCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(InputInterface $input, OutputInterface $output): int
     {
         // TODO grab all objects from DIC
 
@@ -192,8 +188,8 @@ class TestCommand extends Command
             return (string)realpath($filename);
         }
 
-        if (!$input->getOption('no-auto-bootstrap') && is_readable(self::DEFAULT_BOOTSTRAP)) {
-            return (string)realpath(self::DEFAULT_BOOTSTRAP);
+        if (!$input->getOption('no-auto-bootstrap') && is_readable(self::DEFAULT_BOOTSTRAP_PATH)) {
+            return (string)realpath(self::DEFAULT_BOOTSTRAP_PATH);
         }
 
         return '';

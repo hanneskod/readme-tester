@@ -1,8 +1,23 @@
 #!/usr/bin/env php
 <?php
 
-namespace hanneskod\readmetester\Console;
+declare(strict_types = 1);
 
-(@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
+namespace hanneskod\readmetester;
 
-(new Application('Reamde-Tester', 'dev'))->run();
+use Symfony\Component\Console\SingleCommandApplication;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+// TODO all denna setup kan göras snyggt i dic..
+$app = new SingleCommandApplication;
+
+$console = new CliConsole;
+
+$console->configure($app);
+
+$app
+    ->setName('Readme-Tester')
+    ->setVersion('dev')
+    ->setCode($console)
+    ->run();
