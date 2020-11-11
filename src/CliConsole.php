@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
+use hanneskod\readmetester\Config\ArrayRepository;
+use hanneskod\readmetester\Config\ConfigManager;
 use hanneskod\readmetester\ExampleTester;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Formatter\JsonFormatter;
@@ -20,31 +22,32 @@ use Symfony\Component\Finder\Finder;
 
 final class CliConsole
 {
-    private const DEFAULT_BOOTSTRAP_PATH = 'vendor/autoload.php';
+    private ConfigManager $configManager;
+
+    public function __construct(ConfigManager $configManager)
+    {
+        $this->configManager = $configManager;
+    }
 
     public function configure(Command $command): void
     {
-        $command->setName('test')
-            ->setDescription('Test examples in readme file')
+        $command
             ->addArgument(
                 'path',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-                'One or more paths to scan for test files',
-                []
+                'One or more paths to scan for test files'
             )
             ->addOption(
                 'file-extension',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'File extension to use while scanning for test files',
-                ['md', 'mdown', 'markdown']
+                'File extension to use while scanning for test files'
             )
             ->addOption(
                 'ignore',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Path to ignore while scanning for test files',
-                ['vendor']
+                'Path to ignore while scanning for test files'
             )
             ->addOption(
                 'stdin',
@@ -56,27 +59,25 @@ final class CliConsole
                 'format',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Set output format (default or json)',
-                'default'
+                'Set output format (default or json)'
             )
             ->addOption(
                 'runner',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Specify the example runner to use (process or eval)',
-                'process'
+                'Specify the example runner to use (process or eval)'
             )
             ->addOption(
                 'bootstrap',
                 null,
-                InputOption::VALUE_REQUIRED,
-                'A "bootstrap" PHP file that is run before testing'
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'A "bootstrap" PHP file that is included before testing'
             )
             ->addOption(
-                'no-auto-bootstrap',
+                'no-bootstrap',
                 null,
                 InputOption::VALUE_NONE,
-                "Don't try to load a local composer autoloader when boostrap is not definied"
+                "Ignore bootstrapping"
             )
             ->addOption(
                 'stop-on-failure',
@@ -89,22 +90,61 @@ final class CliConsole
 
     public function __invoke(InputInterface $input, OutputInterface $output): int
     {
-        // TODO grab all objects from DIC
+        $configs = [];
 
-        $formatter = $input->getOption('format') == 'json'
+        if ($input->getArgument('path')) {
+            $configs['paths'] = (array)$input->getArgument('path');
+        }
+
+        if ($input->getOption('file-extension')) {
+            $configs['file_extensions'] = (array)$input->getOption('file-extension');
+        }
+
+        if ($input->getOption('ignore')) {
+            $configs['ignore_paths'] = (array)$input->getOption('ignore');
+        }
+
+        if ($input->getOption('bootstrap')) {
+            $configs['bootstrap'] = (array)$input->getOption('bootstrap');
+        }
+
+        if ($input->getOption('format')) {
+            $configs['format'] = (string)$input->getOption('format'); // @phpstan-ignore-line
+        }
+
+        if ($input->getOption('runner')) {
+            $configs['runner'] = (string)$input->getOption('runner'); // @phpstan-ignore-line
+        }
+
+        if ($input->getOption('stop-on-failure')) {
+            $configs['stop_on_failure'] = '1';
+        }
+
+        $this->configManager->loadRepository(new ArrayRepository($configs));
+
+        // TODO grab all objects from DIC
+        // men!
+        // ConfigManager är inte redo förrän efter att allt skrivits till config här..
+        // FormatterFactory??
+        // RunnerFactory??
+        // ExampleTesterFactory?? Denna sista känns specifikt dåligt..
+            // ExampleTester::setRunner()
+            // ExampleTester::setStopOnFailure()
+
+        // JAPP, det blir bra!
+
+        $formatter = $this->configManager->getConfig('format') == 'json'
             ? new JsonFormatter($output)
             : new DefaultFormatter($output);
 
         $formatter->onInvokationStart();
 
-        if ($bootstrap = $this->readBootstrap($input)) {
-            $formatter->onBootstrap($bootstrap);
-        }
+        $bootstrap = $this->createBootstrap($input);
 
         /** @var RunnerInterface */
         $runner = null;
 
-        switch ($input->getOption('runner')) {
+        switch ($this->configManager->getConfig('runner')) {
             case 'process':
                 $runner = new ProcessRunner($bootstrap);
                 break;
@@ -113,14 +153,13 @@ final class CliConsole
                 break;
             default:
                 /** @var string */
-                $runnerId = $input->getOption('runner');
-                throw new \RuntimeException("Unknown runner '$runnerId'");
+                throw new \RuntimeException("Unknown runner '{$this->configManager->getConfig('runner')}'");
         }
 
         $tester = new ExampleTester(
             $runner,
             new ExpectationEvaluator,
-            (bool)$input->getOption('stop-on-failure')
+            (bool)$this->configManager->getConfig('stop_on_failure')
         );
 
         $tester->registerListener($formatter);
@@ -140,7 +179,7 @@ final class CliConsole
             $finder->path(
                 array_map(
                     fn($path) => '/^' . preg_quote($path, '/') . '/',
-                    (array)$input->getArgument('path')
+                    $this->configManager->getConfigList('paths')
                 )
             );
 
@@ -148,7 +187,7 @@ final class CliConsole
             $finder->name(
                 array_map(
                     fn($extension) => '/\\.' . preg_quote($extension, '/') . '$/i',
-                    (array)$input->getOption('file-extension')
+                    $this->configManager->getConfigList('file_extensions')
                 )
             );
 
@@ -156,7 +195,7 @@ final class CliConsole
             $finder->notPath(
                 array_map(
                     fn($path) => '/^' . preg_quote($path, '/') . '/',
-                    (array)$input->getOption('ignore')
+                    $this->configManager->getConfigList('ignore_paths')
                 )
             );
 
@@ -166,6 +205,8 @@ final class CliConsole
             }
         }
 
+        // TODO att det är Markdown ska väll också vara en config??
+        // CompilerFactoryFactory ??
         $compiler = (new \hanneskod\readmetester\Markdown\CompilerFactory)->createCompiler();
 
         $tester->test($compiler->compile($inputs));
@@ -175,23 +216,26 @@ final class CliConsole
         return $exitStatus->getStatusCode();
     }
 
-    private function readBootstrap(InputInterface $input): string
+    private function createBootstrap(InputInterface $input): string
     {
-        /** @var string */
-        $filename = $input->getOption('bootstrap');
+        // TODO Runner/BootstrapFactory::createFromFilenames() ??
 
-        if ($filename) {
+        if ($input->getOption('no-bootstrap')) {
+            return '';
+        }
+
+        $bootstrap = '';
+
+        foreach ($this->configManager->getConfigList('bootstrap') as $filename) {
             if (!is_file($filename) || !is_readable($filename)) {
-                throw new \RuntimeException("Unable to bootstrap $filename");
+                throw new \RuntimeException("Unable to load bootstrap '$filename'");
             }
 
-            return (string)realpath($filename);
+            // TODO dispatch a log event that bootstrap is used..
+
+            $bootstrap .= "require_once '" . (string)realpath($filename) . "';\n";
         }
 
-        if (!$input->getOption('no-auto-bootstrap') && is_readable(self::DEFAULT_BOOTSTRAP_PATH)) {
-            return (string)realpath(self::DEFAULT_BOOTSTRAP_PATH);
-        }
-
-        return '';
+        return $bootstrap;
     }
 }

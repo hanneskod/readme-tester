@@ -1,0 +1,18 @@
+runner: process
+
+format: default
+
+bootstrap:
+    - vendor/autoload.php
+
+stop_on_failure: false
+
+paths: []
+
+ignore_paths:
+    - vendor
+
+file_extensions:
+    - md
+    - mdown
+    - markdown

@@ -7,8 +7,7 @@ README_TESTER_CMD=bin/readme-tester
 PHPSTAN_CMD=tools/phpstan
 PHPCS_CMD=tools/phpcs
 BOX_CMD=tools/box
-PHAR_COMPOSER_CMD=tools/phar-composer
-PHPEG_CMD=tools/phpeg
+PHPEG_CMD=phpeg
 
 .DEFAULT_GOAL=all
 
@@ -42,7 +41,9 @@ maintainer-clean: clean
 build: $(TARGET)
 
 $(TARGET): vendor/installed $(CONTAINER) $(PARSER) $(BOX_CMD) $(SRC_FILES)
+	$(COMPOSER_CMD) install --prefer-dist --no-dev
 	$(BOX_CMD) compile
+	$(COMPOSER_CMD) install
 
 $(CONTAINER): vendor/installed $(ETC_FILES) $(SRC_FILES)
 	bin/build_container > $@
@@ -103,9 +104,5 @@ $(PHPCS_CMD):
 $(BOX_CMD):
 	$(PHIVE_CMD) install humbug/box --force-accept-unsigned
 
-$(PHAR_COMPOSER_CMD):
-	$(PHIVE_CMD) install clue/phar-composer:1 --force-accept-unsigned
-
-$(PHPEG_CMD): $(PHAR_COMPOSER_CMD)
-	$(PHAR_COMPOSER_CMD) build https://github.com/scato/phpeg
-	mv phpeg.phar $@
+$(PHPEG_CMD):
+	cgr scato/phpeg:^1

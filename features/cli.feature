@@ -12,6 +12,7 @@ Feature: CLI features
     """
     # Second file
     """
+    And the command line argument '--no-bootstrap'
     When I run readme tester
     Then 2 files are found
 
@@ -20,6 +21,7 @@ Feature: CLI features
     """
     """
     And the command line argument '--file-extension=bar'
+    And the command line argument '--no-bootstrap'
     When I run readme tester
     Then 1 files are found
 
@@ -30,6 +32,7 @@ Feature: CLI features
     And a source file 'bar.md':
     """
     """
+    And the command line argument '--no-bootstrap'
     And the command line argument '--ignore=bar'
     When I run readme tester
     Then 1 files are found
@@ -47,6 +50,7 @@ Feature: CLI features
     Given a markdown file:
     """
     """
+    And the command line argument '--no-bootstrap'
     And the command line argument '--stop-on-failure'
     When I run readme tester
     Then 1 failures are found

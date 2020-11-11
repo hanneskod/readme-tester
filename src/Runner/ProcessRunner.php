@@ -12,15 +12,11 @@ use Symfony\Component\Process\PhpProcess;
  */
 final class ProcessRunner implements RunnerInterface
 {
-    private string $bootstrapCode;
+    private string $bootstrap;
 
     public function __construct(string $bootstrap = '')
     {
-        if ($bootstrap && !file_exists($bootstrap)) {
-            throw new \RuntimeException("Unable to load bootstrap $bootstrap, file does not exist");
-        }
-
-        $this->bootstrapCode = $bootstrap ? "require '$bootstrap';" : '';
+        $this->bootstrap = $bootstrap;
     }
 
     public function run(ExampleObj $example): OutcomeInterface
@@ -29,7 +25,7 @@ final class ProcessRunner implements RunnerInterface
 
         file_put_contents($filename, "<?php {$example->getCodeBlock()->getCode()}");
 
-        $process = new PhpProcess("<?php {$this->bootstrapCode} require '$filename';");
+        $process = new PhpProcess("<?php {$this->bootstrap} require '$filename';");
         $process->run();
 
         unlink($filename);

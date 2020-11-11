@@ -50,11 +50,6 @@ class DefaultFormatter implements FormatterInterface
         $this->output->writeln("Readme-Tester by Hannes Forsgård");
     }
 
-    public function onBootstrap(string $filename): void
-    {
-        $this->output->writeln("Using bootstrap <comment>$filename</comment>");
-    }
-
     public function onFile(string $filename): void
     {
         $this->fileCount++;

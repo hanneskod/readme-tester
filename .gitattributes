@@ -7,7 +7,7 @@
 /.gitignore export-ignore
 /.travis.yml export-ignore
 /behat.yml export-ignore
-/box.json export-ignore
+/box.json.dist export-ignore
 /CHANGELOG.md export-ignore
 /Makefile export-ignore
 /phpspec.yml export-ignore

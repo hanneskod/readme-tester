@@ -1,3 +1,7 @@
+parameters:
+    DEFAULT_CONFIG_FILE: 'readme-tester.yaml.dist'
+    USER_CONFIG_FILE: 'readme-tester.yaml'
+
 services:
     _defaults:
         public: false
@@ -18,3 +22,20 @@ services:
               arguments: ['dev']
             - method: 'setCode'
               arguments: ['@hanneskod\readmetester\CliConsole']
+
+    hanneskod\readmetester\Config\ConfigManager:
+        class: ~
+        arguments: ['@default_config_repository']
+        configurator: ['@config_loader', 'loadYamlFile']
+
+    default_config_repository:
+        class: hanneskod\readmetester\Config\RepositoryInterface
+        factory: ['@hanneskod\readmetester\Config\DefaultConfigFactory', 'createRepository']
+
+    hanneskod\readmetester\Config\DefaultConfigFactory:
+        class: ~
+        arguments: ['%DEFAULT_CONFIG_FILE%']
+
+    config_loader:
+        class: hanneskod\readmetester\Config\YamlFileLoader
+        arguments: ['%USER_CONFIG_FILE%']

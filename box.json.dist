@@ -4,6 +4,9 @@
         "src",
         "vendor"
     ],
+    "files-bin": [
+        "readme-tester.yaml.dist"
+    ],
     "compactors": [
         "KevinGH\\Box\\Compactor\\Php"
     ],

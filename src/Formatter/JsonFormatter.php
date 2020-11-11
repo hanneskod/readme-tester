@@ -33,7 +33,6 @@ final class JsonFormatter implements FormatterInterface
     public function onInvokationStart(): void
     {
         $this->data = [
-            'bootstrap' => '',
             'tests' => [],
             'counts' => [
                 'files' => 0,
@@ -43,11 +42,6 @@ final class JsonFormatter implements FormatterInterface
                 'failures' => 0,
             ]
         ];
-    }
-
-    public function onBootstrap(string $filename): void
-    {
-        $this->data['bootstrap'] = $filename;
     }
 
     public function onFile(string $filename): void

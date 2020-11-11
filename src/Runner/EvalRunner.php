@@ -12,12 +12,7 @@ final class EvalRunner implements RunnerInterface
 {
     public function __construct(string $bootstrap = '')
     {
-        if ($bootstrap) {
-            if (!file_exists($bootstrap)) {
-                throw new \RuntimeException("Unable to load bootstrap $bootstrap, file does not exist");
-            }
-            require_once $bootstrap;
-        }
+        Loader::loadOnce($bootstrap);
     }
 
     public function run(ExampleObj $example): OutcomeInterface

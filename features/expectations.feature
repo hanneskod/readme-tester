@@ -11,6 +11,7 @@ Feature: Example expectations
     echo 'The regepxp does not match this..';
     ```
     """
+    And the command line argument '--no-bootstrap'
     When I run readme tester
     Then 1 expectations are found
     And 1 failures are found
@@ -24,6 +25,7 @@ Feature: Example expectations
     echo 'abcd';
     ```
     """
+    And the command line argument '--no-bootstrap'
     When I run readme tester
     Then 1 expectations are found
     And 1 failures are found
@@ -37,6 +39,7 @@ Feature: Example expectations
     // No exception is thrown here...
     ```
     """
+    And the command line argument '--no-bootstrap'
     When I run readme tester
     Then 1 expectations are found
     And 1 failures are found
@@ -49,6 +52,7 @@ Feature: Example expectations
     throw new Exception;
     ```
     """
+    And the command line argument '--no-bootstrap'
     When I run readme tester
     Then 1 expectations are found
     And 1 failures are found
@@ -61,6 +65,7 @@ Feature: Example expectations
     echo "foobar";
     ```
     """
+    And the command line argument '--no-bootstrap'
     When I run readme tester
     Then 1 expectations are found
     And 1 failures are found

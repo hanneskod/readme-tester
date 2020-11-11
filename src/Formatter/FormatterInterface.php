@@ -13,8 +13,6 @@ interface FormatterInterface extends ListenerInterface
 {
     public function onInvokationStart(): void;
 
-    public function onBootstrap(string $filename): void;
-
     public function onFile(string $filename): void;
 
     public function onInvokationEnd(): void;

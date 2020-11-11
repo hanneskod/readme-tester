@@ -20,6 +20,8 @@ class ProjectServiceContainer extends Container
 
     public function __construct()
     {
+        $this->parameters = $this->getDefaultParameters();
+
         $this->services = $this->privates = [];
         $this->methodMap = [
             'application' => 'getApplicationService',
@@ -43,6 +45,8 @@ class ProjectServiceContainer extends Container
         return [
             'Psr\\Container\\ContainerInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
+            'config_loader' => true,
+            'default_config_repository' => true,
             'hanneskod\\readmetester\\Attributes\\AppendCode' => true,
             'hanneskod\\readmetester\\Attributes\\Assert' => true,
             'hanneskod\\readmetester\\Attributes\\Example' => true,
@@ -67,6 +71,11 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Compiler\\StdinInput' => true,
             'hanneskod\\readmetester\\Compiler\\TransformationPass' => true,
             'hanneskod\\readmetester\\Compiler\\UniqueNamePass' => true,
+            'hanneskod\\readmetester\\Config\\ArrayRepository' => true,
+            'hanneskod\\readmetester\\Config\\ConfigManager' => true,
+            'hanneskod\\readmetester\\Config\\DefaultConfigFactory' => true,
+            'hanneskod\\readmetester\\Config\\RepositoryInterface' => true,
+            'hanneskod\\readmetester\\Config\\YamlFileLoader' => true,
             'hanneskod\\readmetester\\ExampleTester' => true,
             'hanneskod\\readmetester\\Example\\ArrayExampleStore' => true,
             'hanneskod\\readmetester\\Example\\CombinedExampleStore' => true,
@@ -108,13 +117,67 @@ class ProjectServiceContainer extends Container
     {
         $this->services['application'] = $instance = new \Symfony\Component\Console\SingleCommandApplication();
 
-        $a = new \hanneskod\readmetester\CliConsole();
+        $a = new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory('readme-tester.yaml.dist'))->createRepository());
+        (new \hanneskod\readmetester\Config\YamlFileLoader('readme-tester.yaml'))->loadYamlFile($a);
+
+        $b = new \hanneskod\readmetester\CliConsole($a);
 
         $instance->setName('Readme-Tester');
         $instance->setVersion('dev');
-        $instance->setCode($a);
-        $a->configure($instance);
+        $instance->setCode($b);
+        $b->configure($instance);
 
         return $instance;
+    }
+
+    public function getParameter(string $name)
+    {
+        if (!(isset($this->parameters[$name]) || isset($this->loadedDynamicParameters[$name]) || \array_key_exists($name, $this->parameters))) {
+            throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
+        }
+        if (isset($this->loadedDynamicParameters[$name])) {
+            return $this->loadedDynamicParameters[$name] ? $this->dynamicParameters[$name] : $this->getDynamicParameter($name);
+        }
+
+        return $this->parameters[$name];
+    }
+
+    public function hasParameter(string $name): bool
+    {
+        return isset($this->parameters[$name]) || isset($this->loadedDynamicParameters[$name]) || \array_key_exists($name, $this->parameters);
+    }
+
+    public function setParameter(string $name, $value): void
+    {
+        throw new LogicException('Impossible to call set() on a frozen ParameterBag.');
+    }
+
+    public function getParameterBag(): ParameterBagInterface
+    {
+        if (null === $this->parameterBag) {
+            $parameters = $this->parameters;
+            foreach ($this->loadedDynamicParameters as $name => $loaded) {
+                $parameters[$name] = $loaded ? $this->dynamicParameters[$name] : $this->getDynamicParameter($name);
+            }
+            $this->parameterBag = new FrozenParameterBag($parameters);
+        }
+
+        return $this->parameterBag;
+    }
+
+    private $loadedDynamicParameters = [];
+    private $dynamicParameters = [];
+
+    private function getDynamicParameter(string $name)
+    {
+        throw new InvalidArgumentException(sprintf('The dynamic parameter "%s" must be defined.', $name));
+    }
+
+    protected function getDefaultParameters(): array
+    {
+        return [
+            'DEFAULT_CONFIG_FILE' => 'readme-tester.yaml.dist',
+            'USER_CONFIG_FILE' => 'readme-tester.yaml',
+        ];
     }
 }

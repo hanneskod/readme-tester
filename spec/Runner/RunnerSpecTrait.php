@@ -57,15 +57,9 @@ trait RunnerSpecTrait
         $this->run($this->an_example('namespace test;'))->shouldHaveType(VoidOutcome::class);
     }
 
-    function it_throws_on_invalid_bootstrap()
-    {
-        $this->beConstructedWith('this-filename-does-not-exist');
-        $this->shouldThrow(\RuntimeException::class)->duringInstantiation();
-    }
-
     function it_can_be_bootstraped()
     {
-        $this->beConstructedWith(__DIR__ . '/Bootstrap.php');
+        $this->beConstructedWith('namespace spec\hanneskod\readmetester\Runner;class Bootstrap {}');
         $this->run($this->an_example('new \spec\hanneskod\readmetester\Runner\Bootstrap;'))
             ->shouldHaveType(VoidOutcome::class);
     }
