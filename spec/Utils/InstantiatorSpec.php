@@ -35,3 +35,16 @@ class InstantiatorSpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)->duringInstantiate(NotInstantiable::class);
     }
 }
+
+// phpcs:disable
+
+class ConstructorArgsRequired
+{
+    public function __construct($anArgument)
+    {
+    }
+}
+
+abstract class NotInstantiable
+{
+}
