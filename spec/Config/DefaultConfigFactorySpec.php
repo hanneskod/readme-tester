@@ -12,13 +12,11 @@ class DefaultConfigFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedWith('');
         $this->shouldHaveType(DefaultConfigFactory::class);
     }
 
     function it_creates_configs()
     {
-        $this->beConstructedWith('readme-tester.yaml.dist');
         $this->createRepository()->shouldHaveType(RepositoryInterface::class);
     }
 }

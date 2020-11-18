@@ -54,6 +54,7 @@ final class DefaultOutputtingSubscriber implements SubscriberInterface, Console\
     {
         $listenerProvider->addListener([$this, 'onExecutionStarted']);
         $listenerProvider->addListener([$this, 'onBootstrapIncluded']);
+        $listenerProvider->addListener([$this, 'onConfigurationIncluded']);
         $listenerProvider->addListener([$this, 'onFileIncluded']);
         $listenerProvider->addListener([$this, 'onExampleIgnored']);
         $listenerProvider->addListener([$this, 'onExampleSkipped']);
@@ -74,6 +75,11 @@ final class DefaultOutputtingSubscriber implements SubscriberInterface, Console\
         if ($this->getOutput()->isVerbose()) {
             $this->getOutput()->writeln("Using bootstrap <comment>{$event->getFilename()}</comment>");
         }
+    }
+
+    public function onConfigurationIncluded(Event\ConfigurationIncluded $event): void
+    {
+        $this->getOutput()->writeln("Reading configuration from <comment>{$event->getFilename()}</comment>");
     }
 
     public function onFileIncluded(Event\FileIncluded $event): void

@@ -23,4 +23,9 @@ final class ArrayRepository implements RepositoryInterface
     {
         return $this->configs;
     }
+
+    public function getRepositoryName(): string
+    {
+        return '';
+    }
 }

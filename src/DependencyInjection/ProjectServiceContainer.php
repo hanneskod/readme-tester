@@ -20,8 +20,6 @@ class ProjectServiceContainer extends Container
 
     public function __construct()
     {
-        $this->parameters = $this->getDefaultParameters();
-
         $this->services = $this->privates = [];
         $this->methodMap = [
             'application' => 'getApplicationService',
@@ -48,8 +46,7 @@ class ProjectServiceContainer extends Container
             'Psr\\Container\\ContainerInterface' => true,
             'Psr\\EventDispatcher\\EventDispatcherInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
-            'config_loader' => true,
-            'default_config_repository' => true,
+            'default_configuration' => true,
             'hanneskod\\readmetester\\Attributes\\AppendCode' => true,
             'hanneskod\\readmetester\\Attributes\\Assert' => true,
             'hanneskod\\readmetester\\Attributes\\Example' => true,
@@ -77,11 +74,12 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Config\\ArrayRepository' => true,
             'hanneskod\\readmetester\\Config\\ConfigManager' => true,
             'hanneskod\\readmetester\\Config\\DefaultConfigFactory' => true,
-            'hanneskod\\readmetester\\Config\\RepositoryInterface' => true,
-            'hanneskod\\readmetester\\Config\\YamlFileLoader' => true,
+            'hanneskod\\readmetester\\Config\\UserConfigRepository' => true,
+            'hanneskod\\readmetester\\Config\\YamlRepository' => true,
             'hanneskod\\readmetester\\Console\\CliConsole' => true,
             'hanneskod\\readmetester\\Console\\FilesystemInputGenerator' => true,
             'hanneskod\\readmetester\\Event\\BootstrapIncluded' => true,
+            'hanneskod\\readmetester\\Event\\ConfigurationIncluded' => true,
             'hanneskod\\readmetester\\Event\\DebugEvent' => true,
             'hanneskod\\readmetester\\Event\\ExampleEntered' => true,
             'hanneskod\\readmetester\\Event\\ExampleExited' => true,
@@ -140,87 +138,34 @@ class ProjectServiceContainer extends Container
     {
         $this->services['application'] = $instance = new \Symfony\Component\Console\SingleCommandApplication();
 
-        $a = new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory('readme-tester.yaml.dist'))->createRepository());
-        (new \hanneskod\readmetester\Config\YamlFileLoader('readme-tester.yaml'))->loadYamlFile($a);
-        $b = new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator());
+        $a = new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator());
 
-        $c = new \Fig\EventDispatcher\AggregateProvider();
+        $b = new \Fig\EventDispatcher\AggregateProvider();
 
-        $d = new \Crell\Tukio\OrderedListenerProvider($this);
+        $c = new \Crell\Tukio\OrderedListenerProvider($this);
 
-        $e = new \hanneskod\readmetester\Event\Listener\ExitStatusListener();
+        $d = new \hanneskod\readmetester\Event\Listener\ExitStatusListener();
 
-        $d->addListener($e);
+        $c->addListener($d);
 
-        $c->addProvider($d);
+        $b->addProvider($c);
 
-        $f = new \Crell\Tukio\Dispatcher($c);
+        $e = new \Crell\Tukio\Dispatcher($b);
 
-        $b->setEventDispatcher($f);
-        $g = new \hanneskod\readmetester\Console\FilesystemInputGenerator();
-        $g->setEventDispatcher($f);
-        $h = new \hanneskod\readmetester\Runner\BootstrapFactory();
-        $h->setEventDispatcher($f);
+        $a->setEventDispatcher($e);
+        $f = new \hanneskod\readmetester\Console\FilesystemInputGenerator();
+        $f->setEventDispatcher($e);
+        $g = new \hanneskod\readmetester\Runner\BootstrapFactory();
+        $g->setEventDispatcher($e);
 
-        $i = new \hanneskod\readmetester\Console\CliConsole($a, $b, new \hanneskod\readmetester\Compiler\CompilerFactoryFactory(), $e, new \hanneskod\readmetester\Event\Listener\SubscriberFactory(), $g, new \hanneskod\readmetester\Runner\RunnerFactory(), $h, $d);
-        $i->setEventDispatcher($f);
+        $h = new \hanneskod\readmetester\Console\CliConsole(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), $a, new \hanneskod\readmetester\Compiler\CompilerFactoryFactory(), $d, new \hanneskod\readmetester\Event\Listener\SubscriberFactory(), $f, new \hanneskod\readmetester\Runner\RunnerFactory(), $g, $c);
+        $h->setEventDispatcher($e);
 
         $instance->setName('Readme-Tester');
         $instance->setVersion('dev');
-        $instance->setCode($i);
-        $i->configure($instance);
+        $instance->setCode($h);
+        $h->configure($instance);
 
         return $instance;
-    }
-
-    public function getParameter(string $name)
-    {
-        if (!(isset($this->parameters[$name]) || isset($this->loadedDynamicParameters[$name]) || \array_key_exists($name, $this->parameters))) {
-            throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
-        }
-        if (isset($this->loadedDynamicParameters[$name])) {
-            return $this->loadedDynamicParameters[$name] ? $this->dynamicParameters[$name] : $this->getDynamicParameter($name);
-        }
-
-        return $this->parameters[$name];
-    }
-
-    public function hasParameter(string $name): bool
-    {
-        return isset($this->parameters[$name]) || isset($this->loadedDynamicParameters[$name]) || \array_key_exists($name, $this->parameters);
-    }
-
-    public function setParameter(string $name, $value): void
-    {
-        throw new LogicException('Impossible to call set() on a frozen ParameterBag.');
-    }
-
-    public function getParameterBag(): ParameterBagInterface
-    {
-        if (null === $this->parameterBag) {
-            $parameters = $this->parameters;
-            foreach ($this->loadedDynamicParameters as $name => $loaded) {
-                $parameters[$name] = $loaded ? $this->dynamicParameters[$name] : $this->getDynamicParameter($name);
-            }
-            $this->parameterBag = new FrozenParameterBag($parameters);
-        }
-
-        return $this->parameterBag;
-    }
-
-    private $loadedDynamicParameters = [];
-    private $dynamicParameters = [];
-
-    private function getDynamicParameter(string $name)
-    {
-        throw new InvalidArgumentException(sprintf('The dynamic parameter "%s" must be defined.', $name));
-    }
-
-    protected function getDefaultParameters(): array
-    {
-        return [
-            'DEFAULT_CONFIG_FILE' => 'readme-tester.yaml.dist',
-            'USER_CONFIG_FILE' => 'readme-tester.yaml',
-        ];
     }
 }

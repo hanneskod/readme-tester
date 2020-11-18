@@ -8,19 +8,14 @@ use Symfony\Component\Yaml\Yaml;
 
 final class DefaultConfigFactory
 {
-    private string $fileName;
-
-    public function __construct(string $fileName)
-    {
-        $this->fileName = $fileName;
-    }
+    private const DEFAULT_CONFIG_FILE = __DIR__ . '/../../readme-tester.yaml.dist';
 
     public function createRepository(): RepositoryInterface
     {
-        return new ArrayRepository(
-            Yaml::parseFile(
-                __DIR__ . '/../../' . $this->fileName
-            )
-        );
+        if (!is_file(self::DEFAULT_CONFIG_FILE)) {
+            throw new \LogicException('Unable to locate default configurations');
+        }
+
+        return new ArrayRepository(Yaml::parseFile(self::DEFAULT_CONFIG_FILE));
     }
 }

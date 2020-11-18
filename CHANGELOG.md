@@ -13,6 +13,7 @@ This project now adheres to [Semantic Versioning](http://semver.org/).
 - Added the `--ignore` command line option
 - Added the `--stop-on-failure` command line option
 - Added the `--input` command line option
+- Added the `--config` command line option
 - Renamed command line option `--format` > `--output`
 - Using php8 attributes instead of annotations
 - Added support for `readme-tester.yaml` config file

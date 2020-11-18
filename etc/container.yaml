@@ -1,7 +1,3 @@
-parameters:
-    DEFAULT_CONFIG_FILE: 'readme-tester.yaml.dist'
-    USER_CONFIG_FILE: 'readme-tester.yaml'
-
 services:
     _defaults:
         public: false
@@ -25,20 +21,11 @@ services:
 
     hanneskod\readmetester\Config\ConfigManager:
         class: ~
-        arguments: ['@default_config_repository']
-        configurator: ['@config_loader', 'loadYamlFile']
+        arguments: ['@default_configuration']
 
-    default_config_repository:
+    default_configuration:
         class: hanneskod\readmetester\Config\RepositoryInterface
         factory: ['@hanneskod\readmetester\Config\DefaultConfigFactory', 'createRepository']
-
-    hanneskod\readmetester\Config\DefaultConfigFactory:
-        class: ~
-        arguments: ['%DEFAULT_CONFIG_FILE%']
-
-    config_loader:
-        class: hanneskod\readmetester\Config\YamlFileLoader
-        arguments: ['%USER_CONFIG_FILE%']
 
     Psr\EventDispatcher\EventDispatcherInterface:
         class: Crell\Tukio\Dispatcher

@@ -63,6 +63,12 @@ final class CliConsole
                 'One or more paths to scan for test files'
             )
             ->addOption(
+                'config',
+                'c',
+                InputOption::VALUE_REQUIRED,
+                'Read configurations from file'
+            )
+            ->addOption(
                 'file-extension',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -121,7 +127,16 @@ final class CliConsole
 
     public function __invoke(InputInterface $input, OutputInterface $output): int
     {
-        // Setup configuration
+        // Setup configuration from config file
+
+        if ($input->getOption('config')) {
+            // @phpstan-ignore-next-line
+            $this->configManager->loadRepository(new Config\YamlRepository($input->getOption('config')));
+        } else {
+            $this->configManager->loadRepository(new Config\UserConfigRepository);
+        }
+
+        // Setup configuration from command line
 
         $configs = [];
 
@@ -176,7 +191,13 @@ final class CliConsole
             $this->dispatcher->dispatch(new Event\DebugEvent("Registered subscriber: $subscriberId"));
         }
 
+        // Start
+
         $this->dispatcher->dispatch(new Event\ExecutionStarted);
+
+        foreach ($this->configManager->getLoadedRepositoryNames() as $name) {
+            $this->dispatcher->dispatch(new Event\ConfigurationIncluded($name));
+        }
 
         // Create compiler
 
@@ -227,6 +248,8 @@ final class CliConsole
             $runner,
             (bool)$this->configManager->getConfig('stop_on_failure')
         );
+
+        // Done
 
         $this->dispatcher->dispatch(new Event\ExecutionStopped);
 

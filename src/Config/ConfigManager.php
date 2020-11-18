@@ -9,10 +9,11 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ConfigManager
 {
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     private array $configs = [];
+
+    /** @var array<string> */
+    private array $names = [];
 
     private PropertyAccessor $propertyAccessor;
 
@@ -25,9 +26,19 @@ class ConfigManager
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
-    public function loadRepository(RepositoryInterface $configs): void
+    public function loadRepository(RepositoryInterface $repository): void
     {
-        $this->configs = array_merge($this->configs, $configs->getConfigs());
+        $this->configs = array_merge($this->configs, $repository->getConfigs());
+
+        if ($repository->getRepositoryName()) {
+            $this->names[] = $repository->getRepositoryName();
+        }
+    }
+
+    /** @return array<string> */
+    public function getLoadedRepositoryNames(): array
+    {
+        return $this->names;
     }
 
     public function getConfig(string ...$nameParts): string

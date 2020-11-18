@@ -30,4 +30,10 @@ class ArrayRepositorySpec extends ObjectBehavior
         $this->beConstructedWith(['foo' => 'bar']);
         $this->getConfigs()->shouldReturn(['foo' => 'bar']);
     }
+
+    function it_has_an_empty_name()
+    {
+        $this->beConstructedWith([]);
+        $this->getRepositoryName()->shouldReturn('');
+    }
 }

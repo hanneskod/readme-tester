@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace hanneskod\readmetester\Config;
 
 interface RepositoryInterface
@@ -12,4 +10,9 @@ interface RepositoryInterface
      * @return array<string, mixed>
      */
     public function getConfigs(): array;
+
+    /**
+     * Get name describing this repository
+     */
+    public function getRepositoryName(): string;
 }

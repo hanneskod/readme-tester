@@ -13,12 +13,27 @@ class ConfigManagerSpec extends ObjectBehavior
     function let(RepositoryInterface $repo)
     {
         $repo->getConfigs()->willReturn([]);
+        $repo->getRepositoryName()->willReturn('');
         $this->beConstructedWith($repo);
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(ConfigManager::class);
+    }
+
+    function it_collects_repository_names(RepositoryInterface $repo)
+    {
+        $repo->getConfigs()->willReturn([]);
+        $repo->getRepositoryName()->willReturn('foo');
+        $this->getLoadedRepositoryNames()->shouldIterateAs(['foo']);
+    }
+
+    function it_ignores_empty_names(RepositoryInterface $repo)
+    {
+        $repo->getConfigs()->willReturn([]);
+        $repo->getRepositoryName()->willReturn('');
+        $this->getLoadedRepositoryNames()->shouldIterateAs([]);
     }
 
     function it_can_read_config(RepositoryInterface $repo)
@@ -37,6 +52,7 @@ class ConfigManagerSpec extends ObjectBehavior
     {
         $repo->getConfigs()->willReturn(['foo' => 'A', 'bar' => 'A']);
         $repoB->getConfigs()->willReturn(['foo' => 'B']);
+        $repoB->getRepositoryName()->willReturn('');
         $this->loadRepository($repoB);
         $this->getConfig('foo')->shouldReturn('B');
         $this->getConfig('bar')->shouldReturn('A');
