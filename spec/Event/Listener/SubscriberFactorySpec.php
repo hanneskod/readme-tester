@@ -38,4 +38,20 @@ class SubscriberFactorySpec extends ObjectBehavior
         $this->createSubscriber(SubscriberFactory::SUBSCRIBER_VOID)
             ->shouldHaveType(Listener\VoidOutputtingSubscriber::class);
     }
+
+    function it_throws_on_invalid_id()
+    {
+        $this->shouldThrow(\RuntimeException::class)->duringCreateSubscriber('does-not-exist');
+    }
+
+    function it_creates_from_classname()
+    {
+        $this->createSubscriber(Listener\VoidOutputtingSubscriber::class)
+            ->shouldHaveType(Listener\VoidOutputtingSubscriber::class);
+    }
+
+    function it_throws_on_invalid_class()
+    {
+        $this->shouldThrow(\RuntimeException::class)->duringCreateSubscriber(__CLASS__);
+    }
 }

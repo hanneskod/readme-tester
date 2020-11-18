@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Compiler;
 
 use hanneskod\readmetester\Markdown;
+use hanneskod\readmetester\Utils\Instantiator;
 
 final class CompilerFactoryFactory
 {
@@ -17,8 +18,12 @@ final class CompilerFactoryFactory
                 return new Markdown\CompilerFactory;
         }
 
-        // TODO create from classname
+        $factory = Instantiator::instantiate($id);
 
-        throw new \RuntimeException("Unknown input format: $id");
+        if (!$factory instanceof CompilerFactoryInterface) {
+            throw new \RuntimeException("$id does no implement CompilerFactoryInterface");
+        }
+
+        return $factory;
     }
 }

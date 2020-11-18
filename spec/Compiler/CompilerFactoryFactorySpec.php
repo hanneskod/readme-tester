@@ -20,4 +20,20 @@ class CompilerFactoryFactorySpec extends ObjectBehavior
         $this->createCompilerFactory(CompilerFactoryFactory::INPUT_MARKDOWN)
             ->shouldHaveType(Markdown\CompilerFactory::class);
     }
+
+    function it_throws_on_invalid_id()
+    {
+        $this->shouldThrow(\RuntimeException::class)->duringCreateCompilerFactory('does-not-exist');
+    }
+
+    function it_creates_from_classname()
+    {
+        $this->createCompilerFactory(Markdown\CompilerFactory::class)
+            ->shouldHaveType(Markdown\CompilerFactory::class);
+    }
+
+    function it_throws_on_invalid_class()
+    {
+        $this->shouldThrow(\RuntimeException::class)->duringCreateCompilerFactory(__CLASS__);
+    }
 }

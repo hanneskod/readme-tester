@@ -124,6 +124,7 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Runner\\SkippedOutcome' => true,
             'hanneskod\\readmetester\\Runner\\VoidOutcome' => true,
             'hanneskod\\readmetester\\Utils\\CodeBlock' => true,
+            'hanneskod\\readmetester\\Utils\\Instantiator' => true,
             'hanneskod\\readmetester\\Utils\\Loader' => true,
             'hanneskod\\readmetester\\Utils\\NameObj' => true,
             'hanneskod\\readmetester\\Utils\\Regexp' => true,

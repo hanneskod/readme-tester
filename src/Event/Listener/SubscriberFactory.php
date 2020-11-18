@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Event\Listener;
 
+use hanneskod\readmetester\Utils\Instantiator;
+
 final class SubscriberFactory
 {
     const SUBSCRIBER_DEBUG = 'debug';
@@ -24,8 +26,12 @@ final class SubscriberFactory
                 return new VoidOutputtingSubscriber;
         }
 
-        // TODO create from classname
+        $subscriber = Instantiator::instantiate($id);
 
-        throw new \RuntimeException("Unknown subscriber: $id");
+        if (!$subscriber instanceof SubscriberInterface) {
+            throw new \RuntimeException("$id does no implement SubscriberInterface");
+        }
+
+        return $subscriber;
     }
 }

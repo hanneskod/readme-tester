@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
+use hanneskod\readmetester\Utils\Instantiator;
+
 final class RunnerFactory
 {
     const RUNNER_EVAL = 'eval';
@@ -18,8 +20,12 @@ final class RunnerFactory
                 return new ProcessRunner;
         }
 
-        // TODO create from classname
+        $runner = Instantiator::instantiate($id);
 
-        throw new \RuntimeException("Unknown runner: $id");
+        if (!$runner instanceof RunnerInterface) {
+            throw new \RuntimeException("$id does no implement RunnerInterface");
+        }
+
+        return $runner;
     }
 }
