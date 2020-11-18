@@ -62,7 +62,7 @@ defined inside a html comment. Consider the following example:
 
     #[ReadmeTester\Example('hidden-example')]
 
-    It will not be rendered in for example github..
+    It will not be rendered on for example github..
 
     ```php
     $hiddenVar = 'foobar';
@@ -84,5 +84,5 @@ needed. Use `StartInHtmlMode` to alter this behaviour.
     #[ReadmeTester\StartInHtmlMode]
     #[ReadmeTester\ExpectOutput("/html/")]
     ```php
-    <?php echo "this example started in html mode";
+    this example started in html mode
     ```
