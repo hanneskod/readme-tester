@@ -6,15 +6,14 @@ php:
     - 7.4
 
 install:
-    - composer install
+    - make vendor/installed
     - wget -O phive.phar https://phar.io/releases/phive.phar
-    - make tools/phpspec tools/behat tools/box PHIVE_CMD="php phive.phar"
+    - make tools/installed PHIVE_CMD="php phive.phar"
 
 script:
-    - tools/phpspec run -v
-    - tools/behat --verbose
-    - bin/readme-tester
-    - tools/box compile
+    - make continuous-integration
+    - make build
+    - make check
 
 deploy:
     provider: releases

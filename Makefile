@@ -38,9 +38,9 @@ maintainer-clean: clean
 	rm -f $(PARSER)
 
 .PHONY: build
-build: $(TARGET)
+build: $(SRC_FILES) $(CONTAINER) $(PARSER) $(TARGET)
 
-$(TARGET): vendor/installed $(CONTAINER) $(PARSER) $(BOX_CMD) $(SRC_FILES)
+$(TARGET): vendor/installed $(BOX_CMD)
 	$(COMPOSER_CMD) install --prefer-dist --no-dev
 	$(BOX_CMD) compile
 	$(COMPOSER_CMD) install
@@ -67,6 +67,14 @@ docs: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
 	$(README_TESTER_CMD) README.md docs --runner process
 	$(README_TESTER_CMD) README.md docs --runner eval
 
+.PHONY: continuous-integration
+continuous-integration: $(PHPSPEC_CMD) $(BEHAT_CMD) $(README_TESTER_CMD)
+	$(PHPSPEC_CMD) run -v
+	$(BEHAT_CMD) --verbose
+	$(README_TESTER_CMD) README.md docs --output debug --runner process
+	$(README_TESTER_CMD) README.md docs --output debug --runner eval
+
+.PHONY: check
 check: $(TARGET)
 	./$(TARGET) README.md docs --ignore docs/custom_attributes.md
 
@@ -89,20 +97,19 @@ vendor/installed: composer.lock
 	$(COMPOSER_CMD) install
 	touch $@
 
-$(PHPSPEC_CMD):
-	$(PHIVE_CMD) install phpspec/phpspec:6 --force-accept-unsigned
+tools/installed: .phive/phars.xml
+	$(PHIVE_CMD) install --force-accept-unsigned
+	touch $@
 
-$(BEHAT_CMD):
-	$(PHIVE_CMD) install behat/behat:3 --force-accept-unsigned
+$(PHPSPEC_CMD): tools/installed
 
-$(PHPSTAN_CMD):
-	$(PHIVE_CMD) install phpstan --force-accept-unsigned
+$(BEHAT_CMD): tools/installed
 
-$(PHPCS_CMD):
-	$(PHIVE_CMD) install phpcs:^3.5.5 --force-accept-unsigned
+$(PHPSTAN_CMD): tools/installed
 
-$(BOX_CMD):
-	$(PHIVE_CMD) install humbug/box --force-accept-unsigned
+$(PHPCS_CMD): tools/installed
+
+$(BOX_CMD): tools/installed
 
 $(PHPEG_CMD):
 	cgr scato/phpeg:^1
