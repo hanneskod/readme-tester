@@ -50,6 +50,16 @@ of an HTML comment block with a fenced block of php code.
     echo "this code is validated";
     ```
 
+### Unknown attributes
+
+Attributes unknown to readmetester are simply skipped
+
+    // TODO commented out, should work once propper php8 attributes is used
+    ##[UnknownAttribute]
+    ```php
+    // The UnknownAttribute is skipped as it is not known
+    ```
+
 ## Hidden examples
 
 Sometimes you may need to set up an environment to create a context for your
