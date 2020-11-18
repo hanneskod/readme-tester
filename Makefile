@@ -98,7 +98,7 @@ vendor/installed: composer.lock
 	touch $@
 
 tools/installed: .phive/phars.xml
-	$(PHIVE_CMD) install --force-accept-unsigned --trust-gpg-keys CF1A108D0E7AE720
+	$(PHIVE_CMD) install --force-accept-unsigned --trust-gpg-keys CF1A108D0E7AE720,31C7E470E2138192
 	touch $@
 
 $(PHPSPEC_CMD): tools/installed
