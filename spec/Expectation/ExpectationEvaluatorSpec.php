@@ -22,7 +22,7 @@ class ExpectationEvaluatorSpec extends ObjectBehavior
     function it_triggers_failure_on_unhandled_outcome(OutcomeInterface $outcome)
     {
         $outcome->mustBeHandled()->willReturn(true);
-        $outcome->getDescription()->willReturn('');
+        $outcome->getTruncatedContent(Argument::type('int'))->willReturn('');
         $this->evaluate([], $outcome)->shouldReturnStatus([Failure::class]);
     }
 
