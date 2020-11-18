@@ -104,7 +104,6 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Example\\ArrayExampleStore' => true,
             'hanneskod\\readmetester\\Example\\CombinedExampleStore' => true,
             'hanneskod\\readmetester\\Example\\ExampleObj' => true,
-            'hanneskod\\readmetester\\Example\\ExampleRegistry' => true,
             'hanneskod\\readmetester\\Expectation\\ErrorExpectation' => true,
             'hanneskod\\readmetester\\Expectation\\ExpectationEvaluator' => true,
             'hanneskod\\readmetester\\Expectation\\Failure' => true,
