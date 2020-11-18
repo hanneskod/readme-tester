@@ -74,7 +74,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iRunReadmeTester()
     {
-        $command = realpath('bin/readme-tester') . " --format=json " . implode(' ', $this->args);
+        $command = realpath('bin/readme-tester') . " --output=json " . implode(' ', $this->args);
         $cwd = getcwd();
         chdir($this->tempDir);
         exec($command, $output, $this->returnValue);

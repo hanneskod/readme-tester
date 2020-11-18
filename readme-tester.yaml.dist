@@ -1,11 +1,13 @@
 runner: process
 
-format: default
+input_format: markdown
+
+output_format: default
+
+subscribers: []
 
 bootstrap:
     - vendor/autoload.php
-
-stop_on_failure: false
 
 paths: []
 
@@ -16,3 +18,5 @@ file_extensions:
     - md
     - mdown
     - markdown
+
+stop_on_failure: false

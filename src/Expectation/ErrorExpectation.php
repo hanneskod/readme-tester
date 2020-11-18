@@ -31,12 +31,12 @@ final class ErrorExpectation implements ExpectationInterface
 
     public function handle(OutcomeInterface $outcome): StatusInterface
     {
+        $msg = "that error '{$outcome->getTruncatedContent()}' matches '{$this->regexp->getRegexp()}'";
+
         if (!$this->regexp->matches($outcome->getContent())) {
-            return new Failure(
-                "Failed asserting that error '{$outcome->getContent()}' matches {$this->regexp->getRegexp()}"
-            );
+            return new Failure("Failed asserting $msg");
         }
 
-        return new Success("Asserted that error '{$outcome->getContent()}' matches {$this->regexp->getRegexp()}");
+        return new Success("Asserted $msg");
     }
 }

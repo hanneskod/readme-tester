@@ -41,6 +41,11 @@ class SkippedOutcomeSpec extends ObjectBehavior
         $this->getContent()->shouldReturn('');
     }
 
+    function it_can_truncated_content()
+    {
+        $this->getTruncatedContent()->shouldReturn('');
+    }
+
     function it_contains_description()
     {
         $this->beConstructedWith('desc');

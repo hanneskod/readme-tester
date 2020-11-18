@@ -28,6 +28,17 @@ final class ErrorOutcome implements OutcomeInterface
         return $this->message;
     }
 
+    public function getTruncatedContent(int $strlen = 30): string
+    {
+        $content = trim($this->getContent());
+
+        if (mb_strlen($content) <= $strlen) {
+            return $content;
+        }
+
+        return mb_substr($content, 0, $strlen-3) . '...';
+    }
+
     public function getDescription(): string
     {
         return $this->message;

@@ -4,8 +4,128 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "629ad619ab194bb58ea62a9d391b0ece",
+    "content-hash": "a8deb1fc9b33bf2edcfbb1c2701f00c5",
     "packages": [
+        {
+            "name": "crell/tukio",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Crell/Tukio.git",
+                "reference": "28e2bf9ba45035826c693bf96f64b68a3c805d34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Crell/Tukio/zipball/28e2bf9ba45035826c693bf96f64b68a3c805d34",
+                "reference": "28e2bf9ba45035826c693bf96f64b68a3c805d34",
+                "shasum": ""
+            },
+            "require": {
+                "fig/event-dispatcher-util": "^1.0",
+                "php": "~7.2 | ~8.0",
+                "psr/container": "^1.0",
+                "psr/event-dispatcher": "^1.0",
+                "psr/log": "^1.0"
+            },
+            "provide": {
+                "psr/event-dispatcher-implementation": "1.0"
+            },
+            "require-dev": {
+                "nunomaduro/phpinsights": "^1.3",
+                "phpbench/phpbench": "@dev",
+                "phpunit/phpunit": "~8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Crell\\Tukio\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "http://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A robust, stand-alone PSR-14 event dispatcher implementation.",
+            "homepage": "https://github.com/Crell/Tukio",
+            "keywords": [
+                "Tukio",
+                "events",
+                "psr-14"
+            ],
+            "support": {
+                "issues": "https://github.com/Crell/Tukio/issues",
+                "source": "https://github.com/Crell/Tukio/tree/1.2.0"
+            },
+            "time": "2020-11-10T22:36:07+00:00"
+        },
+        {
+            "name": "fig/event-dispatcher-util",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/event-dispatcher-util.git",
+                "reference": "b906bd3c2bc7a7b5ed987ab12667161f7d83a45b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/event-dispatcher-util/zipball/b906bd3c2bc7a7b5ed987ab12667161f7d83a45b",
+                "reference": "b906bd3c2bc7a7b5ed987ab12667161f7d83a45b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "psr/event-dispatcher": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fig\\EventDispatcher\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                },
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "https://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Useful utility classes and traits for implementing the PSR events standard",
+            "homepage": "https://github.com/php-fig/event-dispatcher-util",
+            "keywords": [
+                "events",
+                "psr-14"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/event-dispatcher-util/issues",
+                "source": "https://github.com/php-fig/event-dispatcher-util/tree/1.2.0"
+            },
+            "time": "2020-10-07T20:42:09+00:00"
+        },
         {
             "name": "psr/container",
             "version": "1.0.0",
@@ -58,6 +178,106 @@
                 "source": "https://github.com/php-fig/container/tree/master"
             },
             "time": "2017-02-14T16:28:37+00:00"
+        },
+        {
+            "name": "psr/event-dispatcher",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/event-dispatcher.git",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/event-dispatcher/zipball/dbefd12671e8a14ec7f180cab83036ed26714bb0",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\EventDispatcher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Standard interfaces for event handling.",
+            "keywords": [
+                "events",
+                "psr",
+                "psr-14"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/event-dispatcher/issues",
+                "source": "https://github.com/php-fig/event-dispatcher/tree/1.0.0"
+            },
+            "time": "2019-01-08T18:20:26+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/1.1.3"
+            },
+            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "symfony/console",
@@ -1369,56 +1589,6 @@
                 "source": "https://github.com/php-fig/cache/tree/master"
             },
             "time": "2016-08-06T20:24:11+00:00"
-        },
-        {
-            "name": "psr/log",
-            "version": "1.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/log.git",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Log\\": "Psr/Log/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for logging libraries",
-            "homepage": "https://github.com/php-fig/log",
-            "keywords": [
-                "log",
-                "psr",
-                "psr-3"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/log/tree/1.1.3"
-            },
-            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "symfony/cache",

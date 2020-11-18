@@ -6,13 +6,14 @@ namespace hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Attributes\Isolate;
 use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Utils\Loader;
 
 final class EvalRunner implements RunnerInterface
 {
-    public function __construct(string $bootstrap = '')
+    public function setBootstrap(CodeBlock $bootstrap): void
     {
-        Loader::loadOnce($bootstrap);
+        Loader::loadOnce($bootstrap->getCode());
     }
 
     public function run(ExampleObj $example): OutcomeInterface
@@ -37,10 +38,10 @@ final class EvalRunner implements RunnerInterface
 
         try {
             Loader::load($example->getCodeBlock()->getCode());
-        } catch (\Throwable $e) {
+        } catch (\Throwable $exception) {
             restore_error_handler();
             ob_end_clean();
-            return new ErrorOutcome((string)$e);
+            return new ErrorOutcome((string)$exception);
         }
 
         restore_error_handler();

@@ -28,6 +28,11 @@ final class SkippedOutcome implements OutcomeInterface
         return '';
     }
 
+    public function getTruncatedContent(int $strlen = 30): string
+    {
+        return '';
+    }
+
     public function getDescription(): string
     {
         return $this->desc;

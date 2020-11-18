@@ -48,7 +48,7 @@ $(TARGET): vendor/installed $(CONTAINER) $(PARSER) $(BOX_CMD) $(SRC_FILES)
 $(CONTAINER): vendor/installed $(ETC_FILES) $(SRC_FILES)
 	bin/build_container > $@
 
-$(PARSER): $(PARSER_ROOT).peg $(PHPEG_CMD)
+$(PARSER): $(PARSER_ROOT).peg
 	$(PHPEG_CMD) generate $<
 
 .PHONY: test

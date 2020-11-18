@@ -43,7 +43,10 @@ class ProjectServiceContainer extends Container
     public function getRemovedIds(): array
     {
         return [
+            'Crell\\Tukio\\OrderedProviderInterface' => true,
+            'Fig\\EventDispatcher\\AggregateProvider' => true,
             'Psr\\Container\\ContainerInterface' => true,
+            'Psr\\EventDispatcher\\EventDispatcherInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
             'config_loader' => true,
             'default_config_repository' => true,
@@ -63,8 +66,8 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Attributes\\NamespaceName' => true,
             'hanneskod\\readmetester\\Attributes\\PrependCode' => true,
             'hanneskod\\readmetester\\Attributes\\StartInHtmlMode' => true,
-            'hanneskod\\readmetester\\CliConsole' => true,
             'hanneskod\\readmetester\\Compiler\\CodeBlockImportingPass' => true,
+            'hanneskod\\readmetester\\Compiler\\CompilerFactoryFactory' => true,
             'hanneskod\\readmetester\\Compiler\\CompilerFactoryInterface' => true,
             'hanneskod\\readmetester\\Compiler\\FileInput' => true,
             'hanneskod\\readmetester\\Compiler\\MultipassCompiler' => true,
@@ -76,29 +79,49 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Config\\DefaultConfigFactory' => true,
             'hanneskod\\readmetester\\Config\\RepositoryInterface' => true,
             'hanneskod\\readmetester\\Config\\YamlFileLoader' => true,
+            'hanneskod\\readmetester\\Console\\CliConsole' => true,
+            'hanneskod\\readmetester\\Console\\FilesystemInputGenerator' => true,
+            'hanneskod\\readmetester\\Event\\BootstrapIncluded' => true,
+            'hanneskod\\readmetester\\Event\\DebugEvent' => true,
+            'hanneskod\\readmetester\\Event\\ExampleEntered' => true,
+            'hanneskod\\readmetester\\Event\\ExampleExited' => true,
+            'hanneskod\\readmetester\\Event\\ExampleIgnored' => true,
+            'hanneskod\\readmetester\\Event\\ExampleSkipped' => true,
+            'hanneskod\\readmetester\\Event\\ExecutionStarted' => true,
+            'hanneskod\\readmetester\\Event\\ExecutionStopped' => true,
+            'hanneskod\\readmetester\\Event\\FileIncluded' => true,
+            'hanneskod\\readmetester\\Event\\Listener\\DebugOutputtingSubscriber' => true,
+            'hanneskod\\readmetester\\Event\\Listener\\DefaultOutputtingSubscriber' => true,
+            'hanneskod\\readmetester\\Event\\Listener\\ExitStatusListener' => true,
+            'hanneskod\\readmetester\\Event\\Listener\\JsonOutputtingSubscriber' => true,
+            'hanneskod\\readmetester\\Event\\Listener\\SubscriberFactory' => true,
+            'hanneskod\\readmetester\\Event\\Listener\\VoidOutputtingSubscriber' => true,
+            'hanneskod\\readmetester\\Event\\LogEvent' => true,
+            'hanneskod\\readmetester\\Event\\TestFailed' => true,
+            'hanneskod\\readmetester\\Event\\TestPassed' => true,
+            'hanneskod\\readmetester\\Event\\TestingAborted' => true,
             'hanneskod\\readmetester\\ExampleTester' => true,
             'hanneskod\\readmetester\\Example\\ArrayExampleStore' => true,
             'hanneskod\\readmetester\\Example\\CombinedExampleStore' => true,
             'hanneskod\\readmetester\\Example\\ExampleObj' => true,
             'hanneskod\\readmetester\\Example\\ExampleRegistry' => true,
-            'hanneskod\\readmetester\\ExitStatusListener' => true,
             'hanneskod\\readmetester\\Expectation\\ErrorExpectation' => true,
             'hanneskod\\readmetester\\Expectation\\ExpectationEvaluator' => true,
             'hanneskod\\readmetester\\Expectation\\Failure' => true,
             'hanneskod\\readmetester\\Expectation\\OutputExpectation' => true,
             'hanneskod\\readmetester\\Expectation\\Success' => true,
-            'hanneskod\\readmetester\\Formatter\\DefaultFormatter' => true,
-            'hanneskod\\readmetester\\Formatter\\JsonFormatter' => true,
             'hanneskod\\readmetester\\Markdown\\Compiler' => true,
             'hanneskod\\readmetester\\Markdown\\CompilerFactory' => true,
             'hanneskod\\readmetester\\Markdown\\Definition' => true,
             'hanneskod\\readmetester\\Markdown\\Parser' => true,
             'hanneskod\\readmetester\\Markdown\\Template' => true,
             'hanneskod\\readmetester\\Markdown\\TemplateRenderer' => true,
+            'hanneskod\\readmetester\\Runner\\BootstrapFactory' => true,
             'hanneskod\\readmetester\\Runner\\ErrorOutcome' => true,
             'hanneskod\\readmetester\\Runner\\EvalRunner' => true,
             'hanneskod\\readmetester\\Runner\\OutputOutcome' => true,
             'hanneskod\\readmetester\\Runner\\ProcessRunner' => true,
+            'hanneskod\\readmetester\\Runner\\RunnerFactory' => true,
             'hanneskod\\readmetester\\Runner\\SkippedOutcome' => true,
             'hanneskod\\readmetester\\Runner\\VoidOutcome' => true,
             'hanneskod\\readmetester\\Utils\\CodeBlock' => true,
@@ -119,13 +142,33 @@ class ProjectServiceContainer extends Container
 
         $a = new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory('readme-tester.yaml.dist'))->createRepository());
         (new \hanneskod\readmetester\Config\YamlFileLoader('readme-tester.yaml'))->loadYamlFile($a);
+        $b = new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator());
 
-        $b = new \hanneskod\readmetester\CliConsole($a);
+        $c = new \Fig\EventDispatcher\AggregateProvider();
+
+        $d = new \Crell\Tukio\OrderedListenerProvider($this);
+
+        $e = new \hanneskod\readmetester\Event\Listener\ExitStatusListener();
+
+        $d->addListener($e);
+
+        $c->addProvider($d);
+
+        $f = new \Crell\Tukio\Dispatcher($c);
+
+        $b->setEventDispatcher($f);
+        $g = new \hanneskod\readmetester\Console\FilesystemInputGenerator();
+        $g->setEventDispatcher($f);
+        $h = new \hanneskod\readmetester\Runner\BootstrapFactory();
+        $h->setEventDispatcher($f);
+
+        $i = new \hanneskod\readmetester\Console\CliConsole($a, $b, new \hanneskod\readmetester\Compiler\CompilerFactoryFactory(), $e, new \hanneskod\readmetester\Event\Listener\SubscriberFactory(), $g, new \hanneskod\readmetester\Runner\RunnerFactory(), $h, $d);
+        $i->setEventDispatcher($f);
 
         $instance->setName('Readme-Tester');
         $instance->setVersion('dev');
-        $instance->setCode($b);
-        $b->configure($instance);
+        $instance->setCode($i);
+        $i->configure($instance);
 
         return $instance;
     }

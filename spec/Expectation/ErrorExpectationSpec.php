@@ -51,6 +51,7 @@ class ErrorExpectationSpec extends ObjectBehavior
     function it_returns_failure_on_no_match($regexp, OutcomeInterface $outcome)
     {
         $outcome->getContent()->willReturn('foobar');
+        $outcome->getTruncatedContent()->willReturn('foobar');
         $regexp->matches('foobar')->willReturn(false);
         $regexp->getRegexp()->willReturn('');
         $this->handle($outcome)->shouldHaveType(Failure::class);
@@ -59,6 +60,7 @@ class ErrorExpectationSpec extends ObjectBehavior
     function it_returns_success_on_match($regexp, OutcomeInterface $outcome)
     {
         $outcome->getContent()->willReturn('foobar');
+        $outcome->getTruncatedContent()->willReturn('foobar');
         $regexp->matches('foobar')->willReturn(true);
         $regexp->getRegexp()->willReturn('');
         $this->handle($outcome)->shouldHaveType(Success::class);

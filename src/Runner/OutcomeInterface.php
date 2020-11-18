@@ -45,6 +45,11 @@ interface OutcomeInterface
     public function getContent(): string;
 
     /**
+     * Get a truncated version of the outcome data
+     */
+    public function getTruncatedContent(int $strlen = 30): string;
+
+    /**
      * Get a free text description of this outcome
      */
     public function getDescription(): string;

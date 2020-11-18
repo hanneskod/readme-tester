@@ -14,14 +14,14 @@ services:
     application:
         class: Symfony\Component\Console\SingleCommandApplication
         public: true
-        configurator: ['@hanneskod\readmetester\CliConsole', 'configure']
+        configurator: ['@hanneskod\readmetester\Console\CliConsole', 'configure']
         calls:
             - method: 'setName'
               arguments: ['Readme-Tester']
             - method: 'setVersion'
               arguments: ['dev']
             - method: 'setCode'
-              arguments: ['@hanneskod\readmetester\CliConsole']
+              arguments: ['@hanneskod\readmetester\Console\CliConsole']
 
     hanneskod\readmetester\Config\ConfigManager:
         class: ~
@@ -39,3 +39,19 @@ services:
     config_loader:
         class: hanneskod\readmetester\Config\YamlFileLoader
         arguments: ['%USER_CONFIG_FILE%']
+
+    Psr\EventDispatcher\EventDispatcherInterface:
+        class: Crell\Tukio\Dispatcher
+        arguments: ['@Fig\EventDispatcher\AggregateProvider']
+
+    Fig\EventDispatcher\AggregateProvider:
+        class: ~
+        calls:
+            - method: addProvider
+              arguments: ['@Crell\Tukio\OrderedProviderInterface']
+
+    Crell\Tukio\OrderedProviderInterface:
+        class: Crell\Tukio\OrderedListenerProvider
+        calls:
+            - method: addListener
+              arguments: ['@hanneskod\readmetester\Event\Listener\ExitStatusListener']

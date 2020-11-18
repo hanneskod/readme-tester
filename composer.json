@@ -34,6 +34,9 @@
     },
     "require": {
         "php": ">=7.4",
+        "crell/tukio": "^1",
+        "fig/event-dispatcher-util": "^1",
+        "psr/event-dispatcher": "^1",
         "symfony/console": "^5",
         "symfony/dependency-injection": "^5",
         "symfony/finder": "^5",

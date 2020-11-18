@@ -14,6 +14,7 @@ final class Loader
      */
     public static function load(string $code)
     {
+        // TODO  why does not Loader consume CodeBlock objects??
         // TODO loader could choose a different strategy if eval() is not avaliable
         return eval($code);
     }
