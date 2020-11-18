@@ -17,9 +17,9 @@ final class FilesystemInputGenerator
      * @param array<string> $paths
      * @param array<string> $extensions
      * @param array<string> $ignore
-     * @return array<Compiler\InputInterface>
+     * @return \Generator<Compiler\InputInterface>
      */
-    public function generateFilesystemInput(string $cwd, array $paths, array $extensions, array $ignore): array
+    public function generateFilesystemInput(string $cwd, array $paths, array $extensions, array $ignore): \Generator
     {
         $finder = (new Finder)->files()->in($cwd)->ignoreUnreadableDirs();
 
@@ -50,15 +50,9 @@ final class FilesystemInputGenerator
             )
         );
 
-        // TODO borde kunna returnera en generator...
-
-        $inputs = [];
-
         foreach ($finder as $file) {
-            $inputs[] = new Compiler\FileInput($file);
+            yield new Compiler\FileInput($file);
             $this->dispatcher->dispatch(new Event\FileIncluded($file));
         }
-
-        return $inputs;
     }
 }

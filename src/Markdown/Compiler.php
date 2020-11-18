@@ -20,7 +20,7 @@ final class Compiler implements CompilerInterface
         $this->renderer = $renderer;
     }
 
-    public function compile(array $inputs): ExampleStoreInterface
+    public function compile(iterable $inputs): ExampleStoreInterface
     {
         $globalStore = new CombinedExampleStore;
 
