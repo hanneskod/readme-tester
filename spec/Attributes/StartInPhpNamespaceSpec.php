@@ -4,19 +4,19 @@ declare(strict_types = 1);
 
 namespace spec\hanneskod\readmetester\Attributes;
 
-use hanneskod\readmetester\Attributes\StartInNamespace;
+use hanneskod\readmetester\Attributes\StartInPhpNamespace;
 use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\CodeBlock;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class StartInNamespaceSpec extends ObjectBehavior
+class StartInPhpNamespaceSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith('');
-        $this->shouldHaveType(StartInNamespace::class);
+        $this->shouldHaveType(StartInPhpNamespace::class);
     }
 
     function it_is_a_transformation()
@@ -38,6 +38,6 @@ class StartInNamespaceSpec extends ObjectBehavior
     function it_can_create_attribute()
     {
         $this->beConstructedWith('');
-        $this->createAttribute('foo')->shouldReturn('\hanneskod\readmetester\Attributes\StartInNamespace("foo")');
+        $this->createAttribute('foo')->shouldReturn('\hanneskod\readmetester\Attributes\StartInPhpNamespace("foo")');
     }
 }

@@ -38,9 +38,9 @@ maintainer-clean: clean
 	rm -f $(PARSER)
 
 .PHONY: build
-build: $(SRC_FILES) $(CONTAINER) $(PARSER) $(TARGET)
+build: $(CONTAINER) $(PARSER) $(TARGET)
 
-$(TARGET): vendor/installed $(BOX_CMD)
+$(TARGET): vendor/installed $(BOX_CMD) $(SRC_FILES)
 	$(COMPOSER_CMD) install --prefer-dist --no-dev
 	$(BOX_CMD) compile
 	$(COMPOSER_CMD) install

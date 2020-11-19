@@ -67,7 +67,7 @@ Prepend code to the current example.
 
 Start example in html mode instead of the default php mode.
 
-## StartInNamespace
+## StartInPhpNamespace
 
 Set an initial namespace declaration.
 

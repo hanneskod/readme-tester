@@ -77,13 +77,13 @@ You may also prepend or append code to the example using the `PrependCode` and
 echo "bar";
 ```
 
-### Setting the namespace
+### Setting the PHP namespace
 
 If you don't wish to clutter examples with namespace declarations you can use
-the `StartInNamespace` attribute.
+the `StartInPhpNamespace` attribute.
 
 ```
-#[ReadmeTester\StartInNamespace('foobar')]
+#[ReadmeTester\StartInPhpNamespace('foobar')]
 #[ReadmeTester\ExpectOutput('/foobar/')]
 ```
 ```php
@@ -97,7 +97,6 @@ using the `UseClass`, `UseFunction` and `UseConst` attributes. All take
 the name of the symbol to import and an optional local name as arguments.
 
 ```
-#[ReadmeTester\Example('Import class')]
 #[ReadmeTester\UseClass('Exception', 'Foo')]
 #[ReadmeTester\UseFunction('var_dump', 'output')]
 #[ReadmeTester\UseConst('E_USER_ERROR', 'INTEGER_CONSTANT')]

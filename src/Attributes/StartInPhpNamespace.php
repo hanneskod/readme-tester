@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Attributes;
 
 #[\Attribute]
-class StartInNamespace extends PrependCode
+class StartInPhpNamespace extends PrependCode
 {
     public function __construct(string $namespace)
     {

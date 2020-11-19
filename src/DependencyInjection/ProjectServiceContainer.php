@@ -63,7 +63,7 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Attributes\\NamespaceName' => true,
             'hanneskod\\readmetester\\Attributes\\PrependCode' => true,
             'hanneskod\\readmetester\\Attributes\\StartInHtmlMode' => true,
-            'hanneskod\\readmetester\\Attributes\\StartInNamespace' => true,
+            'hanneskod\\readmetester\\Attributes\\StartInPhpNamespace' => true,
             'hanneskod\\readmetester\\Attributes\\UseClass' => true,
             'hanneskod\\readmetester\\Attributes\\UseConst' => true,
             'hanneskod\\readmetester\\Attributes\\UseFunction' => true,
