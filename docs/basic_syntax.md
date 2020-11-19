@@ -79,12 +79,12 @@ defined inside a html comment. Consider the following example:
     ```
     -->
 
-#[ReadmeTester\Example('import-hidden-example')]
-#[ReadmeTester\Import('hidden-example')]
-#[ReadmeTester\ExpectOutput('foobar')]
-```php
-echo $hiddenVar;
-```
+    #[ReadmeTester\Example('import-hidden-example')]
+    #[ReadmeTester\Import('hidden-example')]
+    #[ReadmeTester\ExpectOutput('foobar')]
+    ```php
+    echo $hiddenVar;
+    ```
 
 ## PHP mode
 
