@@ -41,6 +41,6 @@ final class ErrorOutcome implements OutcomeInterface
 
     public function getDescription(): string
     {
-        return $this->message;
+        return $this->getTruncatedContent(63);
     }
 }

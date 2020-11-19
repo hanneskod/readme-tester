@@ -41,6 +41,6 @@ final class OutputOutcome implements OutcomeInterface
 
     public function getDescription(): string
     {
-        return "output '{$this->output}'";
+        return "output '{$this->getTruncatedContent(56)}'";
     }
 }

@@ -35,7 +35,7 @@ class ExpectationEvaluator
         }
 
         if (!$isHandled) {
-            $statuses[] = new Failure($outcome->getTruncatedContent(78));
+            $statuses[] = new Failure('Unhandled ' . $outcome->getDescription());
         }
 
         return $statuses;
