@@ -66,3 +66,22 @@ Prepend code to the current example.
 ## StartInHtmlMode
 
 Start example in html mode instead of the default php mode.
+
+## StartInNamespace
+
+Set an initial namespace declaration.
+
+## UseClass
+
+Import a class to the current namespace. Takes the name of the symbol and an
+optional local name as arguments (`use [name] as [local-name];`).
+
+## UseConst
+
+Import a constant to the current namespace. Takes the name of the symbol and an
+optional local name as arguments (`use const [name] as [local-name];`).
+
+## UseFunction
+
+Import a function to the current namespace. Takes the name of the symbol and an
+optional local name as arguments (`use function [name] as [local-name];`).

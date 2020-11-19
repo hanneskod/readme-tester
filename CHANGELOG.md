@@ -18,7 +18,8 @@ This project now adheres to [Semantic Versioning](http://semver.org/).
 - Using php8 attributes instead of annotations
 - Added support for `readme-tester.yaml` config file
 - Use a propper event dispatcher
+- Added multiple new attributes, se [docs/attribute_reference.md](docs/attribute_reference.md)
 
 ## [1.0.0] - 2020-07-06
 
-- Initial stable release
+- Initial release

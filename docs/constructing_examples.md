@@ -76,3 +76,35 @@ You may also prepend or append code to the example using the `PrependCode` and
 ```php
 echo "bar";
 ```
+
+### Setting the namespace
+
+If you don't wish to clutter examples with namespace declarations you can use
+the `StartInNamespace` attribute.
+
+```
+#[ReadmeTester\StartInNamespace('foobar')]
+#[ReadmeTester\ExpectOutput('/foobar/')]
+```
+```php
+echo __NAMESPACE__;
+```
+
+### Importing symbols
+
+Yoy may also import symbols into the example by prepending `use` declarations
+using the `UseClass`, `UseFunction` and `UseConst` attributes. All take
+the name of the symbol to import and an optional local name as arguments.
+
+```
+#[ReadmeTester\Example('Import class')]
+#[ReadmeTester\UseClass('Exception', 'Foo')]
+#[ReadmeTester\UseFunction('var_dump', 'output')]
+#[ReadmeTester\UseConst('E_USER_ERROR', 'INTEGER_CONSTANT')]
+#[ReadmeTester\ExpectOutput('/Exception/')]
+#[ReadmeTester\ExpectOutput('/int\(\d+\)/')]
+```
+```php
+output(Foo::class);
+output(INTEGER_CONSTANT);
+```

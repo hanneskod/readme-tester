@@ -14,7 +14,7 @@ trait AttributeFactoryTrait
             $arglist = sprintf(
                 '("%s")',
                 implode(
-                    '"',
+                    '", "',
                     array_map(fn(string $arg) => addslashes(trim($arg)), $args)
                 )
             );
