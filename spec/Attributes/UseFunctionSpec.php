@@ -48,6 +48,7 @@ class UseFunctionSpec extends ObjectBehavior
     function it_can_create_attribute()
     {
         $this->beConstructedWith('');
-        $this->createAttribute('foo', 'bar')->shouldReturn('\hanneskod\readmetester\Attributes\UseFunction("foo", "bar")');
+        $this->createAttribute('foo', 'bar')
+            ->shouldReturn('\hanneskod\readmetester\Attributes\UseFunction("foo", "bar")');
     }
 }
