@@ -4,21 +4,18 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Compiler;
 
-use hanneskod\readmetester\Markdown;
-use hanneskod\readmetester\Utils\Instantiator;
+use hanneskod\readmetester\Config\Configs;
+use hanneskod\readmetester\DependencyInjection;
 
 final class CompilerFactoryFactory
 {
-    const INPUT_MARKDOWN = 'markdown';
+    use DependencyInjection\InstantiatorProperty;
 
     public function createCompilerFactory(string $id): CompilerFactoryInterface
     {
-        switch (true) {
-            case $id == self::INPUT_MARKDOWN:
-                return new Markdown\CompilerFactory;
-        }
-
-        $factory = Instantiator::instantiate($id);
+        $factory = $this->instantiator->getNewObject(
+            Configs::expand(Configs::INPUT_ID, $id),
+        );
 
         if (!$factory instanceof CompilerFactoryInterface) {
             throw new \RuntimeException("$id does no implement CompilerFactoryInterface");

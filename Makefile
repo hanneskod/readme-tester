@@ -15,7 +15,7 @@ TARGET=readme-tester.phar
 
 CONTAINER=src/DependencyInjection/ProjectServiceContainer.php
 
-PARSER_ROOT=src/Markdown/Parser
+PARSER_ROOT=src/Input/Markdown/Parser
 PARSER=$(PARSER_ROOT).php
 
 ETC_FILES:=$(shell find etc/ -type f -name '*')

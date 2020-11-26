@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8deb1fc9b33bf2edcfbb1c2701f00c5",
+    "content-hash": "881b500c29efd9ab358a41fb6b493581",
     "packages": [
         {
             "name": "crell/tukio",

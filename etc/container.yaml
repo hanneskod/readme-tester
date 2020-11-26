@@ -10,14 +10,14 @@ services:
     application:
         class: Symfony\Component\Console\SingleCommandApplication
         public: true
-        configurator: ['@hanneskod\readmetester\Console\CliConsole', 'configure']
+        configurator: ['@hanneskod\readmetester\CliConsole', 'configure']
         calls:
             - method: 'setName'
               arguments: ['Readme-Tester']
             - method: 'setVersion'
               arguments: ['dev']
             - method: 'setCode'
-              arguments: ['@hanneskod\readmetester\Console\CliConsole']
+              arguments: ['@hanneskod\readmetester\CliConsole']
 
     hanneskod\readmetester\Config\ConfigManager:
         class: ~
@@ -39,6 +39,7 @@ services:
 
     Crell\Tukio\OrderedProviderInterface:
         class: Crell\Tukio\OrderedListenerProvider
+        arguments: ['@hanneskod\readmetester\Utils\Instantiator']
         calls:
             - method: addListener
-              arguments: ['@hanneskod\readmetester\Event\Listener\ExitStatusListener']
+              arguments: ['@hanneskod\readmetester\Event\ExitStatusListener']
