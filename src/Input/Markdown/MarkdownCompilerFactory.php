@@ -11,14 +11,13 @@ use hanneskod\readmetester\Compiler\MultipassCompiler;
 use hanneskod\readmetester\Compiler\TransformationPass;
 use hanneskod\readmetester\Compiler\UniqueNamePass;
 use hanneskod\readmetester\Input\ParsingCompiler;
-use hanneskod\readmetester\Input\ReflectiveExampleStoreRenderer;
 
 final class MarkdownCompilerFactory implements CompilerFactoryInterface
 {
     public function createCompiler(): CompilerInterface
     {
         return new MultipassCompiler(
-            new ParsingCompiler(new Parser, new ReflectiveExampleStoreRenderer),
+            new ParsingCompiler(new Parser),
             [
                 new TransformationPass,
                 new UniqueNamePass,

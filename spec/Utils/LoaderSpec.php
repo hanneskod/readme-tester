@@ -28,6 +28,16 @@ class LoaderSpec extends ObjectBehavior
         $this->load("return 'foobar';")->shouldReturn('foobar');
     }
 
+    function it_throw_on_invalid_code()
+    {
+        $this->shouldThrow(\RuntimeException::class)->duringLoad('not-valid-php');
+    }
+
+    function it_throw_on_error()
+    {
+        $this->shouldThrow(\RuntimeException::class)->duringLoad('trigger_error("ERROR");');
+    }
+
     function it_loades_once()
     {
         $this->loadOnce("class it_loades_once {}");

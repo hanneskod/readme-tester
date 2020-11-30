@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Input;
 
 use hanneskod\readmetester\Input\ParsingCompiler;
-use hanneskod\readmetester\Input\ReflectiveExampleStoreRenderer;
 use hanneskod\readmetester\Input\ReflectiveExampleStoreTemplate;
 use hanneskod\readmetester\Input\ParserInterface;
 use hanneskod\readmetester\Compiler\CompilerInterface;
@@ -17,9 +16,9 @@ use Prophecy\Argument;
 
 class ParsingCompilerSpec extends ObjectBehavior
 {
-    function let(ParserInterface $parser, ReflectiveExampleStoreRenderer $renderer)
+    function let(ParserInterface $parser)
     {
-        $this->beConstructedWith($parser, $renderer);
+        $this->beConstructedWith($parser);
     }
 
     function it_is_initializable()
@@ -34,7 +33,6 @@ class ParsingCompilerSpec extends ObjectBehavior
 
     function it_compiles(
         $parser,
-        $renderer,
         InputInterface $inputA,
         InputInterface $inputB,
         ReflectiveExampleStoreTemplate $templateA,
@@ -53,8 +51,8 @@ class ParsingCompilerSpec extends ObjectBehavior
         $templateA->setDefaultNamespace('namespaceA')->shouldBeCalled();
         $templateB->setDefaultNamespace('namespaceB')->shouldBeCalled();
 
-        $renderer->render($templateA)->willReturn($storeA);
-        $renderer->render($templateB)->willReturn($storeB);
+        $templateA->render()->willReturn($storeA);
+        $templateB->render()->willReturn($storeB);
 
         $expected = new CombinedExampleStore;
         $expected->addExampleStore($storeA->getWrappedObject());

@@ -13,7 +13,6 @@ final class ParsingCompiler implements CompilerInterface
 {
     public function __construct(
         private ParserInterface $parser,
-        private ReflectiveExampleStoreRenderer $renderer,
     ) {}
 
     public function compile(iterable $inputs): ExampleStoreInterface
@@ -25,7 +24,7 @@ final class ParsingCompiler implements CompilerInterface
 
             $template->setDefaultNamespace($input->getDefaultNamespace());
 
-            $globalStore->addExampleStore($this->renderer->render($template));
+            $globalStore->addExampleStore($template->render());
         }
 
         return $globalStore;

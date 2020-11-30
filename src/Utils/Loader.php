@@ -9,24 +9,28 @@ final class Loader
     /** @var array<string, bool> */
     private static array $loaded = [];
 
-    /**
-     * @return mixed
-     */
-    public static function load(string $code)
+    public static function load(string $code): mixed
     {
-        return eval($code);
+        try {
+            return eval($code);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException(
+                sprintf(
+                    "Unable to load '%s': %s",
+                    $code,
+                    $exception->getMessage()
+                )
+            );
+        }
     }
 
-    /**
-     * @return mixed
-     */
-    public static function loadOnce(string $code)
+    public static function loadOnce(string $code): void
     {
         $key = md5($code);
 
         if (!isset(self::$loaded[$key])) {
             self::$loaded[$key] = true;
-            return self::load($code);
+            self::load($code);
         }
     }
 }

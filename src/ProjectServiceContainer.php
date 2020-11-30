@@ -113,7 +113,6 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Input\\Markdown\\Parser' => true,
             'hanneskod\\readmetester\\Input\\ParserInterface' => true,
             'hanneskod\\readmetester\\Input\\ParsingCompiler' => true,
-            'hanneskod\\readmetester\\Input\\ReflectiveExampleStoreRenderer' => true,
             'hanneskod\\readmetester\\Input\\ReflectiveExampleStoreTemplate' => true,
             'hanneskod\\readmetester\\Output\\DebugOutputtingSubscriber' => true,
             'hanneskod\\readmetester\\Output\\DefaultOutputtingSubscriber' => true,

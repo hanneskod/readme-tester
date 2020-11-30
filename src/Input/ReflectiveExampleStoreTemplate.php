@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Input;
 
 use hanneskod\readmetester\Attribute\NamespaceName;
+use hanneskod\readmetester\Example\ExampleStoreInterface;
+use hanneskod\readmetester\Utils\Loader;
 
 class ReflectiveExampleStoreTemplate
 {
@@ -47,7 +49,12 @@ METHOD_TEMPLATE;
         );
     }
 
-    public function getCode(): string
+    public function render(): ExampleStoreInterface
+    {
+        return Loader::load($this->getCode());
+    }
+
+    private function getCode(): string
     {
         return sprintf(
             self::CLASS_TEMPLATE,

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Input;
 
 use hanneskod\readmetester\Input\ReflectiveExampleStoreTemplate;
+use hanneskod\readmetester\Input\ReflectiveExampleStore;
 use hanneskod\readmetester\Input\Definition;
 use hanneskod\readmetester\Attribute\NamespaceName;
 use PhpSpec\ObjectBehavior;
@@ -21,30 +22,20 @@ class ReflectiveExampleStoreTemplateSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [],
-            [new Definition(code: "this-is-the-code")]
+            [new Definition(code: "echo 'foobar';")]
         );
 
-        $this->getCode()->shouldContain("this-is-the-code");
+        $this->render()->shouldContainExampleWithCode("echo 'foobar';");
     }
 
     function it_creates_example_attribute()
     {
         $this->beConstructedWith(
             [],
-            [new Definition(attributes: ['#[FooAttribute("Bar")]'])]
+            [new Definition(attributes: [NamespaceName::createAttribute('foo')])]
         );
 
-        $this->getCode()->shouldContain('#[FooAttribute("Bar")]');
-    }
-
-    function it_includes_global_attributes()
-    {
-        $this->beConstructedWith(
-            ['#[GlobalAttribute]'],
-            [new Definition]
-        );
-
-        $this->getCode()->shouldContain('#[GlobalAttribute]');
+        $this->render()->shouldContainExampleWithAttribute(new NamespaceName('foo'));
     }
 
     function it_includes_default_namespace()
@@ -54,8 +45,54 @@ class ReflectiveExampleStoreTemplateSpec extends ObjectBehavior
             [new Definition]
         );
 
-        $this->setDefaultNamespace('FooNamespace');
+        $this->setDefaultNamespace('bar');
 
-        $this->getCode()->shouldContain(NamespaceName::createAttribute('FooNamespace'));
+        $this->render()->shouldContainExampleWithAttribute(new NamespaceName('bar'));
+    }
+
+    function it_includes_global_attributes()
+    {
+        $this->beConstructedWith(
+            [NamespaceName::createAttribute('baz')],
+            [new Definition]
+        );
+
+        $this->render()->shouldContainExampleWithAttribute(new NamespaceName('baz'));
+    }
+
+    function it_fails_on_invalid_attribute()
+    {
+        $this->beConstructedWith(
+            [],
+            [new Definition(attributes: ['this-is-not-a-valid-attribute'])]
+        );
+
+        $this->shouldThrow(\RuntimeException::class)->duringRender();
+    }
+
+    function getMatchers(): array
+    {
+        return [
+            'containExampleWithCode' => function (ReflectiveExampleStore $store, string $expectedCode) {
+                foreach ($store->getExamples() as $example) {
+                    if ($example->getCodeBlock()->getCode() == $expectedCode) {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
+            'containExampleWithAttribute' => function (ReflectiveExampleStore $store, object $expectedAttribute) {
+                foreach ($store->getExamples() as $example) {
+                    foreach ($example->getAttributes() as $attribute) {
+                        if ($attribute == $expectedAttribute) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            },
+        ];
     }
 }
