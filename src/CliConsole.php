@@ -7,6 +7,7 @@ namespace hanneskod\readmetester;
 use hanneskod\readmetester\Config\Configs;
 use hanneskod\readmetester\Utils\CodeBlock;
 use Crell\Tukio\OrderedProviderInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,39 +16,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CliConsole
 {
-    use DependencyInjection\DispatcherProperty;
-
     const CONFIG_FILES_OPTION = 'config';
     const STDIN_OPTION = 'stdin';
 
-    private Config\ConfigManager $configManager;
-    private ExampleTester $exampleTester;
-    private Compiler\CompilerFactoryFactory $compilerFactoryFactory;
-    private Event\ExitStatusListener $exitStatusListener;
-    private FilesystemInputGenerator $filesystemInputGenerator;
-    private Runner\RunnerFactory $runnerFactory;
-    private Runner\BootstrapFactory $bootstrapFactory;
-    private OrderedProviderInterface $listenerProvider;
-
     public function __construct(
-        Config\ConfigManager $configManager,
-        ExampleTester $exampleTester,
-        Compiler\CompilerFactoryFactory $compilerFactoryFactory,
-        Event\ExitStatusListener $exitStatusListener,
-        FilesystemInputGenerator $filesystemInputGenerator,
-        Runner\RunnerFactory $runnerFactory,
-        Runner\BootstrapFactory $bootstrapFactory,
-        OrderedProviderInterface $listenerProvider
-    ) {
-        $this->configManager = $configManager;
-        $this->exampleTester = $exampleTester;
-        $this->compilerFactoryFactory = $compilerFactoryFactory;
-        $this->exitStatusListener = $exitStatusListener;
-        $this->filesystemInputGenerator = $filesystemInputGenerator;
-        $this->runnerFactory = $runnerFactory;
-        $this->bootstrapFactory = $bootstrapFactory;
-        $this->listenerProvider = $listenerProvider;
-    }
+        private Config\ConfigManager $configManager,
+        private ExampleTester $exampleTester,
+        private Compiler\CompilerFactoryFactory $compilerFactoryFactory,
+        private Event\ExitStatusListener $exitStatusListener,
+        private FilesystemInputGenerator $filesystemInputGenerator,
+        private Runner\RunnerFactory $runnerFactory,
+        private Runner\BootstrapFactory $bootstrapFactory,
+        private OrderedProviderInterface $listenerProvider,
+        private EventDispatcherInterface $dispatcher,
+    ) {}
 
     public function configure(Command $command): void
     {

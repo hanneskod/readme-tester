@@ -4,23 +4,19 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
-use hanneskod\readmetester\DependencyInjection;
 use hanneskod\readmetester\Event;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Expectation\ExpectationEvaluator;
 use hanneskod\readmetester\Runner\RunnerInterface;
 use hanneskod\readmetester\Runner\SkippedOutcome;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class ExampleTester
 {
-    use DependencyInjection\DispatcherProperty;
-
-    private ExpectationEvaluator $evaluator;
-
-    public function __construct(ExpectationEvaluator $evaluator)
-    {
-        $this->evaluator = $evaluator;
-    }
+    public function __construct(
+        private ExpectationEvaluator $evaluator,
+        private EventDispatcherInterface $dispatcher,
+    ) {}
 
     public function test(ExampleStoreInterface $exampleStore, RunnerInterface $runner, bool $stopOnFailure): void
     {

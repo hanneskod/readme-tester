@@ -21,9 +21,12 @@ function a_function_included_in_all_examples() {}
 ```
 
 ```php
+// imports a_function_included_in_all_examples() from example context
 ```
 
 ```php
+// also imports a_function_included_in_all_examples() from example context
+// fails if not executed in isolation
 ```
 
 Here is another example that will fail using the `eval` runner, as the same symbol
@@ -41,6 +44,21 @@ function parent_function() {}
 #[ReadmeTester\Import('parent')]
 ```
 ```php
+// imports parent_function() from parent
+// fails if not executed in isolation as parent has also been validated
 ```
 
 Use the `Isolate` attribute to require that an example be executed in isolation.
+This will force the example to be skipped by runners that does not support
+isolation.
+
+
+```
+#[ReadmeTester\Isolate]
+#[ReadmeTester\Name('child-that-requires-isolation')]
+#[ReadmeTester\Import('parent')]
+```
+```php
+// imports parent_function() from parent
+// isolation forced by #[ReadmeTester\Isolate]
+```

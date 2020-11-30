@@ -14,7 +14,7 @@ class BootstrapFactorySpec extends ObjectBehavior
 {
     function let(EventDispatcherInterface $dispatcher)
     {
-        $this->setEventDispatcher($dispatcher);
+        $this->beConstructedWith($dispatcher);
     }
 
     function it_is_initializable()

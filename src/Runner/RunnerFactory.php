@@ -5,11 +5,13 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Config\Configs;
-use hanneskod\readmetester\DependencyInjection;
+use hanneskod\readmetester\Utils\Instantiator;
 
 final class RunnerFactory
 {
-    use DependencyInjection\InstantiatorProperty;
+    public function __construct(
+        private Instantiator $instantiator,
+    ) {}
 
     public function createRunner(string $id): RunnerInterface
     {

@@ -14,7 +14,7 @@ final class ExampleSkipped extends ExampleEvent
     public function __construct(ExampleObj $example, OutcomeInterface $outcome)
     {
         parent::__construct(
-            "Skipped: {$example->getName()->getFullName()}: {$outcome->getDescription()}",
+            "Skipped: {$example->getName()->getFullName()} ({$outcome->getDescription()})",
             $example
         );
 

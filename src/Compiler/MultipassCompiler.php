@@ -8,21 +8,13 @@ use hanneskod\readmetester\Example\ExampleStoreInterface;
 
 final class MultipassCompiler implements CompilerInterface
 {
-    private CompilerInterface $decoratedCompiler;
-
-    /**
-     * @var array<CompilerPassInterface>
-     */
-    private array $compilerPasses;
-
     /**
      * @param array<CompilerPassInterface> $compilerPasses
      */
-    public function __construct(CompilerInterface $decoratedCompiler, array $compilerPasses)
-    {
-        $this->decoratedCompiler = $decoratedCompiler;
-        $this->compilerPasses = $compilerPasses;
-    }
+    public function __construct(
+        private CompilerInterface $decoratedCompiler,
+        private array $compilerPasses = [],
+    ) {}
 
     public function compile(iterable $inputs): ExampleStoreInterface
     {

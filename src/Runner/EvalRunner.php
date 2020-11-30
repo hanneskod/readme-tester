@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Attributes\Isolate;
+use hanneskod\readmetester\Attribute\Isolate;
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Utils\Loader;
@@ -20,7 +20,7 @@ final class EvalRunner implements RunnerInterface
     {
         foreach ($example->getAttributes() as $attribute) {
             if ($attribute instanceof Isolate) {
-                return new SkippedOutcome('Example skipped as it requires isolation');
+                return new SkippedOutcome('requires isolation');
             }
         }
 

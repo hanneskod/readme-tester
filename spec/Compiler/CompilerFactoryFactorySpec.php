@@ -15,7 +15,7 @@ class CompilerFactoryFactorySpec extends ObjectBehavior
 {
     function let(Instantiator $instantiator)
     {
-        $this->setInstantiator($instantiator);
+        $this->beConstructedWith($instantiator);
     }
 
     function it_is_initializable()

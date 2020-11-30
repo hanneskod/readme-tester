@@ -3,7 +3,7 @@ sudo: false
 language: php
 
 php:
-    - 7.4
+    - 8.0
 
 install:
     - make vendor/installed
@@ -12,8 +12,9 @@ install:
 
 script:
     - make continuous-integration
-    - make build
-    - make check
+    # TODO box does not currently support php8, temporarily skip build step
+    # - make build
+    # - make check
 
 deploy:
     provider: releases
@@ -24,4 +25,4 @@ deploy:
     on:
         repo: hanneskod/readme-tester
         tags: true
-        condition: ${TRAVIS_PHP_VERSION:0:3} == "7.4"
+        condition: ${TRAVIS_PHP_VERSION:0:3} == "8.0"

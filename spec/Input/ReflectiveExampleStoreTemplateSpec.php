@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace spec\hanneskod\readmetester\Input;
+
+use hanneskod\readmetester\Input\ReflectiveExampleStoreTemplate;
+use hanneskod\readmetester\Input\Definition;
+use hanneskod\readmetester\Attribute\NamespaceName;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+class ReflectiveExampleStoreTemplateSpec extends ObjectBehavior
+{
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(ReflectiveExampleStoreTemplate::class);
+    }
+
+    function it_creates_example_code()
+    {
+        $this->beConstructedWith(
+            [],
+            [new Definition(code: "this-is-the-code")]
+        );
+
+        $this->getCode()->shouldContain("this-is-the-code");
+    }
+
+    function it_creates_example_attribute()
+    {
+        $this->beConstructedWith(
+            [],
+            [new Definition(attributes: ['#[FooAttribute("Bar")]'])]
+        );
+
+        $this->getCode()->shouldContain('#[FooAttribute("Bar")]');
+    }
+
+    function it_includes_global_attributes()
+    {
+        $this->beConstructedWith(
+            ['#[GlobalAttribute]'],
+            [new Definition]
+        );
+
+        $this->getCode()->shouldContain('#[GlobalAttribute]');
+    }
+
+    function it_includes_default_namespace()
+    {
+        $this->beConstructedWith(
+            [],
+            [new Definition]
+        );
+
+        $this->setDefaultNamespace('FooNamespace');
+
+        $this->getCode()->shouldContain(NamespaceName::createAttribute('FooNamespace'));
+    }
+}

@@ -10,30 +10,20 @@ use hanneskod\readmetester\Utils\CodeBlock;
 
 class ExampleObj
 {
-    private bool $active = true;
-    private bool $context = false;
-
-    private CodeBlock $code;
-    private NameObj $name;
-
-    /** @var array<object> */
-    private array $attributes;
-
-    /** @var array<ExpectationInterface> */
-    private array $expectations = [];
-
-    /** @var array<NameObj> */
-    private array $imports = [];
-
     /**
      * @param array<object> $attributes
+     * @param array<ExpectationInterface> $expectations
+     * @param array<NameObj> $imports
      */
-    public function __construct(NameObj $name, CodeBlock $code, array $attributes = [])
-    {
-        $this->name = $name;
-        $this->code = $code;
-        $this->attributes = $attributes;
-    }
+    public function __construct(
+        private NameObj $name,
+        private CodeBlock $code,
+        private array $attributes = [],
+        private array $expectations = [],
+        private array $imports = [],
+        private bool $active = true,
+        private bool $context = false,
+    ) {}
 
     /**
      * @return array<object>

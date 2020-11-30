@@ -9,7 +9,7 @@ declare(strict_types = 1);
 // edit the following lines to configure
 
 $source = __DIR__ . '/../etc/container.yaml';
-$target = 'hanneskod\readmetester\DependencyInjection\ProjectServiceContainer';
+$target = 'hanneskod\readmetester\ProjectServiceContainer';
 
 // -->
 

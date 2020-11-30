@@ -1,4 +1,4 @@
 parameters:
 	excludes_analyse:
-		- src/DependencyInjection/ProjectServiceContainer.php
+		- src/ProjectServiceContainer.php
 		- src/Input/Markdown/Parser.php

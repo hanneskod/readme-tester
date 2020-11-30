@@ -6,14 +6,14 @@ namespace hanneskod\readmetester\Input;
 
 abstract class AbstractPhpegParser implements ParserInterface
 {
-    public function parseContent(string $content): Template
+    public function parseContent(string $content): ReflectiveExampleStoreTemplate
     {
         return $this->parse($content);
     }
 
     /**
      * @param string $content
-     * @return Template
+     * @return ReflectiveExampleStoreTemplate
      */
     abstract protected function parse($content);
 }

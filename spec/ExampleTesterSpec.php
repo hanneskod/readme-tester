@@ -21,8 +21,7 @@ class ExampleTesterSpec extends ObjectBehavior
 {
     function let(ExpectationEvaluator $evaluator, EventDispatcherInterface $dispatcher)
     {
-        $this->beConstructedWith($evaluator);
-        $this->setEventDispatcher($dispatcher);
+        $this->beConstructedWith($evaluator, $dispatcher);
     }
 
     function it_fires_on_test_passed(

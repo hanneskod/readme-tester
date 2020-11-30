@@ -1,0 +1,12 @@
+{
+    "output": "readme-tester.phar",
+    "directories": [
+        "src",
+        "vendor"
+    ],
+    "files-bin": [
+        "readme-tester.yaml.dist"
+    ],
+    "algorithm": "SHA512",
+    "chmod": "0555"
+}

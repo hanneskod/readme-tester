@@ -74,7 +74,7 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
         $this->ignoredCount++;
         if ($this->getOutput()->isVerbose()) {
             $this->getOutput()->writeln(
-                "<comment>Ignored</comment> <info>{$event->getExample()->getName()->getFullName()}</info>"
+                "<comment>{$event->getMessage()}</comment>"
             );
         }
     }
@@ -82,11 +82,9 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
     public function onExampleSkipped(Event\ExampleSkipped $event): void
     {
         $this->skippedCount++;
-        if ($this->getOutput()->isVerbose()) {
-            $this->getOutput()->writeln(
-                "<comment>Skipped</comment> <info>{$event->getExample()->getName()->getFullName()}</info>"
-            );
-        }
+        $this->getOutput()->writeln(
+            "<comment>{$event->getMessage()}</comment>"
+        );
     }
 
     public function onExampleEntered(Event\ExampleEntered $event): void

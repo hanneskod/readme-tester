@@ -5,7 +5,7 @@ Set the namespace and name parts using the `ReadmeTester\NamespaceName` and
 `ReadmeTester\Name` attributes.
 
 <!--
-#[ReadmeTester\Ignore]
+#[ReadmeTester\IgnoreOutput]
 -->
 ```
 #[ReadmeTester\NamespaceName("Foo")]
@@ -19,10 +19,13 @@ By default the namespace is set to the current filename and name is built from
 a simple incremented value.
 
 <!--
-#[ReadmeTester\Ignore]
+#[ReadmeTester\IgnoreOutput]
 -->
+```
+#[ReadmeTester\Name("Baz")]
+```
 ```php
-echo "This example can be referenced using naming.md:example1";
+echo "This example can be referenced using naming.md:Baz";
 ```
 
 > NOTE that the file path used as default namespace depends on the current
@@ -34,7 +37,7 @@ If not named explicitly the first example following a header will be named after
 said header.
 
 <!--
-#[ReadmeTester\Ignore]
+#[ReadmeTester\IgnoreOutput]
 -->
 ```php
 echo "This example can be referenced using naming.md:Headers-as-example-names";
@@ -45,7 +48,7 @@ echo "This example can be referenced using naming.md:Headers-as-example-names";
 The Example attribute may specify a name.
 
 <!--
-#[ReadmeTester\Ignore]
+#[ReadmeTester\IgnoreOutput]
 -->
 ```
 #[ReadmeTester\Example("example-name")]
@@ -63,9 +66,9 @@ This hidden block is intended to validate that blocks are really named as descri
 ```php
 ```
 
-#[ReadmeTester\Example("Test default name")]
-#[ReadmeTester\Import("example1")]
-#[ReadmeTester\ExpectOutput("/naming.md:example1/")]
+#[ReadmeTester\Example("Test default namespace")]
+#[ReadmeTester\Import("Baz")]
+#[ReadmeTester\ExpectOutput("/naming.md:Baz/")]
 ```php
 ```
 

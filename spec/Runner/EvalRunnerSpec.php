@@ -9,7 +9,7 @@ use hanneskod\readmetester\Runner\SkippedOutcome;
 use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Utils\NameObj;
-use hanneskod\readmetester\Attributes\Isolate;
+use hanneskod\readmetester\Attribute\Isolate;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

@@ -5,7 +5,7 @@ services:
 
     hanneskod\readmetester\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection/ProjectServiceContainer.php}'
+        exclude: '../src/{ProjectServiceContainer.php}'
 
     application:
         class: Symfony\Component\Console\SingleCommandApplication

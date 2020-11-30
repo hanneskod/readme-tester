@@ -4,13 +4,15 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\DependencyInjection;
 use hanneskod\readmetester\Event;
 use hanneskod\readmetester\Utils\CodeBlock;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class BootstrapFactory
 {
-    use DependencyInjection\DispatcherProperty;
+    public function __construct(
+        private EventDispatcherInterface $dispatcher,
+    ) {}
 
     /** @param array<string> $filenames */
     public function createFromFilenames(array $filenames): CodeBlock

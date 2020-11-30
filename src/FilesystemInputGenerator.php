@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 
 final class FilesystemInputGenerator
 {
-    use DependencyInjection\DispatcherProperty;
+    public function __construct(
+        private EventDispatcherInterface $dispatcher,
+    ) {}
 
     /**
      * @param array<string> $paths

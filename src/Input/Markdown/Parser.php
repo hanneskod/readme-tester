@@ -2,10 +2,10 @@
 
 namespace hanneskod\readmetester\Input\Markdown;
 
-use hanneskod\readmetester\Attributes\Name;
+use hanneskod\readmetester\Attribute\Name;
 use hanneskod\readmetester\Input\AbstractPhpegParser;
 use hanneskod\readmetester\Input\Definition;
-use hanneskod\readmetester\Input\Template;
+use hanneskod\readmetester\Input\ReflectiveExampleStoreTemplate;
 
 class Parser extends AbstractPhpegParser
 {
@@ -115,7 +115,10 @@ class Parser extends AbstractPhpegParser
 
         if ($_success) {
             $this->value = call_user_func(function () use (&$global, &$examples) {
-                return new Template(array_values((array)$global), $examples);
+                return new ReflectiveExampleStoreTemplate(
+                    globalAttributes: array_values((array)$global),
+                    definitions: $examples
+                );
             });
         }
 
@@ -507,7 +510,10 @@ class Parser extends AbstractPhpegParser
 
         if ($_success) {
             $this->value = call_user_func(function () use (&$attributes, &$code) {
-                return new Definition((array)$attributes, $code);
+                return new Definition(
+                    attributes: (array)$attributes,
+                    code: $code
+                );
             });
         }
 
@@ -635,20 +641,20 @@ class Parser extends AbstractPhpegParser
             return $_success;
         }
 
-        $_value39 = array();
+        $_position39 = $this->position;
+
+        $_value38 = array();
 
         $_success = $this->parseATTRIBUTE_START();
 
         if ($_success) {
-            $_value39[] = $this->value;
+            $_value38[] = $this->value;
 
             $_success = $this->parse_();
         }
 
         if ($_success) {
-            $_value39[] = $this->value;
-
-            $_position38 = $this->position;
+            $_value38[] = $this->value;
 
             $_value36 = array();
             $_cut37 = $this->cut;
@@ -707,38 +713,28 @@ class Parser extends AbstractPhpegParser
             }
 
             $this->cut = $_cut37;
-
-            if ($_success) {
-                $this->value = strval(substr($this->string, $_position38, $this->position - $_position38));
-            }
-
-            if ($_success) {
-                $attr = $this->value;
-            }
         }
 
         if ($_success) {
-            $_value39[] = $this->value;
+            $_value38[] = $this->value;
 
             $_success = $this->parse_();
         }
 
         if ($_success) {
-            $_value39[] = $this->value;
+            $_value38[] = $this->value;
 
             $_success = $this->parseATTRIBUTE_END();
         }
 
         if ($_success) {
-            $_value39[] = $this->value;
+            $_value38[] = $this->value;
 
-            $this->value = $_value39;
+            $this->value = $_value38;
         }
 
         if ($_success) {
-            $this->value = call_user_func(function () use (&$attr) {
-                return $attr;
-            });
+            $this->value = strval(substr($this->string, $_position39, $this->position - $_position39));
         }
 
         $this->cache['ATTRIBUTE'][$_position] = array(

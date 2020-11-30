@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Input;
 
 use hanneskod\readmetester\Input\ParsingCompiler;
-use hanneskod\readmetester\Input\TemplateRenderer;
-use hanneskod\readmetester\Input\Template;
+use hanneskod\readmetester\Input\ReflectiveExampleStoreRenderer;
+use hanneskod\readmetester\Input\ReflectiveExampleStoreTemplate;
 use hanneskod\readmetester\Input\ParserInterface;
 use hanneskod\readmetester\Compiler\CompilerInterface;
 use hanneskod\readmetester\Compiler\InputInterface;
@@ -17,7 +17,7 @@ use Prophecy\Argument;
 
 class ParsingCompilerSpec extends ObjectBehavior
 {
-    function let(ParserInterface $parser, TemplateRenderer $renderer)
+    function let(ParserInterface $parser, ReflectiveExampleStoreRenderer $renderer)
     {
         $this->beConstructedWith($parser, $renderer);
     }
@@ -37,8 +37,8 @@ class ParsingCompilerSpec extends ObjectBehavior
         $renderer,
         InputInterface $inputA,
         InputInterface $inputB,
-        Template $templateA,
-        Template $templateB,
+        ReflectiveExampleStoreTemplate $templateA,
+        ReflectiveExampleStoreTemplate $templateB,
         ExampleStoreInterface $storeA,
         ExampleStoreInterface $storeB
     ) {

@@ -6,8 +6,8 @@ namespace spec\hanneskod\readmetester\Input\Markdown;
 
 use hanneskod\readmetester\Input\Markdown\Parser;
 use hanneskod\readmetester\Input\Definition;
-use hanneskod\readmetester\Input\Template;
-use hanneskod\readmetester\Attributes\Name;
+use hanneskod\readmetester\Input\ReflectiveExampleStoreTemplate;
+use hanneskod\readmetester\Attribute\Name;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -20,7 +20,7 @@ class ParserSpec extends ObjectBehavior
 
     function it_tests_doc_with_no_examples()
     {
-        $this->parseContent('no-examples-here..')->shouldBeLike(new Template([], []));
+        $this->parseContent('no-examples-here..')->shouldBeLike(new ReflectiveExampleStoreTemplate);
     }
 
     function it_finds_simple_example()
@@ -30,9 +30,8 @@ class ParserSpec extends ObjectBehavior
 // code goes here
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition([], "// code goes here\n")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(code: "// code goes here\n")]
         ));
     }
 
@@ -44,9 +43,8 @@ $a = new Class();
 echo $a->out();
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition([], "\$a = new Class();\necho \$a->out();\n")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(code: "\$a = new Class();\necho \$a->out();\n")]
         ));
     }
 
@@ -61,9 +59,8 @@ Some none example text..
 
 More free text..
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition([], "// code goes here\n")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(code: "// code goes here\n")]
         ));
     }
 
@@ -80,11 +77,10 @@ Free text..
 // second example
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [
-                new Definition([], "// code goes here\n"),
-                new Definition([], "// second example\n"),
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [
+                new Definition(code: "// code goes here\n"),
+                new Definition(code: "// second example\n"),
             ]
         ));
     }
@@ -96,9 +92,8 @@ README
 // code goes here
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition([], "// code goes here\n")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(code: "// code goes here\n")]
         ));
     }
 
@@ -109,9 +104,8 @@ README
 #[GlobalAttribute]
 -->
 README
-        )->shouldBeLike(new Template(
-            ['GlobalAttribute'],
-            []
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            globalAttributes: ['#[GlobalAttribute]']
         ));
     }
 
@@ -120,9 +114,8 @@ README
         $this->parseContent(<<<'README'
 <!--#[GlobalAttribute]-->
 README
-        )->shouldBeLike(new Template(
-            ['GlobalAttribute'],
-            []
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            globalAttributes: ['#[GlobalAttribute]']
         ));
     }
 
@@ -134,9 +127,8 @@ README
 #[Bar]
 -->
 README
-        )->shouldBeLike(new Template(
-            ['Foo', 'Bar'],
-            []
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            globalAttributes: ['#[Foo]', '#[Bar]']
         ));
     }
 
@@ -149,9 +141,8 @@ GlobalAttribute("foo bar", Bar::class)
 ]
 -->
 README
-        )->shouldBeLike(new Template(
-            ["GlobalAttribute(\"foo bar\", Bar::class)\n"],
-            []
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            globalAttributes: ["#[\nGlobalAttribute(\"foo bar\", Bar::class)\n]"]
         ));
     }
 
@@ -170,9 +161,8 @@ Ignored#[Bar]Ignored
 Ignored
 -->
 README
-        )->shouldBeLike(new Template(
-            ['Foo', 'Bar'],
-            []
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            globalAttributes: ['#[Foo]', '#[Bar]']
         ));
     }
 
@@ -182,9 +172,8 @@ README
 <!--#[Foo]-->
 <!--#[Bar]-->
 README
-        )->shouldBeLike(new Template(
-            ['Foo'],
-            []
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            globalAttributes: ['#[Foo]']
         ));
     }
 
@@ -194,10 +183,7 @@ README
 .
 <!--#[Not-vied-as-global-as-it-is-not-first-content-in-file]-->
 README
-        )->shouldBeLike(new Template(
-            [],
-            []
-        ));
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate);
     }
 
     function it_finds_example_attribute()
@@ -207,9 +193,8 @@ README
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]'])]
         ));
     }
 
@@ -223,9 +208,8 @@ README
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]'])]
         ));
     }
 
@@ -237,9 +221,8 @@ README
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo', 'Bar'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]', '#[Bar]'])]
         ));
     }
 
@@ -254,9 +237,8 @@ README
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo', 'Bar'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]', '#[Bar]'])]
         ));
     }
 
@@ -273,9 +255,8 @@ More content
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo', 'Bar', 'Baz'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]', '#[Bar]', '#[Baz]'])]
         ));
     }
 
@@ -292,9 +273,8 @@ More content
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo', 'Bar', 'Baz'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]', '#[Bar]', '#[Baz]'])]
         ));
     }
 
@@ -308,9 +288,8 @@ README
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]'])]
         ));
     }
 
@@ -326,18 +305,16 @@ README
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(
-                [
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(
+                attributes: [
                     Name::createAttribute("H1"),
                     Name::createAttribute("H2"),
                     Name::createAttribute("H3"),
                     Name::createAttribute("H4"),
                     Name::createAttribute("H5"),
                     Name::createAttribute("H6"),
-                ],
-                ""
+                ]
             )]
         ));
     }
@@ -349,12 +326,8 @@ README
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(
-                [Name::createAttribute("H\"")],
-                ""
-            )]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: [Name::createAttribute("H\"")])]
         ));
     }
 
@@ -372,15 +345,13 @@ H3
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(
-                [
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(
+                attributes: [
                     Name::createAttribute("H1"),
                     Name::createAttribute("H2"),
                     Name::createAttribute("H3"),
-                ],
-                ""
+                ]
             )]
         ));
     }
@@ -393,12 +364,8 @@ H"
 ```php
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(
-                [Name::createAttribute("H\"")],
-                ""
-            )]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: [Name::createAttribute("H\"")])]
         ));
     }
 
@@ -413,11 +380,13 @@ Example with name
 Example with no name
 ```
 README
-        )->shouldBeLike(new Template(
-            [],
-            [
-                new Definition([Name::createAttribute("Header")], "Example with name\n"),
-                new Definition([], "Example with no name\n"),
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [
+                new Definition(
+                    attributes: [Name::createAttribute("Header")],
+                    code: "Example with name\n"
+                ),
+                new Definition(code: "Example with no name\n"),
             ]
         ));
     }
@@ -431,9 +400,8 @@ README
 ```
 -->
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition([], "// code goes here\n")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(code: "// code goes here\n")]
         ));
     }
 
@@ -447,9 +415,8 @@ README
 ```
 -->
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo', 'Bar'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]', '#[Bar]'])]
         ));
     }
 
@@ -468,9 +435,8 @@ Ignored
 Ignored
 -->
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition(['Foo'], "")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo]'])]
         ));
     }
 
@@ -489,11 +455,10 @@ Bar
 ```
 -->
 README
-        )->shouldBeLike(new Template(
-            [],
-            [
-                new Definition(['Foo'], "Foo\n"),
-                new Definition(['Bar'], "Bar\n"),
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [
+                new Definition(attributes: ['#[Foo]'], code: "Foo\n"),
+                new Definition(attributes: ['#[Bar]'], code: "Bar\n"),
             ]
         ));
     }
@@ -508,9 +473,8 @@ Code
 ```
 -->
 README
-        )->shouldBeLike(new Template(
-            [],
-            [new Definition([Name::createAttribute("Header")], "Code\n")]
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: [Name::createAttribute("Header")], code: "Code\n")]
         ));
     }
 }

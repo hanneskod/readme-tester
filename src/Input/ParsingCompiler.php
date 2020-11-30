@@ -11,14 +11,10 @@ use hanneskod\readmetester\Example\ExampleStoreInterface;
 
 final class ParsingCompiler implements CompilerInterface
 {
-    private ParserInterface $parser;
-    private TemplateRenderer $renderer;
-
-    public function __construct(ParserInterface $parser, TemplateRenderer $renderer)
-    {
-        $this->parser = $parser;
-        $this->renderer = $renderer;
-    }
+    public function __construct(
+        private ParserInterface $parser,
+        private ReflectiveExampleStoreRenderer $renderer,
+    ) {}
 
     public function compile(iterable $inputs): ExampleStoreInterface
     {

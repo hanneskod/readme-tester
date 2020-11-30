@@ -16,4 +16,4 @@
 /src/Input/Markdown/Parser.peg export-ignore
 /composer.lock binary
 /src/Input/Markdown/Parser.php binary
-/src/DependencyInjection/ProjectServiceContainer.php binary
+/src/ProjectServiceContainer.php binary

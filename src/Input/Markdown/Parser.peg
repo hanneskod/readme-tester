@@ -2,15 +2,18 @@
 
 namespace hanneskod\readmetester\Input\Markdown;
 
-use hanneskod\readmetester\Attributes\Name;
+use hanneskod\readmetester\Attribute\Name;
 use hanneskod\readmetester\Input\AbstractPhpegParser;
 use hanneskod\readmetester\Input\Definition;
-use hanneskod\readmetester\Input\Template;
+use hanneskod\readmetester\Input\ReflectiveExampleStoreTemplate;
 
 grammar Parser extends AbstractPhpegParser
 {
     start FILE = global:GLOBAL_ATTRIBUTES_BLOCK? examples:EXAMPLE* .* {
-        return new Template(array_values((array)$global), $examples);
+        return new ReflectiveExampleStoreTemplate(
+            globalAttributes: array_values((array)$global),
+            definitions: $examples
+        );
     };
 
     GLOBAL_ATTRIBUTES_BLOCK = '<!--' _ attributes:(ATTRIBUTE / IGNORED_BLOCK_CONTENT)+ _ BLOCK_END {
@@ -24,16 +27,17 @@ grammar Parser extends AbstractPhpegParser
     BLOCK_END = '-->';
 
     EXAMPLE = attributes:ATTRIBUTES? code:CODE {
-        return new Definition((array)$attributes, $code);
+        return new Definition(
+            attributes: (array)$attributes,
+            code: $code
+        );
     };
 
     ATTRIBUTES = attributes:(HEADER / ATTRIBUTE / IGNORED_CONTENT)+ {
         return array_values(array_filter($attributes));
     };
 
-    ATTRIBUTE = ATTRIBUTE_START _ attr:$((!ATTRIBUTE_END .)*) _ ATTRIBUTE_END {
-        return $attr;
-    };
+    ATTRIBUTE = $(ATTRIBUTE_START _ (!ATTRIBUTE_END .)* _ ATTRIBUTE_END);
 
     ATTRIBUTE_START = '#[';
 

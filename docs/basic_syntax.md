@@ -54,8 +54,7 @@ of an HTML comment block with a fenced block of php code.
 
 Attributes unknown to readmetester are simply skipped
 
-    // TODO commented out, should work once propper php8 attributes is used
-    ##[UnknownAttribute]
+    #[UnknownAttribute]
     ```php
     // The UnknownAttribute is skipped as it is not known
     ```
