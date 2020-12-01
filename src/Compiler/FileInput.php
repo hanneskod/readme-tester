@@ -20,7 +20,7 @@ final class FileInput implements InputInterface
         return $this->fileInfo->getContents();
     }
 
-    public function getDefaultNamespace(): string
+    public function getName(): string
     {
         return $this->fileInfo->getRelativePathname();
     }

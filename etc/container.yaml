@@ -42,4 +42,6 @@ services:
         arguments: ['@hanneskod\readmetester\Utils\Instantiator']
         calls:
             - method: addListener
-              arguments: ['@hanneskod\readmetester\Event\ExitStatusListener']
+              arguments: [['@hanneskod\readmetester\Event\ExitStatusListener', 'onTestFailed']]
+            - method: addListener
+              arguments: [['@hanneskod\readmetester\Event\ExitStatusListener', 'onInvalidInput']]

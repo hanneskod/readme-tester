@@ -94,6 +94,7 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Event\\ExecutionStopped' => true,
             'hanneskod\\readmetester\\Event\\ExitStatusListener' => true,
             'hanneskod\\readmetester\\Event\\FileIncluded' => true,
+            'hanneskod\\readmetester\\Event\\InvalidInput' => true,
             'hanneskod\\readmetester\\Event\\LogEvent' => true,
             'hanneskod\\readmetester\\Event\\TestFailed' => true,
             'hanneskod\\readmetester\\Event\\TestPassed' => true,
@@ -102,6 +103,8 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Example\\ArrayExampleStore' => true,
             'hanneskod\\readmetester\\Example\\CombinedExampleStore' => true,
             'hanneskod\\readmetester\\Example\\ExampleObj' => true,
+            'hanneskod\\readmetester\\Exception\\InvalidInputException' => true,
+            'hanneskod\\readmetester\\Exception\\InvalidPhpCodeException' => true,
             'hanneskod\\readmetester\\Expectation\\ErrorExpectation' => true,
             'hanneskod\\readmetester\\Expectation\\ExpectationEvaluator' => true,
             'hanneskod\\readmetester\\Expectation\\Failure' => true,
@@ -151,7 +154,8 @@ class ProjectServiceContainer extends Container
 
         $d = new \hanneskod\readmetester\Event\ExitStatusListener();
 
-        $c->addListener($d);
+        $c->addListener([0 => $d, 1 => 'onTestFailed']);
+        $c->addListener([0 => $d, 1 => 'onInvalidInput']);
 
         $a->addProvider($c);
 

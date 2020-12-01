@@ -37,7 +37,7 @@ final class EvalRunner implements RunnerInterface
         ob_start();
 
         try {
-            Loader::load($example->getCodeBlock()->getCode());
+            Loader::loadRaw($example->getCodeBlock()->getCode());
         } catch (\Throwable $exception) {
             restore_error_handler();
             ob_end_clean();

@@ -117,6 +117,12 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
         }
     }
 
+    public function onInvalidInput(Event\InvalidInput $event): void
+    {
+        $message = $this->getOutput()->isVerbose() ? $event->getVerboseMessage() : $event->getMessage();
+        $this->getOutput()->writeln("<error>$message</error>");
+    }
+
     public function onExecutionStopped(Event\ExecutionStopped $event): void
     {
         $this->getOutput()->writeln(

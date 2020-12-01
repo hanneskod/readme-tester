@@ -242,6 +242,21 @@ README
         ));
     }
 
+    function it_finds_multiple_example_attributes_grouped_togheter()
+    {
+        $this->parseContent(<<<'README'
+.
+<!--
+#[Foo, Bar]
+-->
+```php
+```
+README
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate(
+            definitions: [new Definition(attributes: ['#[Foo, Bar]'])]
+        ));
+    }
+
     function it_finds_embeded_example_attributes()
     {
         $this->parseContent(<<<'README'

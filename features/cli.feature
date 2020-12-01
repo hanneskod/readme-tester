@@ -54,3 +54,15 @@ Feature: CLI features
     And the command line argument '--stop-on-failure'
     When I run readme tester
     Then 1 failures are found
+
+  Scenario: I fail as input is invalid
+    Given a markdown file:
+    """
+    #[attr('missing-closing-parenthesis']
+    ```php
+    ```
+    """
+    And the command line argument '--no-bootstrap'
+    When I run readme tester
+    Then 1 errors are found
+    And the exit code is 1

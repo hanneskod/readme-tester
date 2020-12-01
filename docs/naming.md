@@ -7,13 +7,14 @@ Set the namespace and name parts using the `ReadmeTester\NamespaceName` and
 <!--
 #[ReadmeTester\IgnoreOutput]
 -->
-```
-#[ReadmeTester\NamespaceName("Foo")]
-#[ReadmeTester\Name("Bar")]
-```
-```php
-echo "This example can be referenced using Foo:Bar";
-```
+
+    <!--
+    #[ReadmeTester\NamespaceName("Foo")]
+    #[ReadmeTester\Name("Bar")]
+    -->
+    ```php
+    echo "This example can be referenced using Foo:Bar";
+    ```
 
 By default the namespace is set to the current filename and name is built from
 a simple incremented value.
@@ -21,12 +22,13 @@ a simple incremented value.
 <!--
 #[ReadmeTester\IgnoreOutput]
 -->
-```
-#[ReadmeTester\Name("Baz")]
-```
-```php
-echo "This example can be referenced using naming.md:Baz";
-```
+
+    <!--
+    #[ReadmeTester\Name("Baz")]
+    -->
+    ```php
+    echo "This example can be referenced using naming.md:Baz";
+    ```
 
 > NOTE that the file path used as default namespace depends on the current
 > working directory from where readmetester is executed.
@@ -39,9 +41,10 @@ said header.
 <!--
 #[ReadmeTester\IgnoreOutput]
 -->
-```php
-echo "This example can be referenced using naming.md:Headers-as-example-names";
-```
+
+    ```php
+    echo "This example can be referenced using naming.md:Headers-as-example-names";
+    ```
 
 ## Naming using the Example attribute
 
@@ -50,12 +53,13 @@ The Example attribute may specify a name.
 <!--
 #[ReadmeTester\IgnoreOutput]
 -->
-```
-#[ReadmeTester\Example("example-name")]
-```
-```php
-echo "This example can be referenced using naming.md:example-name";
-```
+
+    <!--
+    #[ReadmeTester\Example("example-name")]
+    -->
+    ```php
+    echo "This example can be referenced using naming.md:example-name";
+    ```
 
 <!--
 This hidden block is intended to validate that blocks are really named as described..

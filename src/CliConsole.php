@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Config\Configs;
+use hanneskod\readmetester\Exception\InvalidInputException;
 use hanneskod\readmetester\Utils\CodeBlock;
 use Crell\Tukio\OrderedProviderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -225,11 +226,15 @@ final class CliConsole
 
         // Execute tests
 
-        $this->exampleTester->test(
-            $compiler->compile($inputs),
-            $runner,
-            (bool)$this->configManager->getConfig(Configs::STOP_ON_FAILURE_CONFIG)
-        );
+        try {
+            $this->exampleTester->test(
+                $compiler->compile($inputs),
+                $runner,
+                (bool)$this->configManager->getConfig(Configs::STOP_ON_FAILURE_CONFIG)
+            );
+        } catch (InvalidInputException $exception) {
+            $this->dispatcher->dispatch(new Event\InvalidInput($exception));
+        }
 
         // Done
 

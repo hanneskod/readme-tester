@@ -6,5 +6,5 @@ interface InputInterface
 {
     public function getContents(): string;
 
-    public function getDefaultNamespace(): string;
+    public function getName(): string;
 }

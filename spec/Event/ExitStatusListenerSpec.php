@@ -20,9 +20,15 @@ class ExitStatusListenerSpec extends ObjectBehavior
         $this->getStatusCode()->shouldReturn(0);
     }
 
-    function it_collects_failing_status(Event\TestFailed $event)
+    function it_collects_test_failed(Event\TestFailed $event)
     {
-        $this->__invoke($event->getWrappedObject());
+        $this->onTestFailed($event->getWrappedObject());
+        $this->getStatusCode()->shouldReturn(1);
+    }
+
+    function it_collects_invalid_input(Event\InvalidInput $event)
+    {
+        $this->onInvalidInput($event->getWrappedObject());
         $this->getStatusCode()->shouldReturn(1);
     }
 }

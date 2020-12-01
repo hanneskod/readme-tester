@@ -11,6 +11,8 @@ use hanneskod\readmetester\Compiler\CompilerInterface;
 use hanneskod\readmetester\Compiler\InputInterface;
 use hanneskod\readmetester\Example\CombinedExampleStore;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
+use hanneskod\readmetester\Exception\InvalidInputException;
+use hanneskod\readmetester\Exception\InvalidPhpCodeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -41,9 +43,9 @@ class ParsingCompilerSpec extends ObjectBehavior
         ExampleStoreInterface $storeB
     ) {
         $inputA->getContents()->willReturn('contentA');
-        $inputA->getDefaultNamespace()->willReturn('namespaceA');
+        $inputA->getName()->willReturn('namespaceA');
         $inputB->getContents()->willReturn('contentB');
-        $inputB->getDefaultNamespace()->willReturn('namespaceB');
+        $inputB->getName()->willReturn('namespaceB');
 
         $parser->parseContent('contentA')->willReturn($templateA);
         $parser->parseContent('contentB')->willReturn($templateB);
@@ -59,5 +61,31 @@ class ParsingCompilerSpec extends ObjectBehavior
         $expected->addExampleStore($storeB->getWrappedObject());
 
         $this->compile([$inputA, $inputB])->shouldBeLike($expected);
+    }
+
+    function it_throws_on_invalid_php_code(
+        $parser,
+        InputInterface $input,
+        ReflectiveExampleStoreTemplate $template,
+    ) {
+        $input->getContents()->willReturn('content');
+        $input->getName()->willReturn('name');
+
+        $parser->parseContent('content')->willReturn($template);
+
+        $template->setDefaultNamespace('name')->shouldBeCalled();
+
+        $template->render()->willThrow(new InvalidPhpCodeException('', ''));
+
+        $this->shouldThrow(InvalidInputException::class)->duringCompile([$input]);
+    }
+
+    function it_throws_on_parser_exception($parser, InputInterface $input)
+    {
+        $input->getContents()->willReturn('content');
+
+        $parser->parseContent('content')->willThrow(new \Exception);
+
+        $this->shouldThrow(InvalidInputException::class)->duringCompile([$input]);
     }
 }

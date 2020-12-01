@@ -11,20 +11,19 @@ first line.
 
 This file starts with
 
-```
-<!--
-#[ReadmeTester\NamespaceName("global")]
--->
-```
+    <!--
+    #[ReadmeTester\NamespaceName("global")]
+    -->
 
 This is the logical equivalent to applying the NamespaceName atttribute to every
 eample in this file. The following example will automatically be in the _global_
 namespace.
 
 <!-- #[ReadmeTester\Example] -->
-```php
-// In the global namespace
-```
+
+    ```php
+    // In the global namespace
+    ```
 
 <!--
 This hidden block is intended to validate that global attributes are applied

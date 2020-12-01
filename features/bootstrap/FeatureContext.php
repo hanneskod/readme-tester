@@ -133,6 +133,16 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
+     * @Then :number errors are found
+     */
+    public function errorsAreFound($number)
+    {
+        if ($this->output['counts']['errors'] != $number) {
+            throw new \Exception("{$this->output['counts']['errors']} errors found, expected $number");
+        }
+    }
+
+    /**
      * @Then the exit code is :code
      */
     public function theExitCodeIs(int $code)

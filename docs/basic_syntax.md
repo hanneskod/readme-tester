@@ -13,7 +13,6 @@ identifier.
     executed by readmetester..
     ```
 
-
 ## Attributes
 
 To specify how examples should be tested readme-tester uses php attributes.
@@ -54,9 +53,37 @@ of an HTML comment block with a fenced block of php code.
 
 Attributes unknown to readmetester are simply skipped
 
+    <!--
     #[UnknownAttribute]
+    -->
     ```php
     // The UnknownAttribute is skipped as it is not known
+    ```
+
+### Case insensitive attributes
+
+Attributes are case insensitive.
+
+    <!--
+    #[readmetester\expectoutput('foo')]
+    -->
+    ```php
+    echo "foo";
+    ```
+
+### Multiple attributes
+
+Multiple attributes can be grouped togheter in the same way as php handles
+native attributes.
+
+    <!--
+    #[
+        ReadmeTester\ExpectOutput('/foo/'),
+        ReadmeTester\ExpectOutput('/bar/')
+    ]
+    -->
+    ```php
+    echo "foobar";
     ```
 
 ## Hidden examples
@@ -83,15 +110,4 @@ defined inside a html comment. Consider the following example:
     #[ReadmeTester\ExpectOutput('foobar')]
     ```php
     echo $hiddenVar;
-    ```
-
-## PHP mode
-
-By default examples start in php mode, meaning that no `<?php` opening tag is
-needed. Use `StartInHtmlMode` to alter this behaviour.
-
-    #[ReadmeTester\StartInHtmlMode]
-    #[ReadmeTester\ExpectOutput("/html/")]
-    ```php
-    this example started in html mode
     ```

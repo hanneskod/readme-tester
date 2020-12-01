@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Utils;
 
 use hanneskod\readmetester\Utils\Loader;
+use hanneskod\readmetester\Exception\InvalidPhpCodeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -30,12 +31,22 @@ class LoaderSpec extends ObjectBehavior
 
     function it_throw_on_invalid_code()
     {
-        $this->shouldThrow(\RuntimeException::class)->duringLoad('not-valid-php');
+        $this->shouldThrow(InvalidPhpCodeException::class)->duringLoad('not-valid-php');
     }
 
     function it_throw_on_error()
     {
-        $this->shouldThrow(\RuntimeException::class)->duringLoad('trigger_error("ERROR");');
+        $this->shouldThrow(InvalidPhpCodeException::class)->duringLoad('trigger_error("ERROR");');
+    }
+
+    function it_returnes_what_raw_loaded_code_returns()
+    {
+        $this->loadRaw("return 'foobar';")->shouldReturn('foobar');
+    }
+
+    function it_passes_exceptions_using_load_raw()
+    {
+        $this->shouldThrow(\LogicException::class)->duringLoadRaw('throw new \LogicException;');
     }
 
     function it_loades_once()

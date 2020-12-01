@@ -20,9 +20,11 @@ final class JsonOutputtingSubscriber extends AbstractOutputtingSubscriber
         $this->data = [
             'bootstraps' => [],
             'files' => [],
+            'errors' => [],
             'tests' => [],
             'counts' => [
                 'files' => 0,
+                'errors' => 0,
                 'examples' => 0,
                 'ignored' => 0,
                 'skipped' => 0,
@@ -84,6 +86,12 @@ final class JsonOutputtingSubscriber extends AbstractOutputtingSubscriber
 
         $this->data['counts']['assertions']++;
         $this->data['counts']['failures']++;
+    }
+
+    public function onInvalidInput(Event\InvalidInput $event): void
+    {
+        $this->data['errors'][] = $event->getMessage();
+        $this->data['counts']['errors']++;
     }
 
     public function onExecutionStopped(Event\ExecutionStopped $event): void

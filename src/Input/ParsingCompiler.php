@@ -5,9 +5,10 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Input;
 
 use hanneskod\readmetester\Compiler\CompilerInterface;
-use hanneskod\readmetester\Compiler\InputInterface;
 use hanneskod\readmetester\Example\CombinedExampleStore;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
+use hanneskod\readmetester\Exception\InvalidInputException;
+use hanneskod\readmetester\Exception\InvalidPhpCodeException;
 
 final class ParsingCompiler implements CompilerInterface
 {
@@ -20,11 +21,17 @@ final class ParsingCompiler implements CompilerInterface
         $globalStore = new CombinedExampleStore;
 
         foreach ($inputs as $input) {
-            $template = $this->parser->parseContent($input->getContents());
+            try {
+                $template = $this->parser->parseContent($input->getContents());
 
-            $template->setDefaultNamespace($input->getDefaultNamespace());
+                $template->setDefaultNamespace($input->getName());
 
-            $globalStore->addExampleStore($template->render());
+                $globalStore->addExampleStore($template->render());
+            } catch (InvalidPhpCodeException $exception) {
+                throw new InvalidInputException($exception->getMessage(), $input, $exception->getPhpCode());
+            } catch (\Exception $exception) {
+                throw new InvalidInputException($exception->getMessage(), $input, $exception->getMessage());
+            }
         }
 
         return $globalStore;

@@ -45,7 +45,7 @@ class FilesystemInputGeneratorSpec extends ObjectBehavior
         return [
             'includeFile' => function ($generator, $expectedFname) {
                 foreach ($generator as $input) {
-                    if ($input->getDefaultNamespace() == $expectedFname) {
+                    if ($input->getName() == $expectedFname) {
                         return true;
                     }
                 }
@@ -54,7 +54,7 @@ class FilesystemInputGeneratorSpec extends ObjectBehavior
             },
             'notIncludeFile' => function ($generator, $expectedFname) {
                 foreach ($generator as $input) {
-                    if ($input->getDefaultNamespace() == $expectedFname) {
+                    if ($input->getName() == $expectedFname) {
                         return false;
                     }
                 }

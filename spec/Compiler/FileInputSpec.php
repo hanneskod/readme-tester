@@ -24,10 +24,10 @@ class FileInputSpec extends ObjectBehavior
         $this->shouldHaveType(InputInterface::class);
     }
 
-    function it_contains_a_default_namespace()
+    function it_contains_a_name()
     {
         $this->beConstructedWith(new SplFileInfo('', '', 'foobar'));
-        $this->getDefaultNamespace()->shouldReturn('foobar');
+        $this->getName()->shouldReturn('foobar');
     }
 
     function it_contains_content()

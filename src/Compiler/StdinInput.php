@@ -15,7 +15,7 @@ final class StdinInput implements InputInterface
         throw new \RuntimeException('Unable to read from stdin');
     }
 
-    public function getDefaultNamespace(): string
+    public function getName(): string
     {
         return 'STDIN';
     }
