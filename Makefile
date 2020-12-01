@@ -2,7 +2,6 @@ COMPOSER_CMD=composer
 PHIVE_CMD=phive
 
 PHPSPEC_CMD=tools/phpspec
-BEHAT_CMD=tools/behat
 README_TESTER_CMD=bin/readme-tester
 PHPSTAN_CMD=tools/phpstan
 PHPCS_CMD=tools/phpcs
@@ -40,7 +39,7 @@ maintainer-clean: clean
 .PHONY: build
 build: $(CONTAINER) $(PARSER) $(TARGET)
 
-$(TARGET): vendor/installed $(BOX_CMD) $(SRC_FILES) box.json.dist bin/readme-tester
+$(TARGET): vendor/installed $(BOX_CMD) $(SRC_FILES) box.json.dist $(README_TESTER_CMD)
 	# TODO box does not currently run with php8, this is a temporary fix
 	$(COMPOSER_CMD) install --prefer-dist --no-dev
 	php7.4 -d phar.readonly=0 $(BOX_CMD) compile --no-restart -c box.json.php8_tmp_fix
@@ -56,27 +55,27 @@ $(PARSER): $(PARSER_ROOT).peg
 	cd ..; php7.4 `which $(PHPEG_CMD)` generate readme-tester/$<
 
 .PHONY: test
-test: phpspec behat docs
+test: phpspec docs features
 
 .PHONY: phpspec
 phpspec: vendor/installed $(PARSER) $(PHPSPEC_CMD)
 	$(PHPSPEC_CMD) run
-
-.PHONY: behat
-behat: vendor/installed $(CONTAINER) $(PARSER) $(BEHAT_CMD)
-	$(BEHAT_CMD) --stop-on-failure
 
 .PHONY: docs
 docs: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
 	$(README_TESTER_CMD) README.md docs --runner process
 	$(README_TESTER_CMD) README.md docs --runner eval
 
+.PHONY: features
+features: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
+	$(README_TESTER_CMD) features --runner eval
+
 .PHONY: continuous-integration
-continuous-integration: $(PHPSPEC_CMD) $(BEHAT_CMD) $(README_TESTER_CMD)
+continuous-integration: $(PHPSPEC_CMD) $(README_TESTER_CMD)
 	$(PHPSPEC_CMD) run -v
-	$(BEHAT_CMD) --verbose
 	$(README_TESTER_CMD) README.md docs --output debug --runner process
 	$(README_TESTER_CMD) README.md docs --output debug --runner eval
+	$(README_TESTER_CMD) features --output debug --runner eval
 	$(MAKE) phpstan
 
 .PHONY: check
@@ -108,8 +107,6 @@ tools/installed: .phive/phars.xml
 	touch $@
 
 $(PHPSPEC_CMD): tools/installed
-
-$(BEHAT_CMD): tools/installed
 
 $(PHPSTAN_CMD): tools/installed
 
