@@ -40,7 +40,7 @@ maintainer-clean: clean
 .PHONY: build
 build: $(CONTAINER) $(PARSER) $(TARGET)
 
-$(TARGET): vendor/installed $(BOX_CMD) $(SRC_FILES) box.json.dist
+$(TARGET): vendor/installed $(BOX_CMD) $(SRC_FILES) box.json.dist bin/readme-tester
 	# TODO box does not currently run with php8, this is a temporary fix
 	$(COMPOSER_CMD) install --prefer-dist --no-dev
 	php7.4 -d phar.readonly=0 $(BOX_CMD) compile --no-restart -c box.json.php8_tmp_fix
