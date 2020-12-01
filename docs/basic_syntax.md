@@ -13,6 +13,11 @@ identifier.
     executed by readmetester..
     ```
 
+> A note on the syntax used in these files: Examples and attribute blocks are
+> indented to make the acctual syntax visible. In the real world you would
+> not indent and thus would code block fences and attributes inside
+> HTML-comments and not render on for example github.
+
 ## Attributes
 
 To specify how examples should be tested readme-tester uses php attributes.
