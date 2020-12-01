@@ -1,7 +1,7 @@
 # Custom attributes
 
 Extend readmetester with custom attributes by implementing the
-`TransformationInterface` interface.
+`AttributeInterface` and possibly `TransformationInterface` interfaces.
 
 See [HelloWorldAttribute.php](HelloWorldAttribute.php) for a completely useless way of replacing
 the content of a  php example.

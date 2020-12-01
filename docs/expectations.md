@@ -5,8 +5,8 @@ Multiple expectations can be specified for an example.
 
 ## Asserting state
 
-Use the `Assert` attbitue to add a custom assertion to the end of the example
-(as if written with phps assert method).
+Use the `Assert` attbitue to add a custom assertion to the example
+(as if written with PHPs *assert()* method).
 
     <!--
     #[ReadmeTester\Assert('$shouldBeTrue')]

@@ -16,8 +16,7 @@ Set the namespace and name parts using the `ReadmeTester\NamespaceName` and
     echo "This example can be referenced using Foo:Bar";
     ```
 
-By default the namespace is set to the current filename and name is built from
-a simple incremented value.
+By default the namespace is set to the current filename.
 
 <!--
 #[ReadmeTester\IgnoreOutput]
@@ -31,7 +30,7 @@ a simple incremented value.
     ```
 
 > NOTE that the file path used as default namespace depends on the current
-> working directory from where readmetester is executed.
+> working directory from where Readme-Tester is executed.
 
 ## Headers as example names
 

@@ -6,8 +6,8 @@
 # Global attributes
 
 Global attributes are attributes that apply to all examples in a file. Specify
-global attributes by putting an html comment block containg attributes on the
-first line.
+global attributes by putting an HTML comment block containg attributes on the
+first line of the file.
 
 This file starts with
 

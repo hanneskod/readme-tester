@@ -10,7 +10,7 @@ the `ExampleContext` attribute as in the following example.
     $context = 'context';
     ```
 
-And the example context is automatically imported.
+The example context will be imported automatically
 
     <!--
     #[ReadmeTester\ExpectOutput('context')]

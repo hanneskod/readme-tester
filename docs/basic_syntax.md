@@ -43,8 +43,7 @@ Or like this
 -->
 ```
 
-Putting it all together the standard way would be to combine attributes inside
-of an HTML comment block with a fenced block of php code.
+Putting it all together
 
 
     <!--

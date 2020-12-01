@@ -12,7 +12,7 @@ attribute.
     $data = 'parent-data';
     ```
 
-Here example `child` imports `parent:`
+Here example `child` imports `parent`
 
     <!--
     #[ReadmeTester\Example('child')]

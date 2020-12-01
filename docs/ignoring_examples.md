@@ -1,7 +1,7 @@
 # Ignoring examples
 
 By default all found php code blocks are tested. There are two ways to ignore
-(or skipp) selected examples: ignore individual examples, or ignore all unmarked
+selected examples: ignoring individual examples or ignoring all unmarked
 examples. Ignored examples are not validated in any way.
 
 ## Ignoring individial examples
