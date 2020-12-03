@@ -42,7 +42,6 @@
         "symfony/dependency-injection": "^5",
         "symfony/finder": "^5",
         "symfony/process": "^5",
-        "symfony/property-access": "^5",
         "symfony/yaml": "^5"
     },
     "require-dev": {

@@ -59,8 +59,14 @@ trait RunnerSpecTrait
 
     function it_can_be_bootstraped()
     {
-        $this->setBootstrap(new CodeBlock('namespace spec\hanneskod\readmetester\Runner;class Bootstrap {}'));
-        $this->run($this->an_example('new \spec\hanneskod\readmetester\Runner\Bootstrap;'))
+        $this->setBootstrap(__FILE__);
+        $this->run($this->an_example('new \spec\hanneskod\readmetester\Runner\ClassLoadedFromBootstrap;'))
             ->shouldHaveType(VoidOutcome::class);
     }
+}
+
+// phpcs:disable
+
+class ClassLoadedFromBootstrap
+{
 }

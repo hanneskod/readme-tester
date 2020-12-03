@@ -12,6 +12,7 @@
 /phpspec.yml export-ignore
 /phpstan.neon export-ignore
 /README.md export-ignore
+/readme-tester.yaml export-ignore
 /src/Input/Markdown/Parser.peg export-ignore
 /composer.lock binary
 /src/Input/Markdown/Parser.php binary

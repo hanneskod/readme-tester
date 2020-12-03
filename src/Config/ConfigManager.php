@@ -4,77 +4,181 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Config;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-
-class ConfigManager
+final class ConfigManager
 {
     /** @var array<string, mixed> */
     private array $configs = [];
 
-    /** @var array<string> */
-    private array $names = [];
+    /** @var array<RepositoryInterface> */
+    private array $repositories = [];
 
-    private PropertyAccessor $propertyAccessor;
+    /** @var array<Suite> */
+    private array $suites = [];
 
     public function __construct(RepositoryInterface ...$repos)
     {
         foreach ($repos as $repo) {
             $this->loadRepository($repo);
         }
-
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     public function loadRepository(RepositoryInterface $repository): void
     {
-        $this->configs = array_merge($this->configs, $repository->getConfigs());
+        // Reset configs to trigger rebuild
+        $this->configs = [];
 
-        if ($repository->getRepositoryName()) {
-            $this->names[] = $repository->getRepositoryName();
+        $this->repositories[] = $repository;
+    }
+
+    /** @return iterable<string> */
+    public function getLoadedRepositoryNames(): iterable
+    {
+        foreach ($this->repositories as $repository) {
+            if ($repository->getRepositoryName()) {
+                yield $repository->getRepositoryName();
+            }
         }
     }
 
-    /** @return array<string> */
-    public function getLoadedRepositoryNames(): array
+    public function getBootstrap(): string
     {
-        return $this->names;
+        $bootstrap = $this->readConfig(Configs::BOOTSTRAP);
+
+        if ($bootstrap && (!is_file($bootstrap) || !is_readable($bootstrap))) {
+            throw new \RuntimeException("Unable to load bootstrap: $bootstrap");
+        }
+
+        return $bootstrap;
     }
 
-    public function getConfig(string ...$nameParts): string
+    /** @return iterable<string> */
+    public function getSubscribers(): iterable
     {
-        $namePath = '[' . implode('][', $nameParts) . ']';
+        yield from $this->readConfigList(Configs::SUBSCRIBERS);
+        yield Configs::expand(Configs::OUTPUT_ID, $this->readConfig(Configs::OUTPUT));
+    }
 
-        $value = $this->propertyAccessor->getValue($this->configs, $namePath);
+    public function getSuite(string $name): Suite
+    {
+        foreach ($this->getUnfilteredSuites() as $suite) {
+            if ($suite->getSuiteName() == $name) {
+                return $suite;
+            }
+        }
+
+        throw new \RuntimeException("Unknown suite $name");
+    }
+
+    /** @return iterable<Suite> */
+    public function getAllSuites(): iterable
+    {
+        foreach ($this->getUnfilteredSuites() as $suite) {
+            if ($suite->isActive()) {
+                yield $suite;
+            }
+        }
+    }
+
+    /** @return iterable<Suite> */
+    private function getUnfilteredSuites(): iterable
+    {
+        $this->rebuildConfigsIfOutdated();
+        yield from $this->suites;
+    }
+
+    private function readConfig(string $name): string
+    {
+        $this->rebuildConfigsIfOutdated();
+
+        $value = $this->configs[$name] ?? '';
 
         if (!is_scalar($value)) {
-            throw new \RuntimeException("Configuration for '$namePath' missing.");
+            throw new \RuntimeException("Configuration for '$name invalid.");
         }
 
         return (string)$value;
     }
 
     /** @return array<string> */
-    public function getConfigList(string ...$nameParts): array
+    private function readConfigList(string $name): array
     {
-        $namePath = '[' . implode('][', $nameParts) . ']';
+        $this->rebuildConfigsIfOutdated();
 
-        $list = $this->propertyAccessor->getValue($this->configs, $namePath);
+        $list = $this->configs[$name] ?? [];
 
         if (!is_array($list)) {
-            throw new \RuntimeException("Configuration list for '$namePath' invalid.");
+            throw new \RuntimeException("Configuration list for '$name' invalid.");
         }
 
         $values = [];
 
         foreach ($list as $key => $value) {
             if (!is_scalar($value)) {
-                throw new \RuntimeException(sprintf("Configuration for '%s[%s]' missing.", $namePath, $key));
+                throw new \RuntimeException(sprintf("Configuration for '%s[%s]' missing.", $name, $key));
             }
 
             $values[] = (string)$value;
         }
 
         return $values;
+    }
+
+    private function rebuildConfigsIfOutdated(): void
+    {
+        // Only rebuild if neccesary
+        if ($this->configs) {
+            return;
+        }
+
+        // Base configs
+        $configs = [
+            Configs::SUITES => [],
+            Configs::CLI => [],
+        ];
+
+        $defaults = [];
+
+        // Merge with repositories
+        foreach ($this->repositories as $repository) {
+            $configs = array_merge($configs, $repository->getConfigs());
+
+            // Merge defaults separatly to account for multiple default definitions
+            $defaults = array_merge(
+                $defaults,
+                (array)($repository->getConfigs()[Configs::DEFAULTS] ?? [])
+            );
+        }
+
+        // Create default suite if none exists
+        if (empty($configs[Configs::SUITES])) {
+            $configs[Configs::SUITES][Configs::DEFAULT_SUITE_NAME] = [];
+        }
+
+        // Build suite objects
+        $this->suites = [];
+
+        foreach ($configs[Configs::SUITES] as $name => $suite) {
+            // Merge suite with default configs
+            $suite = array_merge($defaults, (array)$suite);
+
+            // Merge suite with cli configs
+            $suite = array_merge($suite, (array)$configs[Configs::CLI]);
+
+            // Build suite
+            $this->suites[] = new Suite(
+                name: (string)$name,
+                active: (bool)($suite[Configs::ACTIVE] ?? true),
+                inputLanguage: (string)($suite[Configs::INPUT_LANGUAGE] ?? ''),
+                runner: (string)($suite[Configs::RUNNER] ?? ''),
+                includePaths: (array)($suite[Configs::INCLUDE_PATHS] ?? []),
+                excludePaths: (array)($suite[Configs::EXCLUDE_PATHS] ?? []),
+                fileExtensions: (array)($suite[Configs::FILE_EXTENSIONS] ?? []),
+                stopOnFailure: (bool)($suite[Configs::STOP_ON_FAILURE] ?? false),
+                globalAttributes: []
+            );
+        }
+
+        // Store configs
+        $this->configs = array_merge($configs, $configs[Configs::CLI]);
     }
 }

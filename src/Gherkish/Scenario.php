@@ -15,9 +15,9 @@ namespace hanneskod\readmetester\Gherkish;
 
 final class Scenario
 {
-    private FeatureContextInterface $featureContext;
+    private FeatureContext $featureContext;
 
-    public function __construct(FeatureContextInterface $featureContext) {
+    public function __construct(FeatureContext $featureContext) {
         $this->featureContext = $featureContext;
     }
 
@@ -25,7 +25,7 @@ final class Scenario
     public function __call(string $name, array $arguments): self
     {
         $this->featureContext->do(
-            preg_replace('/^[a-zA-Z]+_/', '', $name),
+            (string)preg_replace('/^[a-zA-Z]+_/', '', $name),
             $arguments
         );
 

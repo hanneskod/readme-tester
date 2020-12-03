@@ -1,22 +1,44 @@
-runner: process
+# This file contains default settings applied to all readme-tester builds
 
-input_format: markdown
+# Default settins applied to all suites
+defaults:
+    # Shoulde suite be executed when no specific suite is specified
+    active: true
 
+    # Paths to scan for input files
+    include_paths: []
+
+    # Paths to exclude while scanning
+    exclude_paths: [vendor]
+
+    # File extensions to use while scanning
+    file_extensions: [md, mdown, markdown]
+
+    # The markup language of input files
+    # Valid values include markdown or a custom classname
+    input_language: markdown
+
+    # Runner to use when executing test
+    # Valid values include eval, process or a custom classname
+    runner: process
+
+    # Stop execution after a failing test
+    stop_on_failure: false
+
+    # Attributes applied to all examples in suite
+    global_attributes: []
+
+# Set of named suite configurations
+suites: []
+
+# A bootstrap file to load before testing
+# If this is overridden and the composer autoloader is needed you must
+# make sure to load it manually
+bootstrap: vendor/autoload.php
+
+# The output format used for all suites
+# Valid values include default, debug, json, void or a custom classname
 output_format: default
 
+# Custom event subscriber class names
 subscribers: []
-
-bootstrap:
-    - vendor/autoload.php
-
-paths: []
-
-ignore_paths:
-    - vendor
-
-file_extensions:
-    - md
-    - mdown
-    - markdown
-
-stop_on_failure: false

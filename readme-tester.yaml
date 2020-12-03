@@ -1,0 +1,17 @@
+# This file contains settings for testing ReadmeTester
+
+defaults:
+    include_paths:
+        - README.md
+        - docs
+
+suites:
+    eval:
+        runner: eval
+
+    process:
+        runner: process
+
+    features:
+        include_paths: [features]
+        runner: eval

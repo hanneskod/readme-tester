@@ -6,7 +6,6 @@ namespace hanneskod\readmetester;
 
 use hanneskod\readmetester\Config\Configs;
 use hanneskod\readmetester\Exception\InvalidInputException;
-use hanneskod\readmetester\Utils\CodeBlock;
 use Crell\Tukio\OrderedProviderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\Command;
@@ -17,8 +16,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CliConsole
 {
-    const CONFIG_FILES_OPTION = 'config';
+    const CONFIG_FILE_OPTION = 'config';
     const STDIN_OPTION = 'stdin';
+    const SUITE_OPTION = 'suite';
+    const PATHS_ARGUMENT = 'path';
+    const INPUT_LANGUAGE_OPTION = 'input';
+    const OUTPUT_OPTION = 'output';
+    const RUNNER_OPTION = 'runner';
+    const FILE_EXTENSIONS_OPTION = 'file-extension';
+    const IGNORE_PATHS_OPTION = 'exclude';
+    const BOOTSTRAP_OPTION = 'bootstrap';
+    const IGNORE_BOOTSTRAP_OPTION = 'no-bootstrap';
+    const STOP_ON_FAILURE_OPTION = 'stop-on-failure';
 
     public function __construct(
         private Config\ConfigManager $configManager,
@@ -27,7 +36,6 @@ final class CliConsole
         private Event\ExitStatusListener $exitStatusListener,
         private FilesystemInputGenerator $filesystemInputGenerator,
         private Runner\RunnerFactory $runnerFactory,
-        private Runner\BootstrapFactory $bootstrapFactory,
         private OrderedProviderInterface $listenerProvider,
         private EventDispatcherInterface $dispatcher,
     ) {}
@@ -36,24 +44,30 @@ final class CliConsole
     {
         $command
             ->addArgument(
-                Configs::PATHS_ARGUMENT,
+                self::PATHS_ARGUMENT,
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
                 'One or more paths to scan for test files'
             )
             ->addOption(
-                self::CONFIG_FILES_OPTION,
+                self::CONFIG_FILE_OPTION,
                 'c',
                 InputOption::VALUE_REQUIRED,
                 'Read configurations from file'
             )
             ->addOption(
-                Configs::FILE_EXTENSIONS_OPTION,
+                self::SUITE_OPTION,
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Execute named suite'
+            )
+            ->addOption(
+                self::FILE_EXTENSIONS_OPTION,
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'File extension to use while scanning for test files'
             )
             ->addOption(
-                Configs::IGNORE_PATHS_OPTION,
+                self::IGNORE_PATHS_OPTION,
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Path to ignore while scanning for test files'
@@ -65,37 +79,37 @@ final class CliConsole
                 'Read from stdin instead of scaning the filesystem'
             )
             ->addOption(
-                Configs::OUTPUT_OPTION,
+                self::OUTPUT_OPTION,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Set output format (' . Configs::describe(Configs::OUTPUT_ID) . ')'
             )
             ->addOption(
-                Configs::INPUT_OPTION,
+                self::INPUT_LANGUAGE_OPTION,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Set input format (' . Configs::describe(Configs::INPUT_ID) . ')'
             )
             ->addOption(
-                Configs::RUNNER_OPTION,
+                self::RUNNER_OPTION,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Set example runner (' . Configs::describe(Configs::RUNNER_ID) . ')'
             )
             ->addOption(
-                Configs::BOOTSTRAPS_OPTION,
+                self::BOOTSTRAP_OPTION,
                 null,
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                InputOption::VALUE_REQUIRED,
                 'A "bootstrap" PHP file that is included before testing'
             )
             ->addOption(
-                Configs::IGNORE_BOOTSTRAP_OPTION,
+                self::IGNORE_BOOTSTRAP_OPTION,
                 null,
                 InputOption::VALUE_NONE,
                 "Ignore bootstrapping"
             )
             ->addOption(
-                Configs::STOP_ON_FAILURE_OPTION,
+                self::STOP_ON_FAILURE_OPTION,
                 's',
                 InputOption::VALUE_NONE,
                 "Stop processing on first failed test"
@@ -107,10 +121,10 @@ final class CliConsole
     {
         // Setup configuration from config file
 
-        if ($input->getOption(self::CONFIG_FILES_OPTION)) {
+        if ($input->getOption(self::CONFIG_FILE_OPTION)) {
             $this->configManager->loadRepository(
                 // @phpstan-ignore-next-line
-                new Config\YamlRepository($input->getOption(self::CONFIG_FILES_OPTION))
+                new Config\YamlRepository((string)$input->getOption(self::CONFIG_FILE_OPTION))
             );
         } else {
             $this->configManager->loadRepository(new Config\UserConfigRepository);
@@ -120,51 +134,61 @@ final class CliConsole
 
         $configs = [];
 
-        if ($input->getArgument(Configs::PATHS_ARGUMENT)) {
-            $configs[Configs::PATHS_CONFIG] = (array)$input->getArgument(Configs::PATHS_ARGUMENT);
+        if ($input->getArgument(self::PATHS_ARGUMENT)) {
+            $configs[Configs::INCLUDE_PATHS] = (array)$input->getArgument(self::PATHS_ARGUMENT);
         }
 
-        if ($input->getOption(Configs::FILE_EXTENSIONS_OPTION)) {
-            $configs[Configs::FILE_EXTENSIONS_CONFIG] = (array)$input->getOption(Configs::FILE_EXTENSIONS_OPTION);
+        if ($input->getOption(self::FILE_EXTENSIONS_OPTION)) {
+            $configs[Configs::FILE_EXTENSIONS] = (array)$input->getOption(self::FILE_EXTENSIONS_OPTION);
         }
 
-        if ($input->getOption(Configs::IGNORE_PATHS_OPTION)) {
-            $configs[Configs::IGNORE_PATHS_CONFIG] = (array)$input->getOption(Configs::IGNORE_PATHS_OPTION);
+        if ($input->getOption(self::IGNORE_PATHS_OPTION)) {
+            $configs[Configs::EXCLUDE_PATHS] = (array)$input->getOption(self::IGNORE_PATHS_OPTION);
         }
 
-        if ($input->getOption(Configs::BOOTSTRAPS_OPTION)) {
-            $configs[Configs::BOOTSTRAPS_CONFIG] = (array)$input->getOption(Configs::BOOTSTRAPS_OPTION);
-        }
-
-        if ($input->getOption(Configs::OUTPUT_OPTION)) {
+        if ($input->getOption(self::BOOTSTRAP_OPTION)) {
             // @phpstan-ignore-next-line
-            $configs[Configs::OUTPUT_CONFIG] = (string)$input->getOption(Configs::OUTPUT_OPTION);
+            $configs[Configs::BOOTSTRAP] = (string)$input->getOption(self::BOOTSTRAP_OPTION);
         }
 
-        if ($input->getOption(Configs::INPUT_OPTION)) {
+        if ($input->getOption(self::OUTPUT_OPTION)) {
             // @phpstan-ignore-next-line
-            $configs[Configs::INPUT_CONFIG] = (string)$input->getOption(Configs::INPUT_OPTION);
+            $configs[Configs::OUTPUT] = (string)$input->getOption(self::OUTPUT_OPTION);
         }
 
-        if ($input->getOption(Configs::RUNNER_OPTION)) {
+        if ($input->getOption(self::INPUT_LANGUAGE_OPTION)) {
             // @phpstan-ignore-next-line
-            $configs[Configs::RUNNER_CONFIG] = (string)$input->getOption(Configs::RUNNER_OPTION);
+            $configs[Configs::INPUT_LANGUAGE] = (string)$input->getOption(self::INPUT_LANGUAGE_OPTION);
         }
 
-        if ($input->getOption(Configs::STOP_ON_FAILURE_OPTION)) {
-            $configs[Configs::STOP_ON_FAILURE_CONFIG] = '1';
+        if ($input->getOption(self::RUNNER_OPTION)) {
+            // @phpstan-ignore-next-line
+            $configs[Configs::RUNNER] = (string)$input->getOption(self::RUNNER_OPTION);
         }
 
-        $this->configManager->loadRepository(new Config\ArrayRepository($configs));
+        if ($input->getOption(self::STOP_ON_FAILURE_OPTION)) {
+            $configs[Configs::STOP_ON_FAILURE] = '1';
+        }
 
-        // Setup event listeners
+        $this->configManager->loadRepository(
+            new Config\ArrayRepository([Configs::CLI => $configs])
+        );
 
-        $subscribers = [
-            ...$this->configManager->getConfigList(Configs::SUBSCRIBERS_CONFIG),
-            Configs::expand(Configs::OUTPUT_ID, $this->configManager->getConfig(Configs::OUTPUT_CONFIG)),
-        ];
+        // Create bootstrap
 
-        foreach ($subscribers as $subscriber) {
+        $bootstrap = '';
+
+        if (!$input->getOption(self::IGNORE_BOOTSTRAP_OPTION)) {
+            $bootstrap = $this->configManager->getBootstrap();
+
+            if ($bootstrap) {
+                require_once $bootstrap;
+            }
+        }
+
+        // Setup event subscribers
+
+        foreach ($this->configManager->getSubscribers() as $subscriber) {
             if (!class_exists($subscriber)) {
                 throw new \RuntimeException("Unknown subscriber '$subscriber', class does not exist");
             }
@@ -172,55 +196,75 @@ final class CliConsole
             $this->listenerProvider->addSubscriber($subscriber, $subscriber);
         }
 
-        // Start
+        // Dispatch events (after subscribers have been loaded)
 
         $this->dispatcher->dispatch(new Event\ExecutionStarted($output));
+
+        if ($bootstrap) {
+            $this->dispatcher->dispatch(new Event\BootstrapIncluded($bootstrap));
+        }
 
         foreach ($this->configManager->getLoadedRepositoryNames() as $name) {
             $this->dispatcher->dispatch(new Event\ConfigurationIncluded($name));
         }
 
+        // Execute suites
+
+        if ($input->getOption(self::SUITE_OPTION)) {
+            $this->executeSuite(
+                // @phpstan-ignore-next-line
+                $this->configManager->getSuite((string)$input->getOption(self::SUITE_OPTION)),
+                $bootstrap,
+                (bool)$input->getOption(self::STDIN_OPTION)
+            );
+        } else {
+            foreach ($this->configManager->getAllSuites() as $suite) {
+                $this->executeSuite($suite, $bootstrap, (bool)$input->getOption(self::STDIN_OPTION));
+            }
+        }
+
+        // Done
+
+        $this->dispatcher->dispatch(new Event\ExecutionStopped);
+
+        return $this->exitStatusListener->getStatusCode();
+    }
+
+    private function executeSuite(Config\Suite $suite, string $bootstrap, bool $readFromStdin): void
+    {
+        $this->dispatcher->dispatch(new Event\SuiteStarted($suite));
+
         // Create compiler
 
         $compiler = $this->compilerFactoryFactory
-            ->createCompilerFactory($this->configManager->getConfig(Configs::INPUT_CONFIG))
+            ->createCompilerFactory($suite->getInputLanguage())
             ->createCompiler();
 
         $this->dispatcher->dispatch(
-            new Event\DebugEvent("Using input format: {$this->configManager->getConfig(Configs::INPUT_CONFIG)}")
+            new Event\DebugEvent("Using input format: {$suite->getInputLanguage()}")
         );
-
-        // Create bootstrap
-
-        $bootstrap = new CodeBlock('');
-
-        if (!$input->getOption(Configs::IGNORE_BOOTSTRAP_OPTION)) {
-            $bootstrap = $this->bootstrapFactory->createFromFilenames(
-                $this->configManager->getConfigList(Configs::BOOTSTRAPS_CONFIG)
-            );
-        }
 
         // Create runner
 
-        $runner = $this->runnerFactory->createRunner($this->configManager->getConfig(Configs::RUNNER_CONFIG));
+        $runner = $this->runnerFactory->createRunner($suite->getRunner());
 
         $runner->setBootstrap($bootstrap);
 
         $this->dispatcher->dispatch(
-            new Event\DebugEvent("Using runner: {$this->configManager->getConfig(Configs::RUNNER_CONFIG)}")
+            new Event\DebugEvent("Using runner: {$suite->getRunner()}")
         );
 
         // Create inputs
 
-        if ($input->getOption(self::STDIN_OPTION)) {
+        if ($readFromStdin) {
             $this->dispatcher->dispatch(new Event\DebugEvent('Reading input from stdin'));
             $inputs = [new Compiler\StdinInput];
         } else {
             $inputs = $this->filesystemInputGenerator->generateFilesystemInput(
                 '.',
-                $this->configManager->getConfigList(Configs::PATHS_CONFIG),
-                $this->configManager->getConfigList(Configs::FILE_EXTENSIONS_CONFIG),
-                $this->configManager->getConfigList(Configs::IGNORE_PATHS_CONFIG)
+                $suite->getIncludePaths(),
+                $suite->getFileExtensions(),
+                $suite->getExcludePaths()
             );
         }
 
@@ -230,16 +274,12 @@ final class CliConsole
             $this->exampleTester->test(
                 $compiler->compile($inputs),
                 $runner,
-                (bool)$this->configManager->getConfig(Configs::STOP_ON_FAILURE_CONFIG)
+                $suite->stopOnFailure()
             );
         } catch (InvalidInputException $exception) {
             $this->dispatcher->dispatch(new Event\InvalidInput($exception));
         }
 
-        // Done
-
-        $this->dispatcher->dispatch(new Event\ExecutionStopped);
-
-        return $this->exitStatusListener->getStatusCode();
+        $this->dispatcher->dispatch(new Event\SuiteDone($suite));
     }
 }

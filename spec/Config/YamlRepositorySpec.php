@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Config;
 
 use hanneskod\readmetester\Config\YamlRepository;
+use hanneskod\readmetester\Config\Configs;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -19,7 +20,7 @@ class YamlRepositorySpec extends ObjectBehavior
     function it_loads_configs()
     {
         $this->beConstructedWith(__DIR__ . '/../../readme-tester.yaml.dist');
-        $this->getConfigs()->shouldHaveKeyWithValue('runner', 'process');
+        $this->getConfigs()->shouldHaveKeyWithValue(Configs::OUTPUT, 'default');
     }
 
     function it_throws_on_missing_config_file()

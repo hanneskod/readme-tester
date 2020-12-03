@@ -69,6 +69,20 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
         }
     }
 
+    public function onSuiteStarted(Event\SuiteStarted $event): void
+    {
+        $this->getOutput()->writeln("Using suite <comment>{$event->getSuite()->getSuiteName()}</comment>");
+    }
+
+    public function onSuiteDone(Event\SuiteDone $event): void
+    {
+        if ($this->getOutput()->isVerbose()) {
+            $this->getOutput()->writeln(
+                "Done executing suite <comment>{$event->getSuite()->getSuiteName()}</comment>"
+            );
+        }
+    }
+
     public function onExampleIgnored(Event\ExampleIgnored $event): void
     {
         $this->ignoredCount++;

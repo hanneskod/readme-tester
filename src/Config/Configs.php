@@ -4,32 +4,41 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Config;
 
+use hanneskod\readmetester\Input;
 use hanneskod\readmetester\Output;
 use hanneskod\readmetester\Runner;
 
+/**
+ * Configuration id constants and helper functions
+ */
 final class Configs
 {
-    // Input config names
+    const DEFAULT_SUITE_NAME = 'default';
 
-    const INPUT_OPTION = 'input';
-    const INPUT_CONFIG = 'input_format';
+    const SUITES = 'suites';
+    const DEFAULTS = 'defaults';
+    const CLI = '__CLI__';
 
+    const ACTIVE = 'active';
+    const INCLUDE_PATHS = 'include_paths';
+    const EXCLUDE_PATHS = 'exclude_paths';
+    const FILE_EXTENSIONS = 'file_extensions';
+    const STOP_ON_FAILURE = 'stop_on_failure';
+
+    const BOOTSTRAP = 'bootstrap';
+    const SUBSCRIBERS = 'subscribers';
+
+    const INPUT_LANGUAGE = 'input_language';
     const INPUT_ID_MARKDOWN = 'markdown';
-
     const INPUT_ID = [
-        self::INPUT_ID_MARKDOWN => \hanneskod\readmetester\Input\Markdown\MarkdownCompilerFactory::class,
+        self::INPUT_ID_MARKDOWN => Input\Markdown\MarkdownCompilerFactory::class,
     ];
 
-    // Output config names
-
-    const OUTPUT_OPTION = 'output';
-    const OUTPUT_CONFIG = 'output_format';
-
+    const OUTPUT = 'output_format';
     const OUTPUT_ID_DEBUG = 'debug';
     const OUTPUT_ID_DEFAULT = 'default';
     const OUTPUT_ID_JSON = 'json';
     const OUTPUT_ID_VOID = 'void';
-
     const OUTPUT_ID = [
         self::OUTPUT_ID_DEBUG => Output\DebugOutputtingSubscriber::class,
         self::OUTPUT_ID_DEFAULT => Output\DefaultOutputtingSubscriber::class,
@@ -37,40 +46,13 @@ final class Configs
         self::OUTPUT_ID_VOID => Output\VoidOutputtingSubscriber::class,
     ];
 
-    // Runner config names
-
-    const RUNNER_OPTION = 'runner';
-    const RUNNER_CONFIG = 'runner';
-
+    const RUNNER = 'runner';
     const RUNNER_ID_PROCESS = 'process';
     const RUNNER_ID_EVAL = 'eval';
-
     const RUNNER_ID = [
         self::RUNNER_ID_PROCESS => Runner\ProcessRunner::class,
         self::RUNNER_ID_EVAL => Runner\EvalRunner::class,
     ];
-
-    // Other config names
-
-    const PATHS_ARGUMENT = 'path';
-    const PATHS_CONFIG = 'paths';
-
-    const FILE_EXTENSIONS_OPTION = 'file-extension';
-    const FILE_EXTENSIONS_CONFIG = 'file_extensions';
-
-    const IGNORE_PATHS_OPTION = 'ignore';
-    const IGNORE_PATHS_CONFIG = 'ignore_paths';
-
-    const BOOTSTRAPS_OPTION = 'bootstrap';
-    const IGNORE_BOOTSTRAP_OPTION = 'no-bootstrap';
-    const BOOTSTRAPS_CONFIG = 'bootstrap';
-
-    const STOP_ON_FAILURE_OPTION = 'stop-on-failure';
-    const STOP_ON_FAILURE_CONFIG = 'stop_on_failure';
-
-    const SUBSCRIBERS_CONFIG = 'subscribers';
-
-    // Helpers
 
     /** @param array<string, string> $map */
     public static function expand(array $map, string $key): string

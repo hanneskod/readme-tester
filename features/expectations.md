@@ -2,7 +2,7 @@
 #[ReadmeTester\Import('feature-context:scenario')]
 -->
 
-# Testing expectation failures
+# Test expectation failures
 
 ## I fail expecting output using a regular expresion
 ```php
@@ -13,7 +13,6 @@ $scenario
         echo 'The regepxp does not match this..';
         $PHPend
     ")
-    ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
@@ -30,7 +29,6 @@ $scenario
         echo 'foobar';
         $PHPend
     ")
-    ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
@@ -47,7 +45,6 @@ $scenario
         // No exception is thrown here...
         $PHPend
     ")
-    ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
@@ -63,7 +60,6 @@ $scenario
         throw new Exception;
         $PHPend
     ")
-    ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
@@ -79,7 +75,6 @@ $scenario
         echo 'foobar';
         $PHPend
     ")
-    ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)

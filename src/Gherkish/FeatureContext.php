@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Gherkish;
 
-final class FeatureContext implements FeatureContextInterface
+final class FeatureContext
 {
     /** @var array<string, \Closure> */
     private array $steps = [];
@@ -23,29 +23,59 @@ final class FeatureContext implements FeatureContextInterface
 
     private \Closure $onTeardown;
 
+    /**
+     * Register closure to be called before step registration
+     */
     public function setup(\Closure $setup): self
     {
         $setup = $setup->bindTo($this);
+
+        if (!$setup) {
+            throw new \LogicException('Unable to register setup');
+        }
 
         $setup();
 
         return $this;
     }
 
+    /**
+     * Register closure to be called after scenario execution
+     */
     public function teardown(\Closure $teardown): self
     {
-        $this->onTeardown = $teardown->bindTo($this);
+        $teardown = $teardown->bindTo($this);
+
+        if (!$teardown) {
+            throw new \LogicException('Unable to register teardown');
+        }
+
+        $this->onTeardown = $teardown;
 
         return $this;
     }
 
+    /**
+     * Register step
+     */
     public function on(string $name, \Closure $step): self
     {
-        $this->steps[strtolower($name)] = $step->bindTo($this);
+        $step = $step->bindTo($this);
+
+        if (!$step) {
+            throw new \LogicException('Unable to register step');
+        }
+
+        $this->steps[strtolower($name)] = $step;
 
         return $this;
     }
 
+    /**
+     * Execute step
+     *
+     * @param array<mixed> $arguments
+     */
     public function do(string $name, array $arguments): void
     {
         $name = strtolower($name);
@@ -78,6 +108,9 @@ final class FeatureContext implements FeatureContextInterface
         return $this->properties[$name];
     }
 
+    /**
+     * Get scenario for configuration
+     */
     public function getScenario(): Scenario
     {
         return new Scenario($this);

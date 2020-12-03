@@ -96,6 +96,8 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Event\\FileIncluded' => true,
             'hanneskod\\readmetester\\Event\\InvalidInput' => true,
             'hanneskod\\readmetester\\Event\\LogEvent' => true,
+            'hanneskod\\readmetester\\Event\\SuiteDone' => true,
+            'hanneskod\\readmetester\\Event\\SuiteStarted' => true,
             'hanneskod\\readmetester\\Event\\TestFailed' => true,
             'hanneskod\\readmetester\\Event\\TestPassed' => true,
             'hanneskod\\readmetester\\Event\\TestingAborted' => true,
@@ -112,7 +114,6 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Expectation\\Success' => true,
             'hanneskod\\readmetester\\FilesystemInputGenerator' => true,
             'hanneskod\\readmetester\\Gherkish\\FeatureContext' => true,
-            'hanneskod\\readmetester\\Gherkish\\PermutableFeatureContext' => true,
             'hanneskod\\readmetester\\Gherkish\\Scenario' => true,
             'hanneskod\\readmetester\\Input\\Definition' => true,
             'hanneskod\\readmetester\\Input\\Markdown\\MarkdownCompilerFactory' => true,
@@ -124,7 +125,6 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Output\\DefaultOutputtingSubscriber' => true,
             'hanneskod\\readmetester\\Output\\JsonOutputtingSubscriber' => true,
             'hanneskod\\readmetester\\Output\\VoidOutputtingSubscriber' => true,
-            'hanneskod\\readmetester\\Runner\\BootstrapFactory' => true,
             'hanneskod\\readmetester\\Runner\\ErrorOutcome' => true,
             'hanneskod\\readmetester\\Runner\\EvalRunner' => true,
             'hanneskod\\readmetester\\Runner\\OutputOutcome' => true,
@@ -164,7 +164,7 @@ class ProjectServiceContainer extends Container
 
         $e = new \Crell\Tukio\Dispatcher($a);
 
-        $f = new \hanneskod\readmetester\CliConsole(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator(), $e), new \hanneskod\readmetester\Compiler\CompilerFactoryFactory($b), $d, new \hanneskod\readmetester\FilesystemInputGenerator($e), new \hanneskod\readmetester\Runner\RunnerFactory($b), new \hanneskod\readmetester\Runner\BootstrapFactory($e), $c, $e);
+        $f = new \hanneskod\readmetester\CliConsole(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator(), $e), new \hanneskod\readmetester\Compiler\CompilerFactoryFactory($b), $d, new \hanneskod\readmetester\FilesystemInputGenerator($e), new \hanneskod\readmetester\Runner\RunnerFactory($b), $c, $e);
 
         $instance->setName('Readme-Tester');
         $instance->setVersion('dev');

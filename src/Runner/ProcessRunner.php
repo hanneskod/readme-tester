@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Example\ExampleObj;
-use hanneskod\readmetester\Utils\CodeBlock;
 use Symfony\Component\Process\PhpProcess;
 
 /**
@@ -13,16 +12,13 @@ use Symfony\Component\Process\PhpProcess;
  */
 final class ProcessRunner implements RunnerInterface
 {
-    private CodeBlock $bootstrap;
+    private string $bootstrap = '';
 
-    public function __construct()
+    public function setBootstrap(string $filename): void
     {
-        $this->bootstrap = new CodeBlock('');
-    }
-
-    public function setBootstrap(CodeBlock $bootstrap): void
-    {
-        $this->bootstrap = $bootstrap;
+        if ($filename) {
+            $this->bootstrap = "require_once '$filename';";
+        }
     }
 
     public function run(ExampleObj $example): OutcomeInterface
@@ -31,7 +27,7 @@ final class ProcessRunner implements RunnerInterface
 
         file_put_contents($filename, "<?php {$example->getCodeBlock()->getCode()}");
 
-        $process = new PhpProcess("<?php {$this->bootstrap->getCode()} require '$filename';");
+        $process = new PhpProcess("<?php {$this->bootstrap} require '$filename';");
         $process->run();
 
         unlink($filename);

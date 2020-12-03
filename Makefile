@@ -55,7 +55,7 @@ $(PARSER): $(PARSER_ROOT).peg
 	cd ..; php7.4 `which $(PHPEG_CMD)` generate readme-tester/$<
 
 .PHONY: test
-test: phpspec docs features
+test: phpspec docs
 
 .PHONY: phpspec
 phpspec: vendor/installed $(PARSER) $(PHPSPEC_CMD)
@@ -63,24 +63,17 @@ phpspec: vendor/installed $(PARSER) $(PHPSPEC_CMD)
 
 .PHONY: docs
 docs: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
-	$(README_TESTER_CMD) README.md docs --runner process
-	$(README_TESTER_CMD) README.md docs --runner eval
-
-.PHONY: features
-features: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
-	$(README_TESTER_CMD) features --runner eval
+	$(README_TESTER_CMD)
 
 .PHONY: continuous-integration
 continuous-integration: $(PHPSPEC_CMD) $(README_TESTER_CMD)
 	$(PHPSPEC_CMD) run -v
-	$(README_TESTER_CMD) README.md docs --output debug --runner process
-	$(README_TESTER_CMD) README.md docs --output debug --runner eval
-	$(README_TESTER_CMD) features --output debug --runner eval
+	$(README_TESTER_CMD) --output debug
 	$(MAKE) phpstan
 
 .PHONY: check
 check: $(TARGET)
-	./$(TARGET) README.md docs --ignore docs/custom_attributes.md
+	./$(TARGET) --exclude docs/custom_attributes.md --no-bootstrap
 
 .PHONY: analyze
 analyze: phpstan phpcs

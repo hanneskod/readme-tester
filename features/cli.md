@@ -2,14 +2,13 @@
 #[ReadmeTester\Import('feature-context:scenario')]
 -->
 
-# Testing the command linte interface
+# Test the command linte interface
 
 ## I evaluate multiple files
 ```php
 $scenario
     ->Given_a_markdown_file('# First file')
     ->And_a_markdown_file('# Second file')
-    ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('files', 2)
     ->And_the_exit_code_is(0)
@@ -20,7 +19,6 @@ $scenario
 ```php
 $scenario
     ->Given_a_file('foo.BAR', '')
-    ->And_the_command_line_argument('--no-bootstrap')
     ->And_the_command_line_argument('--file-extension=bar')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('files', 1)
@@ -33,8 +31,7 @@ $scenario
 $scenario
     ->Given_a_file('foo.md', '')
     ->Given_a_file('bar.md', '')
-    ->And_the_command_line_argument('--no-bootstrap')
-    ->And_the_command_line_argument('--ignore=bar')
+    ->And_the_command_line_argument('--exclude=bar')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('files', 1)
     ->And_the_exit_code_is(0)
@@ -53,7 +50,6 @@ $scenario
         $PHPbegin
         $PHPend
     ")
-    ->And_the_command_line_argument('--no-bootstrap')
     ->And_the_command_line_argument('--stop-on-failure')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('failures', 1)
@@ -69,7 +65,6 @@ $scenario
         $PHPbegin
         $PHPend
     ")
-    ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('errors', 1)
     ->And_the_exit_code_is(1)
@@ -92,6 +87,44 @@ $scenario
     ->And_the_command_line_argument('--bootstrap=foo.php')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
+    ->And_the_exit_code_is(0)
+;
+```
+
+## I load a custom runner
+```php
+$scenario
+    ->Given_a_file(
+        'runner.php',
+        '<?php
+            namespace hanneskod\readmetester\Runner;
+
+            use hanneskod\readmetester\Example\ExampleObj;
+
+            class CustomRunner implements RunnerInterface
+            {
+                public function run(ExampleObj $example): OutcomeInterface
+                {
+                    return new OutputOutcome(self::class);
+                }
+
+                public function setBootstrap(string $filename): void
+                {
+                }
+            }
+        '
+    )
+    ->And_a_markdown_file("
+        #[ReadmeTester\ExpectOutput('/CustomRunner/')]
+        $PHPbegin
+        // nothing here, but the runner always returns OutputOutcome
+        $PHPend
+    ")
+    ->And_the_command_line_argument('--bootstrap=runner.php')
+    ->And_the_command_line_argument('--runner=hanneskod\\\readmetester\\\Runner\\\CustomRunner')
+    ->When_I_run_readme_tester()
+    ->Then_the_count_for_x_is('assertions', 1)
+    ->And_the_count_for_x_is('failures', 0)
     ->And_the_exit_code_is(0)
 ;
 ```
