@@ -29,19 +29,19 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
     ->teardown(function () {
         exec("rm -rf {$this->tempDir}");
     })
-    ->on('a_config_file', function (string $name, string $content) use ($defaultYamlConfigs) {
+    ->a_config_file(function (string $name, string $content) use ($defaultYamlConfigs) {
         file_put_contents($this->tempDir.$name, $defaultYamlConfigs."\n".$content);
     })
-    ->on('a_markdown_file', function (string $content) {
+    ->a_markdown_file(function (string $content) {
         file_put_contents($this->tempDir.rand().'.md', $content);
     })
-    ->on('a_file', function (string $name, string $content) {
+    ->a_file(function (string $name, string $content) {
         file_put_contents($this->tempDir.$name, $content);
     })
-    ->on('the_command_line_argument', function (string $arg) {
+    ->the_command_line_argument(function (string $arg) {
         $this->commandLineArgs[] = $arg;
     })
-    ->on('I_run_readme_tester', function () {
+    ->I_run_readme_tester(function () {
         $command = realpath('bin/readme-tester') . ' --output=json ' . implode(' ', $this->commandLineArgs);
         $cwd = getcwd();
         chdir($this->tempDir);
@@ -50,7 +50,7 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
         $this->parsedOutput = json_decode($this->rawOutput, true);
         chdir($cwd);
     })
-    ->on('the_output_is', function (string $expected) {
+    ->the_output_is(function (string $expected) {
         if ($this->rawOutput != $expected) {
             throw new \Exception(
                 sprintf(
@@ -61,7 +61,7 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
             );
         }
     })
-    ->on('the_output_contains', function (string $expected) {
+    ->the_output_contains(function (string $expected) {
         if (!str_contains($this->rawOutput, $expected)) {
             throw new \Exception(
                 sprintf(
@@ -72,7 +72,7 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
             );
         }
     })
-    ->on('the_count_for_x_is', function (string $field, int $expected) {
+    ->the_count_for_x_is(function (string $field, int $expected) {
         // Divide by 2 as we use 2 suites
         $count = $this->parsedOutput['counts'][$field] / 2;
 
@@ -87,7 +87,7 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
             );
         }
     })
-    ->on('the_exit_code_is', function (int $expected) {
+    ->the_exit_code_is(function (int $expected) {
         if ($this->returnValue != $expected) {
             throw new \Exception(
                 sprintf(

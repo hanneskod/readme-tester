@@ -72,6 +72,22 @@ final class FeatureContext
     }
 
     /**
+     * Register step using method overloading
+     *
+     * @param array<mixed> $arguments
+     */
+    public function __call(string $name, array $arguments): self
+    {
+        $step = $arguments[0] ?? null;
+
+        if (!$step instanceof \Closure) {
+            throw new \LogicException('Step must be registered with a closure');
+        }
+
+        return $this->on($name, $step);
+    }
+
+    /**
      * Execute step
      *
      * @param array<mixed> $arguments
