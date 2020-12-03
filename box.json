@@ -5,7 +5,7 @@
         "vendor"
     ],
     "files-bin": [
-        "readme-tester.yaml.dist"
+        "etc/default_configuration.yaml"
     ],
     "compactors": [
         "KevinGH\\Box\\Compactor\\Php"

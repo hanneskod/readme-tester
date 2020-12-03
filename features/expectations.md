@@ -16,8 +16,7 @@ $scenario
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
-    ->And_the_exit_code_is(1)
-;
+    ->And_the_exit_code_is(1);
 ```
 
 ## I fail expecting output using a string
@@ -32,8 +31,7 @@ $scenario
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
-    ->And_the_exit_code_is(1)
-;
+    ->And_the_exit_code_is(1);
 ```
 
 ## I fail expecting an error
@@ -48,8 +46,7 @@ $scenario
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
-    ->And_the_exit_code_is(1)
-;
+    ->And_the_exit_code_is(1);
 ```
 
 ## I fail as an error is not expected
@@ -63,8 +60,7 @@ $scenario
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
-    ->And_the_exit_code_is(1)
-;
+    ->And_the_exit_code_is(1);
 ```
 
 ## I fail as output is not expected
@@ -78,6 +74,5 @@ $scenario
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('assertions', 1)
     ->And_the_count_for_x_is('failures', 1)
-    ->And_the_exit_code_is(1)
-;
+    ->And_the_exit_code_is(1);
 ```

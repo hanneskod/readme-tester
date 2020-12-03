@@ -13,11 +13,6 @@ identifier.
     executed by readmetester..
     ```
 
-> A note on the syntax used in these files: Examples and attribute blocks are
-> indented to make the acctual syntax visible. In the real world you would
-> not indent and thus would code block fences and attributes inside
-> HTML-comments and not render on for example github.
-
 ## Attributes
 
 To specify how examples should be tested readme-tester uses php attributes.
@@ -88,30 +83,4 @@ native attributes.
     -->
     ```php
     echo "foobar";
-    ```
-
-## Hidden examples
-
-Sometimes you may need to set up an environment to create a context for your
-examples to run in. This can be done using hidden examples. Hidden examples are
-defined inside a html comment. Consider the following example:
-
-
-    <!--
-    This example is hidden in a html comment
-
-    #[ReadmeTester\Example('hidden-example')]
-
-    It will not be rendered on for example github..
-
-    ```php
-    $hiddenVar = 'foobar';
-    ```
-    -->
-
-    #[ReadmeTester\Example('import-hidden-example')]
-    #[ReadmeTester\Import('hidden-example')]
-    #[ReadmeTester\ExpectOutput('foobar')]
-    ```php
-    echo $hiddenVar;
     ```

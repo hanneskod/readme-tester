@@ -5,7 +5,7 @@
         "vendor"
     ],
     "files-bin": [
-        "readme-tester.yaml.dist"
+        "etc/default_configuration.yaml"
     ],
     "algorithm": "SHA512",
     "chmod": "0555"

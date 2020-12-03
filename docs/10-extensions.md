@@ -1,4 +1,6 @@
-# Custom attributes
+# Extensions
+
+## Custom attributes
 
 Extend readmetester with custom attributes by implementing the
 `AttributeInterface` and possibly `TransformationInterface` interfaces.

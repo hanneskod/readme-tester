@@ -27,7 +27,7 @@ final class FilesystemInputGenerator
 
         $finder->path(
             array_map(
-                fn($path) => '/^' . preg_quote($path, '/') . '/',
+                fn($path) => '/^' . preg_quote($path, '/') . '/i',
                 $paths
             )
         );
@@ -45,7 +45,7 @@ final class FilesystemInputGenerator
 
         $finder->notPath(
             array_map(
-                fn($path) => '/^' . preg_quote($path, '/') . '/',
+                fn($path) => '/^' . preg_quote($path, '/') . '/i',
                 $ignore
             )
         );

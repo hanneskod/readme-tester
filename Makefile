@@ -73,7 +73,7 @@ continuous-integration: $(PHPSPEC_CMD) $(README_TESTER_CMD)
 
 .PHONY: check
 check: $(TARGET)
-	./$(TARGET) --exclude docs/custom_attributes.md --no-bootstrap
+	./$(TARGET) --exclude 'docs/10-extensions.md' --no-bootstrap
 
 .PHONY: analyze
 analyze: phpstan phpcs

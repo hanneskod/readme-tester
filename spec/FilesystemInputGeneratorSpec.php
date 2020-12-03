@@ -40,6 +40,18 @@ class FilesystemInputGeneratorSpec extends ObjectBehavior
             ->shouldNotIncludeFile('FilesystemInputGeneratorSpec.php');
     }
 
+    function it_includes_case_insensitive()
+    {
+        $this->generateFilesystemInput(strtolower(__DIR__), [''], ['PHP'], [])
+            ->shouldIncludeFile('FilesystemInputGeneratorSpec.php');
+    }
+
+    function it_ignores_case_insensitive()
+    {
+        $this->generateFilesystemInput(__DIR__, [''], ['php'], ['filesysteminputgeneratorspec.php'])
+            ->shouldNotIncludeFile('FilesystemInputGeneratorSpec.php');
+    }
+
     function getMatchers(): array
     {
         return [

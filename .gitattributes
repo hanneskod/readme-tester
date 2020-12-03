@@ -1,6 +1,6 @@
 /bin/build_container export-ignore
 /docs export-ignore
-/etc export-ignore
+/etc/container.yaml export-ignore
 /features export-ignore
 /spec export-ignore
 /.gitattributes export-ignore

@@ -19,7 +19,7 @@ class YamlRepositorySpec extends ObjectBehavior
 
     function it_loads_configs()
     {
-        $this->beConstructedWith(__DIR__ . '/../../readme-tester.yaml.dist');
+        $this->beConstructedWith(__DIR__ . '/../../etc/default_configuration.yaml');
         $this->getConfigs()->shouldHaveKeyWithValue(Configs::OUTPUT, 'default');
     }
 
@@ -37,8 +37,7 @@ class YamlRepositorySpec extends ObjectBehavior
 
     function it_uses_filename_as_name()
     {
-        $filename = __DIR__ . '/../../readme-tester.yaml.dist';
-        $this->beConstructedWith($filename);
-        $this->getRepositoryName()->shouldReturn($filename);
+        $this->beConstructedWith('filename');
+        $this->getRepositoryName()->shouldReturn('filename');
     }
 }

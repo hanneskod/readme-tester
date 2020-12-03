@@ -8,7 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 final class DefaultConfigFactory
 {
-    private const DEFAULT_CONFIG_FILE = __DIR__ . '/../../readme-tester.yaml.dist';
+    private const DEFAULT_CONFIG_FILE = __DIR__ . '/../../etc/default_configuration.yaml';
 
     public function createRepository(): RepositoryInterface
     {

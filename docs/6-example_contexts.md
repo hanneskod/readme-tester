@@ -73,3 +73,26 @@ Multiple contexts may be defined, as has been done in this file.
     echo $hiddenContext;
     echo $ignoredContext;
     ```
+
+## Explicitly importing an example context
+
+Importing a named context is not neccesary, but works as eccpected.
+
+    <!--
+    #[ReadmeTester\Name('named-example-context')]
+    #[ReadmeTester\ExampleContext]
+    -->
+    ```php
+    $namedExampleContextImportTimes = ($namedExampleContextImportTimes ?? 0) + 1;
+    ```
+
+Explicitly importing the context will only include it once.
+
+    <!--
+    #[ReadmeTester\Name('importing-named-example-context')]
+    #[ReadmeTester\Import('named-example-context')]
+    #[ReadmeTester\ExpectOutput('1')]
+    -->
+    ```php
+    echo $namedExampleContextImportTimes;
+    ```

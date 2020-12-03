@@ -14,8 +14,7 @@ defaults:
     ")
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('files', 1)
-    ->And_the_exit_code_is(0)
-;
+    ->And_the_exit_code_is(0);
 ```
 
 ## I load a dist config file
@@ -28,8 +27,7 @@ defaults:
     ")
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('files', 1)
-    ->And_the_exit_code_is(0)
-;
+    ->And_the_exit_code_is(0);
 ```
 
 ## I have a dist and a default config file
@@ -47,8 +45,7 @@ defaults:
     ->And_the_command_line_argument('--no-bootstrap')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('files', 1)
-    ->And_the_exit_code_is(0)
-;
+    ->And_the_exit_code_is(0);
 ```
 
 ## I load a custom config file
@@ -62,6 +59,5 @@ defaults:
     ->And_the_command_line_argument('--config config.yaml')
     ->When_I_run_readme_tester()
     ->Then_the_count_for_x_is('files', 1)
-    ->And_the_exit_code_is(0)
-;
+    ->And_the_exit_code_is(0);
 ```
