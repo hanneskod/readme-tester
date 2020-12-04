@@ -4,18 +4,20 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
+use hanneskod\readmetester\Example\ExampleObj;
+
 final class ErrorOutcome implements OutcomeInterface
 {
-    private string $message;
+    use OutcomeDefaultsTrait;
 
-    public function __construct(string $message)
-    {
-        $this->message = $message;
-    }
+    public function __construct(
+        private ExampleObj $example,
+        private string $content,
+    ) {}
 
-    public function getType(): string
+    public function isError(): bool
     {
-        return self::TYPE_ERROR;
+        return true;
     }
 
     public function mustBeHandled(): bool
@@ -25,22 +27,11 @@ final class ErrorOutcome implements OutcomeInterface
 
     public function getContent(): string
     {
-        return $this->message;
-    }
-
-    public function getTruncatedContent(int $strlen = 30): string
-    {
-        $content = trim($this->getContent());
-
-        if (mb_strlen($content) <= $strlen) {
-            return $content;
-        }
-
-        return mb_substr($content, 0, $strlen-3) . '...';
+        return $this->content;
     }
 
     public function getDescription(): string
     {
-        return $this->getTruncatedContent(63);
+        return $this->getContent();
     }
 }

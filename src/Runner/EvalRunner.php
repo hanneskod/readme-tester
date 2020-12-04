@@ -21,7 +21,7 @@ final class EvalRunner implements RunnerInterface
     {
         foreach ($example->getAttributes() as $attribute) {
             if ($attribute instanceof Isolate) {
-                return new SkippedOutcome('requires isolation');
+                return new SkippedOutcome($example, 'requires isolation');
             }
         }
 
@@ -42,7 +42,7 @@ final class EvalRunner implements RunnerInterface
         } catch (\Throwable $exception) {
             restore_error_handler();
             ob_end_clean();
-            return new ErrorOutcome((string)$exception);
+            return new ErrorOutcome($example, (string)$exception);
         }
 
         restore_error_handler();
@@ -50,13 +50,13 @@ final class EvalRunner implements RunnerInterface
         $output = ob_get_clean();
 
         if ($errorOutput) {
-            return new ErrorOutcome($errorOutput);
+            return new ErrorOutcome($example, $errorOutput);
         }
 
         if ($output) {
-            return new OutputOutcome($output);
+            return new OutputOutcome($example, $output);
         }
 
-        return new VoidOutcome;
+        return new VoidOutcome($example);
     }
 }

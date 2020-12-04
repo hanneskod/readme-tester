@@ -25,15 +25,21 @@ Here example `child` imports `parent`
 
 ### Chaining imports
 
-TODO
-aha,
-är det här en bugg?
-Det här borde väll implicit betyda att parent också importeras!!
-
-Tillfällig ignore..
-#[ReadmeTester\Ignore]
+Please note that chaining imports is not supported. Importing `child` from the
+previous example will _not_ automatically import `parent`.
 
     <!--
+    #[ReadmeTester\Import('child')]
+    #[ReadmeTester\ExpectError('/\$data/')]
+    -->
+    ```php
+    // Will error as child tries to access an undefined variable $data
+    ```
+
+To import a deep structure like this all examples must be specified specifically.
+
+    <!--
+    #[ReadmeTester\Import('parent')]
     #[ReadmeTester\Import('child')]
     #[ReadmeTester\ExpectOutput('parent-data')]
     -->

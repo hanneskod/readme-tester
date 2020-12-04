@@ -51,26 +51,26 @@ final class JsonOutputtingSubscriber extends AbstractOutputtingSubscriber
         $this->data['counts']['ignored']++;
     }
 
-    public function onExampleSkipped(Event\ExampleSkipped $event): void
+    public function onEvaluationSkipped(Event\EvaluationSkipped $event): void
     {
-        $name = $event->getExample()->getName();
+        $name = $event->getOutcome()->getExample()->getName();
         $this->data['tests'][$name->getNamespaceName()][$name->getShortName()] = 'SKIPPED';
         $this->data['counts']['skipped']++;
     }
 
-    public function onExampleEntered(Event\ExampleEntered $event): void
+    public function onEvaluationStarted(Event\EvaluationStarted $event): void
     {
-        $name = $event->getExample()->getName();
+        $name = $event->getOutcome()->getExample()->getName();
         $this->data['tests'][$name->getNamespaceName()][$name->getShortName()] = [];
         $this->data['counts']['examples']++;
     }
 
     public function onTestPassed(Event\TestPassed $event): void
     {
-        $name = $event->getExample()->getName();
+        $name = $event->getStatus()->getOutcome()->getExample()->getName();
 
         $this->data['tests'][$name->getNamespaceName()][$name->getShortName()][] = [
-            'success' => $event->getStatus()->getDescription()
+            'success' => $event->getStatus()->getContent()
         ];
 
         $this->data['counts']['assertions']++;
@@ -78,10 +78,10 @@ final class JsonOutputtingSubscriber extends AbstractOutputtingSubscriber
 
     public function onTestFailed(Event\TestFailed $event): void
     {
-        $name = $event->getExample()->getName();
+        $name = $event->getStatus()->getOutcome()->getExample()->getName();
 
         $this->data['tests'][$name->getNamespaceName()][$name->getShortName()][] = [
-            'failure' => $event->getStatus()->getDescription()
+            'failure' => $event->getStatus()->getContent()
         ];
 
         $this->data['counts']['assertions']++;

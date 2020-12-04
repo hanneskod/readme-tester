@@ -6,14 +6,15 @@ namespace spec\hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Runner\SkippedOutcome;
 use hanneskod\readmetester\Runner\OutcomeInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class SkippedOutcomeSpec extends ObjectBehavior
 {
-    function let()
+    function let(ExampleObj $example)
     {
-        $this->beConstructedWith('');
+        $this->beConstructedWith($example, 'description');
     }
 
     function it_is_initializable()
@@ -26,9 +27,17 @@ class SkippedOutcomeSpec extends ObjectBehavior
         $this->shouldHaveType(OutcomeInterface::class);
     }
 
-    function it_is_a_void_type()
+    function it_contains_example($example)
     {
-        $this->getType()->shouldReturn(OutcomeInterface::TYPE_SKIPPED);
+        $this->getExample()->shouldReturn($example);
+    }
+
+    function it_knows_its_type()
+    {
+        $this->shouldNotBeError();
+        $this->shouldNotBeOutput();
+        $this->shouldBeSkipped();
+        $this->shouldNotBeVoid();
     }
 
     function it_must_not_be_handled()
@@ -41,14 +50,8 @@ class SkippedOutcomeSpec extends ObjectBehavior
         $this->getContent()->shouldReturn('');
     }
 
-    function it_can_truncated_content()
-    {
-        $this->getTruncatedContent()->shouldReturn('');
-    }
-
     function it_contains_description()
     {
-        $this->beConstructedWith('desc');
-        $this->getDescription()->shouldReturn('desc');
+        $this->getDescription()->shouldReturn('description');
     }
 }

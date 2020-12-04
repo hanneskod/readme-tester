@@ -93,7 +93,7 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
         }
     }
 
-    public function onExampleSkipped(Event\ExampleSkipped $event): void
+    public function onEvaluationSkipped(Event\EvaluationSkipped $event): void
     {
         $this->skippedCount++;
         $this->getOutput()->writeln(
@@ -101,18 +101,23 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
         );
     }
 
-    public function onExampleEntered(Event\ExampleEntered $event): void
+    public function onEvaluationStarted(Event\EvaluationStarted $event): void
     {
         $this->examplePassed = true;
         $this->exampleCount++;
-        $this->getOutput()->write("<info>{$event->getExample()->getName()->getFullName()}</info>");
+        $this->getOutput()->write("<info>{$event->getOutcome()->getExample()->getName()->getFullName()}</info>");
     }
 
     public function onTestPassed(Event\TestPassed $event): void
     {
         $this->expectationCount++;
+
+        $msg = $this->getOutput()->isVeryVerbose()
+            ? $event->getStatus()->getContent()
+            : $event->getStatus()->getTruncatedContent();
+
         if ($this->getOutput()->isVerbose()) {
-            $this->getOutput()->write("\n> {$event->getStatus()->getDescription()}");
+            $this->getOutput()->write("\n> $msg");
         }
     }
 
@@ -121,10 +126,15 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
         $this->examplePassed = false;
         $this->expectationCount++;
         $this->failureCount++;
-        $this->getOutput()->writeln("\n<error>> {$event->getStatus()->getDescription()}</error>");
+
+        $msg = $this->getOutput()->isVerbose()
+            ? $event->getStatus()->getContent()
+            : $event->getStatus()->getTruncatedContent();
+
+        $this->getOutput()->writeln("\n<error>> $msg</error>");
     }
 
-    public function onExampleExited(Event\ExampleExited $event): void
+    public function onEvaluationDone(Event\EvaluationDone $event): void
     {
         if ($this->examplePassed) {
             $this->getOutput()->writeln(" <comment>\u{2713}</comment>");

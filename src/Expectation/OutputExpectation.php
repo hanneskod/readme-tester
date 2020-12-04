@@ -26,17 +26,17 @@ final class OutputExpectation implements ExpectationInterface
 
     public function handles(OutcomeInterface $outcome): bool
     {
-        return $outcome->getType() == OutcomeInterface::TYPE_OUTPUT;
+        return $outcome->isOutput();
     }
 
     public function handle(OutcomeInterface $outcome): StatusInterface
     {
-        $msg = "that output '{$outcome->getTruncatedContent()}' matches '{$this->regexp->getRegexp()}'";
+        $msg = "that output '{$outcome->getContent()}' matches '{$this->regexp->getRegexp()}'";
 
         if (!$this->regexp->matches($outcome->getContent())) {
-            return new Failure("Failed asserting $msg");
+            return new Failure($outcome, "Failed asserting $msg");
         }
 
-        return new Success("Asserted $msg");
+        return new Success($outcome, "Asserted $msg");
     }
 }

@@ -105,7 +105,7 @@
     {
         public function run(ExampleObj $example): OutcomeInterface
         {
-            return new OutputOutcome(self::class);
+            return new OutputOutcome($example, self::class);
         }
         public function setBootstrap(string $filename): void
         {

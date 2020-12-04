@@ -36,20 +36,22 @@ class ExampleTesterSpec extends ObjectBehavior
     ) {
         $name->getFullName()->willReturn('');
 
-        $example->getExpectations()->willReturn(['list-of-expectations']);
         $example->isActive()->willReturn(true);
         $example->getName()->willReturn($name);
 
         $runner->run($example)->willReturn($outcome);
 
+        $outcome->getExample()->willReturn($example);
+
         $status->isSuccess()->willReturn(true);
-        $status->getDescription()->willReturn('');
+        $status->getContent()->willReturn('');
+        $status->getOutcome()->willReturn($outcome);
 
-        $evaluator->evaluate(['list-of-expectations'], $outcome)->willReturn([$status]);
+        $evaluator->evaluate($outcome)->willReturn([$status]);
 
-        $dispatcher->dispatch(Argument::type(Event\ExampleEntered::class))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(Event\EvaluationStarted::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\TestPassed::class))->shouldBeCalled();
-        $dispatcher->dispatch(Argument::type(Event\ExampleExited::class))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(Event\EvaluationDone::class))->shouldBeCalled();
 
         $exampleStore->getExamples()->willReturn([$example]);
 
@@ -68,20 +70,22 @@ class ExampleTesterSpec extends ObjectBehavior
     ) {
         $name->getFullName()->willReturn('');
 
-        $example->getExpectations()->willReturn(['list-of-expectations']);
         $example->isActive()->willReturn(true);
         $example->getName()->willReturn($name);
 
         $runner->run($example)->willReturn($outcome);
 
+        $outcome->getExample()->willReturn($example);
+
         $status->isSuccess()->willReturn(false);
-        $status->getDescription()->willReturn('');
+        $status->getContent()->willReturn('');
+        $status->getOutcome()->willReturn($outcome);
 
-        $evaluator->evaluate(['list-of-expectations'], $outcome)->willReturn([$status]);
+        $evaluator->evaluate($outcome)->willReturn([$status]);
 
-        $dispatcher->dispatch(Argument::type(Event\ExampleEntered::class))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(Event\EvaluationStarted::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\TestFailed::class))->shouldBeCalled();
-        $dispatcher->dispatch(Argument::type(Event\ExampleExited::class))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(Event\EvaluationDone::class))->shouldBeCalled();
 
         $exampleStore->getExamples()->willReturn([$example]);
 
@@ -100,18 +104,20 @@ class ExampleTesterSpec extends ObjectBehavior
     ) {
         $name->getFullName()->willReturn('');
 
-        $example->getExpectations()->willReturn(['list-of-expectations']);
         $example->isActive()->willReturn(true);
         $example->getName()->willReturn($name);
 
         $runner->run($example)->willReturn($outcome);
 
+        $outcome->getExample()->willReturn($example);
+
         $status->isSuccess()->willReturn(false);
-        $status->getDescription()->willReturn('');
+        $status->getContent()->willReturn('');
+        $status->getOutcome()->willReturn($outcome);
 
-        $evaluator->evaluate(['list-of-expectations'], $outcome)->willReturn([$status]);
+        $evaluator->evaluate($outcome)->willReturn([$status]);
 
-        $dispatcher->dispatch(Argument::type(Event\ExampleEntered::class))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(Event\EvaluationStarted::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\TestFailed::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\TestingAborted::class))->shouldBeCalled();
 
@@ -153,9 +159,9 @@ class ExampleTesterSpec extends ObjectBehavior
         $example->isActive()->willReturn(true);
         $example->getName()->willReturn($name);
 
-        $runner->run($example)->willReturn(new SkippedOutcome(''));
+        $runner->run($example)->willReturn(new SkippedOutcome($example->getWrappedObject(), ''));
 
-        $dispatcher->dispatch(Argument::type(Event\ExampleSkipped::class))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(Event\EvaluationSkipped::class))->shouldBeCalled();
 
         $exampleStore->getExamples()->willReturn([$example]);
 

@@ -33,13 +33,13 @@ final class ProcessRunner implements RunnerInterface
         unlink($filename);
 
         if ($errorOutput = $process->getErrorOutput()) {
-            return new ErrorOutcome(trim($errorOutput));
+            return new ErrorOutcome($example, trim($errorOutput));
         }
 
         if ($output = $process->getOutput()) {
-            return new OutputOutcome($output);
+            return new OutputOutcome($example, $output);
         }
 
-        return new VoidOutcome;
+        return new VoidOutcome($example);
     }
 }

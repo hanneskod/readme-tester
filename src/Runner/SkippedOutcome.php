@@ -4,18 +4,20 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
+use hanneskod\readmetester\Example\ExampleObj;
+
 final class SkippedOutcome implements OutcomeInterface
 {
-    private string $desc;
+    use OutcomeDefaultsTrait;
 
-    public function __construct(string $desc)
-    {
-        $this->desc = $desc;
-    }
+    public function __construct(
+        private ExampleObj $example,
+        private string $description,
+    ) {}
 
-    public function getType(): string
+    public function isSkipped(): bool
     {
-        return self::TYPE_SKIPPED;
+        return true;
     }
 
     public function mustBeHandled(): bool
@@ -28,13 +30,8 @@ final class SkippedOutcome implements OutcomeInterface
         return '';
     }
 
-    public function getTruncatedContent(int $strlen = 30): string
-    {
-        return '';
-    }
-
     public function getDescription(): string
     {
-        return $this->desc;
+        return $this->description;
     }
 }

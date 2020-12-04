@@ -34,7 +34,8 @@ trait RunnerSpecTrait
 
     function it_returns_output()
     {
-        $this->run($this->an_example('echo "foo";'))->shouldBeLike(new OutputOutcome('foo'));
+        $example = $this->an_example('echo "foo";');
+        $this->run($example)->shouldBeLike(new OutputOutcome($example, 'foo'));
     }
 
     function it_returns_error_on_exception()

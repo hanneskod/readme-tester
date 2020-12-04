@@ -22,13 +22,13 @@ class ExitStatusListenerSpec extends ObjectBehavior
 
     function it_collects_test_failed(Event\TestFailed $event)
     {
-        $this->onTestFailed($event->getWrappedObject());
+        $this->onTestFailed($event);
         $this->getStatusCode()->shouldReturn(1);
     }
 
     function it_collects_invalid_input(Event\InvalidInput $event)
     {
-        $this->onInvalidInput($event->getWrappedObject());
+        $this->onInvalidInput($event);
         $this->getStatusCode()->shouldReturn(1);
     }
 }

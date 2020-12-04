@@ -2,37 +2,27 @@
 
 namespace hanneskod\readmetester\Runner;
 
+use hanneskod\readmetester\Example\ExampleObj;
+
 /**
  * Represents an outcome (effect) of an executed example
  */
 interface OutcomeInterface
 {
     /**
-     * Output type identifier
+     * Get the actual outcome data
      */
-    const TYPE_OUTPUT = 'TYPE_OUTPUT';
+    public function getContent(): string;
 
     /**
-     * Error type identifier
+     * Get a free text description of this outcome
      */
-    const TYPE_ERROR = 'TYPE_ERROR';
+    public function getDescription(): string;
 
     /**
-     * Void type identifier
+     * Get example this outcome originates from
      */
-    const TYPE_VOID = 'TYPE_VOID';
-
-    /**
-     * Skipped type identifier
-     */
-    const TYPE_SKIPPED = 'TYPE_SKIPPED';
-
-    /**
-     * Get a token describing the outcome type
-     *
-     * See the list of type constants in OutcomeInterface
-     */
-    public function getType(): string;
+    public function getExample(): ExampleObj;
 
     /**
      * Check if unhandled outcome should trigger an error
@@ -40,17 +30,22 @@ interface OutcomeInterface
     public function mustBeHandled(): bool;
 
     /**
-     * Get the actual outcome data
+     * Check if this is an error outcome
      */
-    public function getContent(): string;
+    public function isError(): bool;
 
     /**
-     * Get a truncated version of the outcome data
+     * Check if this is an output outcome
      */
-    public function getTruncatedContent(int $strlen = 30): string;
+    public function isOutput(): bool;
 
     /**
-     * Get a free text description of this outcome
+     * Check if this is a skipped outcome
      */
-    public function getDescription(): string;
+    public function isSkipped(): bool;
+
+    /**
+     * Check if this is a void outcome
+     */
+    public function isVoid(): bool;
 }

@@ -29,18 +29,16 @@ final class ExampleTester
             $outcome = $runner->run($example);
 
             if ($outcome instanceof SkippedOutcome) {
-                $this->dispatcher->dispatch(new Event\ExampleSkipped($example, $outcome));
+                $this->dispatcher->dispatch(new Event\EvaluationSkipped($outcome));
                 continue;
             }
 
-            $this->dispatcher->dispatch(new Event\ExampleEntered($example));
+            $this->dispatcher->dispatch(new Event\EvaluationStarted($outcome));
 
-            foreach ($this->evaluator->evaluate($example->getExpectations(), $outcome) as $status) {
-                $event = $status->isSuccess()
-                    ? new Event\TestPassed($example, $outcome, $status)
-                    : new Event\TestFailed($example, $outcome, $status);
-
-                $this->dispatcher->dispatch($event);
+            foreach ($this->evaluator->evaluate($outcome) as $status) {
+                $this->dispatcher->dispatch(
+                    $status->isSuccess() ? new Event\TestPassed($status) : new Event\TestFailed($status)
+                );
 
                 if ($stopOnFailure && !$status->isSuccess()) {
                     $this->dispatcher->dispatch(new Event\TestingAborted);
@@ -48,7 +46,7 @@ final class ExampleTester
                 }
             }
 
-            $this->dispatcher->dispatch(new Event\ExampleExited($example));
+            $this->dispatcher->dispatch(new Event\EvaluationDone($outcome));
         }
     }
 }

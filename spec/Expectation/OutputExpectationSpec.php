@@ -38,20 +38,19 @@ class OutputExpectationSpec extends ObjectBehavior
 
     function it_handles_outputs(OutcomeInterface $outcome)
     {
-        $outcome->getType()->willReturn(OutcomeInterface::TYPE_OUTPUT);
+        $outcome->isOutput()->willReturn(true);
         $this->handles($outcome)->shouldReturn(true);
     }
 
     function it_does_not_handle_other_outcomes(OutcomeInterface $outcome)
     {
-        $outcome->getType()->willReturn('foo');
+        $outcome->isOutput()->willReturn(false);
         $this->handles($outcome)->shouldReturn(false);
     }
 
     function it_returns_failure_on_no_match($regexp, OutcomeInterface $outcome)
     {
         $outcome->getContent()->willReturn('foobar');
-        $outcome->getTruncatedContent()->willReturn('foobar');
         $regexp->matches('foobar')->willReturn(false);
         $regexp->getRegexp()->willReturn('');
         $this->handle($outcome)->shouldHaveType(Failure::class);
@@ -60,7 +59,6 @@ class OutputExpectationSpec extends ObjectBehavior
     function it_returns_success_on_match($regexp, OutcomeInterface $outcome)
     {
         $outcome->getContent()->willReturn('foobar');
-        $outcome->getTruncatedContent()->willReturn('foobar');
         $regexp->matches('foobar')->willReturn(true);
         $regexp->getRegexp()->willReturn('');
         $this->handle($outcome)->shouldHaveType(Success::class);
