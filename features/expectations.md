@@ -73,3 +73,17 @@
 ->And_the_count_for_x_is('failures', 1)
 ->And_the_exit_code_is(1)
 ```
+
+## I fail expecting nothing
+```php
+->Given_a_markdown_file("
+    #[ReadmeTester\ExpectNothing]
+    $PHPbegin
+    echo 'some output';
+    $PHPend
+")
+->When_I_run_readme_tester()
+->Then_the_count_for_x_is('assertions', 1)
+->And_the_count_for_x_is('failures', 1)
+->And_the_exit_code_is(1)
+```

@@ -21,6 +21,10 @@ Mark example as a context for all examples in the same file.
 Expect that example produces an error. Argument is treated as a regular
 expression and is matched against the error output.
 
+## ExpectNothing
+
+Expect that no error and no output is generated.
+
 ## ExpectOutput
 
 Expect that example produces output. Argument is treated as a regular

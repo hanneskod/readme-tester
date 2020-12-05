@@ -112,7 +112,7 @@ If an example produces both output and errors only the error can be asserted.
 
 ### Suppressing php errors
 
-You may suppress errors using the `@` error control operator as in normal PHP code.
+You may suppress errors using the `@` error control operator.
 
     #[ReadmeTester\ExpectOutput('1')]
     ```php
@@ -124,4 +124,17 @@ Without the `@` operator the same code would result in an error.
     #[ReadmeTester\ExpectError('/thisVarIsNotDefined/')]
     ```php
     echo $thisVarIsNotDefined + 1;
+    ```
+
+## Expecting nothing
+
+The `ExpectNothing` attribute may be used to expect that neither output nor
+error is produced. Expecting noting is tecnically speaking not neccesary (as
+unhandled errors or output generates failures), but can be handy to explicitly
+denote that nothing should be produced. Using `ExpectNothing` also increases the
+assertion count.
+
+    #[ReadmeTester\ExpectNothing]
+    ```php
+    // No output and no error
     ```
