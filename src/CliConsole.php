@@ -17,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class CliConsole
 {
     const CONFIG_FILE_OPTION = 'config';
+    const NO_CONFIG_OPTION = 'no-config';
     const STDIN_OPTION = 'stdin';
     const SUITE_OPTION = 'suite';
     const PATHS_ARGUMENT = 'path';
@@ -26,7 +27,7 @@ final class CliConsole
     const FILE_EXTENSIONS_OPTION = 'file-extension';
     const IGNORE_PATHS_OPTION = 'exclude';
     const BOOTSTRAP_OPTION = 'bootstrap';
-    const IGNORE_BOOTSTRAP_OPTION = 'no-bootstrap';
+    const NO_BOOTSTRAP_OPTION = 'no-bootstrap';
     const STOP_ON_FAILURE_OPTION = 'stop-on-failure';
 
     public function __construct(
@@ -54,6 +55,12 @@ final class CliConsole
                 'c',
                 InputOption::VALUE_REQUIRED,
                 'Read configurations from file'
+            )
+            ->addOption(
+                self::NO_CONFIG_OPTION,
+                null,
+                InputOption::VALUE_NONE,
+                'Do not load a configuration file'
             )
             ->addOption(
                 self::SUITE_OPTION,
@@ -104,7 +111,7 @@ final class CliConsole
                 'A "bootstrap" PHP file that is included before testing'
             )
             ->addOption(
-                self::IGNORE_BOOTSTRAP_OPTION,
+                self::NO_BOOTSTRAP_OPTION,
                 null,
                 InputOption::VALUE_NONE,
                 "Ignore bootstrapping"
@@ -122,13 +129,15 @@ final class CliConsole
     {
         // Setup configuration from config file
 
-        if ($input->getOption(self::CONFIG_FILE_OPTION)) {
-            $this->configManager->loadRepository(
-                // @phpstan-ignore-next-line
-                new Config\YamlRepository((string)$input->getOption(self::CONFIG_FILE_OPTION))
-            );
-        } else {
-            $this->configManager->loadRepository(new Config\UserConfigRepository);
+        if (!$input->getOption(self::NO_CONFIG_OPTION)) {
+            if ($input->getOption(self::CONFIG_FILE_OPTION)) {
+                $this->configManager->loadRepository(
+                    // @phpstan-ignore-next-line
+                    new Config\YamlRepository((string)$input->getOption(self::CONFIG_FILE_OPTION))
+                );
+            } else {
+                $this->configManager->loadRepository(new Config\UserConfigRepository);
+            }
         }
 
         // Setup configuration from command line
@@ -179,7 +188,7 @@ final class CliConsole
 
         $bootstrap = '';
 
-        if (!$input->getOption(self::IGNORE_BOOTSTRAP_OPTION)) {
+        if (!$input->getOption(self::NO_BOOTSTRAP_OPTION)) {
             $bootstrap = $this->configManager->getBootstrap();
 
             if ($bootstrap) {

@@ -13,7 +13,7 @@ This project now adheres to [Semantic Versioning](http://semver.org/).
 - Added the `--exclude` command line option
 - Added the `--stop-on-failure` command line option
 - Added the `--input` command line option
-- Added the `--config` command line option
+- Added the `--config` and `--no-config` command line options
 - Renamed command line option `--format` > `--output`
 - Using php8 attributes instead of annotations
 - Added support for config files
