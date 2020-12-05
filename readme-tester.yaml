@@ -12,6 +12,9 @@ suites:
     process:
         runner: process
 
+    parallel:
+        runner: parallel
+
     features:
         include_paths: [features]
         runner: eval

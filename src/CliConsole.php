@@ -33,6 +33,7 @@ final class CliConsole
         private Config\ConfigManager $configManager,
         private ExampleTester $exampleTester,
         private Compiler\CompilerFactoryFactory $compilerFactoryFactory,
+        private Compiler\CompilerPassContainer $compilerPasses,
         private Event\ExitStatusListener $exitStatusListener,
         private FilesystemInputGenerator $filesystemInputGenerator,
         private Runner\RunnerFactory $runnerFactory,
@@ -238,7 +239,7 @@ final class CliConsole
 
         $compiler = $this->compilerFactoryFactory
             ->createCompilerFactory($suite->getInputLanguage())
-            ->createCompiler();
+            ->createCompiler($this->compilerPasses->getCompilerPasses());
 
         $this->dispatcher->dispatch(
             new Event\DebugEvent("Using input format: {$suite->getInputLanguage()}")

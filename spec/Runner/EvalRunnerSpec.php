@@ -7,6 +7,7 @@ namespace spec\hanneskod\readmetester\Runner;
 use hanneskod\readmetester\Runner\EvalRunner;
 use hanneskod\readmetester\Runner\SkippedOutcome;
 use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Example\ExampleStoreInterface;
 use hanneskod\readmetester\Utils\CodeBlock;
 use hanneskod\readmetester\Utils\NameObj;
 use hanneskod\readmetester\Attribute\Isolate;
@@ -22,7 +23,7 @@ class EvalRunnerSpec extends ObjectBehavior
         $this->shouldHaveType(EvalRunner::class);
     }
 
-    function it_ignores_examples_that_must_run_in_isolation()
+    function it_ignores_examples_that_must_run_in_isolation(ExampleStoreInterface $store)
     {
         $exampleToSkip = new ExampleObj(
             new NameObj('', ''),
@@ -30,6 +31,8 @@ class EvalRunnerSpec extends ObjectBehavior
             [new Isolate]
         );
 
-        $this->run($exampleToSkip)->shouldHaveType(SkippedOutcome::class);
+        $store->getExamples()->willReturn([$exampleToSkip]);
+
+        $this->run($store)->shouldReturnOutcomeInstancesOf([SkippedOutcome::class]);
     }
 }

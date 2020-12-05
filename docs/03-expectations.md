@@ -80,7 +80,7 @@ You can expect regular errors...
     throw new RuntimeException;
     ```
 
-...user errors...
+...user errors (here we use `IgnoreError` which is a shorthand to expect any error)...
 
     <!--
     #[ReadmeTester\Name('ignoring-an-error')]
@@ -97,5 +97,31 @@ You can expect regular errors...
     #[ReadmeTester\ExpectError('/syntax/')]
     -->
     ```php
-    echo "lkj;
+    this is not valid php..
+    ```
+
+### Errors precede output
+
+If an example produces both output and errors only the error can be asserted.
+
+    #[ReadmeTester\ExpectError('/error/')]
+    ```php
+    echo "this will output";
+    trigger_error("but here is an error");
+    ```
+
+### Suppressing php errors
+
+You may suppress errors using the `@` error control operator as in normal PHP code.
+
+    #[ReadmeTester\ExpectOutput('1')]
+    ```php
+    echo @$thisVarIsNotDefined + 1;
+    ```
+
+Without the `@` operator the same code would result in an error.
+
+    #[ReadmeTester\ExpectError('/thisVarIsNotDefined/')]
+    ```php
+    echo $thisVarIsNotDefined + 1;
     ```

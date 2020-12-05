@@ -27,21 +27,19 @@ class ExampleTesterSpec extends ObjectBehavior
     function it_fires_on_test_passed(
         $evaluator,
         $dispatcher,
-        ExampleStoreInterface $exampleStore,
+        ExampleStoreInterface $store,
         ExampleObj $example,
         OutcomeInterface $outcome,
         RunnerInterface $runner,
         StatusInterface $status,
-        NameObj $name
     ) {
-        $name->getFullName()->willReturn('');
-
-        $example->isActive()->willReturn(true);
-        $example->getName()->willReturn($name);
-
-        $runner->run($example)->willReturn($outcome);
+        $example->getName()->willReturn(new NameObj('', ''));
 
         $outcome->getExample()->willReturn($example);
+
+        $store->getExamples()->willReturn([$example]);
+
+        $runner->run($store)->willReturn([$outcome]);
 
         $status->isSuccess()->willReturn(true);
         $status->getContent()->willReturn('');
@@ -53,29 +51,25 @@ class ExampleTesterSpec extends ObjectBehavior
         $dispatcher->dispatch(Argument::type(Event\TestPassed::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\EvaluationDone::class))->shouldBeCalled();
 
-        $exampleStore->getExamples()->willReturn([$example]);
-
-        $this->test($exampleStore, $runner, false);
+        $this->test($store, $runner, false);
     }
 
     function it_fires_on_test_failed(
         $evaluator,
         $dispatcher,
-        ExampleStoreInterface $exampleStore,
+        ExampleStoreInterface $store,
         ExampleObj $example,
         OutcomeInterface $outcome,
         RunnerInterface $runner,
         StatusInterface $status,
-        NameObj $name
     ) {
-        $name->getFullName()->willReturn('');
-
-        $example->isActive()->willReturn(true);
-        $example->getName()->willReturn($name);
-
-        $runner->run($example)->willReturn($outcome);
+        $example->getName()->willReturn(new NameObj('', ''));
 
         $outcome->getExample()->willReturn($example);
+
+        $store->getExamples()->willReturn([$example]);
+
+        $runner->run($store)->willReturn([$outcome]);
 
         $status->isSuccess()->willReturn(false);
         $status->getContent()->willReturn('');
@@ -87,29 +81,25 @@ class ExampleTesterSpec extends ObjectBehavior
         $dispatcher->dispatch(Argument::type(Event\TestFailed::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\EvaluationDone::class))->shouldBeCalled();
 
-        $exampleStore->getExamples()->willReturn([$example]);
-
-        $this->test($exampleStore, $runner, false);
+        $this->test($store, $runner, false);
     }
 
     function it_can_abort_after_failed_test(
         $evaluator,
         $dispatcher,
-        ExampleStoreInterface $exampleStore,
+        ExampleStoreInterface $store,
         ExampleObj $example,
         OutcomeInterface $outcome,
         RunnerInterface $runner,
         StatusInterface $status,
-        NameObj $name
     ) {
-        $name->getFullName()->willReturn('');
-
-        $example->isActive()->willReturn(true);
-        $example->getName()->willReturn($name);
-
-        $runner->run($example)->willReturn($outcome);
+        $example->getName()->willReturn(new NameObj('', ''));
 
         $outcome->getExample()->willReturn($example);
+
+        $store->getExamples()->willReturn([$example]);
+
+        $runner->run($store)->willReturn([$outcome]);
 
         $status->isSuccess()->willReturn(false);
         $status->getContent()->willReturn('');
@@ -120,51 +110,26 @@ class ExampleTesterSpec extends ObjectBehavior
         $dispatcher->dispatch(Argument::type(Event\EvaluationStarted::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\TestFailed::class))->shouldBeCalled();
         $dispatcher->dispatch(Argument::type(Event\TestingAborted::class))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(Event\EvaluationDone::class))->shouldNotBeCalled();
 
-        $exampleStore->getExamples()->willReturn([$example]);
-
-        $this->test($exampleStore, $runner, true);
-    }
-
-    function it_ignores_examples(
-        $evaluator,
-        $dispatcher,
-        ExampleStoreInterface $exampleStore,
-        ExampleObj $example,
-        RunnerInterface $runner,
-        NameObj $name
-    ) {
-        $name->getFullName()->willReturn('');
-
-        $example->isActive()->willReturn(false);
-        $example->getName()->willReturn($name);
-
-        $dispatcher->dispatch(Argument::type(Event\ExampleIgnored::class))->shouldBeCalled();
-
-        $exampleStore->getExamples()->willReturn([$example]);
-
-        $this->test($exampleStore, $runner, false);
+        $this->test($store, $runner, true);
     }
 
     function it_ignores_skipped_examples(
         $evaluator,
         $dispatcher,
-        ExampleStoreInterface $exampleStore,
+        ExampleStoreInterface $store,
         ExampleObj $example,
         RunnerInterface $runner,
-        NameObj $name
     ) {
-        $name->getFullName()->willReturn('');
+        $example->getName()->willReturn(new NameObj('', ''));
 
-        $example->isActive()->willReturn(true);
-        $example->getName()->willReturn($name);
+        $store->getExamples()->willReturn([$example]);
 
-        $runner->run($example)->willReturn(new SkippedOutcome($example->getWrappedObject(), ''));
+        $runner->run($store)->willReturn([new SkippedOutcome($example->getWrappedObject(), '')]);
 
         $dispatcher->dispatch(Argument::type(Event\EvaluationSkipped::class))->shouldBeCalled();
 
-        $exampleStore->getExamples()->willReturn([$example]);
-
-        $this->test($exampleStore, $runner, false);
+        $this->test($store, $runner, false);
     }
 }

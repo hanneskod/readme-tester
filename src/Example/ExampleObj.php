@@ -33,6 +33,17 @@ class ExampleObj
         return $this->attributes;
     }
 
+    public function hasAttribute(string $classname): bool
+    {
+        foreach ($this->getAttributes() as $attribute) {
+            if ($attribute instanceof $classname) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Get example code block
      */

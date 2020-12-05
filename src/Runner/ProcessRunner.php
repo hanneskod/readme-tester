@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Example\ExampleStoreInterface;
 use Symfony\Component\Process\PhpProcess;
 
 /**
@@ -21,7 +22,14 @@ final class ProcessRunner implements RunnerInterface
         }
     }
 
-    public function run(ExampleObj $example): OutcomeInterface
+    public function run(ExampleStoreInterface $examples): iterable
+    {
+        foreach ($examples->getExamples() as $example) {
+            yield $this->runExample($example);
+        }
+    }
+
+    public function runExample(ExampleObj $example): OutcomeInterface
     {
         $filename = (string)tempnam(sys_get_temp_dir(), 'readmetester');
 

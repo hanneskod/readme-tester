@@ -13,6 +13,8 @@ suites:
         runner: eval
     process:
         runner: process
+    parallel:
+        runner: parallel
 ";
 
 $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
@@ -73,8 +75,8 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
         }
     })
     ->the_count_for_x_is(function (string $field, int $expected) {
-        // Divide by 2 as we use 2 suites
-        $count = $this->parsedOutput['counts'][$field] / 2;
+        // Divide by 3 as we use 3 suites
+        $count = $this->parsedOutput['counts'][$field] / 3;
 
         if ($count != $expected) {
             throw new \Exception(

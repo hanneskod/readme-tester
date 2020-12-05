@@ -42,6 +42,13 @@ class ExampleObjSpec extends ObjectBehavior
         $this->getAttributes()->shouldIterateAs([$obj]);
     }
 
+    function it_can_check_if_attribute_exists($name, $codeBlock)
+    {
+        $this->beConstructedWith($name, $codeBlock, [new \Exception]);
+        $this->hasAttribute(\Exception::class)->shouldReturn(true);
+        $this->hasAttribute(\RuntimeException::class)->shouldReturn(false);
+    }
+
     function it_defaults_to_active()
     {
         $this->shouldBeActive();

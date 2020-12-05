@@ -100,12 +100,14 @@
     'runner.php',
     '<?php
     namespace hanneskod\readmetester\Runner;
-    use hanneskod\readmetester\Example\ExampleObj;
+    use hanneskod\readmetester\Example\ExampleStoreInterface;
     class CustomRunner implements RunnerInterface
     {
-        public function run(ExampleObj $example): OutcomeInterface
+        public function run(ExampleStoreInterface $store): iterable
         {
-            return new OutputOutcome($example, self::class);
+            foreach ($store->getExamples() as $example) {
+                yield new OutputOutcome($example, self::class);
+            }
         }
         public function setBootstrap(string $filename): void
         {
@@ -115,7 +117,7 @@
 ->And_a_markdown_file("
     #[ReadmeTester\ExpectOutput('/CustomRunner/')]
     $PHPbegin
-    // nothing here, but the runner always returns OutputOutcome
+    // nothing here, but the runner always returns its classname
     $PHPend
 ")
 ->And_the_command_line_argument('--bootstrap=runner.php')

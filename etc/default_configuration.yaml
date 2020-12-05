@@ -19,8 +19,8 @@ defaults:
     input_language: markdown
 
     # Runner to use when executing test
-    # Valid values include eval, process or a custom classname
-    runner: process
+    # Valid values include eval, process, parallel or a custom classname
+    runner: parallel
 
     # Stop execution after a failing test
     stop_on_failure: false

@@ -4,5 +4,6 @@ namespace hanneskod\readmetester\Compiler;
 
 interface CompilerFactoryInterface
 {
-    public function createCompiler(): CompilerInterface;
+    /** @param array<CompilerPassInterface> $compilerPasses */
+    public function createCompiler(array $compilerPasses = []): CompilerInterface;
 }

@@ -47,11 +47,13 @@ final class Configs
     ];
 
     const RUNNER = 'runner';
-    const RUNNER_ID_PROCESS = 'process';
     const RUNNER_ID_EVAL = 'eval';
+    const RUNNER_ID_PARALLEL = 'parallel';
+    const RUNNER_ID_PROCESS = 'process';
     const RUNNER_ID = [
-        self::RUNNER_ID_PROCESS => Runner\ProcessRunner::class,
         self::RUNNER_ID_EVAL => Runner\EvalRunner::class,
+        self::RUNNER_ID_PARALLEL => Runner\ParallelRunner::class,
+        self::RUNNER_ID_PROCESS => Runner\ProcessRunner::class,
     ];
 
     /** @param array<string, string> $map */

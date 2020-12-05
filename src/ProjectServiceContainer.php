@@ -71,8 +71,10 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Compiler\\CodeBlockImportingPass' => true,
             'hanneskod\\readmetester\\Compiler\\CompilerFactoryFactory' => true,
             'hanneskod\\readmetester\\Compiler\\CompilerFactoryInterface' => true,
+            'hanneskod\\readmetester\\Compiler\\CompilerPassContainer' => true,
             'hanneskod\\readmetester\\Compiler\\FileInput' => true,
             'hanneskod\\readmetester\\Compiler\\MultipassCompiler' => true,
+            'hanneskod\\readmetester\\Compiler\\RemoveIgnoredExamplesPass' => true,
             'hanneskod\\readmetester\\Compiler\\StdinInput' => true,
             'hanneskod\\readmetester\\Compiler\\TransformationPass' => true,
             'hanneskod\\readmetester\\Compiler\\UniqueNamePass' => true,
@@ -128,6 +130,7 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Runner\\ErrorOutcome' => true,
             'hanneskod\\readmetester\\Runner\\EvalRunner' => true,
             'hanneskod\\readmetester\\Runner\\OutputOutcome' => true,
+            'hanneskod\\readmetester\\Runner\\ParallelRunner' => true,
             'hanneskod\\readmetester\\Runner\\ProcessRunner' => true,
             'hanneskod\\readmetester\\Runner\\RunnerFactory' => true,
             'hanneskod\\readmetester\\Runner\\SkippedOutcome' => true,
@@ -164,7 +167,7 @@ class ProjectServiceContainer extends Container
 
         $e = new \Crell\Tukio\Dispatcher($a);
 
-        $f = new \hanneskod\readmetester\CliConsole(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator(), $e), new \hanneskod\readmetester\Compiler\CompilerFactoryFactory($b), $d, new \hanneskod\readmetester\FilesystemInputGenerator($e), new \hanneskod\readmetester\Runner\RunnerFactory($b), $c, $e);
+        $f = new \hanneskod\readmetester\CliConsole(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator(), $e), new \hanneskod\readmetester\Compiler\CompilerFactoryFactory($b), new \hanneskod\readmetester\Compiler\CompilerPassContainer(new \hanneskod\readmetester\Compiler\TransformationPass(), new \hanneskod\readmetester\Compiler\UniqueNamePass(), new \hanneskod\readmetester\Compiler\CodeBlockImportingPass(), new \hanneskod\readmetester\Compiler\RemoveIgnoredExamplesPass($e)), $d, new \hanneskod\readmetester\FilesystemInputGenerator($e), new \hanneskod\readmetester\Runner\RunnerFactory($b), $c, $e);
 
         $instance->setName('Readme-Tester');
         $instance->setVersion('dev');

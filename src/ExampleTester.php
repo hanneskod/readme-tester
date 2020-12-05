@@ -20,14 +20,7 @@ final class ExampleTester
 
     public function test(ExampleStoreInterface $exampleStore, RunnerInterface $runner, bool $stopOnFailure): void
     {
-        foreach ($exampleStore->getExamples() as $example) {
-            if (!$example->isActive()) {
-                $this->dispatcher->dispatch(new Event\ExampleIgnored($example));
-                continue;
-            }
-
-            $outcome = $runner->run($example);
-
+        foreach ($runner->run($exampleStore) as $outcome) {
             if ($outcome instanceof SkippedOutcome) {
                 $this->dispatcher->dispatch(new Event\EvaluationSkipped($outcome));
                 continue;

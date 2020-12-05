@@ -8,6 +8,9 @@ Readmetester can use different runners to execute examples. The default runner
 executes all examples in isolation. This makes for a solid testing experience,
 but is slow..
 
+> The `parallel` runner execute tests asynchronously and in isolation. It is
+> a faster (altough not as fast as eval) and safe alternative.
+
 A faster alternative is the `eval` runner that executes examples by including
 them in the current environment. This is much faster, but failes if two examples
 define the same symbol. The following is perfectly valid, but will fail using
