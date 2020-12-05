@@ -127,3 +127,20 @@
 ->And_the_count_for_x_is('failures', 0)
 ->And_the_exit_code_is(0)
 ```
+
+## I filter examples
+```php
+->Given_a_markdown_file("
+    #[ReadmeTester\Name('foo')]
+    $PHPbegin
+    $PHPend
+
+    #[ReadmeTester\Name('bar')]
+    $PHPbegin
+    $PHPend
+")
+->And_the_command_line_argument('--filter foo')
+->When_I_run_readme_tester()
+->Then_the_count_for_x_is('examples', 1)
+->And_the_exit_code_is(0)
+```

@@ -33,6 +33,7 @@ services:
             - '@hanneskod\readmetester\Compiler\TransformationPass'
             - '@hanneskod\readmetester\Compiler\UniqueNamePass'
             - '@hanneskod\readmetester\Compiler\CodeBlockImportingPass'
+            - '@hanneskod\readmetester\Compiler\FilterPass'
             - '@hanneskod\readmetester\Compiler\RemoveIgnoredExamplesPass'
 
     Psr\EventDispatcher\EventDispatcherInterface:

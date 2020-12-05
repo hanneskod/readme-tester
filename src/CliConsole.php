@@ -29,12 +29,14 @@ final class CliConsole
     const BOOTSTRAP_OPTION = 'bootstrap';
     const NO_BOOTSTRAP_OPTION = 'no-bootstrap';
     const STOP_ON_FAILURE_OPTION = 'stop-on-failure';
+    const FILTER_OPTION = 'filter';
 
     public function __construct(
         private Config\ConfigManager $configManager,
         private ExampleTester $exampleTester,
         private Compiler\CompilerFactoryFactory $compilerFactoryFactory,
         private Compiler\CompilerPassContainer $compilerPasses,
+        private Compiler\FilterPass $filterPass,
         private Event\ExitStatusListener $exitStatusListener,
         private FilesystemInputGenerator $filesystemInputGenerator,
         private Runner\RunnerFactory $runnerFactory,
@@ -121,6 +123,12 @@ final class CliConsole
                 's',
                 InputOption::VALUE_NONE,
                 "Stop processing on first failed test"
+            )
+            ->addOption(
+                self::FILTER_OPTION,
+                null,
+                InputOption::VALUE_REQUIRED,
+                "Filter which examples to test"
             )
         ;
     }
@@ -216,6 +224,13 @@ final class CliConsole
 
         foreach ($this->configManager->getLoadedRepositoryNames() as $name) {
             $this->dispatcher->dispatch(new Event\ConfigurationIncluded($name));
+        }
+
+        // Setup filtering
+
+        // @phpstan-ignore-next-line
+        if ($filter = (string)$input->getOption(self::FILTER_OPTION)) {
+            $this->filterPass->setFilter(new Utils\Regexp('/' . preg_quote($filter, '/') . '/'));
         }
 
         // Execute suites
