@@ -18,13 +18,20 @@ class CompilerPassContainerSpec extends ObjectBehavior
     function it_can_load_passes_at_construct(CompilerPassInterface $pass)
     {
         $this->beConstructedWith($pass);
-        $this->getCompilerPasses()->shouldReturn([$pass]);
+        $this->getPasses()->shouldReturn([$pass]);
     }
 
-    function it_can_load_passes_later(CompilerPassInterface $pass)
+    function it_can_append_compiler_passes(CompilerPassInterface $passA, CompilerPassInterface $passB)
     {
-        $this->getCompilerPasses()->shouldReturn([]);
-        $this->addCompilerPass($pass);
-        $this->getCompilerPasses()->shouldReturn([$pass]);
+        $this->beConstructedWith($passA);
+        $this->appendPass($passB);
+        $this->getPasses()->shouldReturn([$passA, $passB]);
+    }
+
+    function it_can_prepend_compiler_passes(CompilerPassInterface $passA, CompilerPassInterface $passB)
+    {
+        $this->beConstructedWith($passA);
+        $this->prependPass($passB);
+        $this->getPasses()->shouldReturn([$passB, $passA]);
     }
 }

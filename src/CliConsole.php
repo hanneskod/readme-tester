@@ -36,7 +36,6 @@ final class CliConsole
         private ExampleTester $exampleTester,
         private Compiler\CompilerFactoryFactory $compilerFactoryFactory,
         private Compiler\CompilerPassContainer $compilerPasses,
-        private Compiler\FilterPass $filterPass,
         private Event\ExitStatusListener $exitStatusListener,
         private FilesystemInputGenerator $filesystemInputGenerator,
         private Runner\RunnerFactory $runnerFactory,
@@ -188,6 +187,11 @@ final class CliConsole
             $configs[Configs::STOP_ON_FAILURE] = '1';
         }
 
+        if ($input->getOption(self::FILTER_OPTION)) {
+            // @phpstan-ignore-next-line
+            $configs[Configs::FILTER] = (string)$input->getOption(self::FILTER_OPTION);
+        }
+
         $this->configManager->loadRepository(
             new Config\ArrayRepository([Configs::CLI => $configs])
         );
@@ -226,13 +230,6 @@ final class CliConsole
             $this->dispatcher->dispatch(new Event\ConfigurationIncluded($name));
         }
 
-        // Setup filtering
-
-        // @phpstan-ignore-next-line
-        if ($filter = (string)$input->getOption(self::FILTER_OPTION)) {
-            $this->filterPass->setFilter(new Utils\Regexp('/' . preg_quote($filter, '/') . '/'));
-        }
-
         // Execute suites
 
         if ($input->getOption(self::SUITE_OPTION)) {
@@ -259,11 +256,21 @@ final class CliConsole
     {
         $this->dispatcher->dispatch(new Event\SuiteStarted($suite));
 
+        $appendPasses = [];
+
+        // Setup filtering
+
+        if ($filter = $suite->getFilter()) {
+            $appendPasses[] = new Compiler\FilterPass(
+                new Utils\Regexp('/' . preg_quote($filter, '/') . '/')
+            );
+        }
+
         // Create compiler
 
         $compiler = $this->compilerFactoryFactory
             ->createCompilerFactory($suite->getInputLanguage())
-            ->createCompiler($this->compilerPasses->getCompilerPasses());
+            ->createCompiler([...$this->compilerPasses->getPasses(), ...$appendPasses]);
 
         $this->dispatcher->dispatch(
             new Event\DebugEvent("Using input format: {$suite->getInputLanguage()}")

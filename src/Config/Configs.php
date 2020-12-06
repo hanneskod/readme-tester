@@ -24,6 +24,7 @@ final class Configs
     const EXCLUDE_PATHS = 'exclude_paths';
     const FILE_EXTENSIONS = 'file_extensions';
     const STOP_ON_FAILURE = 'stop_on_failure';
+    const FILTER = 'filter';
 
     const BOOTSTRAP = 'bootstrap';
     const SUBSCRIBERS = 'subscribers';

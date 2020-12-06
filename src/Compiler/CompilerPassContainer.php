@@ -14,13 +14,18 @@ final class CompilerPassContainer
         $this->compilerPasses = $compilerPasses;
     }
 
-    public function addCompilerPass(CompilerPassInterface $pass): void
+    public function appendPass(CompilerPassInterface $pass): void
     {
         $this->compilerPasses[] = $pass;
     }
 
+    public function prependPass(CompilerPassInterface $pass): void
+    {
+        array_unshift($this->compilerPasses, $pass);
+    }
+
     /** @return array<CompilerPassInterface> */
-    public function getCompilerPasses(): array
+    public function getPasses(): array
     {
         return $this->compilerPasses;
     }

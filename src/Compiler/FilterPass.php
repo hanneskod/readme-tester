@@ -13,19 +13,12 @@ use hanneskod\readmetester\Utils\Regexp;
  */
 final class FilterPass implements CompilerPassInterface
 {
-    private ?Regexp $filter = null;
-
-    public function setFilter(Regexp $filter): void
-    {
-        $this->filter = $filter;
-    }
+    public function __construct(
+        private Regexp $filter,
+    ) {}
 
     public function process(ExampleStoreInterface $store): ExampleStoreInterface
     {
-        if (!$this->filter) {
-            return $store;
-        }
-
         $examples = [];
 
         foreach ($store->getExamples() as $example) {

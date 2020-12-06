@@ -28,6 +28,9 @@ defaults:
     # Attributes applied to all examples in suite
     global_attributes: []
 
+    # Filter which examples should be tested
+    filter: ''
+
 # Set of named suite configurations
 suites: []
 

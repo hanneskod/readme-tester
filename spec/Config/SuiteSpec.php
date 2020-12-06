@@ -28,6 +28,7 @@ class SuiteSpec extends ObjectBehavior
             ['fileExtensions'],
             ['globalAttributes'],
             true,
+            'filter',
         );
 
         $this->getSuiteName()->shouldReturn('name');
@@ -37,6 +38,7 @@ class SuiteSpec extends ObjectBehavior
         $this->getIncludePaths()->shouldReturn(['includePaths']);
         $this->getExcludePaths()->shouldReturn(['excludePaths']);
         $this->getFileExtensions()->shouldReturn(['fileExtensions']);
+        $this->getFilter()->shouldReturn('filter');
         $this->getGlobalAttributes()->shouldReturn(['globalAttributes']);
         $this->stopOnFailure()->shouldReturn(true);
     }

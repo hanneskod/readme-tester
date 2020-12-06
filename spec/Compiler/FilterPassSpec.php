@@ -16,6 +16,11 @@ use Prophecy\Argument;
 
 class FilterPassSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(new Regexp(''));
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(FilterPass::class);
@@ -26,11 +31,6 @@ class FilterPassSpec extends ObjectBehavior
         $this->shouldHaveType(CompilerPassInterface::class);
     }
 
-    function it_does_nothing_if_filter_is_not_set(ExampleStoreInterface $store)
-    {
-        $this->process($store)->shouldReturn($store);
-    }
-
     function it_filters_on_name(ExampleObj $exampleA, ExampleObj $exampleB, ExampleStoreInterface $store)
     {
         $exampleA->getName()->willReturn(new NameObj('A', 'A'));
@@ -38,7 +38,7 @@ class FilterPassSpec extends ObjectBehavior
 
         $store->getExamples()->willReturn([$exampleA, $exampleB]);
 
-        $this->setFilter(new Regexp('/A/'));
+        $this->beConstructedWith(new Regexp('/A/'));
 
         $this->process($store)->shouldBeLike(new ArrayExampleStore([$exampleA->getWrappedObject()]));
     }

@@ -169,14 +169,13 @@ class ProjectServiceContainer extends Container
         $a->addProvider($c);
 
         $e = new \Crell\Tukio\Dispatcher($a);
-        $f = new \hanneskod\readmetester\Compiler\FilterPass();
 
-        $g = new \hanneskod\readmetester\CliConsole(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator(), $e), new \hanneskod\readmetester\Compiler\CompilerFactoryFactory($b), new \hanneskod\readmetester\Compiler\CompilerPassContainer(new \hanneskod\readmetester\Compiler\TransformationPass(), new \hanneskod\readmetester\Compiler\UniqueNamePass(), new \hanneskod\readmetester\Compiler\CodeBlockImportingPass(), $f, new \hanneskod\readmetester\Compiler\RemoveIgnoredExamplesPass($e)), $f, $d, new \hanneskod\readmetester\FilesystemInputGenerator($e), new \hanneskod\readmetester\Runner\RunnerFactory($b), $c, $e);
+        $f = new \hanneskod\readmetester\CliConsole(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), new \hanneskod\readmetester\ExampleTester(new \hanneskod\readmetester\Expectation\ExpectationEvaluator(), $e), new \hanneskod\readmetester\Compiler\CompilerFactoryFactory($b), new \hanneskod\readmetester\Compiler\CompilerPassContainer(new \hanneskod\readmetester\Compiler\TransformationPass(), new \hanneskod\readmetester\Compiler\UniqueNamePass(), new \hanneskod\readmetester\Compiler\CodeBlockImportingPass(), new \hanneskod\readmetester\Compiler\RemoveIgnoredExamplesPass($e)), $d, new \hanneskod\readmetester\FilesystemInputGenerator($e), new \hanneskod\readmetester\Runner\RunnerFactory($b), $c, $e);
 
         $instance->setName('Readme-Tester');
         $instance->setVersion('dev');
-        $instance->setCode($g);
-        $g->configure($instance);
+        $instance->setCode($f);
+        $f->configure($instance);
 
         return $instance;
     }

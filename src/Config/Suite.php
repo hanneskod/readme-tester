@@ -22,6 +22,7 @@ final class Suite
         private array $fileExtensions = [],
         private array $globalAttributes = [],
         private bool $stopOnFailure = false,
+        private string $filter = '',
     ) {}
 
     public function getSuiteName(): string
@@ -60,6 +61,11 @@ final class Suite
     public function getFileExtensions(): array
     {
         return $this->fileExtensions;
+    }
+
+    public function getFilter(): string
+    {
+        return $this->filter;
     }
 
     /** @return array<string> */

@@ -174,7 +174,8 @@ final class ConfigManager
                 excludePaths: (array)($suite[Configs::EXCLUDE_PATHS] ?? []),
                 fileExtensions: (array)($suite[Configs::FILE_EXTENSIONS] ?? []),
                 stopOnFailure: (bool)($suite[Configs::STOP_ON_FAILURE] ?? false),
-                globalAttributes: []
+                globalAttributes: [],
+                filter: (string)($suite[Configs::FILTER] ?? ''),
             );
         }
 
