@@ -144,3 +144,20 @@
 ->Then_the_count_for_x_is('examples', 1)
 ->And_the_exit_code_is(0)
 ```
+
+## I read input from stdin
+```php
+->Given_a_file(
+    'foobar',
+    "
+    $PHPbegin
+    echo 'triggers failure';
+    $PHPend
+")
+->And_the_command_line_prefix('cat foobar |')
+->And_the_command_line_argument('--stdin')
+->When_I_run_readme_tester()
+->Then_the_count_for_x_is('examples', 1)
+->Then_the_count_for_x_is('failures', 1)
+->And_the_exit_code_is(1)
+```

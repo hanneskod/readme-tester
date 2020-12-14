@@ -20,6 +20,7 @@ suites:
 $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
     ->setup(function () use ($defaultYamlConfigs) {
         $this->commandLineArgs = [];
+        $this->commandLinePrefixes = [];
         $this->markdownFiles = [];
         $this->returnValue = 0;
         $this->parsedOutput = [];
@@ -43,8 +44,16 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
     ->the_command_line_argument(function (string $arg) {
         $this->commandLineArgs[] = $arg;
     })
+    ->the_command_line_prefix(function (string $prefix) {
+        $this->commandLinePrefixes[] = $prefix;
+    })
     ->I_run_readme_tester(function () {
-        $command = realpath('bin/readme-tester') . ' --output=json ' . implode(' ', $this->commandLineArgs);
+        $command = implode(' ', $this->commandLinePrefixes)
+            . ' '
+            . realpath('bin/readme-tester')
+            . ' --output=json '
+            . implode(' ', $this->commandLineArgs);
+
         $cwd = getcwd();
         chdir($this->tempDir);
         exec($command, $this->rawOutput, $this->returnValue);

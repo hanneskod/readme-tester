@@ -10,14 +10,14 @@ services:
     application:
         class: Symfony\Component\Console\SingleCommandApplication
         public: true
-        configurator: ['@hanneskod\readmetester\CliConsole', 'configure']
+        configurator: ['@hanneskod\readmetester\Application', 'configure']
         calls:
             - method: 'setName'
               arguments: ['Readme-Tester']
             - method: 'setVersion'
               arguments: ['dev']
             - method: 'setCode'
-              arguments: ['@hanneskod\readmetester\CliConsole']
+              arguments: ['@hanneskod\readmetester\Application']
 
     hanneskod\readmetester\Config\ConfigManager:
         class: ~
@@ -27,13 +27,13 @@ services:
         class: hanneskod\readmetester\Config\RepositoryInterface
         factory: ['@hanneskod\readmetester\Config\DefaultConfigFactory', 'createRepository']
 
-    hanneskod\readmetester\Compiler\CompilerPassContainer:
+    hanneskod\readmetester\Compiler\Pass\DefaultCompilerPasses:
         class: ~
         arguments:
-            - '@hanneskod\readmetester\Compiler\TransformationPass'
-            - '@hanneskod\readmetester\Compiler\UniqueNamePass'
-            - '@hanneskod\readmetester\Compiler\CodeBlockImportingPass'
-            - '@hanneskod\readmetester\Compiler\RemoveIgnoredExamplesPass'
+            - '@hanneskod\readmetester\Compiler\Pass\TransformationPass'
+            - '@hanneskod\readmetester\Compiler\Pass\UniqueNamePass'
+            - '@hanneskod\readmetester\Compiler\Pass\CodeBlockImportingPass'
+            - '@hanneskod\readmetester\Compiler\Pass\RemoveIgnoredExamplesPass'
 
     Psr\EventDispatcher\EventDispatcherInterface:
         class: Crell\Tukio\Dispatcher

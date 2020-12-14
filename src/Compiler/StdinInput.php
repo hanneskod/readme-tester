@@ -6,10 +6,16 @@ namespace hanneskod\readmetester\Compiler;
 
 final class StdinInput implements InputInterface
 {
+    private string $content = '';
+
     public function getContents(): string
     {
-        if (defined('STDIN')) {
-            return (string)stream_get_contents(STDIN);
+        if (!$this->content && defined('STDIN')) {
+            $this->content = (string)stream_get_contents(STDIN);
+        }
+
+        if ($this->content) {
+            return $this->content;
         }
 
         throw new \RuntimeException('Unable to read from stdin');

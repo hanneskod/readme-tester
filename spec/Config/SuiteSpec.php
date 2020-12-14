@@ -29,6 +29,7 @@ class SuiteSpec extends ObjectBehavior
             ['globalAttributes'],
             true,
             'filter',
+            true,
         );
 
         $this->getSuiteName()->shouldReturn('name');
@@ -41,5 +42,6 @@ class SuiteSpec extends ObjectBehavior
         $this->getFilter()->shouldReturn('filter');
         $this->getGlobalAttributes()->shouldReturn(['globalAttributes']);
         $this->stopOnFailure()->shouldReturn(true);
+        $this->readFromStdin()->shouldReturn(true);
     }
 }

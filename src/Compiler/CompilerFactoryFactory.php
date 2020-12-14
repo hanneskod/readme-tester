@@ -7,7 +7,7 @@ namespace hanneskod\readmetester\Compiler;
 use hanneskod\readmetester\Config\Configs;
 use hanneskod\readmetester\Utils\Instantiator;
 
-final class CompilerFactoryFactory
+class CompilerFactoryFactory
 {
     public function __construct(
         private Instantiator $instantiator,

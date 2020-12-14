@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Config;
 
-use hanneskod\readmetester\Input;
+use hanneskod\readmetester\InputLanguage;
 use hanneskod\readmetester\Output;
 use hanneskod\readmetester\Runner;
 
@@ -25,6 +25,8 @@ final class Configs
     const FILE_EXTENSIONS = 'file_extensions';
     const STOP_ON_FAILURE = 'stop_on_failure';
     const FILTER = 'filter';
+    const STDIN = 'stdin';
+    const GLOBAL_ATTRIBUTES = 'global_attributes';
 
     const BOOTSTRAP = 'bootstrap';
     const SUBSCRIBERS = 'subscribers';
@@ -32,7 +34,7 @@ final class Configs
     const INPUT_LANGUAGE = 'input_language';
     const INPUT_ID_MARKDOWN = 'markdown';
     const INPUT_ID = [
-        self::INPUT_ID_MARKDOWN => Input\Markdown\MarkdownCompilerFactory::class,
+        self::INPUT_ID_MARKDOWN => InputLanguage\Markdown\MarkdownCompilerFactory::class,
     ];
 
     const OUTPUT = 'output_format';

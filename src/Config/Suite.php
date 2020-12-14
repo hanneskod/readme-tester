@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Config;
 
-final class Suite
+class Suite
 {
     /**
      * @param array<string> $includePaths
@@ -23,6 +23,7 @@ final class Suite
         private array $globalAttributes = [],
         private bool $stopOnFailure = false,
         private string $filter = '',
+        private bool $readFromStdin = false,
     ) {}
 
     public function getSuiteName(): string
@@ -61,6 +62,11 @@ final class Suite
     public function getFileExtensions(): array
     {
         return $this->fileExtensions;
+    }
+
+    public function readFromStdin(): bool
+    {
+        return $this->readFromStdin;
     }
 
     public function getFilter(): string

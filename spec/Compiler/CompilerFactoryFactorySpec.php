@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Compiler;
 use hanneskod\readmetester\Compiler\CompilerFactoryFactory;
 use hanneskod\readmetester\Compiler\CompilerFactoryInterface;
 use hanneskod\readmetester\Config\Configs;
-use hanneskod\readmetester\Input\Markdown\MarkdownCompilerFactory;
+use hanneskod\readmetester\InputLanguage\Markdown\MarkdownCompilerFactory;
 use hanneskod\readmetester\Utils\Instantiator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
