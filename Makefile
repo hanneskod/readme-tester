@@ -6,7 +6,7 @@ README_TESTER_CMD=bin/readme-tester
 PHPSTAN_CMD=tools/phpstan
 PHPCS_CMD=tools/phpcs
 BOX_CMD=tools/box
-PHPEG_CMD=phpeg
+PHPEG_CMD=tools/phpeg
 
 .DEFAULT_GOAL=all
 
@@ -14,7 +14,7 @@ TARGET=readme-tester.phar
 
 CONTAINER=src/ProjectServiceContainer.php
 
-PARSER_ROOT=src/Input/Markdown/Parser
+PARSER_ROOT=src/InputLanguage/Markdown/Parser
 PARSER=$(PARSER_ROOT).php
 
 ETC_FILES:=$(shell find etc/ -type f -name '*')
@@ -49,10 +49,8 @@ $(TARGET): vendor/installed $(BOX_CMD) $(SRC_FILES) box.json $(README_TESTER_CMD
 $(CONTAINER): vendor/installed $(ETC_FILES) $(SRC_FILES)
 	bin/build_container > $@
 
-$(PARSER): $(PARSER_ROOT).peg
-	# TODO phpeg does not currently run with php8, this is a temporary fix
-	# $(PHPEG_CMD) generate $<
-	cd ..; php7.4 `which $(PHPEG_CMD)` generate readme-tester/$<
+$(PARSER): $(PARSER_ROOT).peg $(PHPEG_CMD)
+	$(PHPEG_CMD) generate $<
 
 .PHONY: test
 test: phpspec docs
@@ -107,5 +105,4 @@ $(PHPCS_CMD): tools/installed
 
 $(BOX_CMD): tools/installed
 
-$(PHPEG_CMD):
-	cgr scato/phpeg:^1
+$(PHPEG_CMD): tools/installed
