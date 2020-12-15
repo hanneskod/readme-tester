@@ -145,6 +145,7 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Utils\\Loader' => true,
             'hanneskod\\readmetester\\Utils\\NameObj' => true,
             'hanneskod\\readmetester\\Utils\\Regexp' => true,
+            'hanneskod\\readmetester\\Version' => true,
         ];
     }
 
@@ -172,7 +173,7 @@ class ProjectServiceContainer extends Container
         $f = new \hanneskod\readmetester\Application(new \hanneskod\readmetester\Config\ConfigManager((new \hanneskod\readmetester\Config\DefaultConfigFactory())->createRepository()), $a, new \hanneskod\readmetester\ExampleProvider(new \hanneskod\readmetester\Compiler\CompilerFactoryFactory($b), new \hanneskod\readmetester\Compiler\Pass\DefaultCompilerPasses(new \hanneskod\readmetester\Compiler\Pass\TransformationPass(), new \hanneskod\readmetester\Compiler\Pass\UniqueNamePass(), new \hanneskod\readmetester\Compiler\Pass\CodeBlockImportingPass(), new \hanneskod\readmetester\Compiler\Pass\RemoveIgnoredExamplesPass($e)), new \hanneskod\readmetester\FilesystemFacade($e)), new \hanneskod\readmetester\Runner\RunnerFactory($b), new \hanneskod\readmetester\TestMarshal(new \hanneskod\readmetester\Expectation\ExpectationEvaluator(), $e), $e, $d);
 
         $instance->setName('Readme-Tester');
-        $instance->setVersion('dev');
+        $instance->setVersion((new \hanneskod\readmetester\Version())->getVersion());
         $instance->setCode($f);
         $f->configure($instance);
 

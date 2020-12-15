@@ -5,7 +5,8 @@
         "vendor"
     ],
     "files-bin": [
-        "etc/default_configuration.yaml"
+        "etc/default_configuration.yaml",
+        "VERSION"
     ],
     "compactors": [
         "KevinGH\\Box\\Compactor\\Php"

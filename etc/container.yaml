@@ -15,7 +15,7 @@ services:
             - method: 'setName'
               arguments: ['Readme-Tester']
             - method: 'setVersion'
-              arguments: ['dev']
+              arguments: ["@=service('hanneskod\\\\readmetester\\\\Version').getVersion()"]
             - method: 'setCode'
               arguments: ['@hanneskod\readmetester\Application']
 

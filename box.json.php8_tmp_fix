@@ -5,7 +5,8 @@
         "vendor"
     ],
     "files-bin": [
-        "etc/default_configuration.yaml"
+        "etc/default_configuration.yaml",
+        "VERSION"
     ],
     "algorithm": "SHA512",
     "chmod": "0555"
