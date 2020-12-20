@@ -4,44 +4,92 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Attribute\Isolate;
+use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Example\ExampleStoreInterface;
+use hanneskod\readmetester\Utils\Loader;
 
-/**
- * Execute code using eval()
- */
 final class EvalRunner implements RunnerInterface
 {
-    public function __construct(string $bootstrap = '')
+    private const ERROR_CODES = [
+        E_ERROR => 'E_ERROR',
+        E_WARNING => 'E_WARNING',
+        E_PARSE => 'E_PARSE',
+        E_NOTICE => 'E_NOTICE',
+        E_CORE_ERROR => 'E_CORE_ERROR',
+        E_CORE_WARNING => 'E_CORE_WARNING',
+        E_COMPILE_ERROR => 'E_COMPILE_ERROR',
+        E_COMPILE_WARNING => 'E_COMPILE_WARNING',
+        E_USER_ERROR => 'E_USER_ERROR',
+        E_USER_WARNING => 'E_USER_WARNING',
+        E_USER_NOTICE => 'E_USER_NOTICE',
+        E_STRICT => 'E_STRICT',
+        E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+        E_DEPRECATED => 'E_DEPRECATED',
+        E_USER_DEPRECATED => 'E_USER_DEPRECATED',
+        E_ALL => 'E_ALL',
+    ];
+
+    public function setBootstrap(string $filename): void
     {
-        if ($bootstrap) {
-            if (!file_exists($bootstrap)) {
-                throw new \RuntimeException("Unable to load bootstrap $bootstrap, file does not exist");
-            }
-            require_once $bootstrap;
+        if ($filename) {
+            require_once $filename;
         }
     }
 
-    public function run(CodeBlock $codeBlock): OutcomeInterface
+    public function run(ExampleStoreInterface $examples): iterable
     {
+        foreach ($examples->getExamples() as $example) {
+            if ($example->hasAttribute(Isolate::class)) {
+                yield new SkippedOutcome($example, 'requires isolation');
+                continue;
+            }
+
+            yield $this->runExample($example);
+        }
+    }
+
+    public function runExample(ExampleObj $example): OutcomeInterface
+    {
+        $errorOutput = '';
+
+        set_error_handler(
+            function (int $errno, string $errstr) use (&$errorOutput) {
+                if (($errno & error_reporting()) == $errno) {
+                    $errorOutput = sprintf(
+                        '%s: %s',
+                        self::ERROR_CODES[$errno] ?? '',
+                        $errstr
+                    );
+                }
+
+                return true;
+            },
+            E_ALL
+        );
+
         ob_start();
 
         try {
-            $lastErrorBefore = error_get_last();
-            eval($codeBlock->getCode());
-            $lastErrorAfter = error_get_last();
-            if ($lastErrorBefore != $lastErrorAfter) {
-                ob_end_clean();
-                return new ErrorOutcome("{$lastErrorAfter['type']}: {$lastErrorAfter['message']}");
-            }
-        } catch (\Throwable $e) {
+            Loader::loadRaw($example->getCodeBlock()->getCode());
+        } catch (\Throwable $exception) {
+            restore_error_handler();
             ob_end_clean();
-            return new ErrorOutcome((string)$e);
+            return new ErrorOutcome($example, (string)$exception);
         }
 
-        if ($output = ob_get_clean()) {
-            return new OutputOutcome($output);
+        restore_error_handler();
+
+        $output = ob_get_clean();
+
+        if ($errorOutput) {
+            return new ErrorOutcome($example, $errorOutput);
         }
 
-        return new VoidOutcome;
+        if ($output) {
+            return new OutputOutcome($example, $output);
+        }
+
+        return new VoidOutcome($example);
     }
 }

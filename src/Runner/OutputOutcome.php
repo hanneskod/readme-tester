@@ -4,19 +4,20 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
+use hanneskod\readmetester\Example\ExampleObj;
+
 final class OutputOutcome implements OutcomeInterface
 {
-    /** @var string */
-    private $output;
+    use OutcomeDefaultsTrait;
 
-    public function __construct(string $output)
-    {
-        $this->output = $output;
-    }
+    public function __construct(
+        private ExampleObj $example,
+        private string $content,
+    ) {}
 
-    public function getType(): string
+    public function isOutput(): bool
     {
-        return self::TYPE_OUTPUT;
+        return true;
     }
 
     public function mustBeHandled(): bool
@@ -26,11 +27,11 @@ final class OutputOutcome implements OutcomeInterface
 
     public function getContent(): string
     {
-        return $this->output;
+        return $this->content;
     }
 
     public function getDescription(): string
     {
-        return "output '{$this->output}'";
+        return "output '{$this->getContent()}'";
     }
 }

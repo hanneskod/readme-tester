@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types = 1);
+
+// <!-- Configure
+
+// Generates ProjectServiceContainer to stdout
+// edit the following lines to configure
+
+$source = __DIR__ . '/../etc/container.yaml';
+$target = 'hanneskod\readmetester\ProjectServiceContainer';
+
+// -->
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\Config\FileLocator;
+
+$dic = new ContainerBuilder;
+
+$loader = new YamlFileLoader(
+    $dic,
+    new FileLocator(dirname($source))
+);
+
+$loader->load(basename($source));
+
+$dic->compile();
+
+$dumper = new PhpDumper($dic);
+
+$targetParts = explode('\\', $target);
+
+echo @$dumper->dump([
+    'class' => array_pop($targetParts),
+    'namespace' => implode('\\', $targetParts),
+]);

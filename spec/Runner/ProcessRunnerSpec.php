@@ -6,7 +6,7 @@ namespace spec\hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Runner\ProcessRunner;
 use hanneskod\readmetester\Runner\VoidOutcome;
-use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Example\ExampleStoreInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -16,12 +16,16 @@ class ProcessRunnerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProcessRunner::CLASS);
+        $this->shouldHaveType(ProcessRunner::class);
     }
 
-    function it_runs_examples_in_isolation()
+    function it_runs_examples_in_isolation(ExampleStoreInterface $store)
     {
-        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::CLASS);
-        $this->run(new CodeBlock('class Foo {}'))->shouldHaveType(VoidOutcome::CLASS);
+        $store->getExamples()->willReturn([$this->an_example('class Foo {}')]);
+
+        $this->run($store)->shouldReturnOutcomeInstancesOf([VoidOutcome::class]);
+
+        // Creating the class a second time should not blow up
+        $this->run($store)->shouldReturnOutcomeInstancesOf([VoidOutcome::class]);
     }
 }

@@ -7,21 +7,8 @@ namespace hanneskod\readmetester\Expectation;
 /**
  * Represents a successfully evaluated expectation
  */
-final class Success implements StatusInterface
+final class Success extends AbstractStatus
 {
-    /** @var string */
-    private $desc;
-
-    public function __construct(string $desc)
-    {
-        $this->desc = $desc;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->desc;
-    }
-
     public function isSuccess(): bool
     {
         return true;

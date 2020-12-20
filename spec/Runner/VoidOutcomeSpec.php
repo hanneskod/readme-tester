@@ -6,24 +6,38 @@ namespace spec\hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Runner\VoidOutcome;
 use hanneskod\readmetester\Runner\OutcomeInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class VoidOutcomeSpec extends ObjectBehavior
 {
+    function let(ExampleObj $example)
+    {
+        $this->beConstructedWith($example);
+    }
+
     function it_is_initializable()
     {
-        $this->shouldHaveType(VoidOutcome::CLASS);
+        $this->shouldHaveType(VoidOutcome::class);
     }
 
     function it_is_an_outcome()
     {
-        $this->shouldHaveType(OutcomeInterface::CLASS);
+        $this->shouldHaveType(OutcomeInterface::class);
     }
 
-    function it_is_a_void_type()
+    function it_contains_example($example)
     {
-        $this->getType()->shouldReturn(OutcomeInterface::TYPE_VOID);
+        $this->getExample()->shouldReturn($example);
+    }
+
+    function it_knows_its_type()
+    {
+        $this->shouldNotBeError();
+        $this->shouldNotBeOutput();
+        $this->shouldNotBeSkipped();
+        $this->shouldBeVoid();
     }
 
     function it_must_not_be_handled()

@@ -4,6 +4,10 @@
         "src",
         "vendor"
     ],
+    "files-bin": [
+        "etc/default_configuration.yaml",
+        "VERSION"
+    ],
     "compactors": [
         "KevinGH\\Box\\Compactor\\Php"
     ],

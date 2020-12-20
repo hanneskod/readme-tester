@@ -1,72 +1,127 @@
 COMPOSER_CMD=composer
 PHIVE_CMD=phive
+GPG_CMD=gpg
 
 PHPSPEC_CMD=tools/phpspec
-PHPUNIT_CMD=tools/phpunit
-BEHAT_CMD=tools/behat
 README_TESTER_CMD=bin/readme-tester
 PHPSTAN_CMD=tools/phpstan
 PHPCS_CMD=tools/phpcs
 BOX_CMD=tools/box
-PHAR_COMPOSER_CMD=tools/phar-composer
 PHPEG_CMD=tools/phpeg
 
-.DEFAULT_GOAL=all
-
 TARGET=readme-tester.phar
+DESTDIR=/usr/local/bin
+VERSION=VERSION
 
-PARSER_ROOT=src/Parser/Parser
+SIGNATURE=${TARGET}.asc
+SIGNATURE_ID=hannes.forsgard@fripost.org
+
+CONTAINER=src/ProjectServiceContainer.php
+
+PARSER_ROOT=src/InputLanguage/Markdown/Parser
 PARSER=$(PARSER_ROOT).php
 
-.PHONY: all
-all: test analyze build
+ETC_FILES:=$(shell find etc/ -type f -name '*')
+SRC_FILES:=$(shell find src/ -type f -name '*.php' ! -path $(CONTAINER))
 
-.PHONY: clean
-clean:
-	rm composer.lock
-	rm -f $(PARSER)
+.DEFAULT_GOAL=all
+.PHONY: all
+all: test analyze preconds build check
+
+.PHONY: clean maintainer-clean
+
+clean: clean_before_build
+	rm -f $(TARGET)
+	rm -f composer.lock
 	rm -rf vendor
 	rm -rf tools
 
-.PHONY: build
+maintainer-clean: clean
+	@echo 'This command is intended for maintainers to use; it'
+	@echo 'deletes files that may need special tools to rebuild.'
+	rm -f $(CONTAINER)
+	rm -f $(PARSER)
+
+.PHONY: preconds dependency_check clean_before_build
+
+preconds: dependency_check clean_before_build
+
+dependency_check: vendor/installed
+	$(COMPOSER_CMD) validate --strict
+
+clean_before_build:
+	rm -f $(VERSION)
+	rm -f $(SIGNATURE)
+
+.PHONY: build build_release check
+
 build: $(TARGET)
 
-$(TARGET): vendor/installed $(PARSER) $(BOX_CMD)
-	$(BOX_CMD) compile
+build_release: all sign
+
+check: $(TARGET)
+	./$(TARGET) --exclude 'docs/10-extensions.md' --no-bootstrap
+
+$(CONTAINER): vendor/installed $(ETC_FILES) $(SRC_FILES)
+	bin/build_container > $@
 
 $(PARSER): $(PARSER_ROOT).peg $(PHPEG_CMD)
 	$(PHPEG_CMD) generate $<
 
-.PHONY: test
-test: phpspec phpunit behat docs
+$(TARGET): vendor/installed $(CONTAINER) $(PARSER) $(SRC_FILES) $(VERSION) $(README_TESTER_CMD) box.json composer.lock $(BOX_CMD)
+	$(COMPOSER_CMD) install --prefer-dist --no-dev
+	$(BOX_CMD) compile
+	$(COMPOSER_CMD) install
 
-.PHONY: phpspec
+.PHONY: build check
+
+$(VERSION):
+	-git describe > $@
+
+.PHONY: sign
+
+sign: $(SIGNATURE)
+
+$(SIGNATURE): $(TARGET)
+	$(GPG_CMD) -u $(SIGNATURE_ID) --detach-sign --output $@ $<
+
+.PHONY: install uninstall
+
+install: $(TARGET)
+	mkdir -p $(DESTDIR)
+	cp $< $(DESTDIR)/readme-tester
+
+uninstall:
+	rm -f $(DESTDIR)/readme-tester
+
+.PHONY: test phpspec docs
+
+test: phpspec docs
+
 phpspec: vendor/installed $(PARSER) $(PHPSPEC_CMD)
 	$(PHPSPEC_CMD) run
 
-.PHONY: phpunit
-phpunit: vendor/installed $(PARSER) $(PHPUNIT_CMD)
-	$(PHPUNIT_CMD)
-
-.PHONY: behat
-behat: vendor/installed $(PARSER) $(BEHAT_CMD)
-	$(BEHAT_CMD) --stop-on-failure
-
-.PHONY: docs
-docs: vendor/installed $(PARSER) $(README_TESTER_CMD)
+docs: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
 	$(README_TESTER_CMD)
 
-.PHONY: analyze
+.PHONY: continuous-integration
+
+continuous-integration: $(PHPSPEC_CMD) $(README_TESTER_CMD)
+	$(PHPSPEC_CMD) run -v
+	$(README_TESTER_CMD) --output debug
+	$(MAKE) phpstan
+
+.PHONY: analyze phpstan phpcs
+
 analyze: phpstan phpcs
 
-.PHONY: phpstan
 phpstan: vendor/installed $(PHPSTAN_CMD)
-	$(PHPSTAN_CMD) analyze -c phpstan.neon -l 5 src
+	$(PHPSTAN_CMD) analyze -c phpstan.neon -l 8 src
 
-.PHONY: phpcs
 phpcs: $(PHPCS_CMD)
-	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER)
-	#$(PHPCS_CMD) spec --standard=spec/ruleset.xml
+	# TODO phpcs does not currently run with php8, skipp temporary
+	# $(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER),$(CONTAINER)
+	$(PHPCS_CMD) spec --standard=spec/ruleset.xml
 
 composer.lock: composer.json
 	@echo composer.lock is not up to date
@@ -75,27 +130,12 @@ vendor/installed: composer.lock
 	$(COMPOSER_CMD) install
 	touch $@
 
-$(PHPSPEC_CMD):
-	$(PHIVE_CMD) install phpspec/phpspec:6 --force-accept-unsigned
+tools/installed: .phive/phars.xml
+	$(PHIVE_CMD) install --force-accept-unsigned --trust-gpg-keys CF1A108D0E7AE720,31C7E470E2138192,0FD3A3029E470F86
+	touch $@
 
-$(PHPUNIT_CMD):
-	$(PHIVE_CMD) install phpunit:8 --trust-gpg-keys 4AA394086372C20A
-
-$(BEHAT_CMD):
-	$(PHIVE_CMD) install behat/behat:3 --force-accept-unsigned
-
-$(PHPSTAN_CMD):
-	$(PHIVE_CMD) install phpstan --force-accept-unsigned
-
-$(PHPCS_CMD):
-	$(PHIVE_CMD) install phpcs --force-accept-unsigned
-
-$(BOX_CMD):
-	$(PHIVE_CMD) install humbug/box --force-accept-unsigned
-
-$(PHAR_COMPOSER_CMD):
-	$(PHIVE_CMD) install clue/phar-composer:1 --force-accept-unsigned
-
-$(PHPEG_CMD): $(PHAR_COMPOSER_CMD)
-	$(PHAR_COMPOSER_CMD) build https://github.com/scato/phpeg
-	mv phpeg.phar $@
+$(PHPSPEC_CMD): tools/installed
+$(PHPSTAN_CMD): tools/installed
+$(PHPCS_CMD): tools/installed
+$(BOX_CMD): tools/installed
+$(PHPEG_CMD): tools/installed

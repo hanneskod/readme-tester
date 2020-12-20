@@ -4,11 +4,19 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
+use hanneskod\readmetester\Example\ExampleObj;
+
 final class VoidOutcome implements OutcomeInterface
 {
-    public function getType(): string
+    use OutcomeDefaultsTrait;
+
+    public function __construct(
+        private ExampleObj $example,
+    ) {}
+
+    public function isVoid(): bool
     {
-        return self::TYPE_VOID;
+        return true;
     }
 
     public function mustBeHandled(): bool

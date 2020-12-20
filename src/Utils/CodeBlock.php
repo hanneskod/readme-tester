@@ -6,8 +6,7 @@ namespace hanneskod\readmetester\Utils;
 
 class CodeBlock
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
     public function __construct(string $code)
     {
@@ -22,5 +21,10 @@ class CodeBlock
     public function prepend(CodeBlock $codeBlock): CodeBlock
     {
         return new CodeBlock($codeBlock->getCode() . $this->getCode());
+    }
+
+    public function append(CodeBlock $codeBlock): CodeBlock
+    {
+        return $codeBlock->prepend($this);
     }
 }

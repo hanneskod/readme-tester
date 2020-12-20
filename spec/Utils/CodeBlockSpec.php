@@ -17,7 +17,7 @@ class CodeBlockSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CodeBlock::CLASS);
+        $this->shouldHaveType(CodeBlock::class);
     }
 
     function it_contains_code()
@@ -28,5 +28,10 @@ class CodeBlockSpec extends ObjectBehavior
     function it_can_prepend_code()
     {
         $this->prepend(new CodeBlock('bar:'))->shouldBeLike(new CodeBlock('bar:foo'));
+    }
+
+    function it_can_append_code()
+    {
+        $this->append(new CodeBlock(':bar'))->shouldBeLike(new CodeBlock('foo:bar'));
     }
 }

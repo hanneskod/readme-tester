@@ -1,8 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-namespace hanneskod\readmetester\Console;
+declare(strict_types = 1);
 
-(@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
+namespace hanneskod\readmetester;
 
-(new Application('Reamde-Tester', 'dev'))->run();
+foreach ([__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php'] as $file) {
+    if (file_exists($file)) {
+        require_once $file;
+        break;
+    }
+}
+
+if (!class_exists(ProjectServiceContainer::class)) {
+    die("Unable to find autoloader. Did you install dependencies using composer install?\n");
+}
+
+(new ProjectServiceContainer)->get('application')->run();

@@ -1,7 +1,7 @@
 {
     "name": "hanneskod/readme-tester",
     "description": "Validate code examples in readme files",
-    "keywords": ["code examples", "readme", "testing", "phpunit"],
+    "keywords": ["code examples", "readme", "testing"],
     "homepage": "https://github.com/hanneskod/readme-tester",
     "type": "project",
     "license": "Unlicense",
@@ -19,19 +19,34 @@
     "autoload-dev": {
         "psr-4": {
             "spec\\hanneskod\\readmetester\\": "spec/"
-        }
+        },
+        "files": [
+            "docs\\HelloWorldAttribute.php"
+        ]
     },
     "bin": [
         "bin/readme-tester"
     ],
     "config": {
         "platform": {
-            "php": "7.2.5"
+            "php": "8.0.0"
         }
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.0",
+        "amphp/parallel-functions": "^1",
+        "crell/tukio": "^1",
+        "fig/event-dispatcher-util": "^1",
+        "psr/container": "^1",
+        "psr/event-dispatcher": "^1",
         "symfony/console": "^5",
-        "symfony/process": "^5"
+        "symfony/dependency-injection": "^5",
+        "symfony/finder": "^5",
+        "symfony/process": "^5",
+        "symfony/yaml": "^5"
+    },
+    "require-dev": {
+        "symfony/config": "^5",
+        "symfony/expression-language": "^5"
     }
 }

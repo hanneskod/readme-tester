@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Runner;
 
-use hanneskod\readmetester\Utils\CodeBlock;
+use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Example\ExampleStoreInterface;
 use Symfony\Component\Process\PhpProcess;
 
 /**
@@ -12,37 +13,41 @@ use Symfony\Component\Process\PhpProcess;
  */
 final class ProcessRunner implements RunnerInterface
 {
-    /** @var string */
-    private $bootstrapCode;
+    private string $bootstrap = '';
 
-    public function __construct(string $bootstrap = '')
+    public function setBootstrap(string $filename): void
     {
-        if ($bootstrap && !file_exists($bootstrap)) {
-            throw new \RuntimeException("Unable to load bootstrap $bootstrap, file does not exist");
+        if ($filename) {
+            $this->bootstrap = "require_once '$filename';";
         }
-
-        $this->bootstrapCode = $bootstrap ? "require '$bootstrap';" : '';
     }
 
-    public function run(CodeBlock $codeBlock): OutcomeInterface
+    public function run(ExampleStoreInterface $examples): iterable
     {
-        $filename = (string)tempnam(sys_get_temp_dir(), 'doctestphp');
+        foreach ($examples->getExamples() as $example) {
+            yield $this->runExample($example);
+        }
+    }
 
-        file_put_contents($filename, "<?php {$codeBlock->getCode()}");
+    public function runExample(ExampleObj $example): OutcomeInterface
+    {
+        $filename = (string)tempnam(sys_get_temp_dir(), 'readmetester');
 
-        $process = new PhpProcess("<?php {$this->bootstrapCode} require '$filename';");
+        file_put_contents($filename, "<?php {$example->getCodeBlock()->getCode()}");
+
+        $process = new PhpProcess("<?php {$this->bootstrap} require '$filename';");
         $process->run();
 
         unlink($filename);
 
         if ($errorOutput = $process->getErrorOutput()) {
-            return new ErrorOutcome(trim($errorOutput));
+            return new ErrorOutcome($example, trim($errorOutput));
         }
 
         if ($output = $process->getOutput()) {
-            return new OutputOutcome($output);
+            return new OutputOutcome($example, $output);
         }
 
-        return new VoidOutcome;
+        return new VoidOutcome($example);
     }
 }

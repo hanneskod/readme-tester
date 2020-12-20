@@ -3,29 +3,14 @@ sudo: false
 language: php
 
 php:
-    - 7.4
-    - 7.3
-    - 7.2
+    - 8.0
 
 install:
-    - composer install
+    - make vendor/installed
     - wget -O phive.phar https://phar.io/releases/phive.phar
-    - make tools/phpspec tools/phpunit tools/behat tools/box PHIVE_CMD="php phive.phar"
+    - make tools/installed PHIVE_CMD="php phive.phar"
 
 script:
-    - tools/phpunit --verbose
-    - tools/phpspec run -v
-    - tools/behat --verbose
-    - bin/readme-tester
-    - tools/box compile
-
-deploy:
-    provider: releases
-    api_key:
-        secure: eF3bNEQ7cx9xl5FlnlgMt6kFxUBpV40QfQmNl98Vtf6xsOFayCJslO4tb3Kackd9rg8WOPXV3n2dJQBp8AZWkOYHkR84PKheJ5X+TXvtRjjReFvSOUlpF/6bw++68fhEkvq/+Rzdo2zxeNTZKRck0h34pec3ChG0podY/RtswQU=
-    file: readme-tester.phar
-    skip_cleanup: true
-    on:
-        repo: hanneskod/readme-tester
-        tags: true
-        condition: ${TRAVIS_PHP_VERSION:0:3} == "7.2"
+    - make continuous-integration
+    - make build
+    - make check

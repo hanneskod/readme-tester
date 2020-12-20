@@ -22,12 +22,12 @@ class OutputExpectationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(OutputExpectation::CLASS);
+        $this->shouldHaveType(OutputExpectation::class);
     }
 
     function it_is_an_expectation()
     {
-        $this->shouldHaveType(ExpectationInterface::CLASS);
+        $this->shouldHaveType(ExpectationInterface::class);
     }
 
     function it_can_be_converted_to_string($regexp)
@@ -38,29 +38,29 @@ class OutputExpectationSpec extends ObjectBehavior
 
     function it_handles_outputs(OutcomeInterface $outcome)
     {
-        $outcome->getType()->willReturn(OutcomeInterface::TYPE_OUTPUT);
+        $outcome->isOutput()->willReturn(true);
         $this->handles($outcome)->shouldReturn(true);
     }
 
     function it_does_not_handle_other_outcomes(OutcomeInterface $outcome)
     {
-        $outcome->getType()->willReturn('foo');
+        $outcome->isOutput()->willReturn(false);
         $this->handles($outcome)->shouldReturn(false);
     }
 
     function it_returns_failure_on_no_match($regexp, OutcomeInterface $outcome)
     {
         $outcome->getContent()->willReturn('foobar');
-        $regexp->isMatch('foobar')->willReturn(false);
+        $regexp->matches('foobar')->willReturn(false);
         $regexp->getRegexp()->willReturn('');
-        $this->handle($outcome)->shouldHaveType(Failure::CLASS);
+        $this->handle($outcome)->shouldHaveType(Failure::class);
     }
 
     function it_returns_success_on_match($regexp, OutcomeInterface $outcome)
     {
         $outcome->getContent()->willReturn('foobar');
-        $regexp->isMatch('foobar')->willReturn(true);
+        $regexp->matches('foobar')->willReturn(true);
         $regexp->getRegexp()->willReturn('');
-        $this->handle($outcome)->shouldHaveType(Success::CLASS);
+        $this->handle($outcome)->shouldHaveType(Success::class);
     }
 }

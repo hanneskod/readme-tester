@@ -1,6 +1,8 @@
 /vendor
 /composer.phar
-/.phive
+/phive.phar
 /tools
-/.phpunit.result.cache
 /readme-tester.phar
+/readme-tester.phar.asc
+/VERSION
+/*.local.*

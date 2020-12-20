@@ -6,29 +6,38 @@ namespace spec\hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Runner\ErrorOutcome;
 use hanneskod\readmetester\Runner\OutcomeInterface;
+use hanneskod\readmetester\Example\ExampleObj;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ErrorOutcomeSpec extends ObjectBehavior
 {
-    function let()
+    function let(ExampleObj $example)
     {
-        $this->beConstructedWith('foobar');
+        $this->beConstructedWith($example, 'foobar');
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ErrorOutcome::CLASS);
+        $this->shouldHaveType(ErrorOutcome::class);
     }
 
     function it_is_an_outcome()
     {
-        $this->shouldHaveType(OutcomeInterface::CLASS);
+        $this->shouldHaveType(OutcomeInterface::class);
     }
 
-    function it_is_an_error_type()
+    function it_contains_example($example)
     {
-        $this->getType()->shouldReturn(OutcomeInterface::TYPE_ERROR);
+        $this->getExample()->shouldReturn($example);
+    }
+
+    function it_knows_its_type()
+    {
+        $this->shouldBeError();
+        $this->shouldNotBeOutput();
+        $this->shouldNotBeSkipped();
+        $this->shouldNotBeVoid();
     }
 
     function it_must_be_handled()
@@ -39,10 +48,5 @@ class ErrorOutcomeSpec extends ObjectBehavior
     function it_contains_content()
     {
         $this->getContent()->shouldReturn('foobar');
-    }
-
-    function it_contains_description()
-    {
-        $this->getDescription()->shouldMatch('/foobar/');
     }
 }

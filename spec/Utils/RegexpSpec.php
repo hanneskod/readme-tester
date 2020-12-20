@@ -13,31 +13,31 @@ class RegexpSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith('');
-        $this->shouldHaveType(Regexp::CLASS);
+        $this->shouldHaveType(Regexp::class);
     }
 
     function it_can_match()
     {
         $this->beConstructedWith('/test/');
-        $this->isMatch('this test should match')->shouldReturn(true);
+        $this->matches('this test should match')->shouldReturn(true);
     }
 
     function it_can_fail_match()
     {
         $this->beConstructedWith('foo');
-        $this->isMatch('bar')->shouldReturn(false);
+        $this->matches('bar')->shouldReturn(false);
     }
 
     function it_can_match_with_custom_delimiter()
     {
         $this->beConstructedWith('#delimiter#');
-        $this->isMatch('a different delimiter')->shouldReturn(true);
+        $this->matches('a different delimiter')->shouldReturn(true);
     }
 
     function it_can_make_regexp()
     {
         $this->beConstructedWith('test');
-        $this->isMatch('test')->shouldReturn(true);
+        $this->matches('test')->shouldReturn(true);
     }
 
     function it_can_return_internal_regexp()

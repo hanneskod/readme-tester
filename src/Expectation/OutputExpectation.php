@@ -12,8 +12,7 @@ use hanneskod\readmetester\Utils\Regexp;
  */
 final class OutputExpectation implements ExpectationInterface
 {
-    /** @var Regexp */
-    private $regexp;
+    private Regexp $regexp;
 
     public function __construct(Regexp $regexp)
     {
@@ -27,17 +26,17 @@ final class OutputExpectation implements ExpectationInterface
 
     public function handles(OutcomeInterface $outcome): bool
     {
-        return $outcome->getType() == OutcomeInterface::TYPE_OUTPUT;
+        return $outcome->isOutput();
     }
 
     public function handle(OutcomeInterface $outcome): StatusInterface
     {
-        if (!$this->regexp->isMatch($outcome->getContent())) {
-            return new Failure(
-                "Failed asserting that output '{$outcome->getContent()}' matches {$this->regexp->getRegexp()}"
-            );
+        $msg = "that output '{$outcome->getContent()}' matches '{$this->regexp->getRegexp()}'";
+
+        if (!$this->regexp->matches($outcome->getContent())) {
+            return new Failure($outcome, "Failed asserting $msg");
         }
 
-        return new Success("Asserted that output '{$outcome->getContent()}' matches {$this->regexp->getRegexp()}");
+        return new Success($outcome, "Asserted $msg");
     }
 }

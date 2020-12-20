@@ -2,38 +2,13 @@
 
 namespace hanneskod\readmetester\Runner;
 
+use hanneskod\readmetester\Example\ExampleObj;
+
 /**
  * Represents an outcome (effect) of an executed example
  */
 interface OutcomeInterface
 {
-    /**
-     * Output type identifier
-     */
-    const TYPE_OUTPUT = 'TYPE_OUTPUT';
-
-    /**
-     * Error type identifier
-     */
-    const TYPE_ERROR = 'TYPE_ERROR';
-
-    /**
-     * Void type identifier
-     */
-    const TYPE_VOID = 'TYPE_VOID';
-
-    /**
-     * Get a token describing the outcome type
-     *
-     * See the list of type constants in OutcomeInterface
-     */
-    public function getType(): string;
-
-    /**
-     * Check if unhandled outcome should trigger an error
-     */
-    public function mustBeHandled(): bool;
-
     /**
      * Get the actual outcome data
      */
@@ -43,4 +18,34 @@ interface OutcomeInterface
      * Get a free text description of this outcome
      */
     public function getDescription(): string;
+
+    /**
+     * Get example this outcome originates from
+     */
+    public function getExample(): ExampleObj;
+
+    /**
+     * Check if unhandled outcome should trigger an error
+     */
+    public function mustBeHandled(): bool;
+
+    /**
+     * Check if this is an error outcome
+     */
+    public function isError(): bool;
+
+    /**
+     * Check if this is an output outcome
+     */
+    public function isOutput(): bool;
+
+    /**
+     * Check if this is a skipped outcome
+     */
+    public function isSkipped(): bool;
+
+    /**
+     * Check if this is a void outcome
+     */
+    public function isVoid(): bool;
 }
