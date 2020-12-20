@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable Squiz.WhiteSpace.ScopeClosingBrace
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester;
 
@@ -34,7 +36,7 @@ final class TestMarshal
                 );
 
                 if ($stopOnFailure && !$status->isSuccess()) {
-                    $this->dispatcher->dispatch(new Event\TestingAborted);
+                    $this->dispatcher->dispatch(new Event\TestingAborted());
                     break 2;
                 }
             }

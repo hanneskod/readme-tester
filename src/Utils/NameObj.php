@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Utils;
 
 class NameObj
 {
-    const NAMESPACE_DELIMITER = ':';
+    public const NAMESPACE_DELIMITER = ':';
 
     private const INVALID_CHAR_REGEXP = "/[^a-z0-9.\\/_-]/i";
 

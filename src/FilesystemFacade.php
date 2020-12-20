@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable Squiz.WhiteSpace.ScopeClosingBrace
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester;
 
@@ -21,7 +23,7 @@ class FilesystemFacade
      */
     public function getFilesystemInput(string $cwd, array $paths, array $extensions, array $ignore): iterable
     {
-        $finder = (new Finder)->files()->in($cwd)->ignoreUnreadableDirs();
+        $finder = (new Finder())->files()->in($cwd)->ignoreUnreadableDirs();
 
         // Set paths to scan
 

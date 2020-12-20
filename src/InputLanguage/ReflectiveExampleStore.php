@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\InputLanguage;
 
@@ -15,7 +15,7 @@ use hanneskod\readmetester\Utils\NameObj;
  */
 abstract class ReflectiveExampleStore implements ExampleStoreInterface
 {
-    const EXAMPLE_METHOD_PREFIX = 'example';
+    public const EXAMPLE_METHOD_PREFIX = 'example';
 
     public function getExamples(): iterable
     {

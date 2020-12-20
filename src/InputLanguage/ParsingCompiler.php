@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable Squiz.WhiteSpace.ScopeClosingBrace
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\InputLanguage;
 
@@ -18,7 +20,7 @@ final class ParsingCompiler implements CompilerInterface
 
     public function compile(iterable $inputs): ExampleStoreInterface
     {
-        $globalStore = new CombinedExampleStore;
+        $globalStore = new CombinedExampleStore();
 
         foreach ($inputs as $input) {
             try {

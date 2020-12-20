@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable Squiz.WhiteSpace.ScopeClosingBrace
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Expectation;
 
@@ -26,7 +28,7 @@ abstract class AbstractStatus implements StatusInterface
             return $content;
         }
 
-        return mb_substr($content, 0, $strlen-3) . '...';
+        return mb_substr($content, 0, $strlen - 3) . '...';
     }
 
     public function getOutcome(): OutcomeInterface

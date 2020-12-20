@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Utils;
 
@@ -51,7 +51,7 @@ class Instantiator implements ContainerInterface
             throw new \RuntimeException("Unable to instantiate '$classname' with no parameters");
         }
 
-        return new $classname;
+        return new $classname();
     }
 
     public function getSharedObject(string $classname): object

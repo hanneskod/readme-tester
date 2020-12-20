@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable PSR1.Files.SideEffects
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Attribute;
 
@@ -9,8 +11,8 @@ use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\OutputExpectation;
 use hanneskod\readmetester\Utils\Regexp;
 
-#[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
-class ExpectOutput extends AbstractAttribute  implements TransformationInterface
+#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_ALL)]
+class ExpectOutput extends AbstractAttribute implements TransformationInterface
 {
     private string $regexp;
 

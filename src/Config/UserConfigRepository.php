@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Config;
 
@@ -8,8 +8,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class UserConfigRepository implements RepositoryInterface
 {
-    const CONFIG_FILENAME = 'readme-tester.yaml';
-    const DIST_CONFIG_FILENAME = 'readme-tester.yaml.dist';
+    public const CONFIG_FILENAME = 'readme-tester.yaml';
+    public const DIST_CONFIG_FILENAME = 'readme-tester.yaml.dist';
 
     /** @var array<string, mixed> */
     private array $configs = [];

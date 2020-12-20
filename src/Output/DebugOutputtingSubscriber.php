@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Output;
 
@@ -29,7 +29,7 @@ final class DebugOutputtingSubscriber extends DefaultOutputtingSubscriber
 
         // Bypass highlighter if not decorated (eg. --no-ansi) as highlighter could be unstable
         if (!$event->getOutput()->isDecorated()) {
-            $this->highlighter = new VoidSyntaxHighlighter;
+            $this->highlighter = new VoidSyntaxHighlighter();
         }
 
         parent::onExecutionStarted($event);
@@ -40,7 +40,9 @@ final class DebugOutputtingSubscriber extends DefaultOutputtingSubscriber
         $this->examplePassed = true;
         $this->exampleCount++;
 
-        $this->getOutput()->writeln("\n<fg=green;options=underscore>{$event->getOutcome()->getExample()->getName()->getFullName()}</>");
+        $this->getOutput()->writeln(
+            "\n<fg=green;options=underscore>{$event->getOutcome()->getExample()->getName()->getFullName()}</>"
+        );
 
         $this->getOutput()->writeln("Attributes:");
 

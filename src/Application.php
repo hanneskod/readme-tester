@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable Squiz.WhiteSpace.ScopeClosingBrace
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester;
 
@@ -16,21 +18,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class Application
 {
-    const CONFIG_FILE_OPTION = 'config';
-    const NO_CONFIG_OPTION = 'no-config';
-    const STDIN_OPTION = 'stdin';
-    const SUITE_OPTION = 'suite';
-    const PATHS_ARGUMENT = 'path';
-    const INPUT_OPTION = 'input';
-    const OUTPUT_OPTION = 'output';
-    const DEBUG_OPTION = 'debug';
-    const RUNNER_OPTION = 'runner';
-    const FILE_EXTENSIONS_OPTION = 'file-extension';
-    const IGNORE_PATHS_OPTION = 'exclude';
-    const BOOTSTRAP_OPTION = 'bootstrap';
-    const NO_BOOTSTRAP_OPTION = 'no-bootstrap';
-    const STOP_ON_FAILURE_OPTION = 'stop-on-failure';
-    const FILTER_OPTION = 'filter';
+    private const CONFIG_FILE_OPTION = 'config';
+    private const NO_CONFIG_OPTION = 'no-config';
+    private const STDIN_OPTION = 'stdin';
+    private const SUITE_OPTION = 'suite';
+    private const PATHS_ARGUMENT = 'path';
+    private const INPUT_OPTION = 'input';
+    private const OUTPUT_OPTION = 'output';
+    private const DEBUG_OPTION = 'debug';
+    private const RUNNER_OPTION = 'runner';
+    private const FILE_EXTENSIONS_OPTION = 'file-extension';
+    private const IGNORE_PATHS_OPTION = 'exclude';
+    private const BOOTSTRAP_OPTION = 'bootstrap';
+    private const NO_BOOTSTRAP_OPTION = 'no-bootstrap';
+    private const STOP_ON_FAILURE_OPTION = 'stop-on-failure';
+    private const FILTER_OPTION = 'filter';
 
     public function __construct(
         private Config\ConfigManager $configManager,
@@ -148,7 +150,7 @@ final class Application
                     new Config\YamlRepository((string)$input->getOption(self::CONFIG_FILE_OPTION))
                 );
             } else {
-                $this->configManager->loadRepository(new Config\UserConfigRepository);
+                $this->configManager->loadRepository(new Config\UserConfigRepository());
             }
         }
 
@@ -225,7 +227,7 @@ final class Application
 
         // Done
 
-        $this->dispatcher->dispatch(new Event\ExecutionStopped);
+        $this->dispatcher->dispatch(new Event\ExecutionStopped());
 
         return $this->exitStatusListener->getStatusCode();
     }

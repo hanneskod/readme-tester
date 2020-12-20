@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\InputLanguage\Markdown;
 
@@ -14,7 +14,7 @@ final class MarkdownCompilerFactory implements CompilerFactoryInterface
     public function createCompiler(array $compilerPasses = []): CompilerInterface
     {
         return new MultipassCompiler(
-            new ParsingCompiler(new Parser),
+            new ParsingCompiler(new Parser()),
             $compilerPasses
         );
     }

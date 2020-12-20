@@ -1,10 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable PSR1.Files.SideEffects
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Attribute;
 
-#[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
+#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_ALL)]
 class UseConst extends PrependCode
 {
     private string $constname;

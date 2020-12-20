@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The Gherkish subpackage contains experimental support classes to implement
  * feature testing with a Gherkin inspired syntax.
@@ -9,7 +10,7 @@
  * See features/ for example usage
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace hanneskod\readmetester\Gherkish;
 
@@ -17,7 +18,8 @@ final class Scenario
 {
     private FeatureContext $featureContext;
 
-    public function __construct(FeatureContext $featureContext) {
+    public function __construct(FeatureContext $featureContext)
+    {
         $this->featureContext = $featureContext;
     }
 

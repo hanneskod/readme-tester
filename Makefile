@@ -108,7 +108,7 @@ docs: vendor/installed $(CONTAINER) $(PARSER) $(README_TESTER_CMD)
 
 continuous-integration: $(PHPSPEC_CMD) $(README_TESTER_CMD)
 	$(PHPSPEC_CMD) run -v
-	$(README_TESTER_CMD) --output debug
+	$(README_TESTER_CMD) --debug
 	$(MAKE) phpstan
 
 .PHONY: analyze phpstan phpcs
@@ -120,7 +120,7 @@ phpstan: vendor/installed $(PHPSTAN_CMD)
 
 phpcs: $(PHPCS_CMD)
 	# TODO phpcs does not currently run with php8, skipp temporary
-	# $(PHPCS_CMD) src --standard=PSR2 --ignore=$(PARSER),$(CONTAINER)
+	# $(PHPCS_CMD) src --standard=PSR12 --ignore=$(PARSER),$(CONTAINER)
 	$(PHPCS_CMD) spec --standard=spec/ruleset.xml
 
 composer.lock: composer.json

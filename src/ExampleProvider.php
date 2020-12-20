@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+// phpcs:disable Squiz.WhiteSpace.ScopeClosingBrace
+
+declare(strict_types=1);
 
 namespace hanneskod\readmetester;
 
@@ -55,7 +57,7 @@ final class ExampleProvider implements ExampleProviderInterface
     private function getStdin(): StdinInput
     {
         if (!isset($this->stdin)) {
-            $this->stdin = new StdinInput;
+            $this->stdin = new StdinInput();
         }
 
         return $this->stdin;
