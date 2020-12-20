@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Event;
 
 use Symfony\Component\Finder\SplFileInfo;
 
-final class FileIncluded extends LogEvent
+final class FileIncluded extends BaseEvent
 {
     private SplFileInfo $fileInfo;
 

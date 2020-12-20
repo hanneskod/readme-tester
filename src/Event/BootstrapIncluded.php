@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Event;
 
-final class BootstrapIncluded extends LogEvent
+final class BootstrapIncluded extends BaseEvent
 {
     private string $filename;
 

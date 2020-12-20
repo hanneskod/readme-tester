@@ -25,4 +25,9 @@ class IsolateSpec extends ObjectBehavior
     {
         $this->createAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\Isolate]');
     }
+
+    function it_can_get_as_attribute()
+    {
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\Isolate]');
+    }
 }

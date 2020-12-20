@@ -41,12 +41,10 @@ final class Configs
     const OUTPUT_ID_DEBUG = 'debug';
     const OUTPUT_ID_DEFAULT = 'default';
     const OUTPUT_ID_JSON = 'json';
-    const OUTPUT_ID_VOID = 'void';
     const OUTPUT_ID = [
         self::OUTPUT_ID_DEBUG => Output\DebugOutputtingSubscriber::class,
         self::OUTPUT_ID_DEFAULT => Output\DefaultOutputtingSubscriber::class,
         self::OUTPUT_ID_JSON => Output\JsonOutputtingSubscriber::class,
-        self::OUTPUT_ID_VOID => Output\VoidOutputtingSubscriber::class,
     ];
 
     const RUNNER = 'runner';

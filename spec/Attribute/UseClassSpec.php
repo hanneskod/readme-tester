@@ -32,12 +32,35 @@ class UseClassSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::class);
     }
 
+    function it_can_create_attribute()
+    {
+        $this->beConstructedWith('');
+        $this->createAttribute('foo', 'bar')
+            ->shouldReturn('#[\hanneskod\readmetester\Attribute\UseClass("foo", "bar")]');
+    }
+
+    function it_can_get_as_attribute()
+    {
+        $this->beConstructedWith('foo');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\UseClass("foo")]');
+    }
+
+    function it_can_get_as_attribute_with_postfix()
+    {
+        $this->beConstructedWith('foo', 'bar');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\UseClass("foo", "bar")]');
+    }
+
     function it_adds_use_statement(ExampleObj $example)
     {
         $this->beConstructedWith('foo');
         $example->getCodeBlock()->willReturn(new CodeBlock('bar'));
 
-        $example->withCodeBlock(new CodeBlock('use foo;bar'))->willReturn($example)->shouldBeCalled();
+        $expected = new CodeBlock(
+            "use foo;\t// #[\\hanneskod\\readmetester\\Attribute\\UseClass(\"foo\")]\nbar"
+        );
+
+        $example->withCodeBlock($expected)->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
     }
@@ -47,15 +70,12 @@ class UseClassSpec extends ObjectBehavior
         $this->beConstructedWith('foo', 'baz');
         $example->getCodeBlock()->willReturn(new CodeBlock('bar'));
 
-        $example->withCodeBlock(new CodeBlock('use foo as baz;bar'))->willReturn($example)->shouldBeCalled();
+        $expected = new CodeBlock(
+            "use foo as baz;\t// #[\\hanneskod\\readmetester\\Attribute\\UseClass(\"foo\", \"baz\")]\nbar"
+        );
+
+        $example->withCodeBlock($expected)->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
-    }
-
-    function it_can_create_attribute()
-    {
-        $this->beConstructedWith('');
-        $this->createAttribute('foo', 'bar')
-            ->shouldReturn('#[\hanneskod\readmetester\Attribute\UseClass("foo", "bar")]');
     }
 }

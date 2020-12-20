@@ -48,4 +48,10 @@ class NameSpec extends ObjectBehavior
         $this->beConstructedWith('');
         $this->createAttribute(' foo"bar ')->shouldReturn('#[\hanneskod\readmetester\Attribute\Name("foo\"bar")]');
     }
+
+    function it_can_get_as_attribute()
+    {
+        $this->beConstructedWith('foo');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\Name("foo")]');
+    }
 }

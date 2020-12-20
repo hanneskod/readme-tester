@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Event;
 
 use hanneskod\readmetester\Exception\InvalidInputException;
 
-class InvalidInput extends LogEvent
+class InvalidInput extends BaseEvent
 {
     private string $verboseMessage;
 

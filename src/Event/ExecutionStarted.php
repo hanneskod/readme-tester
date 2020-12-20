@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Event;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class ExecutionStarted extends LogEvent
+final class ExecutionStarted extends BaseEvent
 {
     private OutputInterface $output;
 

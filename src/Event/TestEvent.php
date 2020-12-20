@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Event;
 
 use hanneskod\readmetester\Expectation\StatusInterface;
 
-abstract class TestEvent extends LogEvent
+abstract class TestEvent extends BaseEvent
 {
     private StatusInterface $status;
 

@@ -23,6 +23,7 @@ final class Application
     const PATHS_ARGUMENT = 'path';
     const INPUT_OPTION = 'input';
     const OUTPUT_OPTION = 'output';
+    const DEBUG_OPTION = 'debug';
     const RUNNER_OPTION = 'runner';
     const FILE_EXTENSIONS_OPTION = 'file-extension';
     const IGNORE_PATHS_OPTION = 'exclude';
@@ -92,6 +93,12 @@ final class Application
                 'Set output format (' . Configs::describe(Configs::OUTPUT_ID) . ')'
             )
             ->addOption(
+                self::DEBUG_OPTION,
+                null,
+                InputOption::VALUE_NONE,
+                'View debug info on generated examples (shorthand for --output debug)'
+            )
+            ->addOption(
                 self::INPUT_OPTION,
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -153,7 +160,9 @@ final class Application
                 Configs::FILE_EXTENSIONS => (array)$input->getOption(self::FILE_EXTENSIONS_OPTION),
                 Configs::EXCLUDE_PATHS => (array)$input->getOption(self::IGNORE_PATHS_OPTION),
                 Configs::BOOTSTRAP => (string)$input->getOption(self::BOOTSTRAP_OPTION), // @phpstan-ignore-line
-                Configs::OUTPUT => (string)$input->getOption(self::OUTPUT_OPTION), // @phpstan-ignore-line
+                Configs::OUTPUT => $input->getOption(self::DEBUG_OPTION)
+                    ? 'debug'
+                    : (string)$input->getOption(self::OUTPUT_OPTION), // @phpstan-ignore-line
                 Configs::INPUT_LANGUAGE => (string)$input->getOption(self::INPUT_OPTION), // @phpstan-ignore-line
                 Configs::RUNNER => (string)$input->getOption(self::RUNNER_OPTION), // @phpstan-ignore-line
                 Configs::STOP_ON_FAILURE => (bool)$input->getOption(self::STOP_ON_FAILURE_OPTION),
@@ -177,6 +186,10 @@ final class Application
         // Setup event subscribers
 
         foreach ($this->configManager->getSubscribers() as $subscriber) {
+            if (!$subscriber) {
+                continue;
+            }
+
             if (!class_exists($subscriber)) {
                 throw new \RuntimeException("Unknown subscriber '$subscriber', class does not exist");
             }
@@ -228,7 +241,7 @@ final class Application
         $runner->setBootstrap($bootstrap);
 
         $this->dispatcher->dispatch(
-            new Event\DebugEvent("Using runner: {$suite->getRunner()}")
+            new Event\DebugEvent("Using runner {$suite->getRunner()}")
         );
 
         // Execute tests

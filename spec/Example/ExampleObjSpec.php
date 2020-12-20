@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace spec\hanneskod\readmetester\Example;
 
 use hanneskod\readmetester\Example\ExampleObj;
+use hanneskod\readmetester\Attribute\AttributeInterface;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Utils\NameObj;
 use hanneskod\readmetester\Utils\CodeBlock;
@@ -34,12 +35,10 @@ class ExampleObjSpec extends ObjectBehavior
         $this->getCodeBlock()->shouldReturn($codeBlock);
     }
 
-    function it_contains_attributes($name, $codeBlock)
+    function it_contains_attributes($name, $codeBlock, AttributeInterface $attribute)
     {
-        $obj = new class() {
-        };
-        $this->beConstructedWith($name, $codeBlock, [$obj]);
-        $this->getAttributes()->shouldIterateAs([$obj]);
+        $this->beConstructedWith($name, $codeBlock, [$attribute]);
+        $this->getAttributes()->shouldIterateAs([$attribute]);
     }
 
     function it_can_check_if_attribute_exists($name, $codeBlock)
@@ -112,6 +111,15 @@ class ExampleObjSpec extends ObjectBehavior
         $name = $name->getWrappedObject();
         $this->withName($name)->shouldCreateExampleThat(function ($example) use ($name) {
             return $example->getName() === $name;
+        });
+    }
+
+    function it_can_create_with_attributes($name, $codeBlock, AttributeInterface $attribute)
+    {
+        $this->beConstructedWith($name, $codeBlock, [$attribute]);
+        $attribute = $attribute->getWrappedObject();
+        $this->withAttributes($attribute, $attribute)->shouldCreateExampleThat(function ($example) use ($attribute) {
+            return $example->getAttributes() == [$attribute, $attribute, $attribute];
         });
     }
 

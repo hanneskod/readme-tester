@@ -9,15 +9,18 @@ use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\NameObj;
 
 #[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
-class NamespaceName implements AttributeInterface, TransformationInterface
+class NamespaceName extends AbstractAttribute implements TransformationInterface
 {
-    use AttributeFactoryTrait;
-
     private string $namespace;
 
     public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
+    }
+
+    public function asAttribute(): string
+    {
+        return self::createAttribute($this->namespace);
     }
 
     public function transform(ExampleObj $example): ExampleObj

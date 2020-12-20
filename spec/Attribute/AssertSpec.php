@@ -32,21 +32,30 @@ class AssertSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::class);
     }
 
-    function it_transforms_code(ExampleObj $example)
-    {
-        $this->beConstructedWith('$var');
-        $example->getCodeBlock()->willReturn(new CodeBlock('foo'));
-
-        $example->withCodeBlock(new CodeBlock("fooif (!\$var) trigger_error('Assertion failed', E_USER_ERROR);"))
-            ->willReturn($example)
-            ->shouldBeCalled();
-
-        $this->transform($example)->shouldReturn($example);
-    }
-
     function it_can_create_attribute()
     {
         $this->beConstructedWith('');
         $this->createAttribute('foo')->shouldReturn('#[\hanneskod\readmetester\Attribute\Assert("foo")]');
+    }
+
+    function it_can_get_as_attribute()
+    {
+        $this->beConstructedWith('foo');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\Assert("foo")]');
+    }
+
+    function it_transforms_code(ExampleObj $example)
+    {
+        $this->beConstructedWith('$var');
+        $example->getCodeBlock()->willReturn(new CodeBlock('foo::'));
+
+        $expected = new CodeBlock(
+            "foo::if (!\$var) trigger_error('Assertion failed', E_USER_ERROR);"
+            . "\t// #[\\hanneskod\\readmetester\\Attribute\\Assert(\"\$var\")]\n"
+        );
+
+        $example->withCodeBlock($expected)->willReturn($example)->shouldBeCalled();
+
+        $this->transform($example)->shouldReturn($example);
     }
 }

@@ -47,4 +47,10 @@ class ExpectOutputSpec extends ObjectBehavior
         $this->beConstructedWith('');
         $this->createAttribute('foo')->shouldReturn('#[\hanneskod\readmetester\Attribute\ExpectOutput("foo")]');
     }
+
+    function it_can_get_as_attribute()
+    {
+        $this->beConstructedWith('foo');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\ExpectOutput("foo")]');
+    }
 }

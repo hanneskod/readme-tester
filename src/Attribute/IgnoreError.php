@@ -11,4 +11,9 @@ class IgnoreError extends ExpectError
     {
         parent::__construct('//');
     }
+
+    public function asAttribute(): string
+    {
+        return self::createAttribute();
+    }
 }

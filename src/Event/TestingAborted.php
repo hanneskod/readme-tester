@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Event;
 
-class TestingAborted extends DebugEvent
+class TestingAborted extends BaseEvent
 {
     public function __construct()
     {

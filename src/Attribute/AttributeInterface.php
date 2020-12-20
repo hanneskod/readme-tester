@@ -7,4 +7,5 @@ namespace hanneskod\readmetester\Attribute;
  */
 interface AttributeInterface
 {
+    public function asAttribute(): string;
 }

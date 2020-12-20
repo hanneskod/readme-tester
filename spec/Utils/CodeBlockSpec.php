@@ -29,4 +29,9 @@ class CodeBlockSpec extends ObjectBehavior
     {
         $this->prepend(new CodeBlock('bar:'))->shouldBeLike(new CodeBlock('bar:foo'));
     }
+
+    function it_can_append_code()
+    {
+        $this->append(new CodeBlock(':bar'))->shouldBeLike(new CodeBlock('foo:bar'));
+    }
 }

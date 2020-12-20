@@ -4,8 +4,13 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Attribute;
 
-trait AttributeFactoryTrait
+abstract class AbstractAttribute implements AttributeInterface
 {
+    public function asAttribute(): string
+    {
+        return self::createAttribute();
+    }
+
     public static function createAttribute(string ...$args): string
     {
         $arglist = '';
@@ -15,7 +20,10 @@ trait AttributeFactoryTrait
                 '("%s")',
                 implode(
                     '", "',
-                    array_map(fn(string $arg) => addslashes(trim($arg)), $args)
+                    array_map(
+                        fn(string $arg) => addslashes(trim($arg)),
+                        array_filter($args)
+                    )
                 )
             );
         }

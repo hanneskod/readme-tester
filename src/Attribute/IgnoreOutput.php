@@ -11,4 +11,9 @@ class IgnoreOutput extends ExpectOutput
     {
         parent::__construct('//');
     }
+
+    public function asAttribute(): string
+    {
+        return self::createAttribute();
+    }
 }

@@ -10,15 +10,18 @@ use hanneskod\readmetester\Expectation\ErrorExpectation;
 use hanneskod\readmetester\Utils\Regexp;
 
 #[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
-class ExpectError implements AttributeInterface, TransformationInterface
+class ExpectError extends AbstractAttribute implements TransformationInterface
 {
-    use AttributeFactoryTrait;
-
     private string $regexp;
 
     public function __construct(string $regexp)
     {
         $this->regexp = $regexp;
+    }
+
+    public function asAttribute(): string
+    {
+        return self::createAttribute($this->regexp);
     }
 
     public function transform(ExampleObj $example): ExampleObj

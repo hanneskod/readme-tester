@@ -8,10 +8,8 @@ use hanneskod\readmetester\Compiler\TransformationInterface;
 use hanneskod\readmetester\Example\ExampleObj;
 
 #[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
-class Ignore implements AttributeInterface, TransformationInterface
+class Ignore extends AbstractAttribute implements TransformationInterface
 {
-    use AttributeFactoryTrait;
-
     public function transform(ExampleObj $example): ExampleObj
     {
         return $example->withActive(false);

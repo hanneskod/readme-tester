@@ -7,6 +7,7 @@ namespace hanneskod\readmetester\Compiler\Pass;
 use hanneskod\readmetester\Compiler\CompilerPassInterface;
 use hanneskod\readmetester\Example\ArrayExampleStore;
 use hanneskod\readmetester\Example\ExampleStoreInterface;
+use hanneskod\readmetester\Utils\CodeBlock;
 
 /**
  * Merge code from contexts and named imports into examples
@@ -58,7 +59,11 @@ final class CodeBlockImportingPass implements CompilerPassInterface
                     );
                 }
 
-                $codeBlock = $codeBlock->prepend($map[$import]->getCodeBlock());
+                $codeBlock = $codeBlock->prepend(
+                    $map[$import]->getCodeBlock()
+                        ->prepend(new CodeBlock("// <import {$map[$import]->getName()->getFullName()}>\n"))
+                        ->append(new CodeBlock("// </import>\n"))
+                );
             }
 
             $done[] = $example->withCodeBlock($codeBlock);

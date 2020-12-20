@@ -40,4 +40,9 @@ class IgnoreErrorSpec extends ObjectBehavior
     {
         $this->createAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\IgnoreError]');
     }
+
+    function it_can_get_as_attribute()
+    {
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\IgnoreError]');
+    }
 }

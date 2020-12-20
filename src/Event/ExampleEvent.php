@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Event;
 
 use hanneskod\readmetester\Example\ExampleObj;
 
-abstract class ExampleEvent extends LogEvent
+abstract class ExampleEvent extends BaseEvent
 {
     private ExampleObj $example;
 

@@ -47,4 +47,10 @@ class ExpectErrorSpec extends ObjectBehavior
         $this->beConstructedWith('');
         $this->createAttribute('foo')->shouldReturn('#[\hanneskod\readmetester\Attribute\ExpectError("foo")]');
     }
+
+    function it_can_get_as_attribute()
+    {
+        $this->beConstructedWith('foo');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\ExpectError("foo")]');
+    }
 }

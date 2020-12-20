@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Event;
 
-final class ConfigurationIncluded extends LogEvent
+final class ConfigurationIncluded extends BaseEvent
 {
     private string $filename;
 

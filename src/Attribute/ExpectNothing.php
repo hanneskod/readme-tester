@@ -9,10 +9,8 @@ use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Expectation\VoidExpectation;
 
 #[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
-class ExpectNothing implements AttributeInterface, TransformationInterface
+class ExpectNothing extends AbstractAttribute implements TransformationInterface
 {
-    use AttributeFactoryTrait;
-
     public function transform(ExampleObj $example): ExampleObj
     {
         return $example->withExpectation(new VoidExpectation);

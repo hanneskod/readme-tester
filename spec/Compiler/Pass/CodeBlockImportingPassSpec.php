@@ -16,6 +16,15 @@ use Prophecy\Argument;
 
 class CodeBlockImportingPassSpec extends ObjectBehavior
 {
+    function an_import(ExampleObj $imported): string
+    {
+        return sprintf(
+            "// <import %s>\n%s// </import>\n",
+            $imported->getName()->getFullName(),
+            $imported->getCodeBlock()->getCode()
+        );
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(CodeBlockImportingPass::class);
@@ -28,13 +37,21 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_builds_simple_examples()
     {
-        $example = new ExampleObj(NameObj::fromString('example'), new CodeBlock('E'));
-        $this->process(new ArrayExampleStore([$example]))->shouldReturnExampleWithCode('example', 'E');
+        $exampleName = NameObj::fromString('example');
+
+        $example = new ExampleObj($exampleName, new CodeBlock('example-code'));
+
+        $this->process(new ArrayExampleStore([$example]))->shouldReturnExampleWithCode(
+            $exampleName,
+            'example-code'
+        );
     }
 
     function it_throws_on_missing_import()
     {
-        $example = (new ExampleObj(NameObj::fromString('example'), new CodeBlock('E')))
+        $exampleName = NameObj::fromString('example');
+
+        $example = (new ExampleObj($exampleName, new CodeBlock('')))
             ->withImport(NameObj::fromString('does-not-exist'));
 
         $this->shouldThrow(\RuntimeException::class)->duringProcess(new ArrayExampleStore([$example]));
@@ -42,102 +59,147 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
 
     function it_adds_import()
     {
-        $example = (new ExampleObj(NameObj::fromString('example'), new CodeBlock('E')))
-            ->withImport(NameObj::fromString('import'));
+        $exampleName = NameObj::fromString('example');
+        $importName = NameObj::fromString('import');
 
-        $import = new ExampleObj(NameObj::fromString('import'), new CodeBlock('I'));
+        $example = (new ExampleObj($exampleName, new CodeBlock('example-code')))
+            ->withImport($importName);
 
-        $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode('example', 'IE');
+        $import = new ExampleObj($importName, new CodeBlock('imported-code'));
+
+        $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode(
+            $exampleName,
+            $this->an_import($import) . 'example-code'
+        );
     }
 
     function it_adds_context()
     {
-        $example = new ExampleObj(NameObj::fromString('example'), new CodeBlock('E'));
+        $exampleName = NameObj::fromString('example');
 
-        $context = (new ExampleObj(NameObj::fromString('context'), new CodeBlock('C')))
+        $example = new ExampleObj($exampleName, new CodeBlock('example-code'));
+
+        $context = (new ExampleObj(NameObj::fromString('context'), new CodeBlock('context-code')))
             ->withIsContext(true);
 
-        $this->process(new ArrayExampleStore([$example, $context]))->shouldReturnExampleWithCode('example', 'CE');
+        $this->process(new ArrayExampleStore([$example, $context]))->shouldReturnExampleWithCode(
+            $exampleName,
+            $this->an_import($context) . 'example-code'
+        );
     }
 
     function it_adds_context_and_import()
     {
-        $example = (new ExampleObj(NameObj::fromString('example'), new CodeBlock('E')))
-            ->withImport(NameObj::fromString('import'));
+        $exampleName = NameObj::fromString('example');
+        $importName = NameObj::fromString('import');
 
-        $import = new ExampleObj(NameObj::fromString('import'), new CodeBlock('I'));
+        $example = (new ExampleObj($exampleName, new CodeBlock('example-code')))
+            ->withImport($importName);
 
-        $context = (new ExampleObj(NameObj::fromString('context'), new CodeBlock('C')))
+        $import = new ExampleObj($importName, new CodeBlock('imported-code'));
+
+        $context = (new ExampleObj(NameObj::fromString('context'), new CodeBlock('context-code')))
             ->withIsContext(true);
 
         $this->process(new ArrayExampleStore([$example, $import, $context]))
-            ->shouldReturnExampleWithCode('example', 'CIE');
+            ->shouldReturnExampleWithCode(
+                $exampleName,
+                $this->an_import($context) . $this->an_import($import) . 'example-code'
+            );
     }
 
     function it_does_not_add_context_to_self()
     {
-        $example = (new ExampleObj(NameObj::fromString('example'), new CodeBlock('E')))
+        $exampleName = NameObj::fromString('example');
+
+        $example = (new ExampleObj($exampleName, new CodeBlock('example-code')))
             ->withIsContext(true);
 
-        $this->process(new ArrayExampleStore([$example]))->shouldReturnExampleWithCode('example', 'E');
+        $this->process(new ArrayExampleStore([$example]))->shouldReturnExampleWithCode(
+            $exampleName,
+            'example-code'
+        );
     }
 
     function it_adds_import_that_is_also_a_context_only_once()
     {
-        $example = (new ExampleObj(NameObj::fromString('example'), new CodeBlock('E')))
+        $exampleName = NameObj::fromString('example');
+
+        $example = (new ExampleObj($exampleName, new CodeBlock('example-code')))
             ->withImport(NameObj::fromString('import'));
 
-        $import = (new ExampleObj(NameObj::fromString('import'), new CodeBlock('I')))
+        $import = (new ExampleObj(NameObj::fromString('import'), new CodeBlock('imported-code')))
             ->withIsContext(true);
 
-        $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode('example', 'IE');
+        $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode(
+            $exampleName,
+            $this->an_import($import) . 'example-code'
+        );
     }
 
     function it_puts_contexts_before_imports()
     {
-        $example = (new ExampleObj(NameObj::fromString('example'), new CodeBlock('E')))
-            ->withImport(NameObj::fromString('import1'))
-            ->withImport(NameObj::fromString('import2'));
+        $exampleName = NameObj::fromString('example');
+        $importContextName = NameObj::fromString('import-context');
+        $importName = NameObj::fromString('import');
 
-        $import1 = (new ExampleObj(NameObj::fromString('import1'), new CodeBlock('I1')))
+        $example = (new ExampleObj($exampleName, new CodeBlock('example-code')))
+            ->withImport($importContextName)
+            ->withImport($importName);
+
+        $importContext = (new ExampleObj($importContextName, new CodeBlock('import-context-code')))
             ->withIsContext(true);
 
-        $import2 = new ExampleObj(NameObj::fromString('import2'), new CodeBlock('I2'));
+        $import = new ExampleObj($importName, new CodeBlock('import-code'));
 
-        $context = (new ExampleObj(NameObj::fromString('context'), new CodeBlock('C')))
+        $context = (new ExampleObj(NameObj::fromString('context'), new CodeBlock('context-code')))
             ->withIsContext(true);
 
-        $this->process(new ArrayExampleStore([$example, $import1, $import2, $context]))
-            ->shouldReturnExampleWithCode('example', 'I1CI2E');
+        $this->process(new ArrayExampleStore([$example, $importContext, $import, $context]))
+            ->shouldReturnExampleWithCode(
+                $exampleName,
+                $this->an_import($importContext).$this->an_import($context).$this->an_import($import).'example-code'
+            );
     }
 
     function it_ignores_contexts_in_other_namespaces()
     {
-        $example = new ExampleObj(NameObj::fromString('foo:example'), new CodeBlock('E'));
+        $exampleName = NameObj::fromString('foo:example');
 
-        $context = (new ExampleObj(NameObj::fromString('bar:context'), new CodeBlock('C')))
+        $example = new ExampleObj($exampleName, new CodeBlock('example-code'));
+
+        $context = (new ExampleObj(NameObj::fromString('bar:context'), new CodeBlock('imported-code')))
             ->withIsContext(true);
 
-        $this->process(new ArrayExampleStore([$example, $context]))->shouldReturnExampleWithCode('foo:example', 'E');
+        $this->process(new ArrayExampleStore([$example, $context]))->shouldReturnExampleWithCode(
+            $exampleName,
+            'example-code'
+        );
     }
 
     function it_adds_namespaced_import()
     {
-        $example = (new ExampleObj(NameObj::fromString('foo:example'), new CodeBlock('E')))
-            ->withImport(NameObj::fromString('bar:import'));
+        $exampleName = NameObj::fromString('foo:example');
+        $importName = NameObj::fromString('bar:import');
 
-        $import = new ExampleObj(NameObj::fromString('bar:import'), new CodeBlock('I'));
+        $example = (new ExampleObj($exampleName, new CodeBlock('example-code')))
+            ->withImport($importName);
 
-        $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode('foo:example', 'IE');
+        $import = new ExampleObj($importName, new CodeBlock('imported-code'));
+
+        $this->process(new ArrayExampleStore([$example, $import]))->shouldReturnExampleWithCode(
+            $exampleName,
+            $this->an_import($import) . 'example-code'
+        );
     }
 
     public function getMatchers(): array
     {
         return [
-            'returnExampleWithCode' => function (ExampleStoreInterface $store, string $name, string $code) {
+            'returnExampleWithCode' => function (ExampleStoreInterface $store, NameObj $name, string $code) {
                 foreach ($store->getExamples() as $example) {
-                    if ($example->getName()->getFullName() === $name) {
-                        return $example->getCodeBlock()->getCode() === $code;
+                    if ($example->getName()->getFullName() === $name->getFullName()) {
+                        return $example->getCodeBlock()->getCode() == $code;
                     }
                 }
 

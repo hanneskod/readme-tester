@@ -6,42 +6,42 @@ namespace hanneskod\readmetester\Output;
 
 use hanneskod\readmetester\Event;
 
-final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
+class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
 {
     /**
      * The number of files tested
      */
-    private int $fileCount = 0;
+    protected int $fileCount = 0;
 
     /**
      * The number of examples
      */
-    private int $exampleCount = 0;
+    protected int $exampleCount = 0;
 
     /**
      * The number of ignored examples
      */
-    private int $ignoredCount = 0;
+    protected int $ignoredCount = 0;
 
     /**
      * The number of skipped examples
      */
-    private int $skippedCount = 0;
+    protected int $skippedCount = 0;
 
     /**
      * The number of assertions
      */
-    private int $expectationCount = 0;
+    protected int $expectationCount = 0;
 
     /**
      * The number of failed assertions
      */
-    private int $failureCount = 0;
+    protected int $failureCount = 0;
 
     /**
      * Flag if the current example is passing
      */
-    private bool $examplePassed = true;
+    protected bool $examplePassed = true;
 
     public function onExecutionStarted(Event\ExecutionStarted $event): void
     {
@@ -59,6 +59,13 @@ final class DefaultOutputtingSubscriber extends AbstractOutputtingSubscriber
     public function onConfigurationIncluded(Event\ConfigurationIncluded $event): void
     {
         $this->getOutput()->writeln("Reading configuration from <comment>{$event->getFilename()}</comment>");
+    }
+
+    public function onDebugEvent(Event\DebugEvent $event): void
+    {
+        if ($this->getOutput()->isVerbose()) {
+            $this->getOutput()->writeln($event->getMessage());
+        }
     }
 
     public function onFileIncluded(Event\FileIncluded $event): void

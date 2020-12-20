@@ -1,5 +1,9 @@
 # Constructing examples
 
+> Examples are constructed by concatenating the contents of imported examples
+> (and contexts) and prepending/appending lines using attributes. Use the
+> `--debug` option to see how the constructed example looks like.
+
 ## Importing
 
 An example may import the contents of another example using the `Import`
@@ -30,7 +34,7 @@ previous example will _not_ automatically import `parent`.
 
     <!--
     #[ReadmeTester\Import('child')]
-    #[ReadmeTester\ExpectError('/\$data/')]
+    #[ReadmeTester\ExpectError('/data/')]
     -->
     ```php
     // Will error as child tries to access an undefined variable $data
@@ -151,10 +155,10 @@ the name of the symbol to import and an optional local name as arguments.
 
     <!--
     #[ReadmeTester\UseClass('Exception', 'Foo')]
-    #[ReadmeTester\UseFunction('var_dump', 'output')]
+    #[ReadmeTester\UseFunction('print_r', 'output')]
     #[ReadmeTester\UseConst('E_USER_ERROR', 'INTEGER_CONSTANT')]
     #[ReadmeTester\ExpectOutput('/Exception/')]
-    #[ReadmeTester\ExpectOutput('/int\(\d+\)/')]
+    #[ReadmeTester\ExpectOutput('/\d+/')]
     -->
     ```php
     output(Foo::class);

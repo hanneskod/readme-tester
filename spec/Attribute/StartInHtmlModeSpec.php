@@ -29,17 +29,26 @@ class StartInHtmlModeSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::class);
     }
 
+    function it_can_create_attribute()
+    {
+        $this->createAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\StartInHtmlMode]');
+    }
+
+    function it_can_get_as_attribute()
+    {
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\StartInHtmlMode]');
+    }
+
     function it_transforms_code(ExampleObj $example)
     {
         $example->getCodeBlock()->willReturn(new CodeBlock('foo'));
 
-        $example->withCodeBlock(new CodeBlock('?>foo'))->willReturn($example)->shouldBeCalled();
+        $expected = new CodeBlock(
+            "/*#[\\hanneskod\\readmetester\\Attribute\\StartInHtmlMode]*/ ?>\nfoo"
+        );
+
+        $example->withCodeBlock($expected)->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
-    }
-
-    function it_can_create_attribute()
-    {
-        $this->createAttribute('foo')->shouldReturn('#[\hanneskod\readmetester\Attribute\StartInHtmlMode("foo")]');
     }
 }

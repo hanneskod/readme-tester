@@ -9,15 +9,18 @@ use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\NameObj;
 
 #[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
-class Import implements AttributeInterface, TransformationInterface
+class Import extends AbstractAttribute implements TransformationInterface
 {
-    use AttributeFactoryTrait;
-
     private string $name;
 
     public function __construct(string $name)
     {
         $this->name = $name;
+    }
+
+    public function asAttribute(): string
+    {
+        return self::createAttribute($this->name);
     }
 
     public function transform(ExampleObj $example): ExampleObj

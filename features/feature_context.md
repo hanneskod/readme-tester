@@ -83,6 +83,17 @@ $scenario = (new hanneskod\readmetester\Gherkish\FeatureContext)
             );
         }
     })
+    ->the_output_equals(function (string $expected) {
+        if ($this->rawOutput != $expected) {
+            throw new \Exception(
+                sprintf(
+                    "Expected output to equal %s, found %s",
+                    $expected,
+                    $this->rawOutput,
+                )
+            );
+        }
+    })
     ->the_count_for_x_is(function (string $field, int $expected) {
         // Divide by 3 as we use 3 suites
         $count = $this->parsedOutput['counts'][$field] / 3;

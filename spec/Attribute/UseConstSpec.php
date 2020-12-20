@@ -32,12 +32,35 @@ class UseConstSpec extends ObjectBehavior
         $this->shouldHaveType(TransformationInterface::class);
     }
 
+    function it_can_create_attribute()
+    {
+        $this->beConstructedWith('');
+        $this->createAttribute('foo', 'bar')
+            ->shouldReturn('#[\hanneskod\readmetester\Attribute\UseConst("foo", "bar")]');
+    }
+
+    function it_can_get_as_attribute()
+    {
+        $this->beConstructedWith('foo');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\UseConst("foo")]');
+    }
+
+    function it_can_get_as_attribute_with_postfix()
+    {
+        $this->beConstructedWith('foo', 'bar');
+        $this->asAttribute()->shouldReturn('#[\hanneskod\readmetester\Attribute\UseConst("foo", "bar")]');
+    }
+
     function it_adds_use_statement(ExampleObj $example)
     {
         $this->beConstructedWith('foo');
         $example->getCodeBlock()->willReturn(new CodeBlock('bar'));
 
-        $example->withCodeBlock(new CodeBlock('use const foo;bar'))->willReturn($example)->shouldBeCalled();
+        $expected = new CodeBlock(
+            "use const foo;\t// #[\\hanneskod\\readmetester\\Attribute\\UseConst(\"foo\")]\nbar"
+        );
+
+        $example->withCodeBlock($expected)->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
     }
@@ -47,15 +70,12 @@ class UseConstSpec extends ObjectBehavior
         $this->beConstructedWith('foo', 'baz');
         $example->getCodeBlock()->willReturn(new CodeBlock('bar'));
 
-        $example->withCodeBlock(new CodeBlock('use const foo as baz;bar'))->willReturn($example)->shouldBeCalled();
+        $expected = new CodeBlock(
+            "use const foo as baz;\t// #[\\hanneskod\\readmetester\\Attribute\\UseConst(\"foo\", \"baz\")]\nbar"
+        );
+
+        $example->withCodeBlock($expected)->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
-    }
-
-    function it_can_create_attribute()
-    {
-        $this->beConstructedWith('');
-        $this->createAttribute('foo', 'bar')
-            ->shouldReturn('#[\hanneskod\readmetester\Attribute\UseConst("foo", "bar")]');
     }
 }

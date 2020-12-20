@@ -9,10 +9,8 @@ use hanneskod\readmetester\Example\ExampleObj;
 use hanneskod\readmetester\Utils\CodeBlock;
 
 #[\Attribute(\Attribute::IS_REPEATABLE|\Attribute::TARGET_ALL)]
-class AppendCode implements AttributeInterface, TransformationInterface
+class AppendCode extends AbstractAttribute implements TransformationInterface
 {
-    use AttributeFactoryTrait;
-
     private string $line;
 
     public function __construct(string $line)
@@ -20,11 +18,22 @@ class AppendCode implements AttributeInterface, TransformationInterface
         $this->line = $line;
     }
 
+    public function asAttribute(): string
+    {
+        return self::createAttribute($this->line);
+    }
+
     public function transform(ExampleObj $example): ExampleObj
     {
         return $example->withCodeBlock(
-            (new CodeBlock($this->line))->prepend(
-                $example->getCodeBlock()
+            $example->getCodeBlock()->append(
+                new CodeBlock(
+                    sprintf(
+                        "%s\t// %s\n",
+                        $this->line,
+                        $this->asAttribute()
+                    )
+                )
             )
         );
     }

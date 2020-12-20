@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Event;
 
 use hanneskod\readmetester\Config\Suite;
 
-abstract class SuiteEvent extends LogEvent
+abstract class SuiteEvent extends BaseEvent
 {
     private Suite $suite;
 

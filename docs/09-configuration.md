@@ -69,3 +69,13 @@ For a complete list of avaliable options run:
 ```shell
 readme-tester --help
 ```
+
+### Debugging test cases
+
+The `debug` output format prints extensive information on created examples and
+their outcomes. Use togheter with the `--filter` option to only show information
+on the example you are debugging:
+
+```shell
+readme-tester --output debug --filter my-failing-example
+```

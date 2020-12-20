@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace hanneskod\readmetester\Example;
 
+use hanneskod\readmetester\Attribute\AttributeInterface;
 use hanneskod\readmetester\Expectation\ExpectationInterface;
 use hanneskod\readmetester\Utils\NameObj;
 use hanneskod\readmetester\Utils\CodeBlock;
@@ -11,7 +12,7 @@ use hanneskod\readmetester\Utils\CodeBlock;
 class ExampleObj
 {
     /**
-     * @param array<object> $attributes
+     * @param array<AttributeInterface> $attributes
      * @param array<ExpectationInterface> $expectations
      * @param array<NameObj> $imports
      */
@@ -26,7 +27,7 @@ class ExampleObj
     ) {}
 
     /**
-     * @return array<object>
+     * @return array<AttributeInterface>
      */
     public function getAttributes(): array
     {
@@ -96,6 +97,13 @@ class ExampleObj
     {
         $new = clone $this;
         $new->active = $active;
+        return $new;
+    }
+
+    public function withAttributes(AttributeInterface ...$attributes): ExampleObj
+    {
+        $new = clone $this;
+        $new->attributes = [...$new->attributes, ...$attributes];
         return $new;
     }
 

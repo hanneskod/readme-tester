@@ -22,4 +22,9 @@ class CodeBlock
     {
         return new CodeBlock($codeBlock->getCode() . $this->getCode());
     }
+
+    public function append(CodeBlock $codeBlock): CodeBlock
+    {
+        return $codeBlock->prepend($this);
+    }
 }

@@ -6,7 +6,7 @@ namespace hanneskod\readmetester\Event;
 
 use hanneskod\readmetester\Runner\OutcomeInterface;
 
-abstract class EvaluationEvent extends LogEvent
+abstract class EvaluationEvent extends BaseEvent
 {
     private OutcomeInterface $outcome;
 
