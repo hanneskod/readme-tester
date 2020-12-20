@@ -12,6 +12,5 @@ install:
 
 script:
     - make continuous-integration
-    # TODO box does not currently support php8, temporarily skip build step
-    # - make build
-    # - make check
+    - make build
+    - make check

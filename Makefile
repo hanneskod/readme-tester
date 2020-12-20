@@ -69,10 +69,8 @@ $(PARSER): $(PARSER_ROOT).peg $(PHPEG_CMD)
 	$(PHPEG_CMD) generate $<
 
 $(TARGET): vendor/installed $(CONTAINER) $(PARSER) $(SRC_FILES) $(VERSION) $(README_TESTER_CMD) box.json composer.lock $(BOX_CMD)
-	# TODO box does not currently run with php8, this is a temporary fix
 	$(COMPOSER_CMD) install --prefer-dist --no-dev
-	php7.4 -d phar.readonly=0 $(BOX_CMD) compile --no-restart -c box.json.php8_tmp_fix
-	# $(BOX_CMD) compile
+	$(BOX_CMD) compile
 	$(COMPOSER_CMD) install
 
 .PHONY: build check
