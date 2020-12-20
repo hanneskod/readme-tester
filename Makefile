@@ -76,7 +76,7 @@ $(TARGET): vendor/installed $(CONTAINER) $(PARSER) $(SRC_FILES) $(VERSION) $(REA
 .PHONY: build check
 
 $(VERSION):
-	git describe > $@
+	-git describe > $@
 
 .PHONY: sign
 
