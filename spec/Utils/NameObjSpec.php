@@ -95,4 +95,11 @@ class NameObjSpec extends ObjectBehavior
         $this->getNamespaceName()->shouldReturn('bar');
         $this->getShortName()->shouldReturn('foo');
     }
+
+    function it_ignores_trailing_namespace_delimiter()
+    {
+        $this->beConstructedThrough('fromString', ['foo:']);
+        $this->getNamespaceName()->shouldReturn('');
+        $this->getShortName()->shouldReturn('foo');
+    }
 }

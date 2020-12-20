@@ -17,9 +17,11 @@ class NameObj
     {
         $parts = explode(self::NAMESPACE_DELIMITER, $name, 2);
 
+        $namespaceGiven = isset($parts[1]) && $parts[1];
+
         return new self(
-            isset($parts[1]) ? $parts[0] : $defaultNamespace,
-            $parts[1] ?? $parts[0]
+            $namespaceGiven ? $parts[0] : $defaultNamespace,
+            $namespaceGiven ? $parts[1] : $parts[0]
         );
     }
 
