@@ -134,6 +134,30 @@ needed. Use `StartInHtmlMode` to alter this behaviour.
     this example started in html mode
     ```
 
+### Declaring strict mode
+
+    <!--
+    #[ReadmeTester\DeclareStrictTypes]
+    #[ReadmeTester\ExpectError("/TypeError/")]
+    -->
+    ```php
+    function accepts_string_argument(string $str) {}
+
+    // non-string argument passed, fails in strict mode
+    accepts_string_argument(1);
+    ```
+
+<!--
+#[ReadmeTester\Name("Defaults to non-strict mode")]
+#[ReadmeTester\ExpectOutput("1")]
+```php
+function accepts_string(string $str) {
+    return $str;
+}
+echo accepts_string(1);
+```
+-->
+
 ### Setting the PHP namespace
 
 If you don't wish to clutter examples with namespace declarations you can use

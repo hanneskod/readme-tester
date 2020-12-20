@@ -8,6 +8,14 @@ Append code to the current example.
 
 Add a custom assertion to the end of the example.
 
+## DeclareDirective
+
+Prepend a `declare()` directive.
+
+## DeclareStrictTypes
+
+Prepend a `declare(strict_types=1)` directive.
+
 ## Example
 
 Mark example as a readmetester example. Optionally give it a name.

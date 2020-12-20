@@ -50,6 +50,8 @@ class ProjectServiceContainer extends Container
             'hanneskod\\readmetester\\Application' => true,
             'hanneskod\\readmetester\\Attribute\\AppendCode' => true,
             'hanneskod\\readmetester\\Attribute\\Assert' => true,
+            'hanneskod\\readmetester\\Attribute\\DeclareDirective' => true,
+            'hanneskod\\readmetester\\Attribute\\DeclareStrictTypes' => true,
             'hanneskod\\readmetester\\Attribute\\Example' => true,
             'hanneskod\\readmetester\\Attribute\\ExampleContext' => true,
             'hanneskod\\readmetester\\Attribute\\ExpectError' => true,
