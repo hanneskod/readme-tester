@@ -112,7 +112,7 @@ class ExampleProviderSpec extends ObjectBehavior
 
         $suite->getFilter()->willReturn('FILTER');
 
-        $compilerFactory->createCompiler([$pass, new FilterPass(new Regexp('/FILTER/'))])
+        $compilerFactory->createCompiler([$pass, new FilterPass(new Regexp('/FILTER/i'))])
             ->willReturn($compiler)
             ->shouldBeCalled();
 

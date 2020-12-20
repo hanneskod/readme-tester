@@ -28,7 +28,7 @@ final class ExampleProvider implements ExampleProviderInterface
 
         if ($filter = $suite->getFilter()) {
             $appendPasses[] = new FilterPass(
-                new Utils\Regexp('/' . preg_quote($filter, '/') . '/')
+                new Utils\Regexp('/' . preg_quote($filter, '/') . '/i')
             );
         }
 
