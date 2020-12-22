@@ -5,7 +5,9 @@ namespace spec\hanneskod\readmetester\Runner;
 
 use hanneskod\readmetester\Runner\RunnerFactory;
 use hanneskod\readmetester\Runner\RunnerInterface;
-use hanneskod\readmetester\Runner;
+use hanneskod\readmetester\Runner\ProcessRunner;
+use hanneskod\readmetester\Exception\InstantiatorException;
+use hanneskod\readmetester\Exception\InvalidRunnerException;
 use hanneskod\readmetester\Config\Configs;
 use hanneskod\readmetester\Utils\Instantiator;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +27,7 @@ class RunnerFactorySpec extends ObjectBehavior
 
     function it_creates_from_id($instantiator, RunnerInterface $runner)
     {
-        $instantiator->getNewObject(Runner\ProcessRunner::class)
+        $instantiator->getNewObject(ProcessRunner::class)
             ->willReturn($runner)
             ->shouldBeCalled();
 
@@ -46,10 +48,10 @@ class RunnerFactorySpec extends ObjectBehavior
     function it_throws_on_invalid_id($instantiator)
     {
         $instantiator->getNewObject('does-not-exist')
-            ->willThrow(new \RuntimeException)
+            ->willThrow(new InstantiatorException)
             ->shouldBeCalled();
 
-        $this->shouldThrow(\RuntimeException::class)->duringCreateRunner('does-not-exist');
+        $this->shouldThrow(InvalidRunnerException::class)->duringCreateRunner('does-not-exist');
     }
 
     function it_throws_on_invalid_class($instantiator)
@@ -58,6 +60,6 @@ class RunnerFactorySpec extends ObjectBehavior
             ->willReturn((object)[])
             ->shouldBeCalled();
 
-        $this->shouldThrow(\RuntimeException::class)->duringCreateRunner('not-a-runner-classname');
+        $this->shouldThrow(InvalidRunnerException::class)->duringCreateRunner('not-a-runner-classname');
     }
 }

@@ -7,6 +7,8 @@ declare(strict_types=1);
 namespace hanneskod\readmetester\Compiler;
 
 use hanneskod\readmetester\Config\Configs;
+use hanneskod\readmetester\Exception\InstantiatorException;
+use hanneskod\readmetester\Exception\InvalidInputLanguageException;
 use hanneskod\readmetester\Utils\Instantiator;
 
 class CompilerFactoryFactory
@@ -17,12 +19,18 @@ class CompilerFactoryFactory
 
     public function createCompilerFactory(string $id): CompilerFactoryInterface
     {
-        $factory = $this->instantiator->getNewObject(
-            Configs::expand(Configs::INPUT_ID, $id),
-        );
+        try {
+            $factory = $this->instantiator->getNewObject(
+                Configs::expand(Configs::INPUT_ID, $id),
+            );
+        } catch (InstantiatorException $exception) {
+            throw new InvalidInputLanguageException("Invalid input language $id: {$exception->getMessage()}");
+        }
 
         if (!$factory instanceof CompilerFactoryInterface) {
-            throw new \RuntimeException("$id does no implement CompilerFactoryInterface");
+            throw new InvalidInputLanguageException(
+                "Invalid input language $id: Class does not implement CompilerFactoryInterface"
+            );
         }
 
         return $factory;

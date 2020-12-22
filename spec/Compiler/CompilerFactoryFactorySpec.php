@@ -6,6 +6,8 @@ namespace spec\hanneskod\readmetester\Compiler;
 use hanneskod\readmetester\Compiler\CompilerFactoryFactory;
 use hanneskod\readmetester\Compiler\CompilerFactoryInterface;
 use hanneskod\readmetester\Config\Configs;
+use hanneskod\readmetester\Exception\InstantiatorException;
+use hanneskod\readmetester\Exception\InvalidInputLanguageException;
 use hanneskod\readmetester\InputLanguage\Markdown\MarkdownCompilerFactory;
 use hanneskod\readmetester\Utils\Instantiator;
 use PhpSpec\ObjectBehavior;
@@ -46,10 +48,11 @@ class CompilerFactoryFactorySpec extends ObjectBehavior
     function it_throws_on_invalid_id($instantiator)
     {
         $instantiator->getNewObject('does-not-exist')
-            ->willThrow(new \RuntimeException)
+            ->willThrow(new InstantiatorException)
             ->shouldBeCalled();
 
-        $this->shouldThrow(\RuntimeException::class)->duringCreateCompilerFactory('does-not-exist');
+        $this->shouldThrow(InvalidInputLanguageException::class)
+            ->duringCreateCompilerFactory('does-not-exist');
     }
 
     function it_throws_on_invalid_class($instantiator)
@@ -58,6 +61,7 @@ class CompilerFactoryFactorySpec extends ObjectBehavior
             ->willReturn((object)[])
             ->shouldBeCalled();
 
-        $this->shouldThrow(\RuntimeException::class)->duringCreateCompilerFactory('not-a-compiler-factory-classname');
+        $this->shouldThrow(InvalidInputLanguageException::class)
+            ->duringCreateCompilerFactory('not-a-compiler-factory-classname');
     }
 }

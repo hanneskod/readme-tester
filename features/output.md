@@ -82,3 +82,21 @@ output_format: ""
 ->Then_the_output_equals('')
 ->And_the_exit_code_is(0)
 ```
+
+## I get error using default output
+```php
+->Given_the_command_line_argument('--output default')
+->And_the_command_line_argument('--runner does-not-exist')
+->When_I_run_readme_tester()
+->Then_the_output_contains('Invalid runner')
+->And_the_exit_code_is(1)
+```
+
+## I get error using json output
+```php
+->Given_the_command_line_argument('--output json')
+->And_the_command_line_argument('--input does-not-exist')
+->When_I_run_readme_tester()
+->Then_the_output_contains('Invalid input language')
+->And_the_exit_code_is(1)
+```

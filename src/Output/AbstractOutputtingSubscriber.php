@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace hanneskod\readmetester\Output;
 
+use hanneskod\readmetester\Event;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractOutputtingSubscriber
 {
     private ?OutputInterface $output;
+
+    public function onErrorEvent(Event\ErrorEvent $event): void
+    {
+        $this->getOutput()->writeln("<error>{$event->getMessage()}</error>");
+
+        if ($this->getOutput()->isVerbose()) {
+            $this->getOutput()->writeln("<error>{$event->getException()}</error>");
+        }
+    }
 
     public function getOutput(): OutputInterface
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace hanneskod\readmetester\Utils;
 
+use hanneskod\readmetester\Exception\InstantiatorException;
 use Psr\Container\ContainerInterface;
 
 class Instantiator implements ContainerInterface
@@ -36,19 +37,19 @@ class Instantiator implements ContainerInterface
     public function getNewObject(string $classname): object
     {
         if (!class_exists($classname)) {
-            throw new \RuntimeException("Class '$classname' does not exist");
+            throw new InstantiatorException("Class '$classname' does not exist");
         }
 
         $reflector = new \ReflectionClass($classname);
 
         if (!$reflector->isInstantiable()) {
-            throw new \RuntimeException("Unable to instantiate non-instantiable class '$classname'");
+            throw new InstantiatorException("Unable to instantiate non-instantiable class '$classname'");
         }
 
         $constructor = $reflector->getConstructor();
 
         if ($constructor && $constructor->getNumberOfRequiredParameters()) {
-            throw new \RuntimeException("Unable to instantiate '$classname' with no parameters");
+            throw new InstantiatorException("Unable to instantiate '$classname' with no parameters");
         }
 
         return new $classname();

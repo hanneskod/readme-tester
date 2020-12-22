@@ -199,7 +199,20 @@ final class Application
             $this->listenerProvider->addSubscriber($subscriber, $subscriber);
         }
 
-        // Dispatch events (after subscribers have been loaded)
+        // From here convert RuntimeExceptions to ErrorEvents (after subscribers have been loaded)
+
+        try {
+            return $this->execute($input, $output, $bootstrap);
+        } catch (\RuntimeException $exception) {
+            $this->dispatcher->dispatch(new Event\ErrorEvent($exception));
+        }
+
+        return 1;
+    }
+
+    private function execute(InputInterface $input, OutputInterface $output, string $bootstrap): int
+    {
+        // Dispatch events
 
         $this->dispatcher->dispatch(new Event\ExecutionStarted($output));
 
