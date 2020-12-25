@@ -31,14 +31,14 @@ class IgnoreUnmarkedExamplesSpec extends ObjectBehavior
 
     function it_ignores_unmaked_example(ExampleObj $example)
     {
-        $example->getAttributes()->willReturn([(object)array()]);
+        $example->hasAttribute(Example::class)->willReturn(false);
         $example->withActive(false)->willReturn($example)->shouldBeCalled();
         $this->transform($example)->shouldReturn($example);
     }
 
     function it_skipps_marked_example(ExampleObj $example)
     {
-        $example->getAttributes()->willReturn([new Example]);
+        $example->hasAttribute(Example::class)->willReturn(true);
         $example->withActive(false)->shouldNotBeCalled();
         $this->transform($example)->shouldReturn($example);
     }

@@ -34,7 +34,7 @@ class FilesystemFacade
             )
         );
 
-        // Set file extensions (case insensitive)
+        // Set file extensions
 
         $finder->name(
             array_map(

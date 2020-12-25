@@ -14,10 +14,8 @@ class IgnoreUnmarkedExamples extends AbstractAttribute implements Transformation
 {
     public function transform(ExampleObj $example): ExampleObj
     {
-        foreach ($example->getAttributes() as $attribute) {
-            if ($attribute instanceof Example) {
-                return $example;
-            }
+        if ($example->hasAttribute(Example::class)) {
+            return $example;
         }
 
         return $example->withActive(false);

@@ -59,17 +59,6 @@ Attributes unknown to readmetester are simply skipped
     // The UnknownAttribute is skipped as it is not known
     ```
 
-### Case insensitive attributes
-
-Attributes are case insensitive.
-
-    <!--
-    #[readmetester\expectoutput('foo')]
-    -->
-    ```php
-    echo "foo";
-    ```
-
 ### Multiple attributes
 
 Multiple attributes can be grouped togheter in the same way as php handles

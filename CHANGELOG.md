@@ -3,7 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project now adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [2.0.0-beta1] - 2020-12-25
+
+Version 2 is a complete rewrite using php8 attributes instead of docblock style
+annotation. Major changes include:
 
 - Removed built in phpunit integration
 - Removed the `--named-only` command line option
@@ -14,7 +17,6 @@ This project now adheres to [Semantic Versioning](http://semver.org/).
 - Added the `--input` command line option
 - Renamed command line option `--format` > `--output`
 - Added the `--debug` command line option
-- Using php8 attributes instead of annotations
 - Added support for config files
 - Added the `--config` and `--no-config` command line options
 - Use a propper event dispatcher

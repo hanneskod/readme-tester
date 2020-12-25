@@ -6,6 +6,10 @@
 
 Validate PHP code examples in documentation.
 
+This file describes version `2` which uses php8 attributes. For version `1`
+which uses docblock style annotations see [this link](https://github.com/hanneskod/readme-tester/tree/1.0.0).
+
+
 ## Why?
 
 Did you update your library, but forgot to update code examples in README? Are
