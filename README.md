@@ -6,9 +6,10 @@
 
 Validate PHP code examples in documentation.
 
-This file describes version `2` which uses php8 attributes. For version `1`
-which uses docblock style annotations see [this link](https://github.com/hanneskod/readme-tester/tree/1.0.0).
+> This file describes version `2` which uses php8 attributes.
 
+> For version `1` which uses docblock style annotations see
+> [this link](https://github.com/hanneskod/readme-tester/tree/1.0.0).
 
 ## Why?
 
@@ -36,13 +37,23 @@ For more information [read the documentation](/docs).
 
 ## Installation
 
-### As a phar archive (recommended)
+### Using phive (recommended)
+
+Install using [phive][3]
+
+```shell
+phive install hanneskod/readme-tester
+```
+
+### As a phar archive
 
 Download the latest phar archive from the [releases][1] tab.
 
 Optionally rename `readme-tester.phar` to `readme-tester` for a smoother experience.
 
-### Through composer
+### Using composer
+
+Install as a [composer][2] dependency
 
 ```shell
 composer require --dev hanneskod/readme-tester
