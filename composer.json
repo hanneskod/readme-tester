@@ -47,6 +47,7 @@
     },
     "require-dev": {
         "symfony/config": "^5",
-        "symfony/expression-language": "^5"
+        "symfony/expression-language": "^5",
+        "roave/security-advisories": "dev-latest"
     }
 }
