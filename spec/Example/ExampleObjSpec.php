@@ -43,7 +43,7 @@ class ExampleObjSpec extends ObjectBehavior
 
     function it_can_check_if_attribute_exists($name, $codeBlock)
     {
-        $this->beConstructedWith($name, $codeBlock, [new \Exception]);
+        $this->beConstructedWith($name, $codeBlock, [new \Exception()]);
         $this->hasAttribute(\Exception::class)->shouldReturn(true);
         $this->hasAttribute(\RuntimeException::class)->shouldReturn(false);
     }

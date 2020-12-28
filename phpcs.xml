@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<ruleset>
+    <rule ref="PSR12"/>
+
+    <file>./bin</file>
+    <file>./features</file>
+    <file>./spec</file>
+    <file>./src</file>
+
+    <exclude-pattern>*/ProjectServiceContainer.php</exclude-pattern>
+    <exclude-pattern>./src/InputLanguage/Markdown/Parser.php</exclude-pattern>
+
+    <!--
+        TODO tmp exclude awaiting phpcs 3.6.0
+        see https://github.com/squizlabs/PHP_CodeSniffer/issues/3167
+    -->
+    <rule ref="Generic.WhiteSpace.ScopeIndent.IncorrectExact">
+       <exclude-pattern>./src</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Files.SideEffects">
+       <exclude-pattern>./src/Attribute</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.WhiteSpace.ScopeClosingBrace">
+       <exclude-pattern>./src</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration">
+       <exclude-pattern>./features</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+       <exclude-pattern>./spec</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Scope.MethodScope.Missing">
+       <exclude-pattern>./spec</exclude-pattern>
+    </rule>
+
+    <arg name="colors"/>
+</ruleset>

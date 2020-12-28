@@ -31,7 +31,7 @@ class ExpectNothingSpec extends ObjectBehavior
 
     function it_transforms(ExampleObj $example)
     {
-        $example->withExpectation(new VoidExpectation)->willReturn($example)->shouldBeCalled();
+        $example->withExpectation(new VoidExpectation())->willReturn($example)->shouldBeCalled();
 
         $this->transform($example)->shouldReturn($example);
     }

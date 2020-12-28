@@ -28,7 +28,7 @@ class ReflectiveExampleStoreSpec extends ObjectBehavior
             new ExampleObj(
                 new NameObj('', 'example1'),
                 new CodeBlock('foobar'),
-                [new Ignore]
+                [new Ignore()]
             )
         );
     }
@@ -64,7 +64,7 @@ class ReflectiveExampleStoreSpec extends ObjectBehavior
             new ExampleObj(
                 new NameObj('', 'example1'),
                 new CodeBlock(''),
-                [new Ignore]
+                [new Ignore()]
             )
         );
     }
@@ -86,7 +86,8 @@ class ReflectiveExampleStoreSpec extends ObjectBehavior
         return [
             'containExample' => function (iterable $examples, ExampleObj $expected) {
                 foreach ($examples as $example) {
-                    if ($example->getName()->getFullName() == $expected->getName()->getFullName()
+                    if (
+                        $example->getName()->getFullName() == $expected->getName()->getFullName()
                         && $example->getCodeBlock()->getCode() == $expected->getCodeBlock()->getCode()
                         && $example->getAttributes() == $expected->getAttributes()
                     ) {

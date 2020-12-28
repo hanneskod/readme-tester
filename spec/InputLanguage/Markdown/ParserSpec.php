@@ -20,7 +20,7 @@ class ParserSpec extends ObjectBehavior
 
     function it_tests_doc_with_no_examples()
     {
-        $this->parseContent('no-examples-here..')->shouldBeLike(new ReflectiveExampleStoreTemplate);
+        $this->parseContent('no-examples-here..')->shouldBeLike(new ReflectiveExampleStoreTemplate());
     }
 
     function it_finds_simple_example()
@@ -183,7 +183,7 @@ README
 .
 <!--#[Not-vied-as-global-as-it-is-not-first-content-in-file]-->
 README
-        )->shouldBeLike(new ReflectiveExampleStoreTemplate);
+        )->shouldBeLike(new ReflectiveExampleStoreTemplate());
     }
 
     function it_finds_example_attribute()

@@ -14,6 +14,7 @@
 /README.md export-ignore
 /readme-tester.yaml export-ignore
 /src/InputLanguage/Markdown/Parser.peg export-ignore
+/phpcs.xml export-ignore
 /composer.lock binary
 /src/InputLanguage/Markdown/Parser.php binary
 /src/ProjectServiceContainer.php binary

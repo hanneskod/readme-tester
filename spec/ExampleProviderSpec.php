@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\hanneskod\readmetester;
@@ -90,7 +91,7 @@ class ExampleProviderSpec extends ObjectBehavior
         $compilerFactory->createCompiler([$pass])->willReturn($compiler)->shouldBeCalled();
 
         $suite->readFromStdin()->willReturn(true);
-        $compiler->compile([new StdinInput])->willReturn($examples)->shouldBeCalled();
+        $compiler->compile([new StdinInput()])->willReturn($examples)->shouldBeCalled();
 
         $this->getExamplesForSuite($suite)->shouldReturn($examples);
     }
@@ -117,7 +118,7 @@ class ExampleProviderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $suite->readFromStdin()->willReturn(true);
-        $compiler->compile([new StdinInput])->willReturn($examples);
+        $compiler->compile([new StdinInput()])->willReturn($examples);
         $this->getExamplesForSuite($suite)->shouldReturn($examples);
     }
 }

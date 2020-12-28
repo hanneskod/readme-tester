@@ -119,9 +119,7 @@ phpstan: vendor/installed $(PHPSTAN_CMD)
 	$(PHPSTAN_CMD) analyze -c phpstan.neon -l 8 src
 
 phpcs: $(PHPCS_CMD)
-	# TODO phpcs does not currently run with php8, skipp temporary
-	# $(PHPCS_CMD) src --standard=PSR12 --ignore=$(PARSER),$(CONTAINER)
-	$(PHPCS_CMD) spec --standard=spec/ruleset.xml
+	$(PHPCS_CMD)
 
 composer.lock: composer.json
 	@echo composer.lock is not up to date

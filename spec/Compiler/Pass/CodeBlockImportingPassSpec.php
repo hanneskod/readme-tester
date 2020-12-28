@@ -158,7 +158,10 @@ class CodeBlockImportingPassSpec extends ObjectBehavior
         $this->process(new ArrayExampleStore([$example, $importContext, $import, $context]))
             ->shouldReturnExampleWithCode(
                 $exampleName,
-                $this->an_import($importContext).$this->an_import($context).$this->an_import($import).'example-code'
+                $this->an_import($importContext)
+                    . $this->an_import($context)
+                    . $this->an_import($import)
+                    . 'example-code'
             );
     }
 

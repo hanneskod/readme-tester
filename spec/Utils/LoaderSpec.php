@@ -21,7 +21,7 @@ class LoaderSpec extends ObjectBehavior
         $this->load("class it_loades_code {}");
 
         // this will fail if code is not loaded
-        new \it_loades_code;
+        new \it_loades_code();
     }
 
     function it_returnes_what_loaded_code_returns()
@@ -54,7 +54,7 @@ class LoaderSpec extends ObjectBehavior
         $this->loadOnce("class it_loades_once {}");
 
         // this will fail if code is not loaded
-        new \it_loades_once;
+        new \it_loades_once();
 
         // will fail if code is loaded twice
         $this->loadOnce("class it_loades_once {}");

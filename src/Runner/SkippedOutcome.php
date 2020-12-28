@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Squiz.WhiteSpace.ScopeClosingBrace
-
 declare(strict_types=1);
 
 namespace hanneskod\readmetester\Runner;

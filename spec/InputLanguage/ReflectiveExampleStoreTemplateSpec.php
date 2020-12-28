@@ -42,7 +42,7 @@ class ReflectiveExampleStoreTemplateSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [],
-            [new Definition]
+            [new Definition()]
         );
 
         $this->setDefaultNamespace('bar');
@@ -54,7 +54,7 @@ class ReflectiveExampleStoreTemplateSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [NamespaceName::createAttribute('baz')],
-            [new Definition]
+            [new Definition()]
         );
 
         $this->render()->shouldContainExampleWithAttribute(new NamespaceName('baz'));

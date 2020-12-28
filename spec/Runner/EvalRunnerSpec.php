@@ -28,7 +28,7 @@ class EvalRunnerSpec extends ObjectBehavior
         $exampleToSkip = new ExampleObj(
             new NameObj('', ''),
             new CodeBlock(''),
-            [new Isolate]
+            [new Isolate()]
         );
 
         $store->getExamples()->willReturn([$exampleToSkip]);

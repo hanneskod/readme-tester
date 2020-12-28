@@ -56,7 +56,7 @@ class ParsingCompilerSpec extends ObjectBehavior
         $templateA->render()->willReturn($storeA);
         $templateB->render()->willReturn($storeB);
 
-        $expected = new CombinedExampleStore;
+        $expected = new CombinedExampleStore();
         $expected->addExampleStore($storeA->getWrappedObject());
         $expected->addExampleStore($storeB->getWrappedObject());
 
@@ -84,7 +84,7 @@ class ParsingCompilerSpec extends ObjectBehavior
     {
         $input->getContents()->willReturn('content');
 
-        $parser->parseContent('content')->willThrow(new \Exception);
+        $parser->parseContent('content')->willThrow(new \Exception());
 
         $this->shouldThrow(InvalidInputException::class)->duringCompile([$input]);
     }

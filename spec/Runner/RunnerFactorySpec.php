@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\hanneskod\readmetester\Runner;
@@ -48,7 +49,7 @@ class RunnerFactorySpec extends ObjectBehavior
     function it_throws_on_invalid_id($instantiator)
     {
         $instantiator->getNewObject('does-not-exist')
-            ->willThrow(new InstantiatorException)
+            ->willThrow(new InstantiatorException())
             ->shouldBeCalled();
 
         $this->shouldThrow(InvalidRunnerException::class)->duringCreateRunner('does-not-exist');
